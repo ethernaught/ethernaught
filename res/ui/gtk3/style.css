@@ -1,0 +1,21 @@
+window {
+    background-color: #141414; /* Set to your preferred color */
+}
+
+scrollbar trough {
+    background-color: #242424;
+}
+
+scrollbar slider {
+    background-color: #994ce0;
+}
+
+menubar {
+    background-color: #141414;
+    padding-bottom: 5px;
+}
+
+menuitem {
+    border: none;
+    box-shadow: none;
+}
