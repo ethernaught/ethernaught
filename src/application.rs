@@ -1,4 +1,4 @@
-use gtk::{AboutDialog, ApplicationWindow, Builder, Box, Image, Application};
+use gtk::{AboutDialog, ApplicationWindow, Builder, Box, Image, Application, TreeViewColumn};
 use gtk::gdk_pixbuf::PixbufLoader;
 use gtk::prelude::*;
 use gtk::gio::SimpleAction;
@@ -6,6 +6,23 @@ use gtk::prelude::{ActionMapExt, GtkWindowExt};
 //use crate::config::VERSION;
 
 pub fn init_styles(builder: &Builder) {
+    /*
+    let offset_column: TreeViewColumn = builder
+        .object("offset_column")
+        .expect("Couldn't find 'offset_column' in window.ui");
+    offset_column.set_title("offset_column");
+
+
+    let hex_column: TreeViewColumn = builder
+        .object("hex_column")
+        .expect("Couldn't find 'hex_column' in window.ui");
+    hex_column.set_title("hex_column");
+
+
+    let ascii_column: TreeViewColumn = builder
+        .object("ascii_column")
+        .expect("Couldn't find 'ascii_column' in window.ui");
+    ascii_column.set_title("ascii_column");*/
 }
 
 pub fn init_actions(app: &Application, window: &ApplicationWindow) {
