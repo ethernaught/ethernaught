@@ -69,17 +69,24 @@ fn main() {
 
 
 
+
+
+
+
+
+
+
+
         let list_box = ListBox::new();
-        list_box.add(&create_row());
-        list_box.add(&create_row());
-        list_box.add(&create_row());
-        list_box.add(&create_row());
+        for i in 0..100 {
+            list_box.add(&create_row());
+        }
 
-        let all_tab_layout: ScrolledWindow = builder
-            .object("scroll_layout")
-            .expect("Couldn't find 'scroll_layout' in window.ui");
+        let list_scroll_layout: ScrolledWindow = builder
+            .object("list_scroll_layout")
+            .expect("Couldn't find 'list_scroll_layout' in window.ui");
 
-        all_tab_layout.add(&list_box);
+        list_scroll_layout.add(&list_box);
         list_box.show_all();
 
 

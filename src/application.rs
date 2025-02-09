@@ -9,10 +9,33 @@ pub fn init_styles(builder: &Builder) {
     //let bla_bla: CellRendererText = builder.object("bla_bla").unwrap();
     //bla_bla.set_widget_name("bla_bla");
 
-    let header_layout: gtk::Box = builder
-        .object("header_layout")
-        .expect("Couldn't find 'header_layout' in window.ui");
-    header_layout.set_widget_name("header_layout");
+    let menu_layout: gtk::Box = builder
+        .object("menu_layout")
+        .expect("Couldn't find 'menu_layout' in window.ui");
+    menu_layout.set_widget_name("menu_layout");
+
+
+    /*
+    let start_icon: Image = builder
+        .object("start_icon")
+        .expect("Couldn't find 'start_icon' in window.ui");
+    start_icon.set_from_file(Some("res/images/ic_start.svg"));
+*/
+
+
+
+
+
+
+
+
+
+
+
+    let list_header_layout: gtk::Box = builder
+        .object("list_header_layout")
+        .expect("Couldn't find 'list_header_layout' in window.ui");
+    list_header_layout.set_widget_name("list_header_layout");
 
 
     /*

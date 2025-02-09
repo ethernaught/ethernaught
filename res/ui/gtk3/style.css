@@ -12,16 +12,20 @@ scrollbar slider {
 
 menubar {
     background-color: #141414;
-    padding-bottom: 5px;
 }
 
-#header_layout {
+#menu_layout {
+    padding: 10px 0;
+    background-color: #141414;
+}
+
+#list_header_layout {
     background-color: #343434;
     border-top: solid 1px #343434;
     border-bottom: solid 1px #343434;
 }
 
-#header_layout label {
+#list_header_layout label {
     padding: 5px 10px;
     background-color: #141414;
 }

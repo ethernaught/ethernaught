@@ -15,7 +15,35 @@
                 <property name="orientation">vertical</property>
 
                 <child>
-                    <object class="GTKBox" id="header_layout">
+                    <object class="GTKBox" id="menu_layout">
+                        <property name="visible">True</property>
+                        <property name="hexpand">True</property>
+                        <property name="orientation">horizontal</property>
+                        <property name="spacing">1</property>
+
+                        <child>
+                            <object class="GtkImage" id="start_icon">
+                                <property name="width-request">32</property>
+                                <property name="height-request">32</property>
+                                <property name="icon-name">packet-capture-start</property>
+                                <property name="file">res/images/ic_start.svg</property>
+                            </object>
+                        </child>
+
+                        <child>
+                            <object class="GtkImage" id="stop_icon">
+                                <property name="width-request">32</property>
+                                <property name="height-request">32</property>
+                                <property name="icon-name">packet-capture-stop</property>
+                                <property name="file">res/images/ic_stop.svg</property>
+                            </object>
+                        </child>
+
+                    </object>
+                </child>
+
+                <child>
+                    <object class="GTKBox" id="list_header_layout">
                         <property name="visible">True</property>
                         <property name="hexpand">True</property>
                         <property name="orientation">horizontal</property>
@@ -90,7 +118,7 @@
                 </child>
 
                 <child>
-                    <object class="GtkScrolledWindow" id="scroll_layout">
+                    <object class="GtkScrolledWindow" id="list_scroll_layout">
                         <property name="visible">True</property>
                         <property name="hexpand">True</property>
                         <property name="vexpand">True</property>
