@@ -11,23 +11,30 @@ scrollbar slider {
 }
 
 menubar {
-    background-color: #141414;
+    background-color: #2b2d30;
 }
+
+
+
+
 
 #menu_layout {
     padding: 10px 0;
-    background-color: #141414;
+    background-color: #2b2d30;
 }
 
 #list_header_layout {
-    background-color: #343434;
-    border-top: solid 1px #343434;
-    border-bottom: solid 1px #343434;
+    background-color: #393b40;
+    border-bottom: solid 1px #393b40;
 }
 
 #list_header_layout label {
     padding: 5px 10px;
-    background-color: #141414;
+    background-color: #1e1f22;
+}
+
+list row {
+    background-color: #1e1f22;
 }
 
 list row label {

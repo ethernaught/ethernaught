@@ -49,6 +49,7 @@ fn main() {
             .expect("Failed to get the 'MainWindow' from window.ui");
 
         window.set_application(Some(app));
+        window.set_decorated(false);
 
         /*
         let svg_data = include_bytes!("../res/ic_launcher.svg");
@@ -157,7 +158,7 @@ fb b3 65 4b ca 55 7b 72 18 47 ce 0f ad eb aa 22
 
 fn create_row() -> ListBoxRow {
     let row = ListBoxRow::new();
-    let hbox = gtk::Box::new(Orientation::Horizontal, 1);
+    let hbox = gtk::Box::new(Orientation::Horizontal, 0);
 
     let number = Label::new(Some("216"));
     number.set_widget_name("number");

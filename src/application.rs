@@ -1,4 +1,4 @@
-use gtk::{AboutDialog, ApplicationWindow, Builder, Box, Image, Application, TreeViewColumn, CellRendererText};
+use gtk::{AboutDialog, ApplicationWindow, Builder, Box, Image, Application, TreeViewColumn, CellRendererText, ScrolledWindow};
 use gtk::gdk_pixbuf::PixbufLoader;
 use gtk::prelude::*;
 use gtk::gio::SimpleAction;
@@ -13,6 +13,12 @@ pub fn init_styles(builder: &Builder) {
         .object("menu_layout")
         .expect("Couldn't find 'menu_layout' in window.ui");
     menu_layout.set_widget_name("menu_layout");
+
+    /*
+    let list_scroll_layout: ScrolledWindow = builder
+        .object("list_scroll_layout")
+        .expect("Couldn't find 'list_scroll_layout' in window.ui");
+    list_scroll_layout.set_widget_name("list_scroll_layout");*/
 
 
     /*
