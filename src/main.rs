@@ -68,11 +68,30 @@ fn main() {
         init_styles(&builder);
 
 
+
+        let list_box = ListBox::new();
+        list_box.add(&create_row());
+        list_box.add(&create_row());
+        list_box.add(&create_row());
+        list_box.add(&create_row());
+
+        let all_tab_layout: ScrolledWindow = builder
+            .object("scroll_layout")
+            .expect("Couldn't find 'scroll_layout' in window.ui");
+
+        all_tab_layout.add(&list_box);
+        list_box.show_all();
+
+
+
+
+        /*
         let tree_view: TreeView = builder
             .object("hex_view")
             .expect("Couldn't find 'hex_view' in window.ui");
         let list_store = ListStore::new(&[String::static_type(), String::static_type(), String::static_type()]);
         tree_view.set_model(Some(&list_store));
+
 
         //tree_view.column(0).unwrap().style_context().add_class("offset_column");
         tree_view.column(0).unwrap().set_title("000000");
@@ -102,41 +121,7 @@ fb b3 65 4b ca 55 7b 72 18 47 ce 0f ad eb aa 22
         //tree_view.column(2).unwrap().style_context().add_class("ascii_column");
         tree_view.column(2).unwrap().set_title("HELLO");
 
-
-        /*
-        let tree_view: TreeView = builder.object("hex_view").unwrap();
-
-        // Define columns for Offset, Hex, and ASCII
-        let list_store = ListStore::new(&[String::static_type(), String::static_type(), String::static_type()]);
-        tree_view.set_model(Some(&list_store));
-
-        let renderer = CellRendererText::new();
-
-        // Offset column
-        let col_offset = TreeViewColumn::new();
-        col_offset.set_title("Offset");
-        //col_offset.pack_start(&renderer, true);
-        //col_offset.add_attribute(&renderer, "text", 0);
-        tree_view.append_column(&col_offset);
-
-        // Hex column
-        let col_hex = TreeViewColumn::new();
-        col_hex.set_title("Hex");
-        //col_hex.pack_start(&renderer, true);
-        //col_hex.add_attribute(&renderer, "text", 1);
-        tree_view.append_column(&col_hex);
-
-        // ASCII column
-        let col_ascii = TreeViewColumn::new();
-        col_ascii.set_title("ASCII");
-        //col_ascii.pack_start(&renderer, true);
-        //col_ascii.add_attribute(&renderer, "text", 2);
-        tree_view.append_column(&col_ascii);
-
-        // Load example data*/
-
-
-
+        */
 
 
 
@@ -155,3 +140,71 @@ fb b3 65 4b ca 55 7b 72 18 47 ce 0f ad eb aa 22
 
     app.run();
 }
+
+
+
+
+
+
+
+
+fn create_row() -> ListBoxRow {
+    let row = ListBoxRow::new();
+    let hbox = gtk::Box::new(Orientation::Horizontal, 1);
+
+    let number = Label::new(Some("216"));
+    number.set_widget_name("number");
+    number.set_halign(gtk::Align::Start);
+    number.set_size_request(100, 16);
+    number.set_xalign(0.0);
+    hbox.pack_start(&number, false, false, 0);
+
+    let time = Label::new(Some("1.617305868"));
+    time.set_widget_name("time");
+    time.set_halign(gtk::Align::Start);
+    time.set_size_request(150, 16);
+    time.set_xalign(0.0);
+    hbox.pack_start(&time, false, false, 0);
+
+
+    let source = Label::new(Some("192.168.0.1"));
+    source.set_widget_name("source");
+    source.set_halign(gtk::Align::Start);
+    source.set_size_request(150, 16);
+    source.set_xalign(0.0);
+    hbox.pack_start(&source, false, false, 0);
+
+    let destination = Label::new(Some("192.168.0.1"));
+    destination.set_widget_name("destination");
+    destination.set_halign(gtk::Align::Start);
+    destination.set_size_request(150, 16);
+    destination.set_xalign(0.0);
+    hbox.pack_start(&destination, false, false, 0);
+
+    let protocol = Label::new(Some("DNS"));
+    protocol.set_widget_name("protocol");
+    protocol.set_halign(gtk::Align::Start);
+    protocol.set_size_request(80, 16);
+    protocol.set_xalign(0.0);
+    hbox.pack_start(&protocol, false, false, 0);
+
+    let length = Label::new(Some("105"));
+    length.set_widget_name("length");
+    length.set_halign(gtk::Align::Start);
+    length.set_size_request(80, 16);
+    length.set_xalign(0.0);
+    hbox.pack_start(&length, false, false, 0);
+
+    let info = Label::new(Some("Standard query response 0x39bc A"));
+    info.set_widget_name("info");
+    info.set_halign(gtk::Align::Start);
+    info.set_size_request(100, 16);
+    info.set_xalign(0.0);
+    hbox.pack_start(&info, false, true, 0);
+
+    row.add(&hbox);
+    row
+}
+
+
+

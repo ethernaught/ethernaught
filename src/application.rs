@@ -9,13 +9,13 @@ pub fn init_styles(builder: &Builder) {
     //let bla_bla: CellRendererText = builder.object("bla_bla").unwrap();
     //bla_bla.set_widget_name("bla_bla");
 
+    let header_layout: gtk::Box = builder
+        .object("header_layout")
+        .expect("Couldn't find 'header_layout' in window.ui");
+    header_layout.set_widget_name("header_layout");
+
+
     /*
-    let offset_column: TreeViewColumn = builder
-        .object("offset_column")
-        .expect("Couldn't find 'offset_column' in window.ui");
-    offset_column.set_title("offset_column");
-
-
     let hex_column: TreeViewColumn = builder
         .object("hex_column")
         .expect("Couldn't find 'hex_column' in window.ui");

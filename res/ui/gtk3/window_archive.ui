@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface domain="com.sectorrent.rust">
+    <requires lib="gtk+" version="3.24"/>
+    <object class="GtkApplicationWindow" id="MainWindow">
+        <property name="title">Omniscient</property>
+        <property name="default_width">1200</property>
+        <property name="default_height">700</property>
+        <property name="can-focus">False</property>
+        <property name="role">tr-main</property>
+
+        <child>
+            <object class="GtkBox" id="window_layout">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="orientation">vertical</property>
+
+
+
+                <child>
+                    <object class="GtkTreeView" id="hex_view">
+                        <property name="hexpand">true</property>
+                        <property name="vexpand">true</property>
+
+                        <child>
+                            <object class="GtkTreeViewColumn">
+                                <property name="expand">false</property>
+                                <property name="fixed-width">100</property>
+                                <child>
+                                    <object class="GtkCellRendererText" />
+                                </child>
+                            </object>
+                        </child>
+
+                        <child>
+                            <object class="GtkTreeViewColumn">
+                                <property name="expand">true</property>
+                                <child>
+                                    <object class="GtkCellRendererText" />
+                                </child>
+                            </object>
+                        </child>
+
+                        <child>
+                            <object class="GtkTreeViewColumn">
+                                <property name="expand">false</property>
+                                <property name="fixed-width">100</property>
+                                <child>
+                                    <object class="GtkCellRendererText" />
+                                </child>
+                            </object>
+                        </child>
+
+                    </object>
+                </child>
+
+
+            </object>
+        </child>
+    </object>
+</interface>
