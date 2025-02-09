@@ -74,7 +74,10 @@ fn main() {
         let list_store = ListStore::new(&[String::static_type(), String::static_type(), String::static_type()]);
         tree_view.set_model(Some(&list_store));
 
+        //tree_view.column(0).unwrap().style_context().add_class("offset_column");
         tree_view.column(0).unwrap().set_title("000000");
+
+        //tree_view.column(1).unwrap().style_context().add_class("hex_column");
         tree_view.column(1).unwrap().set_title("2e f8 84 00 00 01 00 03 00 00 00 01 07 65 78 61
 6d 70 6c 65 03 63 6f 6d 00 00 30 00 01 c0 0c 00
 30 00 01 00 00 0e 10 00 44 01 00 03 0d c3 ef d2
@@ -95,6 +98,8 @@ cf 27 d7 a8 91 15 3a 63 09 de a4 f4 b5 c0 0c 00
 fb b3 65 4b ca 55 7b 72 18 47 ce 0f ad eb aa 22
 1b b8 ee c3 ca fc ad bf 00 00 29 10 00 00 00 80
 00 00 00");
+
+        //tree_view.column(2).unwrap().style_context().add_class("ascii_column");
         tree_view.column(2).unwrap().set_title("HELLO");
 
 

@@ -1,4 +1,4 @@
-use gtk::{AboutDialog, ApplicationWindow, Builder, Box, Image, Application, TreeViewColumn};
+use gtk::{AboutDialog, ApplicationWindow, Builder, Box, Image, Application, TreeViewColumn, CellRendererText};
 use gtk::gdk_pixbuf::PixbufLoader;
 use gtk::prelude::*;
 use gtk::gio::SimpleAction;
@@ -6,6 +6,9 @@ use gtk::prelude::{ActionMapExt, GtkWindowExt};
 //use crate::config::VERSION;
 
 pub fn init_styles(builder: &Builder) {
+    //let bla_bla: CellRendererText = builder.object("bla_bla").unwrap();
+    //bla_bla.set_widget_name("bla_bla");
+
     /*
     let offset_column: TreeViewColumn = builder
         .object("offset_column")

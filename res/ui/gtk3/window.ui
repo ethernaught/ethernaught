@@ -26,7 +26,7 @@
                                 <property name="expand">false</property>
                                 <property name="fixed-width">100</property>
                                 <child>
-                                    <object class="GtkCellRendererText" />
+                                    <object class="GtkCellRendererText" id="bla_bla" />
                                 </child>
                             </object>
                         </child>
