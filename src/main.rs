@@ -1,5 +1,6 @@
 mod application;
 mod pcap;
+mod packet;
 
 use std::process::exit;
 use std::sync::{Arc, Mutex};
@@ -127,61 +128,15 @@ fn main() {
 
 
 
-
-        /*
-        loop {
-            match rx.recv() {
-                Ok(packet) => {
-                    list_box.add(&create_row(packet));
-                }
-                _ => {}
-            }
-        }
-        */
-
-        /*
-        thread::spawn(|| {
-            let devices = Device::list().expect("Failed to get device list");
-
-            let device = devices.into_iter().find(|d| d.name.contains("wlp2s0"))
-                .expect("No suitable device found");
-
-            println!("Listening on device: {}", device.name);
-
-            let mut cap = Capture::from_device(device)
-                .expect("Failed to open device")
-                .promisc(true)
-                .immediate_mode(true)
-                .open()
-                .expect("Failed to start capture");
-
-            while let Ok(packet) = cap.next_packet() {
-                println!("Captured packet: {:?} ({} bytes)", packet, packet.data.len());
-
-                if packet.data.len() > 20 { // Ensure it's at least an IPv4 header
-                    let protocol = packet.data[23]; // Byte 9 in IPv4 header
-
-                    match protocol {
-                        0x01 => println!("Captured an ICMP Packet"),
-                        0x06 => println!("Captured a TCP Packet"),
-                        0x11 => println!("Captured a UDP Packet"),
-                        0x2F => println!("Captured a GRE Packet"),
-                        _    => println!("Captured an unknown protocol: {}", protocol),
-                    }
-                }
-            }
-        });
-        */
-
         let mut i =0;
 
         glib::timeout_add_local(Duration::from_millis(100), move || {
             match rx.try_recv() {
                 Ok(packet) => {
                     i += 1;
-                    let row = create_row(i, packet);
-                    list_box.add(&row);
-                    row.show_all();
+                    //let row = create_row(i, packet);
+                    //list_box.add(&row);
+                    //row.show_all();
                 }
                 _ => {
                 }
@@ -197,18 +152,3 @@ fn main() {
 
     app.run();
 }
-
-
-
-
-
-
-pub enum PacketType {
-    Tcp,
-    Udp,
-    Icmp,
-    Gre
-}
-
-
-

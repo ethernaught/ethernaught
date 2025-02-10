@@ -5,9 +5,12 @@ use gtk::ListBox;
 use gtk::prelude::ContainerExt;
 use pcap::{Capture, Device};
 use crate::application::create_row;
-use crate::PacketType;
+use crate::packet::ethernet_frame::EthernetFrame;
+use crate::packet::inter::types::Types;
+use crate::packet::ip_header::IpHeader;
+//use crate::PacketType;
 
-pub fn packet_capture(tx: Arc<Mutex<Sender<PacketType>>>) {
+pub fn packet_capture(tx: Arc<Mutex<Sender<()>>>) {
 
     thread::spawn(move || {
         let devices = Device::list().expect("Failed to get device list");
@@ -25,8 +28,30 @@ pub fn packet_capture(tx: Arc<Mutex<Sender<PacketType>>>) {
             .expect("Failed to start capture");
 
         while let Ok(packet) = cap.next_packet() {
-            println!("Captured packet: {:?} ({} bytes)", packet, packet.data.len());
+            //println!("Captured packet: {:?} ({} bytes)", packet, packet.data.len());
 
+            let ethernet_frame = EthernetFrame::from_bytes(packet.data).expect("Failed to parse Ethernet frame");
+            println!("{:?}", ethernet_frame._type);
+
+            match ethernet_frame._type {
+                Types::IPv4 => {
+                    let ip_header = IpHeader::from_bytes(&packet.data[14..]).expect("Failed to parse IP header");
+                    println!("{:?} {} {}", ip_header.protocol, ip_header.source_ip.to_string(), ip_header.destination_ip.to_string());
+                }
+                Types::Arp => {}
+                Types::IPv6 => {
+
+                }
+            }
+
+
+
+
+            //DEFINE TYPE THEN DECODE ACTUAL TYPEs
+
+            //packet.data
+
+            /*
             if packet.data.len() > 20 { // Ensure it's at least an IPv4 header
                 let protocol = packet.data[23]; // Byte 9 in IPv4 header
 
@@ -48,6 +73,7 @@ pub fn packet_capture(tx: Arc<Mutex<Sender<PacketType>>>) {
 
                 ;//.add(&create_row(PacketType::Gre));
             }
+            */
         }
     });
 }

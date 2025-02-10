@@ -3,7 +3,6 @@ use gtk::gdk_pixbuf::PixbufLoader;
 use gtk::prelude::*;
 use gtk::gio::SimpleAction;
 use gtk::prelude::{ActionMapExt, GtkWindowExt};
-use crate::PacketType;
 //use crate::config::VERSION;
 
 pub fn init_actions(app: &Application, window: &ApplicationWindow) {
@@ -84,12 +83,13 @@ pub fn init_titlebar(window: &ApplicationWindow, app: &Application) -> Builder {
 }
 
 
-pub fn create_row(number: u32, packet_type: PacketType) -> ListBoxRow {
+pub fn create_row(number: u32/*, packet_type: PacketType*/) -> ListBoxRow {
     let builder = Builder::from_file("res/ui/list_item.xml");
     let row: ListBoxRow = builder
         .object("row")
         .expect("Couldn't find 'row' in list_item.xml");
 
+    /*
     match packet_type {
         PacketType::Tcp => {
             row.style_context().add_class("tcp");
@@ -103,7 +103,7 @@ pub fn create_row(number: u32, packet_type: PacketType) -> ListBoxRow {
         PacketType::Gre => {
             row.style_context().add_class("gre");
         }
-    }
+    }*/
 
     let number_label: Label = builder
         .object("number")
@@ -130,6 +130,7 @@ pub fn create_row(number: u32, packet_type: PacketType) -> ListBoxRow {
         .expect("Couldn't find 'protocol' in list_item.xml");
     //protocol.set_label("DNS");
 
+    /*
     match packet_type {
         PacketType::Tcp => {
             protocol.set_label("TCP");
@@ -143,7 +144,7 @@ pub fn create_row(number: u32, packet_type: PacketType) -> ListBoxRow {
         PacketType::Gre => {
             protocol.set_label("GRE");
         }
-    }
+    }*/
 
     let length: Label = builder
         .object("length")
