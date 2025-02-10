@@ -5,58 +5,6 @@ use gtk::gio::SimpleAction;
 use gtk::prelude::{ActionMapExt, GtkWindowExt};
 //use crate::config::VERSION;
 
-pub fn init_styles(builder: &Builder) {
-    //let bla_bla: CellRendererText = builder.object("bla_bla").unwrap();
-    //bla_bla.set_widget_name("bla_bla");
-
-    let menu_layout: gtk::Box = builder
-        .object("menu_layout")
-        .expect("Couldn't find 'menu_layout' in window.ui");
-    menu_layout.set_widget_name("menu_layout");
-
-    /*
-    let list_scroll_layout: ScrolledWindow = builder
-        .object("list_scroll_layout")
-        .expect("Couldn't find 'list_scroll_layout' in window.ui");
-    list_scroll_layout.set_widget_name("list_scroll_layout");*/
-
-
-    /*
-    let start_icon: Image = builder
-        .object("start_icon")
-        .expect("Couldn't find 'start_icon' in window.ui");
-    start_icon.set_from_file(Some("res/images/ic_start.svg"));
-*/
-
-
-
-
-
-
-
-
-
-
-
-    let list_header_layout: gtk::Box = builder
-        .object("list_header_layout")
-        .expect("Couldn't find 'list_header_layout' in window.ui");
-    list_header_layout.set_widget_name("list_header_layout");
-
-
-    /*
-    let hex_column: TreeViewColumn = builder
-        .object("hex_column")
-        .expect("Couldn't find 'hex_column' in window.ui");
-    hex_column.set_title("hex_column");
-
-
-    let ascii_column: TreeViewColumn = builder
-        .object("ascii_column")
-        .expect("Couldn't find 'ascii_column' in window.ui");
-    ascii_column.set_title("ascii_column");*/
-}
-
 pub fn init_actions(app: &Application, window: &ApplicationWindow) {
     /*
     let action = SimpleAction::new("quit", None);

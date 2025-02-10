@@ -26,8 +26,9 @@ mod application;
 
 use std::process::exit;
 use gtk::prelude::*;
-use gtk::{Application, Builder, gio, CssProvider, StyleContext, gdk, ApplicationWindow, ListBox, ListBoxRow, Label, Orientation, ScrolledWindow, Image, ProgressBar, TreeView, ListStore, CellRendererText, TreeViewColumn};
-use crate::application::init_styles;
+use gtk::{Application, Builder, gio, CssProvider, StyleContext, gdk, ApplicationWindow, ListBox, ListBoxRow, Label, Orientation, ScrolledWindow, Image, ProgressBar, TreeView, ListStore, CellRendererText, TreeViewColumn, HeaderBar};
+use gtk::gdk::{EventButton, EventMask};
+use gtk::glib::Propagation;
 
 fn main() {
     let app = Application::new(Some("com.omniscient.rust"), Default::default());
@@ -49,7 +50,9 @@ fn main() {
             .expect("Failed to get the 'MainWindow' from window.ui");
 
         window.set_application(Some(app));
-        window.set_decorated(false);
+        //window.set_decorated(false);
+
+
 
         /*
         let svg_data = include_bytes!("../res/ic_launcher.svg");
@@ -66,22 +69,12 @@ fn main() {
         window.set_title("Omniscient");
         window.connect_destroy(|_| exit(0));
 
-        init_styles(&builder);
-
-
-
-
-
-
-
-
-
 
 
         let list_box = ListBox::new();
-        for i in 0..100 {
+        //for i in 0..100 {
             list_box.add(&create_row());
-        }
+        //}
 
         let list_scroll_layout: ScrolledWindow = builder
             .object("list_scroll_layout")
@@ -131,15 +124,33 @@ fb b3 65 4b ca 55 7b 72 18 47 ce 0f ad eb aa 22
 
         */
 
+        /*
+        let window_layout: gtk::Box = builder
+            .object("window_layout")
+            .expect("Couldn't find 'window_layout' in window.ui");*/
 
+        /*
 
+        let builder = Builder::from_file("res/ui/omniscient-ui-2.xml");
+        let menu_layout: gtk::HeaderBar = builder
+            .object("menu_layout")
+            .expect("Couldn't find 'menu_layout' in window.ui");
 
+        //window_layout.pack_end(&menu_layout, false, true, 0);
+
+        //let header_bar = HeaderBar::new();
+
+        menu_layout.show_all();
+        window.add(&list_box);
+        window.set_titlebar(Some(&menu_layout));*/
+
+        /*
         let builder = Builder::from_file("res/ui/omniscient-ui.xml");
         let menubar: gio::Menu = builder
             .object("main_window_menu")
             .expect("Couldn't find 'main_window_menu' in omniscient-ui.xml");
 
-        app.set_menubar(Some(&menubar));
+        app.set_menubar(Some(&menubar));*/
 
         //init_actions(&app, &window);
 
@@ -157,60 +168,46 @@ fb b3 65 4b ca 55 7b 72 18 47 ce 0f ad eb aa 22
 
 
 fn create_row() -> ListBoxRow {
-    let row = ListBoxRow::new();
-    let hbox = gtk::Box::new(Orientation::Horizontal, 0);
+    let builder = Builder::from_file("res/ui/list_item.xml");
+    let row: ListBoxRow = builder
+        .object("row")
+        .expect("Couldn't find 'row' in list_item.xml");
 
-    let number = Label::new(Some("216"));
-    number.set_widget_name("number");
-    number.set_halign(gtk::Align::Start);
-    number.set_size_request(100, 16);
-    number.set_xalign(0.0);
-    hbox.pack_start(&number, false, false, 0);
+    let number: Label = builder
+        .object("number")
+        .expect("Couldn't find 'number' in list_item.xml");
+    number.set_label("216");
 
-    let time = Label::new(Some("1.617305868"));
-    time.set_widget_name("time");
-    time.set_halign(gtk::Align::Start);
-    time.set_size_request(150, 16);
-    time.set_xalign(0.0);
-    hbox.pack_start(&time, false, false, 0);
+    let time: Label = builder
+        .object("time")
+        .expect("Couldn't find 'time' in list_item.xml");
+    time.set_label("1.617305868");
 
+    let source: Label = builder
+        .object("source")
+        .expect("Couldn't find 'source' in list_item.xml");
+    source.set_label("192.168.0.1");
 
-    let source = Label::new(Some("192.168.0.1"));
-    source.set_widget_name("source");
-    source.set_halign(gtk::Align::Start);
-    source.set_size_request(150, 16);
-    source.set_xalign(0.0);
-    hbox.pack_start(&source, false, false, 0);
+    let destination: Label = builder
+        .object("destination")
+        .expect("Couldn't find 'destination' in list_item.xml");
+    destination.set_label("192.168.0.1");
 
-    let destination = Label::new(Some("192.168.0.1"));
-    destination.set_widget_name("destination");
-    destination.set_halign(gtk::Align::Start);
-    destination.set_size_request(150, 16);
-    destination.set_xalign(0.0);
-    hbox.pack_start(&destination, false, false, 0);
+    let protocol: Label = builder
+        .object("protocol")
+        .expect("Couldn't find 'protocol' in list_item.xml");
+    protocol.set_label("DNS");
 
-    let protocol = Label::new(Some("DNS"));
-    protocol.set_widget_name("protocol");
-    protocol.set_halign(gtk::Align::Start);
-    protocol.set_size_request(80, 16);
-    protocol.set_xalign(0.0);
-    hbox.pack_start(&protocol, false, false, 0);
+    let length: Label = builder
+        .object("length")
+        .expect("Couldn't find 'length' in list_item.xml");
+    length.set_label("105");
 
-    let length = Label::new(Some("105"));
-    length.set_widget_name("length");
-    length.set_halign(gtk::Align::Start);
-    length.set_size_request(80, 16);
-    length.set_xalign(0.0);
-    hbox.pack_start(&length, false, false, 0);
+    let info: Label = builder
+        .object("info")
+        .expect("Couldn't find 'info' in list_item.xml");
+    info.set_label("Standard query response 0x39bc A");
 
-    let info = Label::new(Some("Standard query response 0x39bc A"));
-    info.set_widget_name("info");
-    info.set_halign(gtk::Align::Start);
-    info.set_size_request(100, 16);
-    info.set_xalign(0.0);
-    hbox.pack_start(&info, false, true, 0);
-
-    row.add(&hbox);
     row
 }
 

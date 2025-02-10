@@ -1,5 +1,10 @@
 window {
-    background-color: #242424;
+    background-color: #2b2d30;
+}
+
+#titlebar {
+    padding: 8px;
+    background: linear-gradient(90deg, #2b2d30 0%, #59436e 15%, #2b2d30 30%);
 }
 
 scrollbar trough {
@@ -16,13 +21,6 @@ menubar {
 
 
 
-
-
-#menu_layout {
-    padding: 10px 0;
-    background-color: #2b2d30;
-}
-
 #list_header_layout {
     background-color: #393b40;
     border-bottom: solid 1px #393b40;
@@ -30,6 +28,10 @@ menubar {
 
 #list_header_layout label {
     padding: 5px 10px;
+    background-color: #1e1f22;
+}
+
+list {
     background-color: #1e1f22;
 }
 
