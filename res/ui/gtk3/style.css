@@ -64,7 +64,7 @@ menubar {
 }
 
 #list_header_layout label {
-    padding: 10px;
+    padding: 4px 10px;
     color: #cbd7dc;
     background-color: #1e1f22;
 }
@@ -80,4 +80,26 @@ list row {
 list row label {
     padding: 0 10px;
     color: #a7a7a7;
+}
+
+list row #number {
+    color: #494e57;
+}
+
+
+
+list row.tcp {
+    background-color: #151a19;
+}
+
+list row.udp {
+    background-color: #1e0f00;
+}
+
+list row.icmp {
+    background-color: #1e1c00;
+}
+
+list row.gre {
+    background-color: #1c161d;
 }

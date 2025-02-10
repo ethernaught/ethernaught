@@ -106,20 +106,6 @@ fn main() {
             app_clone.quit();
         });
 
-        /*
-        let header_bar = HeaderBar::new();
-        header_bar.set_title(Some("Custom Header"));
-        //header_bar.set_subtitle(Some("This is a subtitle"));
-        header_bar.set_show_close_button(true);
-        */
-        /*
-        let header_bar: HeaderBar = builder
-            .object("headerbar")
-            .expect("Couldn't find 'headerbar' in window.ui");
-
-        window.set_titlebar(Some(&header_bar));
-        */
-
 
         /*
         let svg_data = include_bytes!("../res/ic_launcher.svg");
@@ -149,8 +135,12 @@ fn main() {
 
         let list_box = ListBox::new();
         //for i in 0..100 {
-            list_box.add(&create_row());
+            //list_box.add(&create_row());
         //}
+        list_box.add(&create_row(PacketType::Tcp));
+        list_box.add(&create_row(PacketType::Udp));
+        list_box.add(&create_row(PacketType::Icmp));
+        list_box.add(&create_row(PacketType::Gre));
 
         let list_scroll_layout: ScrolledWindow = builder
             .object("list_scroll_layout")
@@ -165,7 +155,8 @@ fn main() {
             .object("main_window_menu")
             .expect("Couldn't find 'main_window_menu' in omniscient-ui.xml");
 
-        app.set_menubar(Some(&menubar));*/
+        app.set_menubar(Some(&menubar));
+        */
 
         init_actions(&app, &window);
 
@@ -180,13 +171,34 @@ fn main() {
 
 
 
+pub enum PacketType {
+    Tcp,
+    Udp,
+    Icmp,
+    Gre
+}
 
 
-fn create_row() -> ListBoxRow {
+fn create_row(packet_type: PacketType) -> ListBoxRow {
     let builder = Builder::from_file("res/ui/list_item.xml");
     let row: ListBoxRow = builder
         .object("row")
         .expect("Couldn't find 'row' in list_item.xml");
+
+    match packet_type {
+        PacketType::Tcp => {
+            row.style_context().add_class("tcp");
+        }
+        PacketType::Udp => {
+            row.style_context().add_class("udp");
+        }
+        PacketType::Icmp => {
+            row.style_context().add_class("icmp");
+        }
+        PacketType::Gre => {
+            row.style_context().add_class("gre");
+        }
+    }
 
     let number: Label = builder
         .object("number")
