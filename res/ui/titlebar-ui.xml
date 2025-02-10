@@ -35,6 +35,17 @@
                         </child>
                     </object>
                 </child>
+
+                <child>
+                    <object class="GtkImage" id="network_type_icon">
+                        <property name="name">network_type_icon</property>
+                        <property name="visible">True</property>
+                        <property name="width-request">24</property>
+                        <property name="height-request">24</property>
+                        <property name="icon-name">packet-capture-menu</property>
+                        <property name="file">res/images/ic_wifi.svg</property>
+                    </object>
+                </child>
             </object>
         </child>
 

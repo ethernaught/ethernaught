@@ -36,6 +36,14 @@ pub fn init_titlebar(window: &ApplicationWindow, app: &Application) -> Builder {
     titlebar.set_size_request(-1, 32);
 
 
+
+
+    titlebar.style_context().add_class("wifi");
+
+
+
+
+
     let minimize_button: Button = builder
         .object("minimize_button")
         .expect("Couldn't find 'minimize_button' in titlebar-ui.xml");

@@ -17,6 +17,46 @@ window {
     background: linear-gradient(90deg, #2b2d30 0%, #59436e 20%, #2b2d30 40%);
 }
 
+#titlebar.ethernet {
+    background: linear-gradient(90deg, #2b2d30 0%, #5e5030 20%, #2b2d30 40%);
+}
+
+#titlebar.wifi {
+    background: linear-gradient(90deg, #2b2d30 0%, #5e3058 20%, #2b2d30 40%);
+}
+
+#titlebar.vpn {
+    background: linear-gradient(90deg, #2b2d30 0%, #376141 20%, #2b2d30 40%);
+}
+
+#titlebar.bluetooth {
+    background: linear-gradient(90deg, #2b2d30 0%, #394366 20%, #2b2d30 40%);
+}
+
+#titlebar_menu #network_type_icon {
+    min-height: 0;
+    padding: 8px;
+    border-radius: 4px;
+    background-color: #59436e;
+}
+
+#titlebar.ethernet #network_type_icon {
+    background-color: #5e5030;
+}
+
+#titlebar.wifi #network_type_icon {
+    background-color: #5e3058;
+}
+
+#titlebar.vpn #network_type_icon {
+    background-color: #376141;
+}
+
+#titlebar.bluetooth #network_type_icon {
+    background-color: #394366;
+}
+
+
 #titlebar button {
     min-height: 0;
     padding: 4px;
