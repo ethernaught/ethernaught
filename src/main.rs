@@ -52,7 +52,7 @@ fn main() {
 
         window.set_application(Some(app));
         window.connect_destroy(|_| exit(0));
-        window.set_decorated(false);
+        //window.set_decorated(false);
         window.set_border_width(1);
 
         /*
@@ -63,15 +63,62 @@ fn main() {
         window.set_titlebar(Some(&titlebar));
         //window.set_hide_titlebar_when_maximized(false);*/
 
+
+        let titlebar_builder = Builder::from_file("res/ui/titlebar-ui.xml");
+
+        let titlebar: gtk::Box = titlebar_builder
+            .object("titlebar")
+            .expect("Couldn't find 'titlebar' in window.ui");
+
+        window.set_titlebar(Some(&titlebar));
+        titlebar.set_size_request(-1, 32);
+
+
+        let minimize_button: Button = titlebar_builder
+            .object("minimize_button")
+            .expect("Couldn't find 'minimize_button' in window.ui");
+
+        let window_clone = window.clone();
+        minimize_button.connect_clicked(move |_| {
+            window_clone.iconify();
+        });
+
+        let maximize_button: Button = titlebar_builder
+            .object("maximize_button")
+            .expect("Couldn't find 'maximize_button' in window.ui");
+
+        let window_clone = window.clone();
+        maximize_button.connect_clicked(move |_| {
+            if window_clone.is_maximized() {
+                window_clone.unmaximize();
+                return;
+            }
+
+            window_clone.maximize();
+        });
+
+        let close_button: Button = titlebar_builder
+            .object("close_button")
+            .expect("Couldn't find 'close_button' in window.ui");
+
+        let app_clone = app.clone();
+        close_button.connect_clicked(move |_| {
+            app_clone.quit();
+        });
+
+        /*
         let header_bar = HeaderBar::new();
         header_bar.set_title(Some("Custom Header"));
-        header_bar.set_subtitle(Some("This is a subtitle"));
+        //header_bar.set_subtitle(Some("This is a subtitle"));
         header_bar.set_show_close_button(true);
-
-        let close_button = Button::with_label("Close");
-        header_bar.pack_end(&close_button);
+        */
+        /*
+        let header_bar: HeaderBar = builder
+            .object("headerbar")
+            .expect("Couldn't find 'headerbar' in window.ui");
 
         window.set_titlebar(Some(&header_bar));
+        */
 
 
         /*
@@ -94,37 +141,6 @@ fn main() {
 
 
 
-        let minimize_button: Button = builder
-            .object("minimize_button")
-            .expect("Couldn't find 'minimize_button' in window.ui");
-
-        let window_clone = window.clone();
-        minimize_button.connect_clicked(move |_| {
-            window_clone.iconify();
-        });
-
-        let maximize_button: Button = builder
-            .object("maximize_button")
-            .expect("Couldn't find 'maximize_button' in window.ui");
-
-        let window_clone = window.clone();
-        maximize_button.connect_clicked(move |_| {
-            if window_clone.is_maximized() {
-                window_clone.unmaximize();
-                return;
-            }
-
-            window_clone.maximize();
-        });
-
-        let close_button: Button = builder
-            .object("close_button")
-            .expect("Couldn't find 'close_button' in window.ui");
-
-        let app_clone = app.clone();
-        close_button.connect_clicked(move |_| {
-            app_clone.quit();
-        });
 
 
 
