@@ -55,14 +55,23 @@ fn main() {
         window.set_decorated(false);
         window.set_border_width(1);
 
+        /*
         let titlebar: gtk::Box = builder
             .object("titlebar")
             .expect("Couldn't find 'titlebar' in window.ui");
 
         window.set_titlebar(Some(&titlebar));
-        //window.set_hide_titlebar_when_maximized(false);
+        //window.set_hide_titlebar_when_maximized(false);*/
 
+        let header_bar = HeaderBar::new();
+        header_bar.set_title(Some("Custom Header"));
+        header_bar.set_subtitle(Some("This is a subtitle"));
+        header_bar.set_show_close_button(true);
 
+        let close_button = Button::with_label("Close");
+        header_bar.pack_end(&close_button);
+
+        window.set_titlebar(Some(&header_bar));
 
 
         /*
@@ -123,9 +132,9 @@ fn main() {
 
 
         let list_box = ListBox::new();
-        for i in 0..100 {
+        //for i in 0..100 {
             list_box.add(&create_row());
-        }
+        //}
 
         let list_scroll_layout: ScrolledWindow = builder
             .object("list_scroll_layout")
