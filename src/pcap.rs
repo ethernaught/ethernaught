@@ -1,4 +1,5 @@
 use std::sync::{Arc, Mutex};
+use std::sync::mpsc::Sender;
 use std::thread;
 use gtk::ListBox;
 use gtk::prelude::ContainerExt;
@@ -6,10 +7,8 @@ use pcap::{Capture, Device};
 use crate::application::create_row;
 use crate::PacketType;
 
-pub fn packet_capture(list_box: Arc<Mutex<ListBox>>) {//list_box: &ListBox) {
-    let list_box = list_box.clone();
+pub fn packet_capture(tx: Arc<Mutex<Sender<PacketType>>>) {
 
-    /*
     thread::spawn(move || {
         let devices = Device::list().expect("Failed to get device list");
 
@@ -32,15 +31,23 @@ pub fn packet_capture(list_box: Arc<Mutex<ListBox>>) {//list_box: &ListBox) {
                 let protocol = packet.data[23]; // Byte 9 in IPv4 header
 
                 match protocol {
-                    0x01 => println!("Captured an ICMP Packet"),
-                    0x06 => println!("Captured a TCP Packet"),
-                    0x11 => println!("Captured a UDP Packet"),
-                    0x2F => println!("Captured a GRE Packet"),
+                    0x01 => {
+                        tx.lock().unwrap().send(PacketType::Icmp).unwrap();
+                    },
+                    0x06 => {
+                        tx.lock().unwrap().send(PacketType::Tcp).unwrap();
+                    },
+                    0x11 => {
+                        tx.lock().unwrap().send(PacketType::Udp).unwrap();
+                    },
+                    0x2F => {
+                        tx.lock().unwrap().send(PacketType::Gre).unwrap();
+                    },
                     _    => println!("Captured an unknown protocol: {}", protocol),
                 }
 
-                list_box.lock().unwrap().add(&create_row(PacketType::Gre));
+                ;//.add(&create_row(PacketType::Gre));
             }
         }
-    });*/
+    });
 }

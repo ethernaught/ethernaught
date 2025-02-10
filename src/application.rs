@@ -72,7 +72,7 @@ pub fn init_titlebar(window: &ApplicationWindow, app: &Application) -> Builder {
 }
 
 
-pub fn create_row(packet_type: PacketType) -> ListBoxRow {
+pub fn create_row(number: u32, packet_type: PacketType) -> ListBoxRow {
     let builder = Builder::from_file("res/ui/list_item.xml");
     let row: ListBoxRow = builder
         .object("row")
@@ -93,10 +93,10 @@ pub fn create_row(packet_type: PacketType) -> ListBoxRow {
         }
     }
 
-    let number: Label = builder
+    let number_label: Label = builder
         .object("number")
         .expect("Couldn't find 'number' in list_item.xml");
-    number.set_label("216");
+    number_label.set_label(format!("{}", number).as_str());
 
     let time: Label = builder
         .object("time")
@@ -116,7 +116,22 @@ pub fn create_row(packet_type: PacketType) -> ListBoxRow {
     let protocol: Label = builder
         .object("protocol")
         .expect("Couldn't find 'protocol' in list_item.xml");
-    protocol.set_label("DNS");
+    //protocol.set_label("DNS");
+
+    match packet_type {
+        PacketType::Tcp => {
+            protocol.set_label("TCP");
+        }
+        PacketType::Udp => {
+            protocol.set_label("UDP");
+        }
+        PacketType::Icmp => {
+            protocol.set_label("ICMP");
+        }
+        PacketType::Gre => {
+            protocol.set_label("GRE");
+        }
+    }
 
     let length: Label = builder
         .object("length")

@@ -5,12 +5,15 @@ use std::process::exit;
 use std::sync::{Arc, Mutex};
 use std::sync::mpsc::{channel, Receiver, RecvError};
 use std::thread;
+use std::time::Duration;
 use ::pcap::{Capture, Device};
 use gtk::prelude::*;
-use gtk::{Application, Builder, gio, CssProvider, StyleContext, gdk, ApplicationWindow, ListBox, ListBoxRow, Label, Orientation, ScrolledWindow, Image, ProgressBar, TreeView, ListStore, CellRendererText, TreeViewColumn, HeaderBar, Toolbar, Button};
+use gtk::{Application, Builder, gio, CssProvider, StyleContext, gdk, ApplicationWindow, ListBox, ListBoxRow, Label, Orientation, ScrolledWindow, Image, ProgressBar, TreeView, ListStore, CellRendererText, TreeViewColumn, HeaderBar, Toolbar, Button, glib};
 use gtk::gdk::{EventButton, EventMask};
 use gtk::gio::spawn_blocking;
-use gtk::glib::Propagation;
+use gtk::glib::ControlFlow::Continue;
+use gtk::glib::{idle_add, Propagation};
+use gtk::glib::UnicodeBreakType::Contingent;
 use crate::application::{init_titlebar, create_row, init_actions};
 use crate::pcap::packet_capture;
 
@@ -72,10 +75,11 @@ fn main() {
         //for i in 0..100 {
         //list_box.add(&create_row());
         //}
+        /*
         list_box.add(&create_row(PacketType::Tcp));
         list_box.add(&create_row(PacketType::Udp));
         list_box.add(&create_row(PacketType::Icmp));
-        list_box.add(&create_row(PacketType::Gre));
+        list_box.add(&create_row(PacketType::Gre));*/
 
         let list_scroll_layout: ScrolledWindow = builder
             .object("list_scroll_layout")
@@ -86,10 +90,9 @@ fn main() {
 
 
 
-        //let (tx, rx) = channel();
+        let (tx, rx) = channel();
 
-
-
+        let tx = Arc::new(Mutex::new(tx));
 
 
         let start_button: Button = titlebar_builder
@@ -98,7 +101,7 @@ fn main() {
 
         start_button.connect_clicked(move |_| {
             println!("Start button clicked!");
-            //packet_capture(Arc::new(Mutex::new(list_box.clone())));
+            packet_capture(tx.clone());
             //packet_capture(&list_box);
 
             //let list_box_clone = Arc::new(Mutex::new(list_box.clone()));
@@ -181,6 +184,8 @@ fn main() {
         window.show_all();
 
 
+
+
         /*
         loop {
             match rx.recv() {
@@ -225,6 +230,39 @@ fn main() {
             }
         });
         */
+
+        let mut i =0;
+
+        glib::timeout_add_local(Duration::from_millis(100), move || {
+            /*
+            if let Ok(message) = rx.try_recv() {
+                match message {
+                    UpdateMessage::AddRow(packet_type) => {
+                        // Update the UI in the main thread
+                        let row = create_row(packet_type);
+                        list_box.add(&row);
+                        window.show_all(); // Make sure the window is refreshed
+                    }
+                }
+            }
+            */
+
+            match rx.try_recv() {
+                Ok(packet) => {
+                    i += 1;
+                    let row = create_row(i, packet);
+                    list_box.add(&row);
+                    row.show_all();
+                }
+                _ => {
+                }
+            }
+
+
+
+            Continue//(true) // Keep the timeout running
+        });
+
 
     });
 
