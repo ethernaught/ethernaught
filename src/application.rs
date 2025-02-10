@@ -130,22 +130,6 @@ pub fn create_row(number: u32/*, packet_type: PacketType*/) -> ListBoxRow {
         .expect("Couldn't find 'protocol' in list_item.xml");
     //protocol.set_label("DNS");
 
-    /*
-    match packet_type {
-        PacketType::Tcp => {
-            protocol.set_label("TCP");
-        }
-        PacketType::Udp => {
-            protocol.set_label("UDP");
-        }
-        PacketType::Icmp => {
-            protocol.set_label("ICMP");
-        }
-        PacketType::Gre => {
-            protocol.set_label("GRE");
-        }
-    }*/
-
     let length: Label = builder
         .object("length")
         .expect("Couldn't find 'length' in list_item.xml");

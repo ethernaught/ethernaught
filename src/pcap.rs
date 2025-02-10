@@ -39,41 +39,11 @@ pub fn packet_capture(tx: Arc<Mutex<Sender<()>>>) {
                     println!("{:?} {} {}", ip_header.protocol, ip_header.source_ip.to_string(), ip_header.destination_ip.to_string());
                 }
                 Types::Arp => {}
-                Types::IPv6 => {
-
-                }
+                Types::IPv6 => {}
             }
 
 
 
-
-            //DEFINE TYPE THEN DECODE ACTUAL TYPEs
-
-            //packet.data
-
-            /*
-            if packet.data.len() > 20 { // Ensure it's at least an IPv4 header
-                let protocol = packet.data[23]; // Byte 9 in IPv4 header
-
-                match protocol {
-                    0x01 => {
-                        tx.lock().unwrap().send(PacketType::Icmp).unwrap();
-                    },
-                    0x06 => {
-                        tx.lock().unwrap().send(PacketType::Tcp).unwrap();
-                    },
-                    0x11 => {
-                        tx.lock().unwrap().send(PacketType::Udp).unwrap();
-                    },
-                    0x2F => {
-                        tx.lock().unwrap().send(PacketType::Gre).unwrap();
-                    },
-                    _    => println!("Captured an unknown protocol: {}", protocol),
-                }
-
-                ;//.add(&create_row(PacketType::Gre));
-            }
-            */
         }
     });
 }
