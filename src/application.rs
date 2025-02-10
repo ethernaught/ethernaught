@@ -1,8 +1,9 @@
-use gtk::{AboutDialog, ApplicationWindow, Builder, Box, Image, Application, TreeViewColumn, CellRendererText, ScrolledWindow};
+use gtk::{AboutDialog, ApplicationWindow, Builder, Box, Image, Application, TreeViewColumn, CellRendererText, ScrolledWindow, Button, ListBoxRow, Label};
 use gtk::gdk_pixbuf::PixbufLoader;
 use gtk::prelude::*;
 use gtk::gio::SimpleAction;
 use gtk::prelude::{ActionMapExt, GtkWindowExt};
+use crate::PacketType;
 //use crate::config::VERSION;
 
 pub fn init_actions(app: &Application, window: &ApplicationWindow) {
@@ -21,6 +22,113 @@ pub fn init_actions(app: &Application, window: &ApplicationWindow) {
     });
     window.add_action(&action);
     */
+}
+
+
+pub fn init_titlebar(window: &ApplicationWindow, app: &Application) -> Builder {
+    let builder = Builder::from_file("res/ui/titlebar-ui.xml");
+
+    let titlebar: gtk::Box = builder
+        .object("titlebar")
+        .expect("Couldn't find 'titlebar' in titlebar-ui.xml");
+
+    window.set_titlebar(Some(&titlebar));
+    titlebar.set_size_request(-1, 32);
+
+
+    let minimize_button: Button = builder
+        .object("minimize_button")
+        .expect("Couldn't find 'minimize_button' in titlebar-ui.xml");
+
+    let window_clone = window.clone();
+    minimize_button.connect_clicked(move |_| {
+        window_clone.iconify();
+    });
+
+    let maximize_button: Button = builder
+        .object("maximize_button")
+        .expect("Couldn't find 'maximize_button' in titlebar-ui.xml");
+
+    let window_clone = window.clone();
+    maximize_button.connect_clicked(move |_| {
+        if window_clone.is_maximized() {
+            window_clone.unmaximize();
+            return;
+        }
+
+        window_clone.maximize();
+    });
+
+    let close_button: Button = builder
+        .object("close_button")
+        .expect("Couldn't find 'close_button' in titlebar-ui.xml");
+
+    let app_clone = app.clone();
+    close_button.connect_clicked(move |_| {
+        app_clone.quit();
+    });
+
+    builder
+}
+
+
+pub fn create_row(packet_type: PacketType) -> ListBoxRow {
+    let builder = Builder::from_file("res/ui/list_item.xml");
+    let row: ListBoxRow = builder
+        .object("row")
+        .expect("Couldn't find 'row' in list_item.xml");
+
+    match packet_type {
+        PacketType::Tcp => {
+            row.style_context().add_class("tcp");
+        }
+        PacketType::Udp => {
+            row.style_context().add_class("udp");
+        }
+        PacketType::Icmp => {
+            row.style_context().add_class("icmp");
+        }
+        PacketType::Gre => {
+            row.style_context().add_class("gre");
+        }
+    }
+
+    let number: Label = builder
+        .object("number")
+        .expect("Couldn't find 'number' in list_item.xml");
+    number.set_label("216");
+
+    let time: Label = builder
+        .object("time")
+        .expect("Couldn't find 'time' in list_item.xml");
+    time.set_label("1.617305868");
+
+    let source: Label = builder
+        .object("source")
+        .expect("Couldn't find 'source' in list_item.xml");
+    source.set_label("192.168.0.1");
+
+    let destination: Label = builder
+        .object("destination")
+        .expect("Couldn't find 'destination' in list_item.xml");
+    destination.set_label("192.168.0.1");
+
+    let protocol: Label = builder
+        .object("protocol")
+        .expect("Couldn't find 'protocol' in list_item.xml");
+    protocol.set_label("DNS");
+
+    let length: Label = builder
+        .object("length")
+        .expect("Couldn't find 'length' in list_item.xml");
+    length.set_label("105");
+
+    let info: Label = builder
+        .object("info")
+        .expect("Couldn't find 'info' in list_item.xml");
+    info.set_label("Standard query response 0x39bc A");
+
+    row
 }
 
 pub fn show_about(window: &ApplicationWindow) {
