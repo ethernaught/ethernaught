@@ -25,6 +25,7 @@
 
                         <child>
                             <object class="GTKLabel" id="number">
+                                <property name="visible">True</property>
                                 <property name="label">No.</property>
                                 <property name="width-request">100</property>
                                 <property name="height-request">40</property>
@@ -35,6 +36,7 @@
 
                         <child>
                             <object class="GTKLabel" id="time">
+                                <property name="visible">True</property>
                                 <property name="label">Time</property>
                                 <property name="width-request">150</property>
                                 <property name="height-request">40</property>
@@ -45,6 +47,7 @@
 
                         <child>
                             <object class="GTKLabel" id="source">
+                                <property name="visible">True</property>
                                 <property name="label">Source</property>
                                 <property name="width-request">150</property>
                                 <property name="height-request">40</property>
@@ -55,6 +58,7 @@
 
                         <child>
                             <object class="GTKLabel" id="destination">
+                                <property name="visible">True</property>
                                 <property name="label">Destination</property>
                                 <property name="width-request">150</property>
                                 <property name="height-request">40</property>
@@ -64,6 +68,7 @@
 
                         <child>
                             <object class="GTKLabel" id="protocol">
+                                <property name="visible">True</property>
                                 <property name="label">Protocol</property>
                                 <property name="width-request">80</property>
                                 <property name="height-request">40</property>
@@ -73,6 +78,7 @@
 
                         <child>
                             <object class="GTKLabel" id="length">
+                                <property name="visible">True</property>
                                 <property name="label">Length</property>
                                 <property name="width-request">80</property>
                                 <property name="height-request">16</property>
@@ -82,6 +88,7 @@
 
                         <child>
                             <object class="GTKLabel" id="info">
+                                <property name="visible">True</property>
                                 <property name="label">Info</property>
                                 <property name="height-request">40</property>
                                 <property name="xalign">0.0</property>

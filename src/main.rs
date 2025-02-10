@@ -95,93 +95,35 @@ fn main() {
         let tx = Arc::new(Mutex::new(tx));
 
 
+        let titlebar_app_options: gtk::Box = titlebar_builder
+            .object("titlebar_app_options")
+            .expect("Couldn't find 'titlebar_app_options' in titlebar-ui.xml");
+
         let start_button: Button = titlebar_builder
             .object("start_button")
             .expect("Couldn't find 'start_button' in titlebar-ui.xml");
 
+        let start_icon: Image = titlebar_builder
+            .object("start_icon")
+            .expect("Couldn't find 'start_icon' in titlebar-ui.xml");
+
+        let stop_button: Button = titlebar_builder
+            .object("stop_button")
+            .expect("Couldn't find 'stop_button' in titlebar-ui.xml");
+
         start_button.connect_clicked(move |_| {
+            titlebar_app_options.style_context().add_class("running");
+            start_icon.set_from_file(Some("res/images/ic_restart.svg"));
+            stop_button.show();
+
             println!("Start button clicked!");
             packet_capture(tx.clone());
-            //packet_capture(&list_box);
-
-            //let list_box_clone = Arc::new(Mutex::new(list_box.clone()));
-
-            /*
-            let tx = tx.clone();
-            //spawn_blocking(move || {
-            thread::spawn(move || {
-                let devices = Device::list().expect("Failed to get device list");
-
-                let device = devices.into_iter().find(|d| d.name.contains("wlp2s0"))
-                    .expect("No suitable device found");
-
-                println!("Listening on device: {}", device.name);
-
-                let mut cap = Capture::from_device(device)
-                    .expect("Failed to open device")
-                    .promisc(true)
-                    .immediate_mode(true)
-                    .open()
-                    .expect("Failed to start capture");
-
-                while let Ok(packet) = cap.next_packet() {
-                    println!("Captured packet: {:?} ({} bytes)", packet, packet.data.len());
-
-                    if packet.data.len() > 20 { // Ensure it's at least an IPv4 header
-                        let protocol = packet.data[23]; // Byte 9 in IPv4 header
-
-                        match protocol {
-                            0x01 => println!("Captured an ICMP Packet"),
-                            0x06 => println!("Captured a TCP Packet"),
-                            0x11 => println!("Captured a UDP Packet"),
-                            0x2F => println!("Captured a GRE Packet"),
-                            _    => println!("Captured an unknown protocol: {}", protocol),
-                        }
-
-                        tx.send(PacketType::Gre).unwrap()
-                        //list_box_clone.lock().unwrap().add(&create_row(PacketType::Gre));
-                    }
-                }
-            });
-            */
         });
-
-
-        //let list_box = Arc::new(Mutex::new(list_box.clone()));
-
-        //let (tx, rx) = channel();
-
-        /*
-        thread::spawn(move || {
-            //while let Ok(message) = rx.recv() {
-                // Safely update the ListBox in the main thread
-                let list_box = list_box.lock().unwrap();
-                let label = Label::new(Some("asdasd"));//message));
-                list_box.add(&label);
-                list_box.show_all();
-            //}
-        });*/
-
-
-
-
-
-
-
-
-
-        /*
-        let builder = Builder::from_file("res/ui/omniscient-ui.xml");
-        let menubar: gio::Menu = builder
-            .object("main_window_menu")
-            .expect("Couldn't find 'main_window_menu' in omniscient-ui.xml");
-
-        app.set_menubar(Some(&menubar));
-        */
 
         init_actions(&app, &window);
 
-        window.show_all();
+        //window.show_all();
+        window.show();
 
 
 
@@ -234,19 +176,6 @@ fn main() {
         let mut i =0;
 
         glib::timeout_add_local(Duration::from_millis(100), move || {
-            /*
-            if let Ok(message) = rx.try_recv() {
-                match message {
-                    UpdateMessage::AddRow(packet_type) => {
-                        // Update the UI in the main thread
-                        let row = create_row(packet_type);
-                        list_box.add(&row);
-                        window.show_all(); // Make sure the window is refreshed
-                    }
-                }
-            }
-            */
-
             match rx.try_recv() {
                 Ok(packet) => {
                     i += 1;
@@ -260,7 +189,7 @@ fn main() {
 
 
 
-            Continue//(true) // Keep the timeout running
+            Continue
         });
 
 

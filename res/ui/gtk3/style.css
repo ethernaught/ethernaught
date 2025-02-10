@@ -39,6 +39,14 @@ window {
 
 
 
+#titlebar_app_options #stop_button {
+    background-color: #c94f4f;
+}
+
+#titlebar_app_options.running #start_button {
+    background-color: #57965c;
+}
+
 
 scrollbar trough {
     background-color: #1e1f22;

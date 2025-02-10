@@ -20,11 +20,13 @@
 
                 <child>
                     <object class="GtkButton" id="menu_button">
+                        <property name="visible">True</property>
                         <property name="width-request">24</property>
                         <property name="height-request">24</property>
 
                         <child>
                             <object class="GtkImage">
+                                <property name="visible">True</property>
                                 <property name="width-request">24</property>
                                 <property name="height-request">24</property>
                                 <property name="icon-name">packet-capture-menu</property>
@@ -37,7 +39,7 @@
         </child>
 
         <child>
-            <object class="GtkBox">
+            <object class="GtkBox" id="titlebar_app_options">
                 <property name="name">titlebar_app_options</property>
                 <property name="visible">True</property>
                 <property name="orientation">horizontal</property>
@@ -45,11 +47,14 @@
 
                 <child>
                     <object class="GtkButton" id="start_button">
+                        <property name="name">start_button</property>
+                        <property name="visible">True</property>
                         <property name="width-request">24</property>
                         <property name="height-request">24</property>
 
                         <child>
-                            <object class="GtkImage">
+                            <object class="GtkImage" id="start_icon">
+                                <property name="visible">True</property>
                                 <property name="width-request">24</property>
                                 <property name="height-request">24</property>
                                 <property name="icon-name">packet-capture-start</property>
@@ -61,11 +66,15 @@
 
                 <child>
                     <object class="GtkButton" id="stop_button">
+                        <property name="name">stop_button</property>
+                        <property name="visible">True</property>
                         <property name="width-request">24</property>
                         <property name="height-request">24</property>
+                        <property name="visible">False</property>
 
                         <child>
-                            <object class="GtkImage">
+                            <object class="GtkImage" id="stop_icon">
+                                <property name="visible">True</property>
                                 <property name="width-request">24</property>
                                 <property name="height-request">24</property>
                                 <property name="icon-name">packet-capture-stop</property>
@@ -88,11 +97,13 @@
 
                 <child>
                     <object class="GtkButton" id="minimize_button">
+                        <property name="visible">True</property>
                         <property name="width-request">16</property>
                         <property name="height-request">16</property>
 
                         <child>
                             <object class="GtkImage">
+                                <property name="visible">True</property>
                                 <property name="width-request">16</property>
                                 <property name="height-request">16</property>
                                 <property name="icon-name">minimize</property>
@@ -105,11 +116,13 @@
 
                 <child>
                     <object class="GtkButton" id="maximize_button">
+                        <property name="visible">True</property>
                         <property name="width-request">16</property>
                         <property name="height-request">16</property>
 
                         <child>
                             <object class="GtkImage">
+                                <property name="visible">True</property>
                                 <property name="width-request">16</property>
                                 <property name="height-request">16</property>
                                 <property name="icon-name">maximize</property>
@@ -121,11 +134,13 @@
 
                 <child>
                     <object class="GtkButton" id="close_button">
+                        <property name="visible">True</property>
                         <property name="width-request">16</property>
                         <property name="height-request">16</property>
 
                         <child>
                             <object class="GtkImage">
+                                <property name="visible">True</property>
                                 <property name="width-request">16</property>
                                 <property name="height-request">16</property>
                                 <property name="icon-name">close</property>
