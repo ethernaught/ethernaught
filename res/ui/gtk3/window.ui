@@ -15,8 +15,6 @@
                 <property name="can-focus">False</property>
                 <property name="orientation">vertical</property>
 
-
-
                 <child>
                     <object class="GTKBox" id="list_header_layout">
                         <property name="name">list_header_layout</property>
@@ -100,7 +98,6 @@
                         <property name="vexpand">True</property>
                     </object>
                 </child>
-
             </object>
         </child>
     </object>

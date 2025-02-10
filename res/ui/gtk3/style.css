@@ -1,5 +1,6 @@
 window {
     background-color: #2b2d30;
+    border-top: solid 1px #1e1f22;
     border-left: solid 1px #5a5d63;
     border-right: solid 1px #5a5d63;
     border-bottom: solid 1px #5a5d63;
@@ -13,7 +14,7 @@ window {
     border-left: solid 1px #5a5d63;
     border-right: solid 1px #5a5d63;
     padding: 4px 8px;
-    background: linear-gradient(90deg, #2b2d30 0%, #59436e 15%, #2b2d30 30%);
+    background: linear-gradient(90deg, #2b2d30 0%, #59436e 20%, #2b2d30 40%);
 }
 
 #titlebar button {
@@ -63,7 +64,7 @@ menubar {
 }
 
 #list_header_layout label {
-    padding: 5px 10px;
+    padding: 10px;
     color: #cbd7dc;
     background-color: #1e1f22;
 }
