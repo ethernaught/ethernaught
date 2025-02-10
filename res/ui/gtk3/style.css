@@ -1,24 +1,29 @@
 window {
     background-color: #2b2d30;
+    border: solid 1px #5a5d63;
 }
 
 #titlebar {
-    padding: 8px;
+    /*padding: 8px;*/
     background: linear-gradient(90deg, #2b2d30 0%, #59436e 15%, #2b2d30 30%);
 }
 
 scrollbar trough {
-    background-color: #242424;
+    background-color: #1e1f22;
 }
 
 scrollbar slider {
-    background-color: #994ce0;
+    padding: 0 2px;
+    margin-right: 2px;
+    background-color: #444446;
+    border: none;
+    border-radius: 0;
 }
-
+/*
 menubar {
     background-color: #2b2d30;
 }
-
+*/
 
 
 #list_header_layout {
@@ -28,6 +33,7 @@ menubar {
 
 #list_header_layout label {
     padding: 5px 10px;
+    color: #cbd7dc;
     background-color: #1e1f22;
 }
 
@@ -41,4 +47,5 @@ list row {
 
 list row label {
     padding: 0 10px;
+    color: #a7a7a7;
 }
