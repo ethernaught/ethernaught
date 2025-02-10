@@ -97,7 +97,7 @@
                     <object class="GtkScrolledWindow" id="list_scroll_layout">
                         <property name="visible">True</property>
                         <property name="hexpand">True</property>
-                        <property name="vexpand">False</property>
+                        <property name="vexpand">True</property>
                     </object>
                 </child>
 
