@@ -37,8 +37,9 @@ window {
 
 #titlebar_menu #network_type_icon {
     min-height: 0;
-    padding: 8px;
-    border-radius: 4px;
+    padding: 4px;
+    margin: 4px;
+    border-radius: 6px;
     background-color: #59436e;
 }
 
@@ -66,7 +67,7 @@ window {
 #titlebar button {
     min-height: 0;
     padding: 4px;
-    border-radius: 4px;
+    border-radius: 6px;
     border: none;
     background: transparent;
 }
@@ -80,7 +81,7 @@ window {
 }
 
 #titlebar_window_options button {
-    border-radius: 20px;
+    border-radius: 100%;
 }
 
 

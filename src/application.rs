@@ -128,7 +128,7 @@ pub fn create_row(number: u32/*, packet_type: PacketType*/) -> ListBoxRow {
     let protocol: Label = builder
         .object("protocol")
         .expect("Couldn't find 'protocol' in list_item.xml");
-    //protocol.set_label("DNS");
+    protocol.set_label("DNS");
 
     let length: Label = builder
         .object("length")

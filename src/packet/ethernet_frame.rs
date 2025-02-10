@@ -8,6 +8,7 @@ pub struct EthernetFrame {
 }
 
 impl EthernetFrame {
+
     pub fn from_bytes(packet: &[u8]) -> Option<Self> {
         if packet.len() < 14 {
             return None;
