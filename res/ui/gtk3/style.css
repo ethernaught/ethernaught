@@ -17,6 +17,8 @@ window {
     background: linear-gradient(90deg, #2b2d30 0%, #59436e 20%, #2b2d30 40%);
 }
 
+
+
 #titlebar.ethernet {
     background: linear-gradient(90deg, #2b2d30 0%, #5e5030 20%, #2b2d30 40%);
 }
@@ -54,6 +56,10 @@ window {
 
 #titlebar.bluetooth #network_type_icon {
     background-color: #394366;
+}
+
+#network_type_label {
+    color: #cbd7dc;
 }
 
 
@@ -99,6 +105,13 @@ scrollbar slider {
     border: none;
     border-radius: 0;
 }
+
+#sidebar_layout {
+    min-width: 100px;
+}
+
+
+
 /*
 menubar {
     background-color: #2b2d30;

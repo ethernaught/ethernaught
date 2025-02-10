@@ -41,6 +41,10 @@ pub fn init_titlebar(window: &ApplicationWindow, app: &Application) -> Builder {
     titlebar.style_context().add_class("wifi");
 
 
+    let network_type_label: Label = builder
+        .object("network_type_label")
+        .expect("Couldn't find 'network_type_label' in titlebar-ui.xml");
+    network_type_label.set_label("wlp2s0");
 
 
 

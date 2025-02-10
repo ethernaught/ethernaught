@@ -10,99 +10,120 @@
         <property name="role">tr-main</property>
 
         <child>
-            <object class="GtkBox" id="window_layout">
+            <object class="GtkPaned" id="window_layout">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="orientation">vertical</property>
+                <property name="orientation">horizontal</property>
 
                 <child>
-                    <object class="GTKBox" id="list_header_layout">
-                        <property name="name">list_header_layout</property>
+                    <object class="GtkBox" id="sidebar_layout">
+                        <property name="name">sidebar_layout</property>
                         <property name="visible">True</property>
-                        <property name="hexpand">True</property>
-                        <property name="orientation">horizontal</property>
-                        <property name="spacing">0</property>
+                        <property name="can-focus">False</property>
+                        <property name="orientation">vertical</property>
+                        <property name="width-request">300</property>
 
-                        <child>
-                            <object class="GTKLabel" id="number">
-                                <property name="visible">True</property>
-                                <property name="label">No.</property>
-                                <property name="width-request">100</property>
-                                <property name="height-request">40</property>
-                                <property name="halign">start</property>
-                                <property name="xalign">0.0</property>
-                            </object>
-                        </child>
-
-                        <child>
-                            <object class="GTKLabel" id="time">
-                                <property name="visible">True</property>
-                                <property name="label">Time</property>
-                                <property name="width-request">150</property>
-                                <property name="height-request">40</property>
-                                <property name="halign">start</property>
-                                <property name="xalign">0.0</property>
-                            </object>
-                        </child>
-
-                        <child>
-                            <object class="GTKLabel" id="source">
-                                <property name="visible">True</property>
-                                <property name="label">Source</property>
-                                <property name="width-request">150</property>
-                                <property name="height-request">40</property>
-                                <property name="halign">start</property>
-                                <property name="xalign">0.0</property>
-                            </object>
-                        </child>
-
-                        <child>
-                            <object class="GTKLabel" id="destination">
-                                <property name="visible">True</property>
-                                <property name="label">Destination</property>
-                                <property name="width-request">150</property>
-                                <property name="height-request">40</property>
-                                <property name="xalign">0.0</property>
-                            </object>
-                        </child>
-
-                        <child>
-                            <object class="GTKLabel" id="protocol">
-                                <property name="visible">True</property>
-                                <property name="label">Protocol</property>
-                                <property name="width-request">80</property>
-                                <property name="height-request">40</property>
-                                <property name="xalign">0.0</property>
-                            </object>
-                        </child>
-
-                        <child>
-                            <object class="GTKLabel" id="length">
-                                <property name="visible">True</property>
-                                <property name="label">Length</property>
-                                <property name="width-request">80</property>
-                                <property name="height-request">16</property>
-                                <property name="xalign">0.0</property>
-                            </object>
-                        </child>
-
-                        <child>
-                            <object class="GTKLabel" id="info">
-                                <property name="visible">True</property>
-                                <property name="label">Info</property>
-                                <property name="height-request">40</property>
-                                <property name="xalign">0.0</property>
-                                <property name="hexpand">True</property>
-                            </object>
-                        </child>
                     </object>
                 </child>
 
                 <child>
-                    <object class="GtkScrolledWindow" id="list_scroll_layout">
+                    <object class="GtkBox" id="content_layout">
+                        <property name="name">content_layout</property>
                         <property name="visible">True</property>
-                        <property name="hexpand">True</property>
-                        <property name="vexpand">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="orientation">vertical</property>
+
+
+                        <child>
+                            <object class="GTKBox" id="list_header_layout">
+                                <property name="name">list_header_layout</property>
+                                <property name="visible">True</property>
+                                <property name="hexpand">True</property>
+                                <property name="orientation">horizontal</property>
+                                <property name="spacing">0</property>
+
+                                <child>
+                                    <object class="GTKLabel" id="number">
+                                        <property name="visible">True</property>
+                                        <property name="label">No.</property>
+                                        <property name="width-request">100</property>
+                                        <property name="height-request">40</property>
+                                        <property name="halign">start</property>
+                                        <property name="xalign">0.0</property>
+                                    </object>
+                                </child>
+
+                                <child>
+                                    <object class="GTKLabel" id="time">
+                                        <property name="visible">True</property>
+                                        <property name="label">Time</property>
+                                        <property name="width-request">150</property>
+                                        <property name="height-request">40</property>
+                                        <property name="halign">start</property>
+                                        <property name="xalign">0.0</property>
+                                    </object>
+                                </child>
+
+                                <child>
+                                    <object class="GTKLabel" id="source">
+                                        <property name="visible">True</property>
+                                        <property name="label">Source</property>
+                                        <property name="width-request">150</property>
+                                        <property name="height-request">40</property>
+                                        <property name="halign">start</property>
+                                        <property name="xalign">0.0</property>
+                                    </object>
+                                </child>
+
+                                <child>
+                                    <object class="GTKLabel" id="destination">
+                                        <property name="visible">True</property>
+                                        <property name="label">Destination</property>
+                                        <property name="width-request">150</property>
+                                        <property name="height-request">40</property>
+                                        <property name="xalign">0.0</property>
+                                    </object>
+                                </child>
+
+                                <child>
+                                    <object class="GTKLabel" id="protocol">
+                                        <property name="visible">True</property>
+                                        <property name="label">Protocol</property>
+                                        <property name="width-request">80</property>
+                                        <property name="height-request">40</property>
+                                        <property name="xalign">0.0</property>
+                                    </object>
+                                </child>
+
+                                <child>
+                                    <object class="GTKLabel" id="length">
+                                        <property name="visible">True</property>
+                                        <property name="label">Length</property>
+                                        <property name="width-request">80</property>
+                                        <property name="height-request">16</property>
+                                        <property name="xalign">0.0</property>
+                                    </object>
+                                </child>
+
+                                <child>
+                                    <object class="GTKLabel" id="info">
+                                        <property name="visible">True</property>
+                                        <property name="label">Info</property>
+                                        <property name="height-request">40</property>
+                                        <property name="xalign">0.0</property>
+                                        <property name="hexpand">True</property>
+                                    </object>
+                                </child>
+                            </object>
+                        </child>
+
+                        <child>
+                            <object class="GtkScrolledWindow" id="list_scroll_layout">
+                                <property name="visible">True</property>
+                                <property name="hexpand">True</property>
+                                <property name="vexpand">True</property>
+                            </object>
+                        </child>
                     </object>
                 </child>
             </object>

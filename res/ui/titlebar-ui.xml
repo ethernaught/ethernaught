@@ -29,8 +29,44 @@
                                 <property name="visible">True</property>
                                 <property name="width-request">24</property>
                                 <property name="height-request">24</property>
-                                <property name="icon-name">packet-capture-menu</property>
+                                <property name="icon-name">menu-button</property>
                                 <property name="file">res/images/ic_menu.svg</property>
+                            </object>
+                        </child>
+                    </object>
+                </child>
+
+                <child>
+                    <object class="GtkButton" id="back_button">
+                        <property name="visible">True</property>
+                        <property name="width-request">24</property>
+                        <property name="height-request">24</property>
+
+                        <child>
+                            <object class="GtkImage">
+                                <property name="visible">True</property>
+                                <property name="width-request">24</property>
+                                <property name="height-request">24</property>
+                                <property name="icon-name">back-button</property>
+                                <property name="file">res/images/ic_back.svg</property>
+                            </object>
+                        </child>
+                    </object>
+                </child>
+
+                <child>
+                    <object class="GtkButton" id="next_button">
+                        <property name="visible">True</property>
+                        <property name="width-request">24</property>
+                        <property name="height-request">24</property>
+
+                        <child>
+                            <object class="GtkImage">
+                                <property name="visible">True</property>
+                                <property name="width-request">24</property>
+                                <property name="height-request">24</property>
+                                <property name="icon-name">next-button</property>
+                                <property name="file">res/images/ic_next.svg</property>
                             </object>
                         </child>
                     </object>
@@ -42,8 +78,15 @@
                         <property name="visible">True</property>
                         <property name="width-request">24</property>
                         <property name="height-request">24</property>
-                        <property name="icon-name">packet-capture-menu</property>
+                        <property name="icon-name">network-type</property>
                         <property name="file">res/images/ic_wifi.svg</property>
+                    </object>
+                </child>
+
+                <child>
+                    <object class="GtkLabel" id="network_type_label">
+                        <property name="name">network_type_label</property>
+                        <property name="visible">True</property>
                     </object>
                 </child>
             </object>
