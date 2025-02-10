@@ -29,6 +29,7 @@ use gtk::prelude::*;
 use gtk::{Application, Builder, gio, CssProvider, StyleContext, gdk, ApplicationWindow, ListBox, ListBoxRow, Label, Orientation, ScrolledWindow, Image, ProgressBar, TreeView, ListStore, CellRendererText, TreeViewColumn, HeaderBar, Toolbar, Button};
 use gtk::gdk::{EventButton, EventMask};
 use gtk::glib::Propagation;
+use crate::application::init_actions;
 
 fn main() {
     let app = Application::new(Some("com.omniscient.rust"), Default::default());
@@ -50,8 +51,17 @@ fn main() {
             .expect("Failed to get the 'MainWindow' from window.ui");
 
         window.set_application(Some(app));
-        //window.set_decorated(false);
+        window.connect_destroy(|_| exit(0));
+        window.set_decorated(false);
         window.set_border_width(1);
+
+        let titlebar: gtk::Box = builder
+            .object("titlebar")
+            .expect("Couldn't find 'titlebar' in window.ui");
+
+        window.set_titlebar(Some(&titlebar));
+        //window.set_hide_titlebar_when_maximized(false);
+
 
 
 
@@ -68,16 +78,47 @@ fn main() {
 
         //let window = Window::new(WindowType::Toplevel);
         //window.set_title("Omniscient");
-        window.connect_destroy(|_| exit(0));
 
 
 
 
-        let titlebar: gtk::Box = builder
-            .object("titlebar")
-            .expect("Couldn't find 'titlebar' in window.ui");
 
-        //window.set_titlebar(Some(&titlebar));
+
+
+        let minimize_button: Button = builder
+            .object("minimize_button")
+            .expect("Couldn't find 'minimize_button' in window.ui");
+
+        let window_clone = window.clone();
+        minimize_button.connect_clicked(move |_| {
+            window_clone.iconify();
+        });
+
+        let maximize_button: Button = builder
+            .object("maximize_button")
+            .expect("Couldn't find 'maximize_button' in window.ui");
+
+        let window_clone = window.clone();
+        maximize_button.connect_clicked(move |_| {
+            if window_clone.is_maximized() {
+                window_clone.unmaximize();
+                return;
+            }
+
+            window_clone.maximize();
+        });
+
+        let close_button: Button = builder
+            .object("close_button")
+            .expect("Couldn't find 'close_button' in window.ui");
+
+        let app_clone = app.clone();
+        close_button.connect_clicked(move |_| {
+            app_clone.quit();
+        });
+
+
+
 
 
 
@@ -101,7 +142,7 @@ fn main() {
 
         app.set_menubar(Some(&menubar));*/
 
-        //init_actions(&app, &window);
+        init_actions(&app, &window);
 
         window.show_all();
     });
