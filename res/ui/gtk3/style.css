@@ -4,8 +4,28 @@ window {
 }
 
 #titlebar {
-    /*padding: 8px;*/
+    padding: 4px 8px;
     background: linear-gradient(90deg, #2b2d30 0%, #59436e 15%, #2b2d30 30%);
+}
+
+#titlebar_menu image,
+        #titlebar_app_options image {
+    padding: 4px;
+    border-radius: 4px;
+}
+
+#titlebar_menu image:hover,
+        #titlebar_app_options image:hover {
+    background-color: rgba(127, 127, 127, 0.2);
+}
+
+#titlebar_window_options image {
+    padding: 4px;
+    border-radius: 20px;
+}
+
+#titlebar_window_options image:hover {
+    background-color: rgba(127, 127, 127, 0.2);
 }
 
 scrollbar trough {

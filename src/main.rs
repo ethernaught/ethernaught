@@ -50,7 +50,7 @@ fn main() {
             .expect("Failed to get the 'MainWindow' from window.ui");
 
         window.set_application(Some(app));
-        window.set_decorated(false);
+        //window.set_decorated(false);
         window.set_border_width(1);
 
 
@@ -77,7 +77,7 @@ fn main() {
             .object("titlebar")
             .expect("Couldn't find 'titlebar' in window.ui");
 
-        window.set_titlebar(Some(&titlebar));
+        //window.set_titlebar(Some(&titlebar));
 
 
 

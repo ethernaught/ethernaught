@@ -21,32 +21,88 @@
                         <property name="visible">True</property>
                         <property name="hexpand">True</property>
                         <property name="orientation">horizontal</property>
-                        <property name="spacing">10</property>
+                        <property name="spacing">30</property>
 
                         <child>
-                            <object class="GtkImage" id="menu_icon">
-                                <property name="width-request">24</property>
-                                <property name="height-request">24</property>
-                                <property name="icon-name">packet-capture-menu</property>
-                                <property name="file">res/images/ic_menu.svg</property>
+                            <object class="GtkBox">
+                                <property name="name">titlebar_menu</property>
+                                <property name="visible">True</property>
+                                <property name="hexpand">True</property>
+                                <property name="orientation">horizontal</property>
+                                <property name="spacing">10</property>
+
+                                <child>
+                                    <object class="GtkImage" id="menu_icon">
+                                        <property name="width-request">24</property>
+                                        <property name="height-request">24</property>
+                                        <property name="icon-name">packet-capture-menu</property>
+                                        <property name="file">res/images/ic_menu.svg</property>
+                                    </object>
+                                </child>
                             </object>
                         </child>
 
                         <child>
-                            <object class="GtkImage" id="start_icon">
-                                <property name="width-request">24</property>
-                                <property name="height-request">24</property>
-                                <property name="icon-name">packet-capture-start</property>
-                                <property name="file">res/images/ic_start.svg</property>
+                            <object class="GtkBox">
+                                <property name="name">titlebar_app_options</property>
+                                <property name="visible">True</property>
+                                <property name="orientation">horizontal</property>
+                                <property name="spacing">10</property>
+
+                                <child>
+                                    <object class="GtkImage" id="start_icon">
+                                        <property name="width-request">24</property>
+                                        <property name="height-request">24</property>
+                                        <property name="icon-name">packet-capture-start</property>
+                                        <property name="file">res/images/ic_start.svg</property>
+                                    </object>
+                                </child>
+
+                                <child>
+                                    <object class="GtkImage" id="stop_icon">
+                                        <property name="width-request">24</property>
+                                        <property name="height-request">24</property>
+                                        <property name="icon-name">packet-capture-stop</property>
+                                        <property name="file">res/images/ic_stop.svg</property>
+                                    </object>
+                                </child>
                             </object>
                         </child>
 
+
                         <child>
-                            <object class="GtkImage" id="stop_icon">
-                                <property name="width-request">24</property>
-                                <property name="height-request">24</property>
-                                <property name="icon-name">packet-capture-stop</property>
-                                <property name="file">res/images/ic_stop.svg</property>
+                            <object class="GtkBox">
+                                <property name="name">titlebar_window_options</property>
+                                <property name="visible">True</property>
+                                <property name="orientation">horizontal</property>
+                                <property name="spacing">10</property>
+
+                                <child>
+                                    <object class="GtkImage" id="minimize_icon">
+                                        <property name="width-request">16</property>
+                                        <property name="height-request">16</property>
+                                        <property name="icon-name">minimize</property>
+                                        <property name="file">res/images/ic_minimize.svg</property>
+                                    </object>
+                                </child>
+
+                                <child>
+                                    <object class="GtkImage" id="maximize_icon">
+                                        <property name="width-request">16</property>
+                                        <property name="height-request">16</property>
+                                        <property name="icon-name">maximize</property>
+                                        <property name="file">res/images/ic_maximize.svg</property>
+                                    </object>
+                                </child>
+
+                                <child>
+                                    <object class="GtkImage" id="close_icon">
+                                        <property name="width-request">16</property>
+                                        <property name="height-request">16</property>
+                                        <property name="icon-name">close</property>
+                                        <property name="file">res/images/ic_close.svg</property>
+                                    </object>
+                                </child>
                             </object>
                         </child>
                     </object>
