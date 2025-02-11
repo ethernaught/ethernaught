@@ -165,3 +165,10 @@ list row.icmp {
 list row.gre {
     background-color: #1c161d;
 }
+
+
+
+list row:active,
+        list row:active box {
+    background-color: #26282e;
+}

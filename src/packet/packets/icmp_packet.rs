@@ -3,7 +3,7 @@ use crate::packet::headers::ethernet_frame::EthernetFrame;
 use crate::packet::headers::icmp_header::IcmpHeader;
 use crate::packet::headers::ipv4_header::Ipv4Header;
 use crate::packet::inter::types::Types;
-use crate::packet::packets::inter::packet_base::Packet;
+use crate::packet::packets::inter::packet_base::PacketBase;
 
 #[derive(Clone)]
 pub struct IcmpPacket {
@@ -33,7 +33,7 @@ impl IcmpPacket {
     }
 }
 
-impl Packet for IcmpPacket {
+impl PacketBase for IcmpPacket {
 
     fn get_ethernet_frame(&self) -> &EthernetFrame {
         &self.ethernet_frame
@@ -63,15 +63,15 @@ impl Packet for IcmpPacket {
         self
     }
 
-    fn upcast(&self) -> &dyn Packet {
+    fn upcast(&self) -> &dyn PacketBase {
         self
     }
 
-    fn upcast_mut(&mut self) -> &mut dyn Packet {
+    fn upcast_mut(&mut self) -> &mut dyn PacketBase {
         self
     }
 
-    fn dyn_clone(&self) -> Box<dyn Packet> {
+    fn dyn_clone(&self) -> Box<dyn PacketBase> {
         Box::new(self.clone())
     }
 }

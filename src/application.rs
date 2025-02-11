@@ -5,9 +5,9 @@ use gtk::gio::SimpleAction;
 use gtk::prelude::{ActionMapExt, GtkWindowExt};
 use crate::packet::headers::tcp_header::TcpHeader;
 use crate::packet::inter::types::Types;
-use crate::packet::packets::inter::packet_base::Packet;
+use crate::packet::packets::inter::packet_base::PacketBase;
 use crate::packet::packets::tcp_packet::TcpPacket;
-use crate::packet::packets::udp_packet::UdpPacket;
+use crate::packet::packets::inter::udp_packet_base::UdpPacketBase;
 //use crate::config::VERSION;
 
 pub fn init_actions(app: &Application, window: &ApplicationWindow) {
@@ -88,7 +88,7 @@ pub fn init_titlebar(window: &ApplicationWindow, app: &Application) -> Builder {
 }
 
 
-pub fn create_row(number: u32, packet: Box<dyn Packet>) -> ListBoxRow {
+pub fn create_row(number: u32, packet: Box<dyn PacketBase>) -> ListBoxRow {
     let builder = Builder::from_file("res/ui/list_item.xml");
     let row: ListBoxRow = builder
         .object("row")
@@ -134,10 +134,10 @@ pub fn create_row(number: u32, packet: Box<dyn Packet>) -> ListBoxRow {
         Types::Arp => {}
         Types::Broadcast => {}
         Types::Udp => {
-            let packet = packet.as_any().downcast_ref::<UdpPacket>().unwrap();
+            //let packet = packet.as_any().downcast_ref::<dyn UdpPacketBase>().unwrap();
 
-            source_label.set_label(&packet.get_ip_header().get_source_ip().to_string());
-            destination_label.set_label(&packet.get_ip_header().get_destination_ip().to_string());
+            //source_label.set_label(&packet.get_ip_header().get_source_ip().to_string());
+            //destination_label.set_label(&packet.get_ip_header().get_destination_ip().to_string());
         }
         Types::Tcp => {
             let packet = packet.as_any().downcast_ref::<TcpPacket>().unwrap();

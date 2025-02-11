@@ -2,7 +2,7 @@ use std::any::Any;
 use crate::packet::headers::ethernet_frame::EthernetFrame;
 use crate::packet::inter::types::Types;
 
-pub trait Packet where Self: Send {
+pub trait PacketBase: Send {
 
     fn get_ethernet_frame(&self) -> &EthernetFrame;
 
@@ -18,9 +18,9 @@ pub trait Packet where Self: Send {
 
     fn as_any_mut(&mut self) -> &mut dyn Any;
 
-    fn upcast(&self) -> &dyn Packet;
+    fn upcast(&self) -> &dyn PacketBase;
 
-    fn upcast_mut(&mut self) -> &mut dyn Packet;
+    fn upcast_mut(&mut self) -> &mut dyn PacketBase;
 
-    fn dyn_clone(&self) -> Box<dyn Packet>;
+    fn dyn_clone(&self) -> Box<dyn PacketBase>;
 }

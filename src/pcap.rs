@@ -2,10 +2,8 @@ use std::sync::{Arc, Mutex};
 use std::sync::mpsc::Sender;
 use std::thread;
 use std::time::{SystemTime, UNIX_EPOCH};
-use gtk::ListBox;
-use gtk::prelude::{ContainerExt, SocketExtManual};
+use gtk::prelude::SocketExtManual;
 use pcap::{Capture, Device};
-use crate::application::create_row;
 use crate::packet::headers::ethernet_frame::EthernetFrame;
 use crate::packet::headers::icmp_header::IcmpHeader;
 use crate::packet::inter::ethernet_types::EthernetTypes;
@@ -13,13 +11,14 @@ use crate::packet::headers::ipv4_header::Ipv4Header;
 use crate::packet::headers::tcp_header::TcpHeader;
 use crate::packet::headers::udp_header::UdpHeader;
 use crate::packet::inter::protocols::Protocols;
+use crate::packet::packets::dns_packet::DnsPacket;
 use crate::packet::packets::icmp_packet::IcmpPacket;
-use crate::packet::packets::inter::packet_base::Packet;
+use crate::packet::packets::inter::packet_base::PacketBase;
 use crate::packet::packets::tcp_packet::TcpPacket;
+use crate::packet::packets::inter::udp_packet_base::UdpPacketBase;
 use crate::packet::packets::udp_packet::UdpPacket;
-//use crate::PacketType;
 
-pub fn packet_capture(tx: Arc<Mutex<Sender<Box<dyn Packet>>>>) {
+pub fn packet_capture(tx: Arc<Mutex<Sender<Box<dyn PacketBase>>>>) {
     thread::spawn(move || {
         let devices = Device::list().expect("Failed to get device list");
 
@@ -41,16 +40,11 @@ pub fn packet_capture(tx: Arc<Mutex<Sender<Box<dyn Packet>>>>) {
             .as_millis();
 
         while let Ok(packet) = cap.next_packet() {
-            //println!("Captured packets: {:?} ({} bytes)", packets, packets.data.len());
-
             let ethernet_frame = EthernetFrame::from_bytes(packet.data).expect("Failed to parse Ethernet frame");
-            //println!("{:?}", ethernet_frame.get_type());
 
             match ethernet_frame.get_type() {
                 EthernetTypes::IPv4 => {
                     let ip_header = Ipv4Header::from_bytes(&packet.data[14..]).expect("Failed to parse IP header");
-                    //tx.send(packets.header.ts, ip_header.source_ip, ip_header.destination_ip);
-                    //println!("{:?} {} {}", ip_header.get_protocol(), ip_header.get_source_ip().to_string(), ip_header.get_destination_ip().to_string());
 
                     let time = get_timestamp(packet.header.ts.tv_sec as u32, packet.header.ts.tv_usec as u32)-now;
 
@@ -65,32 +59,26 @@ pub fn packet_capture(tx: Arc<Mutex<Sender<Box<dyn Packet>>>>) {
                         }
                         Protocols::Udp => {
                             let header = UdpHeader::from_bytes(&packet.data[34..]).expect("Failed to parse UDP header");
-                            UdpPacket::from_bytes(ethernet_frame, ip_header, header, time, packet.len(), &packet.data[42..]).expect("Failed to parse UDP packet").dyn_clone()
+
+                            //LAZY DNS CHECK, WE WILL PARSE THE HEADER LATER FOR THIS
+                            if header.get_source_port() == 53 || header.get_destination_port() == 53 {
+                                DnsPacket::from_bytes(ethernet_frame, ip_header, header, time, packet.len(), &packet.data[42..]).expect("Failed to parse DNS packet").dyn_clone()
+
+                            } else {
+                                UdpPacket::from_bytes(ethernet_frame, ip_header, header, time, packet.len(), &packet.data[42..]).expect("Failed to parse UDP packet").dyn_clone()
+                            }
                         }
                         _ => {
                             todo!()
                         }
                     };
 
-
                     tx.lock().unwrap().send(packet).expect("Failed to send packet");
-                    /*
-
-                    let packet = UdpPacket::from_bytes(ethernet_frame,
-                                                       ip_header,
-                                                       udp_header,
-                                                       0,
-                                                       packet.len(),
-                                                       &packet.data[34..]).expect("Failed to parse UDP packet").dyn_clone();
-                    tx.lock().unwrap().send(packet).expect("Failed to send packet");*/
                 }
                 EthernetTypes::Arp => {}
                 EthernetTypes::IPv6 => {}
                 _ => {}
             }
-
-
-
         }
     });
 }

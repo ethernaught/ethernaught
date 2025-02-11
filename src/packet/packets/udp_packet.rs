@@ -3,7 +3,8 @@ use crate::packet::headers::ethernet_frame::EthernetFrame;
 use crate::packet::headers::ipv4_header::Ipv4Header;
 use crate::packet::headers::udp_header::UdpHeader;
 use crate::packet::inter::types::Types;
-use crate::packet::packets::inter::packet_base::Packet;
+use crate::packet::packets::inter::packet_base::PacketBase;
+use crate::packet::packets::inter::udp_packet_base::UdpPacketBase;
 
 #[derive(Clone)]
 pub struct UdpPacket {
@@ -33,7 +34,7 @@ impl UdpPacket {
     }
 }
 
-impl Packet for UdpPacket {
+impl PacketBase for UdpPacket {
 
     fn get_ethernet_frame(&self) -> &EthernetFrame {
         &self.ethernet_frame
@@ -63,15 +64,22 @@ impl Packet for UdpPacket {
         self
     }
 
-    fn upcast(&self) -> &dyn Packet {
+    fn upcast(&self) -> &dyn PacketBase {
         self
     }
 
-    fn upcast_mut(&mut self) -> &mut dyn Packet {
+    fn upcast_mut(&mut self) -> &mut dyn PacketBase {
         self
     }
 
-    fn dyn_clone(&self) -> Box<dyn Packet> {
+    fn dyn_clone(&self) -> Box<dyn PacketBase> {
         Box::new(self.clone())
+    }
+}
+
+impl UdpPacketBase for UdpPacket {
+
+    fn get_ip_header(&self) -> &Ipv4Header {
+        &self.ip_header
     }
 }
