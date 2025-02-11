@@ -5,7 +5,7 @@ use gtk::gio::SimpleAction;
 use gtk::prelude::{ActionMapExt, GtkWindowExt};
 use crate::packet::headers::tcp_header::TcpHeader;
 use crate::packet::inter::types::Types;
-use crate::packet::packets::inter::packet::Packet;
+use crate::packet::packets::inter::packet_base::Packet;
 use crate::packet::packets::tcp_packet::TcpPacket;
 use crate::packet::packets::udp_packet::UdpPacket;
 //use crate::config::VERSION;

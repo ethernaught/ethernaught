@@ -11,7 +11,7 @@ use crate::packet::headers::ipv4_header::Ipv4Header;
 use crate::packet::headers::tcp_header::TcpHeader;
 use crate::packet::headers::udp_header::UdpHeader;
 use crate::packet::inter::protocols::Protocols;
-use crate::packet::packets::inter::packet::Packet;
+use crate::packet::packets::inter::packet_base::Packet;
 use crate::packet::packets::tcp_packet::TcpPacket;
 use crate::packet::packets::udp_packet::UdpPacket;
 //use crate::PacketType;

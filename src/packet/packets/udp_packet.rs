@@ -3,7 +3,7 @@ use crate::packet::headers::ethernet_frame::EthernetFrame;
 use crate::packet::headers::ipv4_header::Ipv4Header;
 use crate::packet::headers::udp_header::UdpHeader;
 use crate::packet::inter::types::Types;
-use crate::packet::packets::inter::packet::Packet;
+use crate::packet::packets::inter::packet_base::Packet;
 
 #[derive(Clone)]
 pub struct UdpPacket {
