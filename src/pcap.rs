@@ -6,11 +6,13 @@ use gtk::prelude::{ContainerExt, SocketExtManual};
 use pcap::{Capture, Device};
 use crate::application::create_row;
 use crate::packet::headers::ethernet_frame::EthernetFrame;
+use crate::packet::headers::icmp_header::IcmpHeader;
 use crate::packet::inter::ethernet_types::EthernetTypes;
 use crate::packet::headers::ipv4_header::Ipv4Header;
 use crate::packet::headers::tcp_header::TcpHeader;
 use crate::packet::headers::udp_header::UdpHeader;
 use crate::packet::inter::protocols::Protocols;
+use crate::packet::packets::icmp_packet::IcmpPacket;
 use crate::packet::packets::inter::packet_base::Packet;
 use crate::packet::packets::tcp_packet::TcpPacket;
 use crate::packet::packets::udp_packet::UdpPacket;
@@ -46,15 +48,16 @@ pub fn packet_capture(tx: Arc<Mutex<Sender<Box<dyn Packet>>>>) {
 
                     let packet = match ip_header.get_protocol() {
                         Protocols::Icmp => {
-                            todo!()
+                            let header = IcmpHeader::from_bytes(&packet.data[34..]).expect("Failed to parse ICMP header");
+                            IcmpPacket::from_bytes(ethernet_frame, ip_header, header, 0, packet.len(), &packet.data[42..]).expect("Failed to parse ICMP packet").dyn_clone()
                         }
                         Protocols::Tcp => {
-                            let header = TcpHeader::from_bytes(&packet.data[14..]).expect("Failed to parse UDP header");
-                            TcpPacket::from_bytes(ethernet_frame, ip_header, header, 0, packet.len(), &packet.data[34..]).expect("Failed to parse UDP packet").dyn_clone()
+                            let header = TcpHeader::from_bytes(&packet.data[34..]).expect("Failed to parse TCP header");
+                            TcpPacket::from_bytes(ethernet_frame, ip_header, header, 0, packet.len(), &packet.data[54..]).expect("Failed to parse TCP packet").dyn_clone()
                         }
                         Protocols::Udp => {
-                            let header = UdpHeader::from_bytes(&packet.data[14..]).expect("Failed to parse UDP header");
-                            UdpPacket::from_bytes(ethernet_frame, ip_header, header, 0, packet.len(), &packet.data[34..]).expect("Failed to parse UDP packet").dyn_clone()
+                            let header = UdpHeader::from_bytes(&packet.data[34..]).expect("Failed to parse UDP header");
+                            UdpPacket::from_bytes(ethernet_frame, ip_header, header, 0, packet.len(), &packet.data[42..]).expect("Failed to parse UDP packet").dyn_clone()
                         }
                         Protocols::Gre => {
                             todo!()
