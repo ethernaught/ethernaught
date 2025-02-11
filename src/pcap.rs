@@ -2,7 +2,7 @@ use std::sync::{Arc, Mutex};
 use std::sync::mpsc::Sender;
 use std::thread;
 use gtk::ListBox;
-use gtk::prelude::ContainerExt;
+use gtk::prelude::{ContainerExt, SocketExtManual};
 use pcap::{Capture, Device};
 use crate::application::create_row;
 use crate::packet::ethernet_frame::EthernetFrame;
@@ -15,7 +15,7 @@ pub fn packet_capture(tx: Arc<Mutex<Sender<()>>>) {
     thread::spawn(move || {
         let devices = Device::list().expect("Failed to get device list");
 
-        let device = devices.into_iter().find(|d| d.name.contains("wlp2s0"))
+        let device = devices.into_iter().find(|d| d.name.contains("wlp7s0"))
             .expect("No suitable device found");
 
         println!("Listening on device: {}", device.name);
@@ -36,10 +36,12 @@ pub fn packet_capture(tx: Arc<Mutex<Sender<()>>>) {
             match ethernet_frame._type {
                 Types::IPv4 => {
                     let ip_header = IpHeader::from_bytes(&packet.data[14..]).expect("Failed to parse IP header");
+                    tx.send(packet.header.ts, ip_header.source_ip, ip_header.destination_ip)
                     println!("{:?} {} {}", ip_header.protocol, ip_header.source_ip.to_string(), ip_header.destination_ip.to_string());
                 }
                 Types::Arp => {}
                 Types::IPv6 => {}
+                _ => {}
             }
 
 
@@ -47,3 +49,17 @@ pub fn packet_capture(tx: Arc<Mutex<Sender<()>>>) {
         }
     });
 }
+
+trait Packet {
+
+    fn get_type(&self) -> u8;
+}
+
+//struct
+
+/*
+struct Packet {
+    ethernet_frame: EthernetFrame,
+    ip_header: IpHeader,
+}
+*/
