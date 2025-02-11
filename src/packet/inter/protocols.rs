@@ -1,4 +1,4 @@
-#[derive(Debug)]
+#[derive(Copy, Clone, Eq, PartialEq, Hash, Debug)]
 pub enum Protocols {
     Icmp,
     Tcp,

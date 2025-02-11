@@ -134,7 +134,12 @@ fn main() {
             match rx.try_recv() {
                 Ok(packet) => {
                     i += 1;
-                    //let row = create_row(i, packet);
+
+                    //match packet.get_type() {
+
+                    //}
+
+                    //let row = create_row(i, packets);
                     //list_box.add(&row);
                     //row.show_all();
                 }
