@@ -12,7 +12,7 @@ pub trait Packet where Self: Send {
 
     fn len(&self) -> usize;
 
-    fn get_frame_time(&self) -> u32;
+    fn get_frame_time(&self) -> u128;
 
     fn as_any(&self) -> &dyn Any;
 

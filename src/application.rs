@@ -106,7 +106,6 @@ pub fn create_row(number: u32, packet: Box<dyn Packet>) -> ListBoxRow {
     let time_label: Label = builder
         .object("time")
         .expect("Couldn't find 'time' in list_item.xml");
-    time_label.set_label("1.617305868");
     time_label.set_label(format!("{}", packet.get_frame_time()).as_str());
 
     let source_label: Label = builder

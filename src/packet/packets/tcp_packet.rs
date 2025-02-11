@@ -10,14 +10,14 @@ pub struct TcpPacket {
     ethernet_frame: EthernetFrame,
     ip_header: Ipv4Header,
     tcp_header: TcpHeader,
-    frame_time: u32,
+    frame_time: u128,
     frame_length: usize,
     payload: Vec<u8>
 }
 
 impl TcpPacket {
 
-    pub fn from_bytes(ethernet_frame: EthernetFrame, ip_header: Ipv4Header, tcp_header: TcpHeader, frame_time: u32, frame_length: usize, buf: &[u8]) -> Option<Self> {
+    pub fn from_bytes(ethernet_frame: EthernetFrame, ip_header: Ipv4Header, tcp_header: TcpHeader, frame_time: u128, frame_length: usize, buf: &[u8]) -> Option<Self> {
         Some(Self {
             ethernet_frame,
             ip_header,
@@ -51,7 +51,7 @@ impl Packet for TcpPacket {
         self.frame_length
     }
 
-    fn get_frame_time(&self) -> u32 {
+    fn get_frame_time(&self) -> u128 {
         self.frame_time
     }
 

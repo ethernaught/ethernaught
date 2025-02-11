@@ -1,6 +1,7 @@
 use std::sync::{Arc, Mutex};
 use std::sync::mpsc::Sender;
 use std::thread;
+use std::time::{SystemTime, UNIX_EPOCH};
 use gtk::ListBox;
 use gtk::prelude::{ContainerExt, SocketExtManual};
 use pcap::{Capture, Device};
@@ -34,6 +35,11 @@ pub fn packet_capture(tx: Arc<Mutex<Sender<Box<dyn Packet>>>>) {
             .open()
             .expect("Failed to start capture");
 
+        let now = SystemTime::now()
+            .duration_since(UNIX_EPOCH)
+            .expect("Time went backwards")
+            .as_millis();
+
         while let Ok(packet) = cap.next_packet() {
             //println!("Captured packets: {:?} ({} bytes)", packets, packets.data.len());
 
@@ -46,18 +52,21 @@ pub fn packet_capture(tx: Arc<Mutex<Sender<Box<dyn Packet>>>>) {
                     //tx.send(packets.header.ts, ip_header.source_ip, ip_header.destination_ip);
                     //println!("{:?} {} {}", ip_header.get_protocol(), ip_header.get_source_ip().to_string(), ip_header.get_destination_ip().to_string());
 
+
+                    let time = get_timestamp(packet.header.ts.tv_sec as u32, packet.header.ts.tv_usec as u32)-now;
+
                     let packet = match ip_header.get_protocol() {
                         Protocols::Icmp => {
                             let header = IcmpHeader::from_bytes(&packet.data[34..]).expect("Failed to parse ICMP header");
-                            IcmpPacket::from_bytes(ethernet_frame, ip_header, header, 0, packet.len(), &packet.data[42..]).expect("Failed to parse ICMP packet").dyn_clone()
+                            IcmpPacket::from_bytes(ethernet_frame, ip_header, header, time, packet.len(), &packet.data[42..]).expect("Failed to parse ICMP packet").dyn_clone()
                         }
                         Protocols::Tcp => {
                             let header = TcpHeader::from_bytes(&packet.data[34..]).expect("Failed to parse TCP header");
-                            TcpPacket::from_bytes(ethernet_frame, ip_header, header, 0, packet.len(), &packet.data[54..]).expect("Failed to parse TCP packet").dyn_clone()
+                            TcpPacket::from_bytes(ethernet_frame, ip_header, header, time, packet.len(), &packet.data[54..]).expect("Failed to parse TCP packet").dyn_clone()
                         }
                         Protocols::Udp => {
                             let header = UdpHeader::from_bytes(&packet.data[34..]).expect("Failed to parse UDP header");
-                            UdpPacket::from_bytes(ethernet_frame, ip_header, header, 0, packet.len(), &packet.data[42..]).expect("Failed to parse UDP packet").dyn_clone()
+                            UdpPacket::from_bytes(ethernet_frame, ip_header, header, time, packet.len(), &packet.data[42..]).expect("Failed to parse UDP packet").dyn_clone()
                         }
                         _ => {
                             todo!()
@@ -85,4 +94,8 @@ pub fn packet_capture(tx: Arc<Mutex<Sender<Box<dyn Packet>>>>) {
 
         }
     });
+}
+
+fn get_timestamp(ts_sec: u32, ts_usec: u32) -> u128 {
+    (ts_sec as u128 * 1000) + (ts_usec as u128 / 1000)
 }
