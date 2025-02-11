@@ -150,11 +150,11 @@ list row #number {
 
 
 
-list row.tcp {
+list row.TCP {
     background-color: #151a19;
 }
 
-list row.udp {
+list row.UDP {
     background-color: #1e0f00;
 }
 

@@ -3,8 +3,10 @@ use gtk::gdk_pixbuf::PixbufLoader;
 use gtk::prelude::*;
 use gtk::gio::SimpleAction;
 use gtk::prelude::{ActionMapExt, GtkWindowExt};
+use crate::packet::headers::tcp_header::TcpHeader;
 use crate::packet::inter::types::Types;
 use crate::packet::packets::inter::packet::Packet;
+use crate::packet::packets::tcp_packet::TcpPacket;
 use crate::packet::packets::udp_packet::UdpPacket;
 //use crate::config::VERSION;
 
@@ -92,6 +94,7 @@ pub fn create_row(number: u32, packet: Box<dyn Packet>) -> ListBoxRow {
         .object("row")
         .expect("Couldn't find 'row' in list_item.xml");
 
+    row.style_context().add_class(&packet.get_type().to_string());
 
 
 
@@ -131,12 +134,19 @@ pub fn create_row(number: u32, packet: Box<dyn Packet>) -> ListBoxRow {
     match packet.get_type() {
         Types::Arp => {}
         Types::Broadcast => {}
-        _ => {
+        Types::Udp => {
             let packet = packet.as_any().downcast_ref::<UdpPacket>().unwrap();
 
             source_label.set_label(&packet.get_ip_header().get_source_ip().to_string());
             destination_label.set_label(&packet.get_ip_header().get_destination_ip().to_string());
         }
+        Types::Tcp => {
+            let packet = packet.as_any().downcast_ref::<TcpPacket>().unwrap();
+
+            source_label.set_label(&packet.get_ip_header().get_source_ip().to_string());
+            destination_label.set_label(&packet.get_ip_header().get_destination_ip().to_string());
+        }
+        _ => {}
     }
 
     row
