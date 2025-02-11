@@ -52,7 +52,6 @@ pub fn packet_capture(tx: Arc<Mutex<Sender<Box<dyn Packet>>>>) {
                     //tx.send(packets.header.ts, ip_header.source_ip, ip_header.destination_ip);
                     //println!("{:?} {} {}", ip_header.get_protocol(), ip_header.get_source_ip().to_string(), ip_header.get_destination_ip().to_string());
 
-
                     let time = get_timestamp(packet.header.ts.tv_sec as u32, packet.header.ts.tv_usec as u32)-now;
 
                     let packet = match ip_header.get_protocol() {
