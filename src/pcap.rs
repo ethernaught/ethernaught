@@ -6,8 +6,10 @@ use gtk::prelude::{ContainerExt, SocketExtManual};
 use pcap::{Capture, Device};
 use crate::application::create_row;
 use crate::packet::headers::ethernet_frame::EthernetFrame;
-use crate::packet::inter::types::Types;
-use crate::packet::headers::ip_header::IpHeader;
+use crate::packet::inter::ethernet_types::EthernetTypes;
+use crate::packet::headers::ipv4_header::Ipv4Header;
+use crate::packet::headers::udp_header::UdpHeader;
+use crate::packet::inter::protocols::Protocols;
 use crate::packet::packets::inter::packet::Packet;
 use crate::packet::packets::udp_packet::UdpPacket;
 //use crate::PacketType;
@@ -32,19 +34,47 @@ pub fn packet_capture(tx: Arc<Mutex<Sender<Box<dyn Packet>>>>) {
             //println!("Captured packets: {:?} ({} bytes)", packets, packets.data.len());
 
             let ethernet_frame = EthernetFrame::from_bytes(packet.data).expect("Failed to parse Ethernet frame");
-            println!("{:?}", ethernet_frame._type);
+            println!("{:?}", ethernet_frame.get_type());
 
-            match ethernet_frame._type {
-                Types::IPv4 => {
-                    let ip_header = IpHeader::from_bytes(&packet.data[14..]).expect("Failed to parse IP header");
+            match ethernet_frame.get_type() {
+                EthernetTypes::IPv4 => {
+                    let ip_header = Ipv4Header::from_bytes(&packet.data[14..]).expect("Failed to parse IP header");
                     //tx.send(packets.header.ts, ip_header.source_ip, ip_header.destination_ip);
-                    println!("{:?} {} {}", ip_header.protocol, ip_header.source_ip.to_string(), ip_header.destination_ip.to_string());
+                    println!("{:?} {} {}", ip_header.get_protocol(), ip_header.get_source_ip().to_string(), ip_header.get_destination_ip().to_string());
 
-                    let packet = UdpPacket::from_bytes(ethernet_frame, ip_header, &packet.data[14..]).expect("Failed to parse UDP packet").dyn_clone();
-                    //tx.lock().unwrap().send(packet).expect("Failed to send packet");
+                    let packet = match ip_header.get_protocol() {
+                        Protocols::Icmp => {
+                            todo!()
+                        }
+                        Protocols::Tcp => {
+                            todo!()
+                        }
+                        Protocols::Udp => {
+                            let header = UdpHeader::from_bytes(&packet.data[14..]).expect("Failed to parse UDP header");
+                            UdpPacket::from_bytes(ethernet_frame, ip_header, header, 0, packet.len(), &packet.data[34..]).expect("Failed to parse UDP packet").dyn_clone()
+                        }
+                        Protocols::Gre => {
+                            todo!()
+                        }
+                        Protocols::Sps => {
+                            todo!()
+                        }
+                    };
+
+
+                    tx.lock().unwrap().send(packet).expect("Failed to send packet");
+                    /*
+
+                    let packet = UdpPacket::from_bytes(ethernet_frame,
+                                                       ip_header,
+                                                       udp_header,
+                                                       0,
+                                                       packet.len(),
+                                                       &packet.data[34..]).expect("Failed to parse UDP packet").dyn_clone();
+                    tx.lock().unwrap().send(packet).expect("Failed to send packet");*/
                 }
-                Types::Arp => {}
-                Types::IPv6 => {}
+                EthernetTypes::Arp => {}
+                EthernetTypes::IPv6 => {}
                 _ => {}
             }
 

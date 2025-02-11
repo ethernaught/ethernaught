@@ -16,6 +16,7 @@ use gtk::glib::ControlFlow::Continue;
 use gtk::glib::{idle_add, Propagation};
 use gtk::glib::UnicodeBreakType::Contingent;
 use crate::application::{init_titlebar, create_row, init_actions};
+use crate::packet::inter::types::Types;
 use crate::pcap::packet_capture;
 
 //let (tx, rx) = channel();
@@ -130,18 +131,14 @@ fn main() {
 
         let mut i =0;
 
-        glib::timeout_add_local(Duration::from_millis(100), move || {
+        glib::timeout_add_local(Duration::from_millis(10), move || {
             match rx.try_recv() {
                 Ok(packet) => {
                     i += 1;
 
-                    //match packet.get_type() {
-
-                    //}
-
-                    //let row = create_row(i, packets);
-                    //list_box.add(&row);
-                    //row.show_all();
+                    let row = create_row(i, packet);
+                    list_box.add(&row);
+                    row.show_all();
                 }
                 _ => {
                 }

@@ -1,36 +1,34 @@
 use std::any::Any;
 use crate::packet::headers::ethernet_frame::EthernetFrame;
-use crate::packet::headers::ip_header::IpHeader;
+use crate::packet::headers::ipv4_header::Ipv4Header;
+use crate::packet::headers::udp_header::UdpHeader;
+use crate::packet::inter::types::Types;
 use crate::packet::packets::inter::packet::Packet;
 
 #[derive(Clone)]
 pub struct UdpPacket {
     ethernet_frame: EthernetFrame,
-    ip_header: IpHeader,
-    source_port: u16,
-    destination_port: u16,
-    length: u16,
-    checksum: u16
+    ip_header: Ipv4Header,
+    udp_header: UdpHeader,
+    frame_time: u32,
+    frame_length: usize,
+    payload: Vec<u8>
 }
 
 impl UdpPacket {
 
-    pub fn from_bytes(ethernet_frame: EthernetFrame, ip_header: IpHeader, buf: &[u8]) -> Option<Self> {
-        if buf.len() < 8 {
-            return None;
-        }
-
+    pub fn from_bytes(ethernet_frame: EthernetFrame, ip_header: Ipv4Header, udp_header: UdpHeader, frame_time: u32, frame_length: usize, buf: &[u8]) -> Option<Self> {
         Some(Self {
             ethernet_frame,
             ip_header,
-            source_port: u16::from_be_bytes([buf[0], buf[1]]),
-            destination_port: u16::from_be_bytes([buf[2], buf[3]]),
-            length: u16::from_be_bytes([buf[4], buf[5]]),
-            checksum: u16::from_be_bytes([buf[6], buf[7]])
+            udp_header,
+            frame_time,
+            frame_length,
+            payload: buf.to_vec()
         })
     }
 
-    pub fn get_ip_header(&self) -> &IpHeader {
+    pub fn get_ip_header(&self) -> &Ipv4Header {
         &self.ip_header
     }
 }
@@ -41,12 +39,20 @@ impl Packet for UdpPacket {
         &self.ethernet_frame
     }
 
+    fn get_type(&self) -> Types {
+        Types::Udp
+    }
+
     fn get_data(&self) -> Vec<u8> {
-        todo!()
+        self.payload.clone()
     }
 
     fn len(&self) -> usize {
-        todo!()
+        self.frame_length
+    }
+
+    fn get_frame_time(&self) -> u32 {
+        self.frame_time
     }
 
     fn as_any(&self) -> &dyn Any {

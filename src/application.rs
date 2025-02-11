@@ -1,8 +1,11 @@
-use gtk::{AboutDialog, ApplicationWindow, Builder, Box, Image, Application, TreeViewColumn, CellRendererText, ScrolledWindow, Button, ListBoxRow, Label};
+use gtk::{AboutDialog, ApplicationWindow, Builder, Image, Application, TreeViewColumn, CellRendererText, ScrolledWindow, Button, ListBoxRow, Label};
 use gtk::gdk_pixbuf::PixbufLoader;
 use gtk::prelude::*;
 use gtk::gio::SimpleAction;
 use gtk::prelude::{ActionMapExt, GtkWindowExt};
+use crate::packet::inter::types::Types;
+use crate::packet::packets::inter::packet::Packet;
+use crate::packet::packets::udp_packet::UdpPacket;
 //use crate::config::VERSION;
 
 pub fn init_actions(app: &Application, window: &ApplicationWindow) {
@@ -83,62 +86,58 @@ pub fn init_titlebar(window: &ApplicationWindow, app: &Application) -> Builder {
 }
 
 
-pub fn create_row(number: u32/*, packet_type: PacketType*/) -> ListBoxRow {
+pub fn create_row(number: u32, packet: Box<dyn Packet>) -> ListBoxRow {
     let builder = Builder::from_file("res/ui/list_item.xml");
     let row: ListBoxRow = builder
         .object("row")
         .expect("Couldn't find 'row' in list_item.xml");
 
-    /*
-    match packet_type {
-        PacketType::Tcp => {
-            row.style_context().add_class("tcp");
-        }
-        PacketType::Udp => {
-            row.style_context().add_class("udp");
-        }
-        PacketType::Icmp => {
-            row.style_context().add_class("icmp");
-        }
-        PacketType::Gre => {
-            row.style_context().add_class("gre");
-        }
-    }*/
+
+
 
     let number_label: Label = builder
         .object("number")
         .expect("Couldn't find 'number' in list_item.xml");
     number_label.set_label(format!("{}", number).as_str());
 
-    let time: Label = builder
+    let time_label: Label = builder
         .object("time")
         .expect("Couldn't find 'time' in list_item.xml");
-    time.set_label("1.617305868");
+    time_label.set_label("1.617305868");
+    time_label.set_label(format!("{}", packet.get_frame_time()).as_str());
 
-    let source: Label = builder
+    let source_label: Label = builder
         .object("source")
         .expect("Couldn't find 'source' in list_item.xml");
-    source.set_label("192.168.0.1");
 
-    let destination: Label = builder
+    let destination_label: Label = builder
         .object("destination")
         .expect("Couldn't find 'destination' in list_item.xml");
-    destination.set_label("192.168.0.1");
 
-    let protocol: Label = builder
+    let protocol_label: Label = builder
         .object("protocol")
         .expect("Couldn't find 'protocol' in list_item.xml");
-    protocol.set_label("DNS");
+    protocol_label.set_label(&packet.get_type().to_string());
 
-    let length: Label = builder
+    let length_label: Label = builder
         .object("length")
         .expect("Couldn't find 'length' in list_item.xml");
-    length.set_label("105");
+    length_label.set_label(format!("{}", packet.len()).as_str());
 
-    let info: Label = builder
+    let info_label: Label = builder
         .object("info")
         .expect("Couldn't find 'info' in list_item.xml");
-    info.set_label("Standard query response 0x39bc A");
+
+    match packet.get_type() {
+        Types::Arp => {}
+        Types::Broadcast => {}
+        _ => {
+            let packet = packet.as_any().downcast_ref::<UdpPacket>().unwrap();
+
+            source_label.set_label(&packet.get_ip_header().get_source_ip().to_string());
+            destination_label.set_label(&packet.get_ip_header().get_destination_ip().to_string());
+        }
+    }
 
     row
 }

@@ -1,4 +1,4 @@
-#[derive(Debug)]
+#[derive(Clone)]
 pub struct UdpHeader {
     pub source_port: u16,
     pub destination_port: u16,

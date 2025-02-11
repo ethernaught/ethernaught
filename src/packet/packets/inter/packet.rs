@@ -1,13 +1,18 @@
 use std::any::Any;
 use crate::packet::headers::ethernet_frame::EthernetFrame;
+use crate::packet::inter::types::Types;
 
-pub trait Packet {
+pub trait Packet where Self: Send {
 
     fn get_ethernet_frame(&self) -> &EthernetFrame;
+
+    fn get_type(&self) -> Types;
 
     fn get_data(&self) -> Vec<u8>;
 
     fn len(&self) -> usize;
+
+    fn get_frame_time(&self) -> u32;
 
     fn as_any(&self) -> &dyn Any;
 
