@@ -59,10 +59,7 @@ pub fn packet_capture(tx: Arc<Mutex<Sender<Box<dyn Packet>>>>) {
                             let header = UdpHeader::from_bytes(&packet.data[34..]).expect("Failed to parse UDP header");
                             UdpPacket::from_bytes(ethernet_frame, ip_header, header, 0, packet.len(), &packet.data[42..]).expect("Failed to parse UDP packet").dyn_clone()
                         }
-                        Protocols::Gre => {
-                            todo!()
-                        }
-                        Protocols::Sps => {
+                        _ => {
                             todo!()
                         }
                     };
