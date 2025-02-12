@@ -114,9 +114,13 @@ scrollbar slider {
     border-radius: 0;
 }
 
-#sidebar_layout {
-    min-width: 100px;
-}
+
+
+
+
+
+
+
 
 
 
@@ -156,7 +160,12 @@ list row label {
 list row #number {
     color: #494e57;
 }
-
+/*
+list row #protocol {
+    background-color: red;
+    border-radius: 5px;
+}
+*/
 
 
 list row.ARP {
@@ -192,6 +201,18 @@ list row:active,
 
 
 
-#test_layout {
-    background-color: red;
+
+
+
+#sidebar_layout {
+    min-width: 100px;
+    margin-left: 5px;
+}
+
+#sidebar_layout text {
+    min-height: 100px;
+    padding: 10px;
+    font-family: monospace;
+    color: #9b9d9f;
+    background-color: #1e1f22;
 }
