@@ -4,21 +4,17 @@ use std::thread;
 use std::time::{SystemTime, UNIX_EPOCH};
 use gtk::prelude::SocketExtManual;
 use pcap::{Capture, Device};
-use crate::packet::headers::ethernet_frame::EthernetFrame;
-use crate::packet::headers::icmp_header::IcmpHeader;
-use crate::packet::inter::ethernet_types::EthernetTypes;
-use crate::packet::headers::ipv4_header::Ipv4Header;
-use crate::packet::headers::tcp_header::TcpHeader;
-use crate::packet::headers::udp_header::UdpHeader;
-use crate::packet::inter::protocols::Protocols;
-use crate::packet::packets::dns_packet::DnsPacket;
-use crate::packet::packets::icmp_packet::IcmpPacket;
-use crate::packet::packets::inter::packet_base::PacketBase;
-use crate::packet::packets::tcp_packet::TcpPacket;
-use crate::packet::packets::inter::udp_packet_base::UdpPacketBase;
-use crate::packet::packets::udp_packet::UdpPacket;
+use crate::packet::packet::Packet;
+use crate::packet::inter::interfaces::Interfaces;
+use crate::packet::layers::inter::layer::Layer;
+use crate::packet::layers::layer_1::ethernet_layer::EthernetLayer;
+use crate::packet::layers::layer_1::inter::types::Types;
+use crate::packet::layers::layer_2::ethernet::inter::protocols::Protocols;
+use crate::packet::layers::layer_2::ethernet::ipv4_layer;
+use crate::packet::layers::layer_2::ethernet::ipv4_layer::IPv4Layer;
+use crate::packet::layers::layer_3::ip::udp_layer::UdpLayer;
 
-pub fn packet_capture(tx: Arc<Mutex<Sender<Box<dyn PacketBase>>>>) {
+pub fn packet_capture(tx: Arc<Mutex<Sender<Packet>>>) {
     thread::spawn(move || {
         let devices = Device::list().expect("Failed to get device list");
 
@@ -34,12 +30,91 @@ pub fn packet_capture(tx: Arc<Mutex<Sender<Box<dyn PacketBase>>>>) {
             .open()
             .expect("Failed to start capture");
 
+        let interface = Interfaces::Ethernet;
+
+        /*
         let now = SystemTime::now()
             .duration_since(UNIX_EPOCH)
             .expect("Time went backwards")
-            .as_millis();
+            .as_millis();*/
 
         while let Ok(packet) = cap.next_packet() {
+
+            let mut frame = Packet::new(interface.clone());
+
+            match frame.get_interface() {
+                Interfaces::Ethernet => {
+
+                    let ethernet_layer = EthernetLayer::from_bytes(packet.data).expect("Failed to parse Ethernet frame");
+                    frame.add_layer(ethernet_layer.dyn_clone());
+                    let mut off = ethernet_layer.len();
+
+                    match ethernet_layer.get_type() {
+                        Types::IPv4 => {
+                            let ipv4_layer = IPv4Layer::from_bytes(&packet.data[off..]).expect("Failed to parse IPv4 frame");
+                            frame.add_layer(ipv4_layer.dyn_clone());
+                            off += ipv4_layer.len();
+
+                            match ipv4_layer.get_protocol() {
+                                Protocols::Icmp => {}
+                                Protocols::Igmp => {}
+                                Protocols::Tcp => {}
+                                Protocols::Udp => {
+                                    let udp_layer = UdpLayer::from_bytes(&packet.data[off..]).expect("Failed to parse UDP frame");
+                                    frame.add_layer(udp_layer.dyn_clone());
+                                    off += ipv4_layer.len();
+
+                                }
+                                Protocols::Ipv6 => {}
+                                Protocols::Gre => {}
+                                Protocols::Ospf => {}
+                                Protocols::Sps => {}
+                            }
+
+
+
+
+                        }
+                        Types::Arp => {}
+                        Types::IPv6 => {}
+                        Types::Broadcast => {}
+                    }
+
+
+
+
+
+                }
+                Interfaces::WiFi => {}
+                Interfaces::Bluetooth => {}
+            }
+
+
+            /*
+            let mut frame = Frame::new();
+
+            let ddl_layer = EthernetLayer::from_bytes(packet.data).expect("Failed to parse Ethernet frame");
+            frame.add_layer(ddl_layer.dyn_clone());
+
+            let mut off = ddl_layer.len();
+            let network_layer = match ddl_layer.get_type() {
+                EthernetTypes::IPv4 => {
+                    IPv4Layer::from_bytes(&packet.data[off..]).expect("Failed to parse IPv4 frame")
+                }
+                _ => {
+                    todo!()
+                }
+            };
+
+            off += network_layer.len();
+            frame.add_layer(network_layer.dyn_clone());
+
+
+
+            frame.get_layer(1).unwrap().get_type();*/
+
+
+            /*
             let ethernet_frame = EthernetFrame::from_bytes(packet.data).expect("Failed to parse Ethernet frame");
 
             match ethernet_frame.get_type() {
@@ -79,6 +154,7 @@ pub fn packet_capture(tx: Arc<Mutex<Sender<Box<dyn PacketBase>>>>) {
                 EthernetTypes::IPv6 => {}
                 _ => {}
             }
+            */
         }
     });
 }

@@ -3,11 +3,8 @@ use gtk::gdk_pixbuf::PixbufLoader;
 use gtk::prelude::*;
 use gtk::gio::SimpleAction;
 use gtk::prelude::{ActionMapExt, GtkWindowExt};
-use crate::packet::headers::tcp_header::TcpHeader;
-use crate::packet::inter::types::Types;
-use crate::packet::packets::inter::packet_base::PacketBase;
-use crate::packet::packets::tcp_packet::TcpPacket;
-use crate::packet::packets::inter::udp_packet_base::UdpPacketBase;
+use crate::packet::packet::Packet;
+use crate::packet::inter::interfaces::Interfaces;
 //use crate::config::VERSION;
 
 pub fn init_actions(app: &Application, window: &ApplicationWindow) {
@@ -88,13 +85,13 @@ pub fn init_titlebar(window: &ApplicationWindow, app: &Application) -> Builder {
 }
 
 
-pub fn create_row(number: u32, packet: Box<dyn PacketBase>) -> ListBoxRow {
+pub fn create_row(number: u32, frame: Packet) -> ListBoxRow {
     let builder = Builder::from_file("res/ui/list_item.xml");
     let row: ListBoxRow = builder
         .object("row")
         .expect("Couldn't find 'row' in list_item.xml");
 
-    row.style_context().add_class(&packet.get_type().to_string());
+    //row.style_context().add_class(&packet.get_type().to_string());
 
 
 
@@ -106,7 +103,7 @@ pub fn create_row(number: u32, packet: Box<dyn PacketBase>) -> ListBoxRow {
     let time_label: Label = builder
         .object("time")
         .expect("Couldn't find 'time' in list_item.xml");
-    time_label.set_label(format!("{}", packet.get_frame_time()).as_str());
+    //time_label.set_label(format!("{}", packet.get_frame_time()).as_str());
 
     let source_label: Label = builder
         .object("source")
@@ -119,17 +116,31 @@ pub fn create_row(number: u32, packet: Box<dyn PacketBase>) -> ListBoxRow {
     let protocol_label: Label = builder
         .object("protocol")
         .expect("Couldn't find 'protocol' in list_item.xml");
-    protocol_label.set_label(&packet.get_type().to_string());
+    //protocol_label.set_label(&packet.get_type().to_string());
 
     let length_label: Label = builder
         .object("length")
         .expect("Couldn't find 'length' in list_item.xml");
-    length_label.set_label(format!("{}", packet.len()).as_str());
+    //length_label.set_label(format!("{}", packet.len()).as_str());
 
     let info_label: Label = builder
         .object("info")
         .expect("Couldn't find 'info' in list_item.xml");
 
+    match frame.get_interface() {
+        Interfaces::Ethernet => {
+            match frame.get_layer(0).unwrap().get_layer_name() {
+                "a" => {}
+                _ => {}
+            }
+
+        }
+        Interfaces::WiFi => {}
+        Interfaces::Bluetooth => {}
+    }
+
+
+    /*
     match packet.get_type() {
         Types::Arp => {}
         Types::Broadcast => {}
@@ -147,6 +158,7 @@ pub fn create_row(number: u32, packet: Box<dyn PacketBase>) -> ListBoxRow {
         }
         _ => {}
     }
+    */
 
     row
 }
