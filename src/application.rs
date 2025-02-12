@@ -9,6 +9,7 @@ use crate::packet::layers::layer_1::ethernet_layer::EthernetLayer;
 use crate::packet::layers::layer_1::inter::types::Types;
 use crate::packet::layers::layer_2::ethernet::inter::protocols::Protocols;
 use crate::packet::layers::layer_2::ethernet::ipv4_layer::IPv4Layer;
+use crate::packet::layers::layer_2::ethernet::ipv6_layer::IPv6Layer;
 //use crate::config::VERSION;
 
 pub fn init_actions(app: &Application, window: &ApplicationWindow) {
@@ -150,7 +151,12 @@ pub fn create_row(number: u32, packet: Packet) -> ListBoxRow {
                     ethernet_layer.get_type().to_string()
                 }
                 Types::IPv6 => {
-                    "[IPv6] TODO".to_string()
+                    let ipv6_layer = packet.get_layer(1).unwrap().as_any().downcast_ref::<IPv6Layer>().unwrap();
+
+                    source_label.set_label(&ipv6_layer.get_source_ip().to_string());
+                    destination_label.set_label(&ipv6_layer.get_destination_ip().to_string());
+
+                    ipv6_layer.get_next_header().to_string()
                 }
                 Types::Broadcast => {
                     source_label.set_label(&ethernet_layer.get_source().to_string());

@@ -11,6 +11,7 @@ use crate::packet::layers::layer_1::ethernet_layer::EthernetLayer;
 use crate::packet::layers::layer_1::inter::types::Types;
 use crate::packet::layers::layer_2::ethernet::inter::protocols::Protocols;
 use crate::packet::layers::layer_2::ethernet::ipv4_layer::IPv4Layer;
+use crate::packet::layers::layer_2::ethernet::ipv6_layer::IPv6Layer;
 use crate::packet::layers::layer_3::ip::tcp_layer::TcpLayer;
 use crate::packet::layers::layer_3::ip::udp_layer::UdpLayer;
 
@@ -80,7 +81,30 @@ pub fn packet_capture(tx: Arc<Mutex<Sender<Packet>>>) {
 
                         }
                         Types::Arp => {}
-                        Types::IPv6 => {}
+                        Types::IPv6 => {
+                            let ipv6_layer = IPv6Layer::from_bytes(&packet.data[off..]).expect("Failed to parse IPv6 frame");
+                            frame.add_layer(ipv6_layer.dyn_clone());
+                            off += ipv6_layer.len();
+
+                            match ipv6_layer.get_next_header() {
+                                Protocols::Icmp => {}
+                                Protocols::Igmp => {}
+                                Protocols::Tcp => {
+                                    let tcp_layer = TcpLayer::from_bytes(&packet.data[off..]).expect("Failed to parse TCP frame");
+                                    frame.add_layer(tcp_layer.dyn_clone());
+                                    off += tcp_layer.len();
+                                }
+                                Protocols::Udp => {
+                                    let udp_layer = UdpLayer::from_bytes(&packet.data[off..]).expect("Failed to parse UDP frame");
+                                    frame.add_layer(udp_layer.dyn_clone());
+                                    off += udp_layer.len();
+                                }
+                                Protocols::Ipv6 => {}
+                                Protocols::Gre => {}
+                                Protocols::Ospf => {}
+                                Protocols::Sps => {}
+                            }
+                        }
                         Types::Broadcast => {}
                     }
 
