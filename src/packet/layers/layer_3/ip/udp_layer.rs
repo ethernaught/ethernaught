@@ -1,12 +1,15 @@
+use std::any::Any;
+use crate::packet::layers::inter::layer::Layer;
+
 #[derive(Clone)]
-pub struct UdpHeader {
+pub struct UdpLayer {
     source_port: u16,
     destination_port: u16,
     length: u16,
     checksum: u16
 }
 
-impl UdpHeader {
+impl UdpLayer {
 
     pub fn from_bytes(buf: &[u8]) -> Option<Self> {
         if buf.len() < 8 {
@@ -35,5 +38,24 @@ impl UdpHeader {
 
     pub fn get_checksum(&self) -> u16 {
         self.checksum
+    }
+}
+
+impl Layer for UdpLayer {
+
+    fn len(&self) -> usize {
+        14
+    }
+
+    fn as_any(&self) -> &dyn Any {
+        self
+    }
+
+    fn as_any_mut(&mut self) -> &mut dyn Any {
+        self
+    }
+
+    fn dyn_clone(&self) -> Box<dyn Layer> {
+        Box::new(self.clone())
     }
 }

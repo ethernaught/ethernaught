@@ -1,8 +1,10 @@
+use std::any::Any;
 use std::net::Ipv4Addr;
-use crate::packet::inter::protocols::Protocols;
+use crate::packet::layers::inter::layer::Layer;
+use crate::packet::layers::layer_2::ethernet::inter::protocols::Protocols;
 
-#[derive(Debug, Clone)]
-pub struct Ipv4Header {
+#[derive(Clone)]
+pub struct IPv4Layer {
     version: u8,
     ihl: u8,
     tos: u8,
@@ -17,7 +19,7 @@ pub struct Ipv4Header {
     destination_ip: Ipv4Addr
 }
 
-impl Ipv4Header {
+impl IPv4Layer {
 
     pub fn from_bytes(buf: &[u8]) -> Option<Self> {
         if buf.len() < 20 {
@@ -90,5 +92,24 @@ impl Ipv4Header {
 
     pub fn get_destination_ip(&self) -> &Ipv4Addr {
         &self.destination_ip
+    }
+}
+
+impl Layer for IPv4Layer {
+
+    fn len(&self) -> usize {
+        20
+    }
+
+    fn as_any(&self) -> &dyn Any {
+        self
+    }
+
+    fn as_any_mut(&mut self) -> &mut dyn Any {
+        self
+    }
+
+    fn dyn_clone(&self) -> Box<dyn Layer> {
+        Box::new(self.clone())
     }
 }

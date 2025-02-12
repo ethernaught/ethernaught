@@ -1,3 +1,3 @@
 pub mod inter;
-pub mod headers;
-pub mod packets;
+pub mod layers;
+pub mod packet;

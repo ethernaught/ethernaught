@@ -1,12 +1,12 @@
 #[derive(Copy, Clone, Eq, PartialEq, Hash, Debug)]
-pub enum EthernetTypes {
+pub enum Types {
     IPv4,
     Arp,
     IPv6,
     Broadcast
 }
 
-impl EthernetTypes {
+impl Types {
 
     pub fn get_type_from_code(code: u16) -> Result<Self, String> {
         for c in [Self::IPv4, Self::Arp, Self::IPv6, Self::Broadcast] {
@@ -27,4 +27,3 @@ impl EthernetTypes {
         }
     }
 }
-

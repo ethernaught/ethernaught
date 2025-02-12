@@ -3,11 +3,11 @@ use gtk::gdk_pixbuf::PixbufLoader;
 use gtk::prelude::*;
 use gtk::gio::SimpleAction;
 use gtk::prelude::{ActionMapExt, GtkWindowExt};
-use crate::packet::headers::tcp_header::TcpHeader;
-use crate::packet::inter::types::Types;
-use crate::packet::packets::inter::packet_base::PacketBase;
-use crate::packet::packets::tcp_packet::TcpPacket;
-use crate::packet::packets::inter::udp_packet_base::UdpPacketBase;
+use crate::packet::packet::Packet;
+use crate::packet::inter::interfaces::Interfaces;
+use crate::packet::layers::layer_1::ethernet_layer::EthernetLayer;
+use crate::packet::layers::layer_1::inter::types::Types;
+use crate::packet::layers::layer_2::ethernet::ipv4_layer::IPv4Layer;
 //use crate::config::VERSION;
 
 pub fn init_actions(app: &Application, window: &ApplicationWindow) {
@@ -88,13 +88,13 @@ pub fn init_titlebar(window: &ApplicationWindow, app: &Application) -> Builder {
 }
 
 
-pub fn create_row(number: u32, packet: Box<dyn PacketBase>) -> ListBoxRow {
+pub fn create_row(number: u32, frame: Packet) -> ListBoxRow {
     let builder = Builder::from_file("res/ui/list_item.xml");
     let row: ListBoxRow = builder
         .object("row")
         .expect("Couldn't find 'row' in list_item.xml");
 
-    row.style_context().add_class(&packet.get_type().to_string());
+    //row.style_context().add_class(&packet.get_type().to_string());
 
 
 
@@ -106,7 +106,7 @@ pub fn create_row(number: u32, packet: Box<dyn PacketBase>) -> ListBoxRow {
     let time_label: Label = builder
         .object("time")
         .expect("Couldn't find 'time' in list_item.xml");
-    time_label.set_label(format!("{}", packet.get_frame_time()).as_str());
+    //time_label.set_label(format!("{}", packet.get_frame_time()).as_str());
 
     let source_label: Label = builder
         .object("source")
@@ -119,33 +119,37 @@ pub fn create_row(number: u32, packet: Box<dyn PacketBase>) -> ListBoxRow {
     let protocol_label: Label = builder
         .object("protocol")
         .expect("Couldn't find 'protocol' in list_item.xml");
-    protocol_label.set_label(&packet.get_type().to_string());
+    //protocol_label.set_label(&packet.get_type().to_string());
 
     let length_label: Label = builder
         .object("length")
         .expect("Couldn't find 'length' in list_item.xml");
-    length_label.set_label(format!("{}", packet.len()).as_str());
+    //length_label.set_label(format!("{}", packet.len()).as_str());
 
     let info_label: Label = builder
         .object("info")
         .expect("Couldn't find 'info' in list_item.xml");
 
-    match packet.get_type() {
-        Types::Arp => {}
-        Types::Broadcast => {}
-        Types::Udp => {
-            //let packet = packet.as_any().downcast_ref::<dyn UdpPacketBase>().unwrap();
+    match frame.get_interface() {
+        Interfaces::Ethernet => {
+            let ethernet_layer = frame.get_layer(0).unwrap().as_any().downcast_ref::<EthernetLayer>().unwrap();
 
-            //source_label.set_label(&packet.get_ip_header().get_source_ip().to_string());
-            //destination_label.set_label(&packet.get_ip_header().get_destination_ip().to_string());
-        }
-        Types::Tcp => {
-            let packet = packet.as_any().downcast_ref::<TcpPacket>().unwrap();
+            match ethernet_layer.get_type() {
+                Types::IPv4 => {
+                    let ipv4_layer = frame.get_layer(1).unwrap().as_any().downcast_ref::<IPv4Layer>().unwrap();
 
-            source_label.set_label(&packet.get_ip_header().get_source_ip().to_string());
-            destination_label.set_label(&packet.get_ip_header().get_destination_ip().to_string());
+                    source_label.set_label(&ipv4_layer.get_source_ip().to_string());
+                    destination_label.set_label(&ipv4_layer.get_destination_ip().to_string());
+
+                }
+                Types::Arp => {}
+                Types::IPv6 => {}
+                Types::Broadcast => {}
+            }
+
         }
-        _ => {}
+        Interfaces::WiFi => {}
+        Interfaces::Bluetooth => {}
     }
 
     row
