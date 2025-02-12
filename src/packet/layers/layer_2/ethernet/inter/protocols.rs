@@ -35,7 +35,7 @@ impl Protocols {
         }
     }
 
-    pub fn as_str(&self) -> &str {
+    pub fn to_string(&self) -> String {
         match self {
             Self::Icmp => "ICMP",
             Self::Igmp => "IGMP",
@@ -45,6 +45,6 @@ impl Protocols {
             Self::Gre => "GRE",
             Self::Ospf => "OSPF",
             Self::Sps => "SPS"
-        }
+        }.to_string()
     }
 }

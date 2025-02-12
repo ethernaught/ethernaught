@@ -27,12 +27,12 @@ impl Types {
         }
     }
 
-    pub fn as_str(&self) -> &str {
+    pub fn to_string(&self) -> String {
         match self {
             Self::IPv4 => "IPv4",
             Self::Arp => "ARP",
             Self::IPv6 => "IPv6",
             Self::Broadcast => "Broadcast"
-        }
+        }.to_string()
     }
 }
