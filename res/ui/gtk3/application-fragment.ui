@@ -16,7 +16,7 @@
 
 
                 <child>
-                    <object class="GTKBox" id="list_header_layout">
+                    <object class="GtkBox" id="list_header_layout">
                         <property name="name">list_header_layout</property>
                         <property name="visible">True</property>
                         <property name="hexpand">True</property>
@@ -24,7 +24,7 @@
                         <property name="spacing">0</property>
 
                         <child>
-                            <object class="GTKLabel" id="number">
+                            <object class="GtkLabel" id="number">
                                 <property name="visible">True</property>
                                 <property name="label">No.</property>
                                 <property name="width-request">100</property>
@@ -35,7 +35,7 @@
                         </child>
 
                         <child>
-                            <object class="GTKLabel" id="time">
+                            <object class="GtkLabel" id="time">
                                 <property name="visible">True</property>
                                 <property name="label">Time</property>
                                 <property name="width-request">150</property>
@@ -46,7 +46,7 @@
                         </child>
 
                         <child>
-                            <object class="GTKLabel" id="source">
+                            <object class="GtkLabel" id="source">
                                 <property name="visible">True</property>
                                 <property name="label">Source</property>
                                 <property name="width-request">150</property>
@@ -57,7 +57,7 @@
                         </child>
 
                         <child>
-                            <object class="GTKLabel" id="destination">
+                            <object class="GtkLabel" id="destination">
                                 <property name="visible">True</property>
                                 <property name="label">Destination</property>
                                 <property name="width-request">150</property>
@@ -67,7 +67,7 @@
                         </child>
 
                         <child>
-                            <object class="GTKLabel" id="protocol">
+                            <object class="GtkLabel" id="protocol">
                                 <property name="visible">True</property>
                                 <property name="label">Protocol</property>
                                 <property name="width-request">80</property>
@@ -77,7 +77,7 @@
                         </child>
 
                         <child>
-                            <object class="GTKLabel" id="length">
+                            <object class="GtkLabel" id="length">
                                 <property name="visible">True</property>
                                 <property name="label">Length</property>
                                 <property name="width-request">80</property>
@@ -87,7 +87,7 @@
                         </child>
 
                         <child>
-                            <object class="GTKLabel" id="info">
+                            <object class="GtkLabel" id="info">
                                 <property name="visible">True</property>
                                 <property name="label">Info</property>
                                 <property name="height-request">40</property>
