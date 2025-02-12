@@ -83,12 +83,12 @@ fn main() {
         //window.add(&switcher);
 
 
-        let builder = Builder::from_file("res/ui/gtk3/selection-fragment.ui");
-        let selection_layout: gtk::Box = builder
-            .object("selection_layout")
-            .expect("Couldn't find 'selection_layout' in selection-fragment.ui");
-        stack.add_titled(&selection_layout, "selection_layout", "Selection");
-        //stack.set_visible_child_name("selection_layout");
+        let builder = Builder::from_file("res/ui/gtk3/interface-fragment.ui");
+        let interface_layout: gtk::Box = builder
+            .object("interface_layout")
+            .expect("Couldn't find 'selection_layout' in interface-fragment.ui");
+        stack.add_titled(&interface_layout, "interface_layout", "Selection");
+        //stack.set_visible_child_name("interface_layout");
 
 
         let builder = Builder::from_file("res/ui/gtk3/application-fragment.ui");
