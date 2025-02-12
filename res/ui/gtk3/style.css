@@ -208,11 +208,13 @@ list row:active,
     min-width: 100px;
     margin-left: 5px;
 }
-
-#sidebar_layout text {
-    min-height: 100px;
-    padding: 10px;
-    font-family: monospace;
+/*
+#hex_grid {
+    min-height: 400px;
+    background-color: #260d07;
+}
+*/
+#hex_grid * {
     color: #9b9d9f;
     background-color: #1e1f22;
 }

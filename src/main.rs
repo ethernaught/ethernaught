@@ -97,6 +97,9 @@ fn main() {
 
         //window.add(&window_layout);
 
+
+
+        /*
         let hex_view: TextView = builder
             .object("hex_view")
             .expect("Couldn't find 'hex_view' in application-fragment.ui");
@@ -118,7 +121,16 @@ fn main() {
             .collect::<Vec<_>>()
             .join("\n");
 
-        buffer.set_text(&hex_data);
+        buffer.set_text(&hex_data);*/
+
+        let line_numbers: TextView = builder.object("line_numbers").unwrap();
+        let hex_text_view: TextView = builder.object("hex_text_view").unwrap();
+        let ascii_text_view: TextView = builder.object("ascii_text_view").unwrap();
+
+        // Set placeholder text for each text view
+        line_numbers.buffer().unwrap().set_text("00000000\n00000010\n00000020\n...");
+        hex_text_view.buffer().unwrap().set_text("00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00\n...");
+        ascii_text_view.buffer().unwrap().set_text(". . . . . . . .  . . . . . . . .\n...");
 
 
 

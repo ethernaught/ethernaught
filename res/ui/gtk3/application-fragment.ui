@@ -123,9 +123,60 @@
                         <property name="hexpand">True</property>
                         <property name="vexpand">True</property>
 
+
+
+
                         <child>
-                            <object class="GtkTextView" id="hex_view">
+                            <object class="GtkGrid" id="hex_grid">
+                                <property name="name">hex_grid</property>
                                 <property name="visible">True</property>
+                                <property name="hexpand">True</property>
+                                <property name="vexpand">True</property>
+                                <property name="column-spacing">10</property>
+
+                                <!-- Line Numbers -->
+                                <child>
+                                    <object class="GtkTextView" id="line_numbers">
+                                        <property name="visible">True</property>
+                                        <property name="editable">FALSE</property>
+                                        <property name="monospace">TRUE</property>
+                                        <property name="cursor-visible">FALSE</property>
+                                        <property name="wrap-mode">none</property>
+                                    </object>
+                                    <packing>
+                                        <property name="left-attach">0</property>
+                                        <property name="top-attach">0</property>
+                                    </packing>
+                                </child>
+
+                                <!-- Hex Data -->
+                                <child>
+                                    <object class="GtkTextView" id="hex_text_view">
+                                        <property name="visible">True</property>
+                                        <property name="editable">FALSE</property>
+                                        <property name="monospace">TRUE</property>
+                                        <property name="wrap-mode">none</property>
+                                    </object>
+                                    <packing>
+                                        <property name="left-attach">1</property>
+                                        <property name="top-attach">0</property>
+                                    </packing>
+                                </child>
+
+                                <!-- ASCII Column (Optional) -->
+                                <child>
+                                    <object class="GtkTextView" id="ascii_text_view">
+                                        <property name="visible">True</property>
+                                        <property name="editable">FALSE</property>
+                                        <property name="monospace">TRUE</property>
+                                        <property name="wrap-mode">none</property>
+                                    </object>
+                                    <packing>
+                                        <property name="left-attach">2</property>
+                                        <property name="top-attach">0</property>
+                                    </packing>
+                                </child>
+
                             </object>
                         </child>
                     </object>
