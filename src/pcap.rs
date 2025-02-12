@@ -89,6 +89,7 @@ pub fn packet_capture(tx: Arc<Mutex<Sender<Packet>>>) {
                 Interfaces::Bluetooth => {}
             }
 
+            tx.lock().unwrap().send(frame).expect("Failed to send packet");
 
             /*
             let mut frame = Frame::new();

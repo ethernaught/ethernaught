@@ -16,7 +16,6 @@ use gtk::glib::ControlFlow::Continue;
 use gtk::glib::{idle_add, Propagation};
 use gtk::glib::UnicodeBreakType::Contingent;
 use crate::application::{init_titlebar, create_row, init_actions};
-use crate::packet::inter::types::Types;
 use crate::pcap::packet_capture;
 
 //let (tx, rx) = channel();

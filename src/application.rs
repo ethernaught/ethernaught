@@ -5,6 +5,9 @@ use gtk::gio::SimpleAction;
 use gtk::prelude::{ActionMapExt, GtkWindowExt};
 use crate::packet::packet::Packet;
 use crate::packet::inter::interfaces::Interfaces;
+use crate::packet::layers::layer_1::ethernet_layer::EthernetLayer;
+use crate::packet::layers::layer_1::inter::types::Types;
+use crate::packet::layers::layer_2::ethernet::ipv4_layer::IPv4Layer;
 //use crate::config::VERSION;
 
 pub fn init_actions(app: &Application, window: &ApplicationWindow) {
@@ -129,36 +132,25 @@ pub fn create_row(number: u32, frame: Packet) -> ListBoxRow {
 
     match frame.get_interface() {
         Interfaces::Ethernet => {
-            match frame.get_layer(0).unwrap().get_layer_name() {
-                "a" => {}
-                _ => {}
+            let ethernet_layer = frame.get_layer(0).unwrap().as_any().downcast_ref::<EthernetLayer>().unwrap();
+
+            match ethernet_layer.get_type() {
+                Types::IPv4 => {
+                    let ipv4_layer = frame.get_layer(1).unwrap().as_any().downcast_ref::<IPv4Layer>().unwrap();
+
+                    source_label.set_label(&ipv4_layer.get_source_ip().to_string());
+                    destination_label.set_label(&ipv4_layer.get_destination_ip().to_string());
+
+                }
+                Types::Arp => {}
+                Types::IPv6 => {}
+                Types::Broadcast => {}
             }
 
         }
         Interfaces::WiFi => {}
         Interfaces::Bluetooth => {}
     }
-
-
-    /*
-    match packet.get_type() {
-        Types::Arp => {}
-        Types::Broadcast => {}
-        Types::Udp => {
-            //let packet = packet.as_any().downcast_ref::<dyn UdpPacketBase>().unwrap();
-
-            //source_label.set_label(&packet.get_ip_header().get_source_ip().to_string());
-            //destination_label.set_label(&packet.get_ip_header().get_destination_ip().to_string());
-        }
-        Types::Tcp => {
-            let packet = packet.as_any().downcast_ref::<TcpPacket>().unwrap();
-
-            source_label.set_label(&packet.get_ip_header().get_source_ip().to_string());
-            destination_label.set_label(&packet.get_ip_header().get_destination_ip().to_string());
-        }
-        _ => {}
-    }
-    */
 
     row
 }

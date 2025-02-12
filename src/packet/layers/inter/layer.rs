@@ -1,6 +1,6 @@
 use std::any::Any;
 
-pub trait Layer {
+pub trait Layer: Send {
 
     fn get_layer_name(&self) -> &str;
 
