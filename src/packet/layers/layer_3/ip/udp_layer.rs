@@ -43,16 +43,8 @@ impl UdpLayer {
 
 impl Layer for UdpLayer {
 
-    fn get_layer_name(&self) -> &str {
-        "UDP_LAYER"
-    }
-
     fn len(&self) -> usize {
         14
-    }
-
-    fn get_type(&self) -> String {
-        todo!()
     }
 
     fn as_any(&self) -> &dyn Any {

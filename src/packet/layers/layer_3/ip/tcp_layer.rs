@@ -1,5 +1,8 @@
+use std::any::Any;
+use crate::packet::layers::inter::layer::Layer;
+
 #[derive(Clone)]
-pub struct TcpHeader {
+pub struct TcpLayer {
     source_port: u16,
     destination_port: u16,
     sequence_number: u32,
@@ -11,7 +14,7 @@ pub struct TcpHeader {
     urgent_pointer: u16
 }
 
-impl TcpHeader {
+impl TcpLayer {
 
     pub fn from_bytes(buf: &[u8]) -> Option<Self> {
         if buf.len() < 20 {
@@ -65,5 +68,24 @@ impl TcpHeader {
 
     pub fn get_urgent_pointer(&self) -> u16 {
         self.urgent_pointer
+    }
+}
+
+impl Layer for TcpLayer {
+
+    fn len(&self) -> usize {
+        20
+    }
+
+    fn as_any(&self) -> &dyn Any {
+        self
+    }
+
+    fn as_any_mut(&mut self) -> &mut dyn Any {
+        self
+    }
+
+    fn dyn_clone(&self) -> Box<dyn Layer> {
+        Box::new(self.clone())
     }
 }

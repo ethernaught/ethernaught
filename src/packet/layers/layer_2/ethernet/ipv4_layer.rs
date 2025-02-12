@@ -97,16 +97,8 @@ impl IPv4Layer {
 
 impl Layer for IPv4Layer {
 
-    fn get_layer_name(&self) -> &str {
-        "IPV4_HEADER"
-    }
-
     fn len(&self) -> usize {
         20
-    }
-
-    fn get_type(&self) -> String {
-        todo!()
     }
 
     fn as_any(&self) -> &dyn Any {

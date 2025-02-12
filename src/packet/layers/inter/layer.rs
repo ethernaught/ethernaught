@@ -2,11 +2,7 @@ use std::any::Any;
 
 pub trait Layer: Send {
 
-    fn get_layer_name(&self) -> &str;
-
     fn len(&self) -> usize;
-
-    fn get_type(&self) -> String;
 
     fn as_any(&self) -> &dyn Any;
 

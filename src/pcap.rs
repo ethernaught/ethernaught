@@ -12,6 +12,7 @@ use crate::packet::layers::layer_1::inter::types::Types;
 use crate::packet::layers::layer_2::ethernet::inter::protocols::Protocols;
 use crate::packet::layers::layer_2::ethernet::ipv4_layer;
 use crate::packet::layers::layer_2::ethernet::ipv4_layer::IPv4Layer;
+use crate::packet::layers::layer_3::ip::tcp_layer::TcpLayer;
 use crate::packet::layers::layer_3::ip::udp_layer::UdpLayer;
 
 pub fn packet_capture(tx: Arc<Mutex<Sender<Packet>>>) {
@@ -58,12 +59,15 @@ pub fn packet_capture(tx: Arc<Mutex<Sender<Packet>>>) {
                             match ipv4_layer.get_protocol() {
                                 Protocols::Icmp => {}
                                 Protocols::Igmp => {}
-                                Protocols::Tcp => {}
+                                Protocols::Tcp => {
+                                    let tcp_layer = TcpLayer::from_bytes(&packet.data[off..]).expect("Failed to parse TCP frame");
+                                    frame.add_layer(tcp_layer.dyn_clone());
+                                    off += tcp_layer.len();
+                                }
                                 Protocols::Udp => {
                                     let udp_layer = UdpLayer::from_bytes(&packet.data[off..]).expect("Failed to parse UDP frame");
                                     frame.add_layer(udp_layer.dyn_clone());
-                                    off += ipv4_layer.len();
-
+                                    off += udp_layer.len();
                                 }
                                 Protocols::Ipv6 => {}
                                 Protocols::Gre => {}

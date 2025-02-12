@@ -38,16 +38,8 @@ impl EthernetLayer {
 
 impl Layer for EthernetLayer {
 
-    fn get_layer_name(&self) -> &str {
-        "ETHERNET_FRAME"
-    }
-
     fn len(&self) -> usize {
         14
-    }
-
-    fn get_type(&self) -> String {
-        todo!()
     }
 
     fn as_any(&self) -> &dyn Any {
