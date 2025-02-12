@@ -8,7 +8,7 @@
         <property name="orientation">horizontal</property>
 
         <child>
-            <object class="GTKBox" id="content_layout">
+            <object class="GtkBox" id="content_layout">
                 <property name="name">content_layout</property>
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
@@ -108,13 +108,35 @@
             </object>
         </child>
 
+
         <child>
-            <object class="GTKBox" id="sidebar_layout">
-                <property name="name">sidebar_layout</property>
+            <object class="GtkPaned" id="sidebar_layout">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="orientation">vertical</property>
-                <property name="width-request">300</property>
+
+
+                <child>
+                    <object class="GtkScrolledWindow">
+                        <property name="visible">True</property>
+                        <property name="hexpand">True</property>
+                        <property name="vexpand">True</property>
+                        <property name="height-request">300</property>
+
+                        <child>
+                            <object class="GtkTextView" id="hex_view">
+                                <property name="visible">True</property>
+                            </object>
+                        </child>
+                    </object>
+                </child>
+
+                <child>
+                    <object class="GtkLabel" id="hex_view2">
+                        <property name="visible">True</property>
+                        <property name="label">asdasdasd</property>
+                    </object>
+                </child>
 
             </object>
         </child>

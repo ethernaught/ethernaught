@@ -1,6 +1,7 @@
 mod application;
 mod pcap;
 mod packet;
+mod interface;
 
 use std::process::exit;
 use std::sync::{Arc, Mutex};
@@ -9,7 +10,7 @@ use std::thread;
 use std::time::Duration;
 use ::pcap::{Capture, Device};
 use gtk::prelude::*;
-use gtk::{Application, Builder, gio, CssProvider, StyleContext, gdk, ApplicationWindow, ListBox, ListBoxRow, Label, Orientation, ScrolledWindow, Image, ProgressBar, TreeView, ListStore, CellRendererText, TreeViewColumn, HeaderBar, Toolbar, Button, glib, StackSwitcher, Stack, Paned};
+use gtk::{Application, Builder, gio, CssProvider, StyleContext, gdk, ApplicationWindow, ListBox, ListBoxRow, Label, Orientation, ScrolledWindow, Image, ProgressBar, TreeView, ListStore, CellRendererText, TreeViewColumn, HeaderBar, Toolbar, Button, glib, StackSwitcher, Stack, Paned, TextView, TextBuffer};
 use gtk::gdk::{EventButton, EventMask};
 use gtk::gio::spawn_blocking;
 use gtk::glib::ControlFlow::Continue;
@@ -83,11 +84,6 @@ fn main() {
         //window.add(&switcher);
 
 
-        let builder = Builder::from_file("res/ui/gtk3/interface-fragment.ui");
-        let interface_layout: gtk::Box = builder
-            .object("interface_layout")
-            .expect("Couldn't find 'selection_layout' in interface-fragment.ui");
-        stack.add_titled(&interface_layout, "interface_layout", "Selection");
         //stack.set_visible_child_name("interface_layout");
 
 
@@ -101,6 +97,14 @@ fn main() {
 
         //window.add(&window_layout);
 
+        let hex_view: TextView = builder
+            .object("hex_view")
+            .expect("Couldn't find 'hex_view' in application-fragment.ui");
+
+        let buffer = TextBuffer::new(None::<&gtk::TextTagTable>);
+        hex_view.set_buffer(Some(&buffer));
+
+        buffer.set_text("hello world");
 
 
 
@@ -140,6 +144,13 @@ fn main() {
             .object("stop_button")
             .expect("Couldn't find 'stop_button' in titlebar-ui.xml");
 
+
+
+
+
+
+
+
         start_button.connect_clicked(move |_| {
             titlebar_app_options.style_context().add_class("running");
             start_icon.set_from_file(Some("res/images/ic_restart.svg"));
@@ -149,11 +160,8 @@ fn main() {
             packet_capture(tx.clone());
         });
 
-        init_actions(&app, &window);
 
-        window.show();
-
-        let mut i =0;
+        let mut i = 0;
 
         glib::timeout_add_local(Duration::from_millis(10), move || {
             match rx.try_recv() {
@@ -169,6 +177,13 @@ fn main() {
             }
             Continue
         });
+
+
+
+
+
+
+        init_actions(&app, &window);
 
 
 
