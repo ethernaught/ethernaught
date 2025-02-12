@@ -9,7 +9,7 @@ use std::thread;
 use std::time::Duration;
 use ::pcap::{Capture, Device};
 use gtk::prelude::*;
-use gtk::{Application, Builder, gio, CssProvider, StyleContext, gdk, ApplicationWindow, ListBox, ListBoxRow, Label, Orientation, ScrolledWindow, Image, ProgressBar, TreeView, ListStore, CellRendererText, TreeViewColumn, HeaderBar, Toolbar, Button, glib};
+use gtk::{Application, Builder, gio, CssProvider, StyleContext, gdk, ApplicationWindow, ListBox, ListBoxRow, Label, Orientation, ScrolledWindow, Image, ProgressBar, TreeView, ListStore, CellRendererText, TreeViewColumn, HeaderBar, Toolbar, Button, glib, StackSwitcher, Stack, Paned};
 use gtk::gdk::{EventButton, EventMask};
 use gtk::gio::spawn_blocking;
 use gtk::glib::ControlFlow::Continue;
@@ -55,6 +55,9 @@ fn main() {
 
 
 
+
+
+
         /*
         let svg_data = include_bytes!("../res/ic_launcher.svg");
         let loader = PixbufLoader::with_type("svg").expect("Failed to create SVG loader");
@@ -71,16 +74,43 @@ fn main() {
 
 
 
+        let stack = Stack::new();
+        window.add(&stack);
+        stack.show();
 
-        let list_box = ListBox::new();
-        //for i in 0..100 {
-        //list_box.add(&create_row());
-        //}
+        //let switcher = StackSwitcher::new();
+        //switcher.set_stack(Some(&stack));
+        //window.add(&switcher);
+
+
+        let builder = Builder::from_file("res/ui/gtk3/selection-fragment.ui");
+        let selection_layout: gtk::Box = builder
+            .object("selection_layout")
+            .expect("Couldn't find 'selection_layout' in selection-fragment.ui");
+        stack.add_titled(&selection_layout, "selection_layout", "Selection");
+        stack.set_visible_child_name("selection_layout");
+
+
+        let builder = Builder::from_file("res/ui/gtk3/application-fragment.ui");
+        let window_layout: Paned = builder
+            .object("window_layout")
+            .expect("Couldn't find 'window_layout' in application-fragment.ui");
+
+        stack.add_titled(&window_layout, "application_fragment", "Application");
+        //stack.set_visible_child_name("application_fragment");
+
+        //window.add(&window_layout);
+
+
+
+
+
+
+
+
+
         /*
-        list_box.add(&create_row(PacketType::Tcp));
-        list_box.add(&create_row(PacketType::Udp));
-        list_box.add(&create_row(PacketType::Icmp));
-        list_box.add(&create_row(PacketType::Gre));*/
+        let list_box = ListBox::new();
 
         let list_scroll_layout: ScrolledWindow = builder
             .object("list_scroll_layout")
@@ -123,10 +153,7 @@ fn main() {
 
         init_actions(&app, &window);
 
-        //window.show_all();
         window.show();
-
-
 
         let mut i =0;
 
@@ -142,12 +169,11 @@ fn main() {
                 _ => {
                 }
             }
-
-
-
             Continue
         });
+        */
 
+        window.show();
 
     });
 
