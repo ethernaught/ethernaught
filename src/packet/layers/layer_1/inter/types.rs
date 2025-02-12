@@ -26,4 +26,13 @@ impl Types {
             Self::Broadcast => 34969
         }
     }
+
+    pub fn as_str(&self) -> &str {
+        match self {
+            Self::IPv4 => "IPv4",
+            Self::Arp => "ARP",
+            Self::IPv6 => "IPv6",
+            Self::Broadcast => "Broadcast"
+        }
+    }
 }

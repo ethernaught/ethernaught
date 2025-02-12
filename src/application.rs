@@ -7,6 +7,7 @@ use crate::packet::packet::Packet;
 use crate::packet::inter::interfaces::Interfaces;
 use crate::packet::layers::layer_1::ethernet_layer::EthernetLayer;
 use crate::packet::layers::layer_1::inter::types::Types;
+use crate::packet::layers::layer_2::ethernet::inter::protocols::Protocols;
 use crate::packet::layers::layer_2::ethernet::ipv4_layer::IPv4Layer;
 //use crate::config::VERSION;
 
@@ -133,14 +134,17 @@ pub fn create_row(number: u32, frame: Packet) -> ListBoxRow {
     match frame.get_interface() {
         Interfaces::Ethernet => {
             let ethernet_layer = frame.get_layer(0).unwrap().as_any().downcast_ref::<EthernetLayer>().unwrap();
+            //row.style_context().add_class(ethernet_layer.get_type().as_str()); //DO THIS BETTER...
+            protocol_label.set_label(ethernet_layer.get_type().to_string()); //DO THIS BETTER...
 
             match ethernet_layer.get_type() {
                 Types::IPv4 => {
                     let ipv4_layer = frame.get_layer(1).unwrap().as_any().downcast_ref::<IPv4Layer>().unwrap();
 
+                    //row.style_context().add_class(ipv4_layer.get_protocol().as_str()); //DO THIS BETTER...
                     source_label.set_label(&ipv4_layer.get_source_ip().to_string());
                     destination_label.set_label(&ipv4_layer.get_destination_ip().to_string());
-
+                    protocol_label.set_label(ipv4_layer.get_protocol().to_string()); //DO THIS BETTER...
                 }
                 Types::Arp => {}
                 Types::IPv6 => {}

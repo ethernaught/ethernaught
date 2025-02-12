@@ -34,4 +34,17 @@ impl Protocols {
             Self::Sps => 128
         }
     }
+
+    pub fn as_str(&self) -> &str {
+        match self {
+            Self::Icmp => "ICMP",
+            Self::Igmp => "IGMP",
+            Self::Tcp => "TCP",
+            Self::Udp => "UDP",
+            Self::Ipv6 => "IPv6",
+            Self::Gre => "GRE",
+            Self::Ospf => "OSPF",
+            Self::Sps => "SPS"
+        }
+    }
 }
