@@ -71,6 +71,7 @@ pub fn packet_capture(tx: Arc<Mutex<Sender<Packet>>>) {
                                     off += udp_layer.len();
                                 }
                                 Protocols::Ipv6 => {}
+                                Protocols::Icmpv6 => {}
                                 Protocols::Gre => {}
                                 Protocols::Ospf => {}
                                 Protocols::Sps => {}
@@ -100,6 +101,7 @@ pub fn packet_capture(tx: Arc<Mutex<Sender<Packet>>>) {
                                     off += udp_layer.len();
                                 }
                                 Protocols::Ipv6 => {}
+                                Protocols::Icmpv6 => {}
                                 Protocols::Gre => {}
                                 Protocols::Ospf => {}
                                 Protocols::Sps => {}
