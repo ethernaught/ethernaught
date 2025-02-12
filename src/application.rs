@@ -89,7 +89,7 @@ pub fn init_titlebar(window: &ApplicationWindow, app: &Application) -> Builder {
 }
 
 
-pub fn create_row(number: u32, frame: Packet) -> ListBoxRow {
+pub fn create_row(number: u32, packet: Packet) -> ListBoxRow {
     let builder = Builder::from_file("res/ui/list_item.xml");
     let row: ListBoxRow = builder
         .object("row")
@@ -107,7 +107,7 @@ pub fn create_row(number: u32, frame: Packet) -> ListBoxRow {
     let time_label: Label = builder
         .object("time")
         .expect("Couldn't find 'time' in list_item.xml");
-    //time_label.set_label(format!("{}", packet.get_frame_time()).as_str());
+    time_label.set_label(format!("{:.5}", packet.get_frame_time()).as_str());
 
     let source_label: Label = builder
         .object("source")
@@ -125,36 +125,55 @@ pub fn create_row(number: u32, frame: Packet) -> ListBoxRow {
     let length_label: Label = builder
         .object("length")
         .expect("Couldn't find 'length' in list_item.xml");
-    //length_label.set_label(format!("{}", packet.len()).as_str());
+    length_label.set_label(format!("{}", packet.len()).as_str());
 
     let info_label: Label = builder
         .object("info")
         .expect("Couldn't find 'info' in list_item.xml");
 
-    match frame.get_interface() {
+    let protocol = match packet.get_interface() {
         Interfaces::Ethernet => {
-            let ethernet_layer = frame.get_layer(0).unwrap().as_any().downcast_ref::<EthernetLayer>().unwrap();
-            //row.style_context().add_class(&ethernet_layer.get_type().to_string()); //DO THIS BETTER...
-            protocol_label.set_label(ethernet_layer.get_type().to_string()); //DO THIS BETTER...
+            let ethernet_layer = packet.get_layer(0).unwrap().as_any().downcast_ref::<EthernetLayer>().unwrap();
 
             match ethernet_layer.get_type() {
                 Types::IPv4 => {
-                    let ipv4_layer = frame.get_layer(1).unwrap().as_any().downcast_ref::<IPv4Layer>().unwrap();
+                    let ipv4_layer = packet.get_layer(1).unwrap().as_any().downcast_ref::<IPv4Layer>().unwrap();
 
-                    //row.style_context().add_class(&ipv4_layer.get_protocol().to_string()); //DO THIS BETTER...
                     source_label.set_label(&ipv4_layer.get_source_ip().to_string());
                     destination_label.set_label(&ipv4_layer.get_destination_ip().to_string());
-                    protocol_label.set_label(ipv4_layer.get_protocol().to_string()); //DO THIS BETTER...
+
+                    ipv4_layer.get_protocol().to_string()
                 }
-                Types::Arp => {}
-                Types::IPv6 => {}
-                Types::Broadcast => {}
+                Types::Arp => {
+                    source_label.set_label(&ethernet_layer.get_source().to_string());
+                    destination_label.set_label(&ethernet_layer.get_destination().to_string());
+                    ethernet_layer.get_type().to_string()
+                }
+                Types::IPv6 => {
+                    "[IPv6] TODO".to_string()
+                }
+                Types::Broadcast => {
+                    source_label.set_label(&ethernet_layer.get_source().to_string());
+                    destination_label.set_label(&ethernet_layer.get_destination().to_string());
+                    ethernet_layer.get_type().to_string()
+                }
+                _ => {
+                    ethernet_layer.get_type().to_string()
+                }
             }
 
         }
-        Interfaces::WiFi => {}
-        Interfaces::Bluetooth => {}
-    }
+        Interfaces::WiFi => {
+            "[WiFi] TODO".to_string()
+        }
+        Interfaces::Bluetooth => {
+            "[Bluetooth] TODO".to_string()
+        }
+    };
+
+    row.style_context().add_class(&protocol);
+    protocol_label.set_label(&protocol);
+
 
     row
 }

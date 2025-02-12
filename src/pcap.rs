@@ -33,19 +33,18 @@ pub fn packet_capture(tx: Arc<Mutex<Sender<Packet>>>) {
 
         let interface = Interfaces::Ethernet;
 
-        /*
         let now = SystemTime::now()
             .duration_since(UNIX_EPOCH)
             .expect("Time went backwards")
-            .as_millis();*/
+            .as_millis() as f64;
 
         while let Ok(packet) = cap.next_packet() {
+            let timestamp = (get_timestamp(packet.header.ts.tv_sec as u32, packet.header.ts.tv_usec as u32)-now)/1000.0;
 
-            let mut frame = Packet::new(interface.clone());
+            let mut frame = Packet::new(interface.clone(), timestamp, packet.header.len);
 
             match frame.get_interface() {
                 Interfaces::Ethernet => {
-
                     let ethernet_layer = EthernetLayer::from_bytes(packet.data).expect("Failed to parse Ethernet frame");
                     frame.add_layer(ethernet_layer.dyn_clone());
                     let mut off = ethernet_layer.len();
@@ -164,6 +163,7 @@ pub fn packet_capture(tx: Arc<Mutex<Sender<Packet>>>) {
     });
 }
 
-fn get_timestamp(ts_sec: u32, ts_usec: u32) -> u128 {
-    (ts_sec as u128 * 1000) + (ts_usec as u128 / 1000)
+fn get_timestamp(ts_sec: u32, ts_usec: u32) -> f64 {
+    //(ts_sec as u128 * 1000) + (ts_usec as u128 / 1000)
+    ts_sec as f64 * 1000.0 + ts_usec as f64 / 1000.0
 }

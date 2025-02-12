@@ -150,22 +150,29 @@ list row #number {
 
 
 
+list row.ARP {
+    background-color: #05211b;/*#151a19;*/
+}
+
+list row.Broadcast {
+    background-color: #000000;/*#151a19;*/
+}
+
 list row.TCP {
-    background-color: #151a19;
+    background-color: #1e0926/*#151a19;*/
 }
 
 list row.UDP {
-    background-color: #1e0f00;
+    background-color: #070c1f;/*#1e0f00;*/
 }
 
 list row.icmp {
-    background-color: #1e1c00;
+    background-color: #260d07;/*#1e1c00;*/
 }
 
 list row.gre {
-    background-color: #1c161d;
+    background-color: #122407;/*#1c161d;*/
 }
-
 
 
 list row:active,

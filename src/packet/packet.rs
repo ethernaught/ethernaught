@@ -2,21 +2,25 @@ use crate::packet::inter::interfaces::Interfaces;
 use crate::packet::layers::inter::layer::Layer;
 
 pub struct Packet {
+    interface: Interfaces,
     layers: Vec<Box<dyn Layer>>,
-    frame_time: u32,
-    length: usize,
-    interface: Interfaces
+    frame_time: f64,
+    length: u32
 }
 
 impl Packet {
 
-    pub fn new(interface: Interfaces) -> Self {
+    pub fn new(interface: Interfaces, frame_time: f64, length: u32) -> Self {
         Self {
+            interface,
             layers: Vec::new(),
-            frame_time: 0,
-            length: 0,
-            interface
+            frame_time,
+            length
         }
+    }
+
+    pub fn get_interface(&self) -> &Interfaces {
+        &self.interface
     }
 
     pub fn add_layer(&mut self, layer: Box<dyn Layer>) {
@@ -35,11 +39,11 @@ impl Packet {
         self.layers.len()
     }
 
-    pub fn get_interface(&self) -> &Interfaces {
-        &self.interface
+    pub fn get_frame_time(&self) -> f64 {
+        self.frame_time
     }
 
-    pub fn len(&self) -> usize {
+    pub fn len(&self) -> u32 {
         self.length
     }
 }
