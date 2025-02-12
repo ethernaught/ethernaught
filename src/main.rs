@@ -88,7 +88,7 @@ fn main() {
             .object("selection_layout")
             .expect("Couldn't find 'selection_layout' in selection-fragment.ui");
         stack.add_titled(&selection_layout, "selection_layout", "Selection");
-        stack.set_visible_child_name("selection_layout");
+        //stack.set_visible_child_name("selection_layout");
 
 
         let builder = Builder::from_file("res/ui/gtk3/application-fragment.ui");
@@ -97,7 +97,7 @@ fn main() {
             .expect("Couldn't find 'window_layout' in application-fragment.ui");
 
         stack.add_titled(&window_layout, "application_fragment", "Application");
-        //stack.set_visible_child_name("application_fragment");
+        stack.set_visible_child_name("application_fragment");
 
         //window.add(&window_layout);
 
@@ -108,8 +108,6 @@ fn main() {
 
 
 
-
-        /*
         let list_box = ListBox::new();
 
         let list_scroll_layout: ScrolledWindow = builder
@@ -171,7 +169,10 @@ fn main() {
             }
             Continue
         });
-        */
+
+
+
+
 
         window.show();
 

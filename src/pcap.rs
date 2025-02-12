@@ -10,7 +10,6 @@ use crate::packet::layers::inter::layer::Layer;
 use crate::packet::layers::layer_1::ethernet_layer::EthernetLayer;
 use crate::packet::layers::layer_1::inter::types::Types;
 use crate::packet::layers::layer_2::ethernet::inter::protocols::Protocols;
-use crate::packet::layers::layer_2::ethernet::ipv4_layer;
 use crate::packet::layers::layer_2::ethernet::ipv4_layer::IPv4Layer;
 use crate::packet::layers::layer_3::ip::tcp_layer::TcpLayer;
 use crate::packet::layers::layer_3::ip::udp_layer::UdpLayer;
@@ -18,6 +17,8 @@ use crate::packet::layers::layer_3::ip::udp_layer::UdpLayer;
 pub fn packet_capture(tx: Arc<Mutex<Sender<Packet>>>) {
     thread::spawn(move || {
         let devices = Device::list().expect("Failed to get device list");
+
+        println!("Devices: {:?}", devices);
 
         let device = devices.into_iter().find(|d| d.name.contains("wlp7s0"))
             .expect("No suitable device found");

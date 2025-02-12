@@ -6,6 +6,12 @@ window {
     border-bottom: solid 1px #5a5d63;
 }
 
+button:focus, button:checked {
+    outline: none;
+    border: none;
+    box-shadow: none;
+}
+
 
 #titlebar {
     min-height: 0;
@@ -61,6 +67,7 @@ window {
 
 #network_type_label {
     color: #cbd7dc;
+    font-size: 14px;
 }
 
 
@@ -127,6 +134,7 @@ menubar {
 
 #list_header_layout label {
     padding: 4px 10px;
+    font-size: 12px;
     color: #cbd7dc;
     background-color: #1e1f22;
 }
@@ -141,6 +149,7 @@ list row {
 
 list row label {
     padding: 2px 10px;
+    font-size: 14px;
     color: #a7a7a7;
 }
 
@@ -166,11 +175,11 @@ list row.UDP {
     background-color: #070c1f;/*#1e0f00;*/
 }
 
-list row.icmp {
+list row.ICMP {
     background-color: #260d07;/*#1e1c00;*/
 }
 
-list row.gre {
+list row.GRE {
     background-color: #122407;/*#1c161d;*/
 }
 
