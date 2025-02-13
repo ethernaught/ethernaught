@@ -6,6 +6,12 @@ window {
     border-bottom: solid 1px #5a5d63;
 }
 
+window.maximized {
+    border-left: none;
+    border-right: none;
+    border-bottom: none;
+}
+
 button:focus, button:checked {
     outline: none;
     border: none;
@@ -21,6 +27,12 @@ button:focus, button:checked {
     border-right: solid 1px #5a5d63;
     padding: 4px 8px;
     background: linear-gradient(90deg, #2b2d30 0%, #59436e 20%, #2b2d30 40%);
+}
+
+window.maximized #titlebar {
+    border-top: none;
+    border-left: none;
+    border-right: none;
 }
 
 

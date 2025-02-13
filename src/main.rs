@@ -14,7 +14,7 @@ use gtk::{Application, Builder, gio, CssProvider, StyleContext, gdk, Application
 use gtk::gdk::{EventButton, EventMask};
 use gtk::gio::spawn_blocking;
 use gtk::glib::ControlFlow::Continue;
-use gtk::glib::{idle_add, Propagation};
+use gtk::glib::{clone, idle_add, Propagation};
 use gtk::glib::UnicodeBreakType::Contingent;
 use crate::application::{init_titlebar, create_row, init_actions};
 use crate::pcap::packet_capture;

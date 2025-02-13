@@ -133,7 +133,6 @@
                         <property name="hexpand">True</property>
                         <property name="height-request">40</property>
                         <property name="orientation">horizontal</property>
-                        <property name="halign">end</property>
 
                         <child>
                             <object class="GtkButton" id="dismiss_button">
