@@ -144,7 +144,7 @@ menubar {
     background-color: transparent;
 }
 
-#list_header_layout label {
+#list_header_scroll_layout label {
     padding: 4px 10px;
     font-size: 12px;
     color: #cbd7dc;
@@ -202,9 +202,24 @@ list row:active,
 
 
 
+#sidebar_title {
+    padding: 4px 4px 3px 4px;
+    border-bottom: solid 1px #393b40;
+}
 
+#sidebar_title button {
+    min-height: 0;
+    padding: 4px;
+    border-radius: 6px;
+    border: none;
+    background: transparent;
+}
 
-#hex_grid * {
+#sidebar_title button:hover {
+    background-color: rgba(127, 127, 127, 0.2);
+}
+
+#hex_content * {
     color: #9b9d9f;
     background-color: #1e1f22;
 }

@@ -172,7 +172,7 @@ fn main() {
 
         buffer.set_text(&hex_data);*/
 
-        let line_numbers: TextView = builder.object("line_numbers").unwrap();
+        let line_numbers: TextView = builder.object("hex_line_numbers").unwrap();
         let hex_text_view: TextView = builder.object("hex_text_view").unwrap();
         let ascii_text_view: TextView = builder.object("ascii_text_view").unwrap();
 

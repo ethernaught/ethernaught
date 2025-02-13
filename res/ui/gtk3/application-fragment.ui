@@ -20,12 +20,12 @@
                         <property name="name">list_header_scroll_layout</property>
                         <property name="visible">True</property>
                         <property name="hexpand">True</property>
+                        <property name="height-request">40</property>
                         <property name="hscrollbar-policy">automatic</property>
                         <property name="vscrollbar-policy">never</property>
 
                         <child>
                             <object class="GtkBox">
-                                <property name="name">list_header_layout</property>
                                 <property name="visible">True</property>
                                 <property name="hexpand">True</property>
                                 <property name="orientation">horizontal</property>
@@ -36,7 +36,6 @@
                                         <property name="visible">True</property>
                                         <property name="label">No.</property>
                                         <property name="width-request">100</property>
-                                        <property name="height-request">40</property>
                                         <property name="halign">start</property>
                                         <property name="xalign">0.0</property>
                                     </object>
@@ -47,7 +46,6 @@
                                         <property name="visible">True</property>
                                         <property name="label">Time</property>
                                         <property name="width-request">150</property>
-                                        <property name="height-request">40</property>
                                         <property name="halign">start</property>
                                         <property name="xalign">0.0</property>
                                     </object>
@@ -58,7 +56,6 @@
                                         <property name="visible">True</property>
                                         <property name="label">Source</property>
                                         <property name="width-request">150</property>
-                                        <property name="height-request">40</property>
                                         <property name="halign">start</property>
                                         <property name="xalign">0.0</property>
                                     </object>
@@ -69,7 +66,6 @@
                                         <property name="visible">True</property>
                                         <property name="label">Destination</property>
                                         <property name="width-request">150</property>
-                                        <property name="height-request">40</property>
                                         <property name="xalign">0.0</property>
                                     </object>
                                 </child>
@@ -79,7 +75,6 @@
                                         <property name="visible">True</property>
                                         <property name="label">Protocol</property>
                                         <property name="width-request">80</property>
-                                        <property name="height-request">40</property>
                                         <property name="xalign">0.0</property>
                                     </object>
                                 </child>
@@ -89,7 +84,6 @@
                                         <property name="visible">True</property>
                                         <property name="label">Length</property>
                                         <property name="width-request">80</property>
-                                        <property name="height-request">16</property>
                                         <property name="xalign">0.0</property>
                                     </object>
                                 </child>
@@ -98,7 +92,6 @@
                                     <object class="GtkLabel" id="info">
                                         <property name="visible">True</property>
                                         <property name="label">Info</property>
-                                        <property name="height-request">40</property>
                                         <property name="xalign">0.0</property>
                                         <property name="hexpand">True</property>
                                     </object>
@@ -133,11 +126,31 @@
                 <property name="orientation">vertical</property>
 
                 <child>
-                    <object class="GtkBox" id="hex_scroll_title">
-                        <property name="name">hex_scroll_title</property>
+                    <object class="GtkBox" id="sidebar_title">
+                        <property name="name">sidebar_title</property>
                         <property name="visible">True</property>
                         <property name="hexpand">True</property>
                         <property name="height-request">40</property>
+                        <property name="orientation">horizontal</property>
+
+                        <child>
+                            <object class="GtkButton" id="dismiss_button">
+                                <property name="visible">True</property>
+                                <property name="width-request">16</property>
+                                <property name="height-request">16</property>
+                                <property name="halign">end</property>
+
+                                <child>
+                                    <object class="GtkImage">
+                                        <property name="visible">True</property>
+                                        <property name="width-request">16</property>
+                                        <property name="height-request">16</property>
+                                        <property name="icon-name">dismiss</property>
+                                        <property name="file">res/images/ic_dismiss.svg</property>
+                                    </object>
+                                </child>
+                            </object>
+                        </child>
                     </object>
                 </child>
 
@@ -150,7 +163,6 @@
                         <property name="orientation">vertical</property>
                         <property name="width-request">200</property>
 
-
                         <child>
                             <object class="GtkScrolledWindow" id="hex_scroll_layout">
                                 <property name="visible">True</property>
@@ -161,16 +173,15 @@
                                 <property name="height-request">100</property>
 
                                 <child>
-                                    <object class="GtkGrid" id="hex_grid">
-                                        <property name="name">hex_grid</property>
+                                    <object class="GtkGrid">
+                                        <property name="name">hex_content</property>
                                         <property name="visible">True</property>
                                         <property name="hexpand">True</property>
                                         <property name="vexpand">True</property>
                                         <property name="column-spacing">10</property>
 
-                                        <!-- Line Numbers -->
                                         <child>
-                                            <object class="GtkTextView" id="line_numbers">
+                                            <object class="GtkTextView" id="hex_line_numbers">
                                                 <property name="visible">True</property>
                                                 <property name="editable">FALSE</property>
                                                 <property name="monospace">TRUE</property>
@@ -184,7 +195,6 @@
                                             </packing>
                                         </child>
 
-                                        <!-- Hex Data -->
                                         <child>
                                             <object class="GtkTextView" id="hex_text_view">
                                                 <property name="visible">True</property>
