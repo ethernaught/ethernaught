@@ -209,7 +209,6 @@
                                             </packing>
                                         </child>
 
-                                        <!-- ASCII Column (Optional) -->
                                         <child>
                                             <object class="GtkTextView" id="ascii_text_view">
                                                 <property name="visible">True</property>
@@ -230,10 +229,12 @@
                         </child>
 
                         <child>
-                            <object class="GtkLabel" id="hex_view2">
+                            <object class="GtkBox">
                                 <property name="visible">True</property>
-                                <property name="label">asdasdasd</property>
-                                <property name="height-request">32</property>
+                                <property name="hexpand">True</property>
+                                <property name="vexpand">True</property>
+                                <property name="orientation">vertical</property>
+
                             </object>
                         </child>
 

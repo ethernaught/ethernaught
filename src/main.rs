@@ -144,39 +144,93 @@ fn main() {
 
 
 
-
-        /*
-        let hex_view: TextView = builder
-            .object("hex_view")
-            .expect("Couldn't find 'hex_view' in application-fragment.ui");
-
-        let buffer = TextBuffer::new(None::<&gtk::TextTagTable>);
-        hex_view.set_buffer(Some(&buffer));
-
         let hex_data = vec![
-            0x00, 0x00, 0x84, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x01, 0x03, 0x32, 0x32, 0x36,
-            0x01, 0x30, 0x03, 0x31, 0x36, 0x38, 0x03, 0x31, 0x39, 0x32, 0x07, 0x69, 0x6e, 0x2d, 0x61, 0x64,
-            0x64, 0x72, 0x04, 0x61, 0x72, 0x70, 0x61, 0x00, 0x00, 0x0c, 0x80, 0x01, 0x00, 0x00, 0x00, 0x78,
-            0x00, 0x0f, 0x07, 0x41, 0x6e, 0x64, 0x72, 0x6f, 0x69, 0x64, 0x05, 0x6c, 0x6f, 0x63, 0x61, 0x6c,
-            0x00, 0xc0, 0x0c, 0x00, 0x2f, 0x80, 0x01, 0x00, 0x00, 0x00, 0x78, 0x00, 0x06, 0xc0, 0x0c, 0x00,
-            0x02, 0x00, 0x08
+            0x3c, 0x52, 0xa1, 0x12, 0xa4, 0x50, 0x1c, 0xce,
+            0x51, 0x34, 0x00, 0x9f, 0x08, 0x00, 0x45, 0x00,
+            0x00, 0x3f, 0xe5, 0xa4, 0x40, 0x00, 0x40, 0x11,
+            0x79, 0x9d, 0xc0, 0xa8, 0x00, 0x81, 0x34, 0x60,
+            0xe5, 0xe2, 0xb8, 0x04, 0x01, 0xbb, 0x00, 0x2b,
+            0xd1, 0xd5, 0x44, 0x39, 0x34, 0x60, 0xe5, 0xe2,
+            0x52, 0x60, 0x99, 0x2f, 0x68, 0xd0, 0x12, 0x6d,
+            0xe8, 0x37, 0x2b, 0x67, 0x1a, 0xa5, 0x2b, 0x0c,
+            0xf6, 0x3b, 0x5e, 0xfa, 0x74, 0x80, 0xbc, 0x29,
+            0xd8, 0x37, 0xbf, 0xe3, 0x5c,
         ];
 
-        let hex_data = hex_data.chunks(16)
-            .map(|chunk| chunk.iter().map(|b| format!("{:02X}", b)).collect::<Vec<_>>().join(" "))
-            .collect::<Vec<_>>()
-            .join("\n");
-
-        buffer.set_text(&hex_data);*/
 
         let line_numbers: TextView = builder.object("hex_line_numbers").unwrap();
         let hex_text_view: TextView = builder.object("hex_text_view").unwrap();
         let ascii_text_view: TextView = builder.object("ascii_text_view").unwrap();
 
-        // Set placeholder text for each text view
-        line_numbers.buffer().unwrap().set_text("00000000\n00000010\n00000020\n...");
-        hex_text_view.buffer().unwrap().set_text("00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00\n...");
-        ascii_text_view.buffer().unwrap().set_text(". . . . . . . .  . . . . . . . .\n...");
+        let line_numbers_string = hex_data.chunks(16)
+            .enumerate()
+            .map(|(i, _)| format!("{:08X}", i * 16))  // Format line numbers in hex
+            .collect::<Vec<_>>()
+            .join("\n");
+
+        line_numbers.buffer().unwrap().set_text(&line_numbers_string);
+
+        let hex_string = hex_data.chunks(16)
+            .map(|chunk| chunk.iter().map(|b| format!("{:02X}", b)).collect::<Vec<_>>().join(" "))
+            .collect::<Vec<_>>()
+            .join("\n");
+
+        hex_text_view.buffer().unwrap().set_text(&hex_string);
+
+
+        /*
+        let hex_ascii_string = hex_data.chunks(16)
+            .map(|chunk| {
+                let hex_part = chunk.iter()
+                    .map(|b| format!("{:02X}", b))
+                    .collect::<Vec<_>>()
+                    .join(" ");
+
+                let ascii_part = chunk.iter()
+                    .map(|&b| {
+                        // Check if byte is a printable ASCII character (0x20 to 0x7E)
+                        if (b >= 0x20 && b <= 0x7E) {
+                            char::from_u32(b as u32).unwrap_or('.')
+                        } else {
+                            '.' // Non-printable characters replaced with '.'
+                        }
+                    })
+                    .collect::<String>();
+
+                format!("{: <47} {}", hex_part, ascii_part)
+            })
+            .collect::<Vec<_>>()
+            .join("\n");
+            */
+
+        let ascii_string = hex_data.chunks(16)
+            .map(|chunk| {
+                chunk.iter()
+                    .map(|&b| {
+                        // Check if byte is a printable ASCII character (0x20 to 0x7E)
+                        if (b >= 0x20 && b <= 0x7E) {
+                            // Convert byte to char using `char::from_u32()`
+                            char::from_u32(b as u32).unwrap_or('.') // Fall back to '.' if invalid
+                        } else {
+                            '.' // Non-printable characters replaced with '.'
+                        }
+                    })
+                    .collect::<String>()
+            })
+            .collect::<Vec<_>>()
+            .join("\n");
+
+        ascii_text_view.buffer().unwrap().set_text(&ascii_string);
+
+
+
+
+
+
+
+
+
+
 
 
 
