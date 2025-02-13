@@ -10,7 +10,7 @@ use std::thread;
 use std::time::Duration;
 use ::pcap::{Capture, Device};
 use gtk::prelude::*;
-use gtk::{Application, Builder, gio, CssProvider, StyleContext, gdk, ApplicationWindow, ListBox, ListBoxRow, Label, Orientation, ScrolledWindow, Image, ProgressBar, TreeView, ListStore, CellRendererText, TreeViewColumn, HeaderBar, Toolbar, Button, glib, StackSwitcher, Stack, Paned, TextView, TextBuffer, Adjustment, Grid};
+use gtk::{Application, Builder, gio, CssProvider, StyleContext, gdk, ApplicationWindow, ListBox, ListBoxRow, Label, Orientation, ScrolledWindow, Image, ProgressBar, TreeView, ListStore, CellRendererText, TreeViewColumn, HeaderBar, Toolbar, Button, glib, StackSwitcher, Stack, Paned, TextView, TextBuffer, Adjustment, Grid, TextTag};
 use gtk::gdk::{EventButton, EventMask};
 use gtk::gio::spawn_blocking;
 use gtk::glib::ControlFlow::Continue;
@@ -167,15 +167,18 @@ fn main() {
             .map(|(i, _)| format!("{:08X}", i * 16))  // Format line numbers in hex
             .collect::<Vec<_>>()
             .join("\n");
-
         line_numbers.buffer().unwrap().set_text(&line_numbers_string);
 
         let hex_string = hex_data.chunks(16)
             .map(|chunk| chunk.iter().map(|b| format!("{:02X}", b)).collect::<Vec<_>>().join(" "))
             .collect::<Vec<_>>()
             .join("\n");
-
         hex_text_view.buffer().unwrap().set_text(&hex_string);
+
+
+
+
+
 
 
         /*
@@ -201,7 +204,11 @@ fn main() {
             })
             .collect::<Vec<_>>()
             .join("\n");
-            */
+
+        // Insert Text
+        ascii_text_view.buffer().unwrap().set_text(&ascii_string);
+        */
+
 
         let ascii_string = hex_data.chunks(16)
             .map(|chunk| {
@@ -221,6 +228,63 @@ fn main() {
             .join("\n");
 
         ascii_text_view.buffer().unwrap().set_text(&ascii_string);
+
+        // Create Tags
+        let buffer = ascii_text_view.buffer().unwrap();
+        let tag_table = buffer.tag_table().unwrap();
+
+        /*
+        let layer_1 = TextTag::builder().name("layer_1").background("#3f5222").build();
+        let layer_2 = TextTag::builder().name("layer_2").background("#1c314a").build();
+        let layer_3 = TextTag::builder().name("layer_3").background("#070c1f").build();
+        tag_table.add(&layer_1);
+        tag_table.add(&layer_2);
+        tag_table.add(&layer_3);
+
+        let start_iter = buffer.start_iter();
+        let mut end_iter = start_iter.clone();
+        end_iter.forward_chars(14);
+        buffer.apply_tag(&layer_1, &start_iter, &end_iter);
+
+        let start_iter = end_iter;
+        //start_iter.forward_chars(14);
+        let mut end_iter = start_iter.clone();
+        end_iter.forward_chars(20);
+        buffer.apply_tag(&layer_2, &start_iter, &end_iter);
+
+        let start_iter = end_iter;
+        let mut end_iter = start_iter.clone();
+        end_iter.forward_chars(8);
+        buffer.apply_tag(&layer_3, &start_iter, &end_iter);
+        */
+
+
+
+        /*
+        //let hover_tag = layer_1;
+        let hover_start = buffer.iter_at_offset(0); // "Special"
+        let mut hover_end = buffer.iter_at_offset(14); // "words"
+
+        ascii_text_view.connect_motion_notify_event(move |text_view, event| {
+            let (mouse_x, mouse_y) = event.position();
+
+            // Get text offset from coordinates
+            let buffer = text_view.buffer().unwrap();
+            if let Some(iter) = text_view.iter_at_location(mouse_x as i32, mouse_y as i32) {
+                // Remove previous highlight
+                buffer.remove_all_tags(&hover_start, &hover_end);
+
+                // Check if the mouse is inside the word range
+                if iter.offset() >= hover_start.offset() && iter.offset() <= hover_end.offset() {
+
+                    let layer_1 = TextTag::builder().name("layer_1").background("#3f5222").build();
+                    buffer.apply_tag(&layer_1, &hover_start, &hover_end);
+                }
+            }
+
+            Propagation::Proceed
+        });
+        */
 
 
 

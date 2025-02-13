@@ -35,7 +35,7 @@ impl Packet {
         &self.layers
     }
 
-    pub fn get_total_layer(&self) -> usize {
+    pub fn get_total_layers(&self) -> usize {
         self.layers.len()
     }
 
