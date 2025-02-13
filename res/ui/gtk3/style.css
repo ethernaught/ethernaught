@@ -107,13 +107,18 @@ scrollbar trough {
 }
 
 scrollbar slider {
-    padding: 0 2px;
     background-color: #444446;
     border: none;
     border-radius: 0;
 }
 
+scrollbar.vertical slider {
+    padding: 0 2px;
+}
 
+scrollbar.horizontal slider {
+    padding: 2px 0;
+}
 
 
 
@@ -159,12 +164,6 @@ list row label {
 list row #number {
     color: #494e57;
 }
-/*
-list row #protocol {
-    background-color: red;
-    border-radius: 5px;
-}
-*/
 
 
 list row.ARP {
@@ -202,17 +201,10 @@ list row:active,
 
 
 
-
 #sidebar_layout {
-    min-width: 100px;
-    margin-left: 5px;
+    border-left: solid 1px #5a5d63;
 }
-/*
-#hex_grid {
-    min-height: 400px;
-    background-color: #260d07;
-}
-*/
+
 #hex_grid * {
     color: #9b9d9f;
     background-color: #1e1f22;

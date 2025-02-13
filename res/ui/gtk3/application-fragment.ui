@@ -132,13 +132,18 @@
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="orientation">vertical</property>
+                <property name="width-request">200</property>
 
 
                 <child>
-                    <object class="GtkScrolledWindow">
+                    <object class="GtkScrolledWindow" id="hex_scroll_layout">
                         <property name="visible">True</property>
                         <property name="hexpand">True</property>
                         <property name="vexpand">True</property>
+                        <property name="overlay-scrolling">false</property>
+                        <property name="hscrollbar-policy">automatic</property>
+                        <property name="vscrollbar-policy">automatic</property>
+                        <property name="height-request">100</property>
 
 
 
@@ -159,6 +164,7 @@
                                         <property name="monospace">TRUE</property>
                                         <property name="cursor-visible">FALSE</property>
                                         <property name="wrap-mode">none</property>
+                                        <property name="vexpand">True</property>
                                     </object>
                                     <packing>
                                         <property name="left-attach">0</property>
@@ -173,6 +179,7 @@
                                         <property name="editable">FALSE</property>
                                         <property name="monospace">TRUE</property>
                                         <property name="wrap-mode">none</property>
+                                        <property name="vexpand">True</property>
                                     </object>
                                     <packing>
                                         <property name="left-attach">1</property>
@@ -187,6 +194,7 @@
                                         <property name="editable">FALSE</property>
                                         <property name="monospace">TRUE</property>
                                         <property name="wrap-mode">none</property>
+                                        <property name="vexpand">True</property>
                                     </object>
                                     <packing>
                                         <property name="left-attach">2</property>
