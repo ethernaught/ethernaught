@@ -21,7 +21,7 @@ pub fn packet_capture(tx: Arc<Mutex<Sender<Packet>>>) {
 
         println!("Devices: {:?}", devices);
 
-        let device = devices.into_iter().find(|d| d.name.contains("wlp7s0"))
+        let device = devices.into_iter().find(|d| d.name.contains("wlp2s0"))
             .expect("No suitable device found");
 
         println!("Listening on device: {}", device.name);

@@ -203,6 +203,9 @@ list row:active,
 
 
 
+
+
+
 #sidebar_title {
     padding: 4px 4px 3px 4px;
     border-bottom: solid 1px #393b40;
@@ -221,14 +224,34 @@ list row:active,
 }
 
 
+#hex_content {
+    background-color: #1e1f22;
+}
 
+
+/*
 #hex_content textview {
     padding: 10px;
 }
-
+*/
 #hex_content text {
     color: #9b9d9f;
     background-color: #1e1f22;
 }
+
+#hex_content box {
+    padding: 10px 10px 10px 0;
+}
+
+#hex_content box:nth-child(1) {
+    padding-left: 10px;
+    border-right: solid 1px #2b2d30;
+}
+
+#hex_content box:nth-child(1) text {
+    color: #494e57;
+}
+
+
 
 
