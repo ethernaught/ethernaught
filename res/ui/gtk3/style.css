@@ -140,6 +140,10 @@ menubar {
     border-bottom: solid 1px #393b40;
 }
 
+#list_header_scroll_layout slider {
+    background-color: transparent;
+}
+
 #list_header_layout label {
     padding: 4px 10px;
     font-size: 12px;
@@ -199,11 +203,6 @@ list row:active,
 
 
 
-
-
-#sidebar_layout {
-    border-left: solid 1px #5a5d63;
-}
 
 #hex_grid * {
     color: #9b9d9f;

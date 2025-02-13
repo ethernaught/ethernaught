@@ -99,18 +99,20 @@ fn main() {
             .object("content_layout")
             .expect("Couldn't find 'content_layout' in window.ui");
         window_layout.set_child_shrink(&content_layout, false);
+        window_layout.set_child_resize(&content_layout, true);
 
-        let sidebar_layout: Paned = builder
+        let sidebar_layout: gtk::Box = builder
             .object("sidebar_layout")
             .expect("Couldn't find 'sidebar_layout' in window.ui");
         window_layout.set_child_shrink(&sidebar_layout, false);
 
 
+        /*
         let hex_scroll_layout: ScrolledWindow = builder
             .object("hex_scroll_layout")
             .expect("Couldn't find 'hex_scroll_layout' in window.ui");
         sidebar_layout.set_child_shrink(&hex_scroll_layout, false);
-
+        */
 
 
 
