@@ -1,22 +1,18 @@
-mod application;
 mod pcap;
 mod packet;
 mod interface;
+mod ui;
 
 use std::process::exit;
 use std::sync::{Arc, Mutex};
-use std::sync::mpsc::{channel, Receiver, RecvError};
-use std::thread;
+use std::sync::mpsc::channel;
 use std::time::Duration;
-use ::pcap::{Capture, Device};
 use gtk::prelude::*;
-use gtk::{Application, Builder, gio, CssProvider, StyleContext, gdk, ApplicationWindow, ListBox, ListBoxRow, Label, Orientation, ScrolledWindow, Image, ProgressBar, TreeView, ListStore, CellRendererText, TreeViewColumn, HeaderBar, Toolbar, Button, glib, StackSwitcher, Stack, Paned, TextView, TextBuffer, Adjustment, Grid, TextTag};
-use gtk::gdk::{EventButton, EventMask};
-use gtk::gio::spawn_blocking;
+use gtk::{gdk, glib, Adjustment, Application, ApplicationWindow, Builder, Button, CssProvider, Image, ListBox, Paned, ScrolledWindow, Stack, StyleContext, TextTag, TextView};
+use gtk::gdk::EventMask;
 use gtk::glib::ControlFlow::Continue;
-use gtk::glib::{clone, idle_add, Propagation};
-use gtk::glib::UnicodeBreakType::Contingent;
-use crate::application::{init_titlebar, create_row, init_actions};
+use gtk::glib::Propagation;
+use ui::application::{create_row, init_actions, init_titlebar};
 use crate::pcap::packet_capture;
 
 //let (tx, rx) = channel();
@@ -87,10 +83,10 @@ fn main() {
         //stack.set_visible_child_name("interface_layout");
 
 
-        let builder = Builder::from_file("res/ui/gtk3/application-fragment.ui");
+        let builder = Builder::from_file("res/ui/gtk3/main-fragment.ui");
         let window_layout: Paned = builder
             .object("window_layout")
-            .expect("Couldn't find 'window_layout' in application-fragment.ui");
+            .expect("Couldn't find 'window_layout' in main-fragment.ui");
 
         stack.add_titled(&window_layout, "application_fragment", "Application");
         stack.set_visible_child_name("application_fragment");
