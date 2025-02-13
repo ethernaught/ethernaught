@@ -19,6 +19,7 @@
 
                 <child>
                     <object class="GtkScrolledWindow" id="list_header_scroll_layout">
+                        <property name="name">list_header_scroll_layout</property>
                         <property name="visible">True</property>
                         <property name="hexpand">True</property>
                         <property name="overlay-scrolling">false</property>

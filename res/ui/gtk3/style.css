@@ -135,8 +135,8 @@ menubar {
 */
 
 
-#list_header_layout {
-    background-color: #393b40;
+#list_header_scroll_layout {
+    background-color: #1e1f22;
     border-bottom: solid 1px #393b40;
 }
 
