@@ -10,7 +10,7 @@ use std::thread;
 use std::time::Duration;
 use ::pcap::{Capture, Device};
 use gtk::prelude::*;
-use gtk::{Application, Builder, gio, CssProvider, StyleContext, gdk, ApplicationWindow, ListBox, ListBoxRow, Label, Orientation, ScrolledWindow, Image, ProgressBar, TreeView, ListStore, CellRendererText, TreeViewColumn, HeaderBar, Toolbar, Button, glib, StackSwitcher, Stack, Paned, TextView, TextBuffer};
+use gtk::{Application, Builder, gio, CssProvider, StyleContext, gdk, ApplicationWindow, ListBox, ListBoxRow, Label, Orientation, ScrolledWindow, Image, ProgressBar, TreeView, ListStore, CellRendererText, TreeViewColumn, HeaderBar, Toolbar, Button, glib, StackSwitcher, Stack, Paned, TextView, TextBuffer, Adjustment};
 use gtk::gdk::{EventButton, EventMask};
 use gtk::gio::spawn_blocking;
 use gtk::glib::ControlFlow::Continue;
@@ -99,6 +99,43 @@ fn main() {
 
 
 
+
+
+
+
+
+
+
+
+        let hadjustment = Adjustment::new(0.0, 0.0, 1000.0, 10.0, 100.0, 100.0);
+        let vadjustment = Adjustment::new(0.0, 0.0, 1000.0, 10.0, 100.0, 100.0);
+
+        let list_header_scroll_layout: ScrolledWindow = builder
+            .object("list_header_scroll_layout")
+            .expect("Couldn't find 'list_header_scroll_layout' in window.ui");
+        list_header_scroll_layout.set_hadjustment(Some(&hadjustment));
+        list_header_scroll_layout.set_vadjustment(None::<&Adjustment>);
+
+        let list_scroll_layout: ScrolledWindow = builder
+            .object("list_scroll_layout")
+            .expect("Couldn't find 'list_scroll_layout' in window.ui");
+
+        list_scroll_layout.set_hadjustment(Some(&hadjustment));
+        list_scroll_layout.set_vadjustment(Some(&vadjustment));
+
+        let list_box = ListBox::new();
+        list_scroll_layout.add(&list_box);
+        list_box.show_all();
+
+
+
+
+
+
+
+
+
+
         /*
         let hex_view: TextView = builder
             .object("hex_view")
@@ -138,14 +175,11 @@ fn main() {
 
 
 
-        let list_box = ListBox::new();
 
-        let list_scroll_layout: ScrolledWindow = builder
-            .object("list_scroll_layout")
-            .expect("Couldn't find 'list_scroll_layout' in window.ui");
 
-        list_scroll_layout.add(&list_box);
-        list_box.show_all();
+
+
+
 
 
 
