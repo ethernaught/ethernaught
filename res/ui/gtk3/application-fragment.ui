@@ -124,6 +124,7 @@
                 <property name="hexpand">True</property>
                 <property name="vexpand">True</property>
                 <property name="orientation">vertical</property>
+                <property name="width-request">200</property>
 
                 <child>
                     <object class="GtkBox" id="sidebar_title">
@@ -132,13 +133,13 @@
                         <property name="hexpand">True</property>
                         <property name="height-request">40</property>
                         <property name="orientation">horizontal</property>
+                        <property name="halign">end</property>
 
                         <child>
                             <object class="GtkButton" id="dismiss_button">
                                 <property name="visible">True</property>
                                 <property name="width-request">16</property>
                                 <property name="height-request">16</property>
-                                <property name="halign">end</property>
 
                                 <child>
                                     <object class="GtkImage">
@@ -161,7 +162,6 @@
                         <property name="hexpand">True</property>
                         <property name="vexpand">True</property>
                         <property name="orientation">vertical</property>
-                        <property name="width-request">200</property>
 
                         <child>
                             <object class="GtkScrolledWindow" id="hex_scroll_layout">
@@ -170,7 +170,7 @@
                                 <property name="overlay-scrolling">false</property>
                                 <property name="hscrollbar-policy">automatic</property>
                                 <property name="vscrollbar-policy">automatic</property>
-                                <property name="height-request">100</property>
+                                <property name="height-request">400</property>
 
                                 <child>
                                     <object class="GtkGrid">
