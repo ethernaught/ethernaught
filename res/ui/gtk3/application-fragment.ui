@@ -167,10 +167,10 @@
                             <object class="GtkScrolledWindow" id="hex_scroll_layout">
                                 <property name="visible">True</property>
                                 <property name="hexpand">True</property>
+                                <property name="vexpand">True</property>
                                 <property name="overlay-scrolling">false</property>
                                 <property name="hscrollbar-policy">automatic</property>
                                 <property name="vscrollbar-policy">automatic</property>
-                                <property name="height-request">400</property>
 
                                 <child>
                                     <object class="GtkGrid">

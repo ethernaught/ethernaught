@@ -107,12 +107,9 @@ fn main() {
         window_layout.set_child_shrink(&sidebar_layout, false);
 
 
-        /*
-        let hex_scroll_layout: ScrolledWindow = builder
-            .object("hex_scroll_layout")
-            .expect("Couldn't find 'hex_scroll_layout' in window.ui");
-        sidebar_layout.set_child_shrink(&hex_scroll_layout, false);
-        */
+
+
+
 
 
 
