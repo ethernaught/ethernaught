@@ -54,21 +54,18 @@ impl OApplication {
             //window.set_decorated(false);
             window.set_border_width(1);
 
-
-
             window.set_titlebar(Some(&_self.init_titlebar(&window)));
 
             let stack = Stack::new();
             window.add(&stack);
             stack.show();
 
-
             let mut fragment = MainFragment::new(_self.clone());
+            let name = fragment.get_name();
+            let title = fragment.get_title();
             let root = fragment.on_create();
-            stack.add_titled(root, "main_fragment", "Main");
-            stack.set_visible_child_name("main_fragment");
-
-
+            stack.add_titled(root, &name, &title);
+            //stack.set_visible_child_name(&fragment.get_name());
 
             _self.init_actions(&window);
 

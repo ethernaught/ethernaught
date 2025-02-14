@@ -34,6 +34,14 @@ impl MainFragment {
 
 impl Fragment for MainFragment {
 
+    fn get_name(&self) -> String {
+        "main_fragment".to_string()
+    }
+
+    fn get_title(&self) -> String {
+        "MainFragment".to_string()
+    }
+
     fn on_create(&mut self) -> &Container {
         let builder = Builder::from_file("res/ui/gtk3/main-fragment.ui");
 
