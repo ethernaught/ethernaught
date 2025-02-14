@@ -61,13 +61,13 @@ impl OApplication {
             window.add(&stack);
             stack.show();
 
-            //let mut fragment = DevicesActivity::new(_self.clone());
-            let mut fragment = MainActivity::new(_self.clone());
-            let name = fragment.get_name();
-            let title = fragment.get_title();
-            let root = fragment.on_create();
+            //let mut activity = DevicesActivity::new(_self.clone());
+            let mut activity = MainActivity::new(_self.clone());
+            let name = activity.get_name();
+            let title = activity.get_title();
+            let root = activity.on_create();
             stack.add_titled(root, &name, &title);
-            //stack.set_visible_child_name(&fragment.get_name());
+            //stack.set_visible_child_name(&activity.get_name());
 
             _self.init_actions(&window);
 

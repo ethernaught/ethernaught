@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+    <requires lib="gtk+" version="3.24"/>
+
+    <object class="GtkBox" id="sidebar_layout">
+        <property name="name">sidebar_layout</property>
+        <property name="visible">True</property>
+        <property name="hexpand">True</property>
+        <property name="vexpand">True</property>
+        <property name="orientation">vertical</property>
+        <property name="width-request">200</property>
+
+        <child>
+            <object class="GtkBox" id="sidebar_title">
+                <property name="name">sidebar_title</property>
+                <property name="visible">True</property>
+                <property name="hexpand">True</property>
+                <property name="height-request">40</property>
+                <property name="orientation">horizontal</property>
+
+                <child>
+                    <object class="GtkButton" id="dismiss_button">
+                        <property name="name">dismiss_button</property>
+                        <property name="visible">True</property>
+                        <property name="width-request">16</property>
+                        <property name="height-request">16</property>
+                    </object>
+                </child>
+            </object>
+        </child>
+
+        <child>
+            <object class="GtkPaned" id="sidebar_content">
+                <property name="name">sidebar_content</property>
+                <property name="visible">True</property>
+                <property name="hexpand">True</property>
+                <property name="vexpand">True</property>
+                <property name="orientation">vertical</property>
+
+                <child>
+                    <object class="GtkScrolledWindow" id="hex_scroll_layout">
+                        <property name="visible">True</property>
+                        <property name="hexpand">True</property>
+                        <property name="vexpand">True</property>
+                        <property name="overlay-scrolling">false</property>
+                        <property name="hscrollbar-policy">automatic</property>
+                        <property name="vscrollbar-policy">automatic</property>
+
+                        <child>
+                            <object class="GtkBox">
+                                <property name="name">hex_content</property>
+                                <property name="visible">True</property>
+                                <property name="hexpand">True</property>
+                                <property name="vexpand">True</property>
+                                <property name="orientation">horizontal</property>
+                                <property name="spacing">4</property>
+
+                                <child>
+                                    <object class="GtkBox">
+                                        <property name="visible">True</property>
+                                        <property name="vexpand">True</property>
+                                        <property name="orientation">horizontal</property>
+
+                                        <child>
+                                            <object class="GtkTextView" id="hex_line_numbers">
+                                                <property name="name">hex_line_numbers</property>
+                                                <property name="visible">True</property>
+                                                <property name="editable">FALSE</property>
+                                                <property name="monospace">TRUE</property>
+                                                <property name="cursor-visible">FALSE</property>
+                                                <property name="wrap-mode">none</property>
+                                                <property name="vexpand">True</property>
+                                            </object>
+                                        </child>
+                                    </object>
+                                </child>
+
+                                <child>
+                                    <object class="GtkBox">
+                                        <property name="visible">True</property>
+                                        <property name="hexpand">True</property>
+                                        <property name="vexpand">True</property>
+                                        <property name="orientation">horizontal</property>
+                                        <property name="spacing">20</property>
+
+                                        <child>
+                                            <object class="GtkTextView" id="hex_text_view">
+                                                <property name="name">hex_text_view</property>
+                                                <property name="visible">True</property>
+                                                <property name="editable">FALSE</property>
+                                                <property name="monospace">TRUE</property>
+                                                <property name="wrap-mode">none</property>
+                                                <property name="vexpand">True</property>
+                                            </object>
+                                        </child>
+
+                                        <child>
+                                            <object class="GtkTextView" id="ascii_text_view">
+                                                <property name="name">ascii_text_view</property>
+                                                <property name="visible">True</property>
+                                                <property name="editable">FALSE</property>
+                                                <property name="monospace">TRUE</property>
+                                                <property name="wrap-mode">none</property>
+                                                <property name="vexpand">True</property>
+                                            </object>
+                                        </child>
+                                    </object>
+                                </child>
+
+                            </object>
+                        </child>
+                    </object>
+                </child>
+
+                <child>
+                    <object class="GtkBox">
+                        <property name="visible">True</property>
+                        <property name="hexpand">True</property>
+                        <property name="vexpand">True</property>
+                        <property name="orientation">vertical</property>
+
+                    </object>
+                </child>
+
+            </object>
+        </child>
+    </object>
+</interface>

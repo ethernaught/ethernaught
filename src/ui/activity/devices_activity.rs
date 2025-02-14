@@ -4,9 +4,10 @@ use gtk::prelude::{BuilderExtManual, CssProviderExt, StackExt};
 use crate::ui::application::OApplication;
 use crate::ui::activity::inter::activity::Activity;
 
+#[derive(Clone)]
 pub struct DevicesActivity {
     app: OApplication,
-    root: Option<gtk::Box>
+    root: Option<Container>
 }
 
 impl DevicesActivity {
