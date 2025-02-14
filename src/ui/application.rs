@@ -93,8 +93,9 @@ impl OApplication {
             .expect("Couldn't find 'titlebar' in titlebar-ui.xml");
 
         //window.set_titlebar(Some(&titlebar));
-        titlebar.set_size_request(-1, 32);
+        //titlebar.set_size_request(-1, 32);
 
+        /*
         titlebar.style_context().add_class("wifi");
 
 
@@ -102,6 +103,7 @@ impl OApplication {
             .object("network_type_label")
             .expect("Couldn't find 'network_type_label' in titlebar-ui.xml");
         network_type_label.set_label("wlp2s0");
+        */
 
 
 

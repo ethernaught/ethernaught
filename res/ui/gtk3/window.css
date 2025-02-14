@@ -23,7 +23,7 @@ button:focus, button:checked {
 
 
 #titlebar {
-    min-height: 0;
+    min-height: 32px;
     border-radius: 0;
     border-top: solid 1px #5a5d63;
     border-left: solid 1px #5a5d63;
@@ -36,6 +36,48 @@ window.maximized #titlebar {
     border-top: none;
     border-left: none;
     border-right: none;
+}
+
+#titlebar button {
+    min-height: 0;
+    padding: 4px;
+    border-radius: 6px;
+    border: none;
+    background-size: auto;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#titlebar button:hover {
+    background-color: rgba(127, 127, 127, 0.2);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+#navigation_menu button,
+        #app_buttons button {
+    padding: 8px;
+}
+
+#navigation_menu #menu_button {
+    background-image: url('../../images/ic_menu.svg');
+}
+
+#navigation_menu #back_button {
+    background-image: url('../../images/ic_back.svg');
+}
+
+#navigation_menu #next_button {
+    background-image: url('../../images/ic_next.svg');
 }
 
 
@@ -56,7 +98,7 @@ window.maximized #titlebar {
     background: linear-gradient(90deg, #2b2d30 0%, #394366 20%, #2b2d30 40%);
 }
 
-#titlebar_menu #network_type_icon {
+#navigation_menu #network_type_icon {
     min-height: 0;
     padding: 4px;
     margin: 4px;
@@ -86,83 +128,22 @@ window.maximized #titlebar {
 }
 
 
-#titlebar button {
-    min-height: 0;
-    padding: 8px;
-    border-radius: 6px;
-    border: none;
-    background-size: auto;
-    background-repeat: no-repeat;
-    background-position: center;
-}
-
-#titlebar button:hover {
-    background-color: rgba(127, 127, 127, 0.2);
-}
-
-#titlebar_window_options {
-    padding: 4px;
-}
-
-#titlebar_window_options button {
-    padding: 4px;
-}
-
-#titlebar_window_options button {
-    border-radius: 100%;
-}
-
-#titlebar_window_options #window_minimize {
-    background-image: url('../../images/ic_minimize.svg');
-}
-
-#titlebar_window_options #window_maximize {
-    background-image: url('../../images/ic_maximize.svg');
-}
-
-#titlebar_window_options #window_close {
-    background-image: url('../../images/ic_close.svg');
-}
 
 
 
-#titlebar_menu button,
-        #titlebar_app_options button {
-    padding: 8px;
-}
-
-#titlebar_menu #menu_button {
-    background-image: url('../../images/ic_menu.svg');
-}
-
-#titlebar_menu #back_button {
-    background-image: url('../../images/ic_back.svg');
-}
-
-#titlebar_menu #next_button {
-    background-image: url('../../images/ic_next.svg');
-}
-
-
-
-#titlebar_app_options #start_button {
+#app_buttons #start_button {
     background-image: url('../../images/ic_start.svg');
 }
 
-#titlebar_app_options #stop_button {
+#app_buttons #stop_button {
     background-image: url('../../images/ic_stop.svg');
 }
 
-
-
-
-
-
-#titlebar_app_options #stop_button {
+#app_buttons #stop_button {
     background-color: #DB5C5C;
 }
 
-#titlebar_app_options.running #start_button {
+#app_buttons.running #start_button {
     background-color: #57965C;
     background-image: url('../../images/ic_restart.svg');
 }
@@ -175,6 +156,37 @@ window.maximized #titlebar {
 
 
 
+
+
+
+
+#window_buttons {
+    padding: 4px;
+}
+
+#window_buttons button {
+    padding: 4px;
+}
+
+#window_buttons button {
+    border-radius: 100%;
+}
+
+#window_buttons #window_minimize {
+    background-image: url('../../images/ic_minimize.svg');
+}
+
+#window_buttons #window_maximize {
+    background-image: url('../../images/ic_maximize.svg');
+}
+
+window.maximized #window_buttons #window_maximize {
+    background-image: url('../../images/ic_maximize_active.svg');
+}
+
+#window_buttons #window_close {
+    background-image: url('../../images/ic_close.svg');
+}
 
 
 
@@ -199,14 +211,6 @@ scrollbar.vertical slider {
 scrollbar.horizontal slider {
     padding: 2px 0;
 }
-
-
-
-
-
-
-
-
 
 
 

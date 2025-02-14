@@ -12,7 +12,7 @@
 
         <child>
             <object class="GtkBox">
-                <property name="name">titlebar_menu</property>
+                <property name="name">navigation_menu</property>
                 <property name="visible">True</property>
                 <property name="hexpand">True</property>
                 <property name="orientation">horizontal</property>
@@ -28,47 +28,57 @@
                 </child>
 
                 <child>
-                    <object class="GtkButton" id="back_button">
-                        <property name="name">back_button</property>
-                        <property name="visible">True</property>
-                        <property name="width-request">24</property>
-                        <property name="height-request">24</property>
-                    </object>
-                </child>
+                    <object class="GtkBox">
+                        <property name="name">navigation_menu_1</property>
+                        <property name="visible">False</property>
+                        <property name="hexpand">True</property>
+                        <property name="orientation">horizontal</property>
+                        <property name="spacing">10</property>
 
-                <child>
-                    <object class="GtkButton" id="next_button">
-                        <property name="name">next_button</property>
-                        <property name="visible">True</property>
-                        <property name="width-request">24</property>
-                        <property name="height-request">24</property>
-                    </object>
-                </child>
+                        <child>
+                            <object class="GtkButton" id="back_button">
+                                <property name="name">back_button</property>
+                                <property name="visible">True</property>
+                                <property name="width-request">24</property>
+                                <property name="height-request">24</property>
+                            </object>
+                        </child>
 
-                <child>
-                    <object class="GtkImage" id="network_type_icon">
-                        <property name="name">network_type_icon</property>
-                        <property name="visible">True</property>
-                        <property name="width-request">24</property>
-                        <property name="height-request">24</property>
-                        <property name="icon-name">network-type</property>
-                        <property name="file">res/images/ic_wifi.svg</property>
-                    </object>
-                </child>
+                        <child>
+                            <object class="GtkButton" id="next_button">
+                                <property name="name">next_button</property>
+                                <property name="visible">True</property>
+                                <property name="width-request">24</property>
+                                <property name="height-request">24</property>
+                            </object>
+                        </child>
 
-                <child>
-                    <object class="GtkLabel" id="network_type_label">
-                        <property name="name">network_type_label</property>
-                        <property name="visible">True</property>
+                        <child>
+                            <object class="GtkImage" id="network_type_icon">
+                                <property name="name">network_type_icon</property>
+                                <property name="visible">True</property>
+                                <property name="width-request">24</property>
+                                <property name="height-request">24</property>
+                                <property name="icon-name">network-type</property>
+                                <property name="file">res/images/ic_wifi.svg</property>
+                            </object>
+                        </child>
+
+                        <child>
+                            <object class="GtkLabel" id="network_type_label">
+                                <property name="name">network_type_label</property>
+                                <property name="visible">True</property>
+                            </object>
+                        </child>
                     </object>
                 </child>
             </object>
         </child>
 
         <child>
-            <object class="GtkBox" id="titlebar_app_options">
-                <property name="name">titlebar_app_options</property>
-                <property name="visible">True</property>
+            <object class="GtkBox" id="app_buttons">
+                <property name="name">app_buttons</property>
+                <property name="visible">False</property>
                 <property name="orientation">horizontal</property>
                 <property name="spacing">10</property>
 
@@ -96,7 +106,7 @@
 
         <child>
             <object class="GtkBox">
-                <property name="name">titlebar_window_options</property>
+                <property name="name">window_buttons</property>
                 <property name="visible">True</property>
                 <property name="orientation">horizontal</property>
                 <property name="spacing">10</property>
