@@ -3,35 +3,33 @@
     <requires lib="gtk+" version="3.24"/>
 
     <object class="GtkBox" id="devices_layout">
+        <property name="name">devices_layout</property>
         <property name="visible">True</property>
-        <property name="can-focus">False</property>
-        <property name="halign">center</property>
-        <property name="valign">center</property>
         <property name="hexpand">true</property>
         <property name="vexpand">true</property>
+        <property name="orientation">vertical</property>
+        <property name="spacing">20</property>
 
         <child>
             <object class="GtkBox">
-                <property name="name">test_layout</property>
                 <property name="visible">True</property>
-                <property name="can-focus">False</property>
-                <property name="width-request">500</property>
-                <property name="height-request">400</property>
 
                 <child>
                     <object class="GtkLabel">
+                        <property name="name">title</property>
                         <property name="visible">True</property>
                         <property name="label">Omniscient</property>
                     </object>
                 </child>
+            </object>
+        </child>
 
-                <child>
-                    <object class="GtkScrolledWindow" id="list_scroll_layout">
-                        <property name="visible">True</property>
-                        <property name="hexpand">True</property>
-                        <property name="vexpand">True</property>
-                    </object>
-                </child>
+        <child>
+            <object class="GtkScrolledWindow" id="list_scroll_layout">
+                <property name="name">list_scroll_layout</property>
+                <property name="visible">True</property>
+                <property name="hexpand">True</property>
+                <property name="vexpand">True</property>
             </object>
         </child>
     </object>

@@ -1,4 +1,15 @@
 
-#test_layout {
-    background-color: #333333;
+#devices_layout {
+    padding: 20px 160px;
+}
+
+#devices_layout #title {
+    padding: 10px;
+    border-radius: 40px;
+    color: #cbd7dc;
+    background-color: #59436e;
+}
+
+#list_scroll_layout {
+    background-color: #666666;
 }
