@@ -2,14 +2,14 @@ use gtk::{gdk, Builder, Container, CssProvider, Paned, Stack, StyleContext};
 use gtk::glib::Cast;
 use gtk::prelude::{BuilderExtManual, CssProviderExt, StackExt};
 use crate::ui::application::OApplication;
-use crate::ui::fragments::inter::fragment::Fragment;
+use crate::ui::activity::inter::activity::Activity;
 
-pub struct DevicesFragment {
+pub struct DevicesActivity {
     app: OApplication,
     root: Option<gtk::Box>
 }
 
-impl DevicesFragment {
+impl DevicesActivity {
 
     pub fn new(app: OApplication) -> Self {
         Self {
@@ -19,7 +19,7 @@ impl DevicesFragment {
     }
 }
 
-impl Fragment for DevicesFragment {
+impl Activity for DevicesActivity {
 
     fn get_name(&self) -> String {
         "devices_fragment".to_string()
@@ -30,10 +30,10 @@ impl Fragment for DevicesFragment {
     }
 
     fn on_create(&mut self) -> &Container {
-        let builder = Builder::from_file("res/ui/gtk3/devices-fragment.ui");
+        let builder = Builder::from_file("res/ui/gtk3/devices-activity.ui");
 
         let provider = CssProvider::new();
-        provider.load_from_path("res/ui/gtk3/devices-fragment.css").expect("Failed to load CSS file.");
+        provider.load_from_path("res/ui/gtk3/devices-activity.css").expect("Failed to load CSS file.");
 
         StyleContext::add_provider_for_screen(
             &gdk::Screen::default().expect("Failed to get default screen."),
@@ -44,7 +44,7 @@ impl Fragment for DevicesFragment {
 
         self.root = Some(builder
             .object("devices_layout")
-            .expect("Couldn't find 'devices_layout' in devices-fragment.ui"));
+            .expect("Couldn't find 'devices_layout' in devices-activity.ui"));
 
         &self.root.as_ref().unwrap().upcast_ref()
     }

@@ -1,2 +1,2 @@
-pub mod fragments;
+pub mod activity;
 pub mod application;

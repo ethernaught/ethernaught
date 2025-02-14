@@ -15,14 +15,14 @@ use crate::packet::layers::layer_2::ethernet::ipv6_layer::IPv6Layer;
 use crate::packet::packet::Packet;
 use crate::pcap::packet_capture;
 use crate::ui::application::OApplication;
-use crate::ui::fragments::inter::fragment::Fragment;
+use crate::ui::activity::inter::activity::Activity;
 
-pub struct MainFragment {
+pub struct MainActivity {
     app: OApplication,
     root: Option<Paned>
 }
 
-impl MainFragment {
+impl MainActivity {
 
     pub fn new(app: OApplication) -> Self {
         Self {
@@ -32,7 +32,7 @@ impl MainFragment {
     }
 }
 
-impl Fragment for MainFragment {
+impl Activity for MainActivity {
 
     fn get_name(&self) -> String {
         "main_fragment".to_string()
@@ -43,10 +43,10 @@ impl Fragment for MainFragment {
     }
 
     fn on_create(&mut self) -> &Container {
-        let builder = Builder::from_file("res/ui/gtk3/main-fragment.ui");
+        let builder = Builder::from_file("res/ui/gtk3/main-activity.ui");
 
         let provider = CssProvider::new();
-        provider.load_from_path("res/ui/gtk3/main-fragment.css").expect("Failed to load CSS file.");
+        provider.load_from_path("res/ui/gtk3/main-activity.css").expect("Failed to load CSS file.");
 
         StyleContext::add_provider_for_screen(
             &gdk::Screen::default().expect("Failed to get default screen."),
@@ -57,7 +57,7 @@ impl Fragment for MainFragment {
 
         self.root = Some(builder
             .object("window_layout")
-            .expect("Couldn't find 'window_layout' in main-fragment.ui"));
+            .expect("Couldn't find 'window_layout' in main-activity.ui"));
 
         let content_layout: gtk::Box = builder
             .object("content_layout")
@@ -80,16 +80,16 @@ impl Fragment for MainFragment {
 
         let titlebar = self.app.get_titlebar().unwrap();
 
-        let titlebar_app_options = Arc::new(self.app.get_child_by_name(&titlebar, "titlebar_app_options").unwrap());
-        let stop_button = Arc::new(self.app.get_child_by_name(&titlebar_app_options, "stop_button").unwrap());
-        let start_button = self.app.get_child_by_name(&titlebar_app_options, "start_button").unwrap();
+        let app_buttons = Arc::new(self.app.get_child_by_name(&titlebar, "app_buttons").unwrap());
+        let stop_button = Arc::new(self.app.get_child_by_name(&app_buttons, "stop_button").unwrap());
+        let start_button = self.app.get_child_by_name(&app_buttons, "start_button").unwrap();
 
         if let Some(start_button) = start_button.downcast_ref::<Button>() {
-            let titlebar_app_options = titlebar_app_options.clone();
+            let app_buttons = app_buttons.clone();
             let stop_button_clone = stop_button.clone();
 
             start_button.connect_clicked(move |_| {
-                titlebar_app_options.style_context().add_class("running");
+                app_buttons.style_context().add_class("running");
                 stop_button_clone.show();
 
                 println!("Start button clicked!");
@@ -98,11 +98,11 @@ impl Fragment for MainFragment {
         }
 
         if let Some(stop_button) = stop_button.downcast_ref::<Button>() {
-            let titlebar_app_options = titlebar_app_options.clone();
+            let app_buttons = app_buttons.clone();
             let stop_button_clone = stop_button.clone();
 
             stop_button.connect_clicked(move |_| {
-                titlebar_app_options.style_context().remove_class("running");
+                app_buttons.style_context().remove_class("running");
                 stop_button_clone.hide();
                 println!("Stop button clicked!");
             });

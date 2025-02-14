@@ -1,6 +1,6 @@
 use gtk::Container;
 
-pub trait Fragment {
+pub trait Activity {
 
     fn get_name(&self) -> String;
 
