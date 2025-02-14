@@ -35,11 +35,11 @@ impl MainActivity {
 impl Activity for MainActivity {
 
     fn get_name(&self) -> String {
-        "main_fragment".to_string()
+        "main_activity".to_string()
     }
 
     fn get_title(&self) -> String {
-        "MainFragment".to_string()
+        "MainActivity".to_string()
     }
 
     fn on_create(&mut self) -> &Container {

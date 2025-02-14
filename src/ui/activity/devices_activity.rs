@@ -22,11 +22,11 @@ impl DevicesActivity {
 impl Activity for DevicesActivity {
 
     fn get_name(&self) -> String {
-        "devices_fragment".to_string()
+        "devices_activity".to_string()
     }
 
     fn get_title(&self) -> String {
-        "DevicesFragment".to_string()
+        "DevicesActivity".to_string()
     }
 
     fn on_create(&mut self) -> &Container {
