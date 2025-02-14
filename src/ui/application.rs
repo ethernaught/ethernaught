@@ -12,6 +12,7 @@ use crate::packet::layers::layer_1::inter::types::Types;
 use crate::packet::layers::layer_2::ethernet::inter::protocols::Protocols;
 use crate::packet::layers::layer_2::ethernet::ipv4_layer::IPv4Layer;
 use crate::packet::layers::layer_2::ethernet::ipv6_layer::IPv6Layer;
+use crate::ui::fragments::devices_fragment::DevicesFragment;
 use crate::ui::fragments::inter::fragment::Fragment;
 use crate::ui::fragments::main_fragment::MainFragment;
 //use crate::config::VERSION;
@@ -60,7 +61,8 @@ impl OApplication {
             window.add(&stack);
             stack.show();
 
-            let mut fragment = MainFragment::new(_self.clone());
+            let mut fragment = DevicesFragment::new(_self.clone());
+            //let mut fragment = MainFragment::new(_self.clone());
             let name = fragment.get_name();
             let title = fragment.get_title();
             let root = fragment.on_create();

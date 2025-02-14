@@ -1,6 +1,6 @@
-use gtk::{Builder, Container, Paned, Stack};
+use gtk::{gdk, Builder, Container, CssProvider, Paned, Stack, StyleContext};
 use gtk::glib::Cast;
-use gtk::prelude::{BuilderExtManual, StackExt};
+use gtk::prelude::{BuilderExtManual, CssProviderExt, StackExt};
 use crate::ui::application::OApplication;
 use crate::ui::fragments::inter::fragment::Fragment;
 
@@ -31,6 +31,16 @@ impl Fragment for DevicesFragment {
 
     fn on_create(&mut self) -> &Container {
         let builder = Builder::from_file("res/ui/gtk3/devices-fragment.ui");
+
+        let provider = CssProvider::new();
+        provider.load_from_path("res/ui/gtk3/devices-fragment.css").expect("Failed to load CSS file.");
+
+        StyleContext::add_provider_for_screen(
+            &gdk::Screen::default().expect("Failed to get default screen."),
+            &provider,
+            gtk::STYLE_PROVIDER_PRIORITY_APPLICATION,
+        );
+
 
         self.root = Some(builder
             .object("devices_layout")
