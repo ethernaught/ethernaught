@@ -1,7 +1,9 @@
-use gtk::{AboutDialog, ApplicationWindow, Builder, Image, Application, TreeViewColumn, CellRendererText, ScrolledWindow, Button, ListBoxRow, Label};
+use std::process::exit;
+use gtk::{AboutDialog, ApplicationWindow, Builder, Image, Application, TreeViewColumn, CellRendererText, ScrolledWindow, Button, ListBoxRow, Label, CssProvider, StyleContext, gdk, Stack, Container};
 use gtk::gdk_pixbuf::PixbufLoader;
 use gtk::prelude::*;
 use gtk::gio::SimpleAction;
+use gtk::glib::PropertyGet;
 use gtk::prelude::{ActionMapExt, GtkWindowExt};
 use crate::packet::packet::Packet;
 use crate::packet::inter::interfaces::Interfaces;
@@ -10,179 +12,153 @@ use crate::packet::layers::layer_1::inter::types::Types;
 use crate::packet::layers::layer_2::ethernet::inter::protocols::Protocols;
 use crate::packet::layers::layer_2::ethernet::ipv4_layer::IPv4Layer;
 use crate::packet::layers::layer_2::ethernet::ipv6_layer::IPv6Layer;
+use crate::ui::fragments::inter::fragment::Fragment;
+use crate::ui::fragments::main_fragment::MainFragment;
 //use crate::config::VERSION;
 
-pub fn init_actions(app: &Application, window: &ApplicationWindow) {
-    /*
-    let action = SimpleAction::new("quit", None);
-    let app_clone = app.clone();
-    action.connect_activate(move |_, _| {
-        app_clone.quit();
-    });
-    window.add_action(&action);
-
-    let action = SimpleAction::new("show-about-dialog", None);
-    let window_clone = window.clone();
-    action.connect_activate(move |_, _| {
-        show_about(&window_clone);
-    });
-    window.add_action(&action);
-    */
+#[derive(Clone)]
+pub struct OApplication {
+    app: Application
 }
 
+impl OApplication {
 
-pub fn init_titlebar(window: &ApplicationWindow, app: &Application) -> Builder {
-    let builder = Builder::from_file("res/ui/titlebar-ui.xml");
+    pub fn new() -> Self {
+        let app = Application::new(Some("com.omniscient.rust"), Default::default());
 
-    let titlebar: gtk::Box = builder
-        .object("titlebar")
-        .expect("Couldn't find 'titlebar' in titlebar-ui.xml");
-
-    window.set_titlebar(Some(&titlebar));
-    titlebar.set_size_request(-1, 32);
-
-
-
-
-    titlebar.style_context().add_class("wifi");
-
-
-    let network_type_label: Label = builder
-        .object("network_type_label")
-        .expect("Couldn't find 'network_type_label' in titlebar-ui.xml");
-    network_type_label.set_label("wlp2s0");
-
-
-
-    let minimize_button: Button = builder
-        .object("minimize_button")
-        .expect("Couldn't find 'minimize_button' in titlebar-ui.xml");
-
-    let window_clone = window.clone();
-    minimize_button.connect_clicked(move |_| {
-        window_clone.iconify();
-    });
-
-    let maximize_button: Button = builder
-        .object("maximize_button")
-        .expect("Couldn't find 'maximize_button' in titlebar-ui.xml");
-
-    let window_clone = window.clone();
-    maximize_button.connect_clicked(move |_| {
-        if window_clone.is_maximized() {
-            window_clone.unmaximize();
-            return;
+        Self {
+            app
         }
+    }
 
-        window_clone.maximize();
-    });
+    pub fn on_create(&self) {
+        let _self = self.clone();
+        self.app.connect_activate(move |app| {
+            let builder = Builder::from_file("res/ui/gtk3/window.ui");
 
-    let close_button: Button = builder
-        .object("close_button")
-        .expect("Couldn't find 'close_button' in titlebar-ui.xml");
+            let provider = CssProvider::new();
+            provider.load_from_path("res/ui/gtk3/style.css").expect("Failed to load CSS file.");
 
-    let app_clone = app.clone();
-    close_button.connect_clicked(move |_| {
-        app_clone.quit();
-    });
+            StyleContext::add_provider_for_screen(
+                &gdk::Screen::default().expect("Failed to get default screen."),
+                &provider,
+                gtk::STYLE_PROVIDER_PRIORITY_APPLICATION,
+            );
 
-    builder
-}
+            let window: ApplicationWindow = builder
+                .object("MainWindow")
+                .expect("Failed to get the 'MainWindow' from window.ui");
 
-
-pub fn create_row(number: u32, packet: Packet) -> ListBoxRow {
-    let builder = Builder::from_file("res/ui/list_item.xml");
-    let row: ListBoxRow = builder
-        .object("row")
-        .expect("Couldn't find 'row' in list_item.xml");
-
-    //row.style_context().add_class(&packet.get_type().to_string());
-
+            window.set_application(Some(app));
+            window.connect_destroy(|_| exit(0));
+            //window.set_decorated(false);
+            window.set_border_width(1);
 
 
-    let number_label: Label = builder
-        .object("number")
-        .expect("Couldn't find 'number' in list_item.xml");
-    number_label.set_label(format!("{}", number).as_str());
 
-    let time_label: Label = builder
-        .object("time")
-        .expect("Couldn't find 'time' in list_item.xml");
-    time_label.set_label(format!("{:.5}", packet.get_frame_time()).as_str());
+            let titlebar_builder = _self.init_titlebar(&window);
 
-    let source_label: Label = builder
-        .object("source")
-        .expect("Couldn't find 'source' in list_item.xml");
+            let stack = Stack::new();
+            window.add(&stack);
+            stack.show();
 
-    let destination_label: Label = builder
-        .object("destination")
-        .expect("Couldn't find 'destination' in list_item.xml");
 
-    let protocol_label: Label = builder
-        .object("protocol")
-        .expect("Couldn't find 'protocol' in list_item.xml");
-    //protocol_label.set_label(&packet.get_type().to_string());
+            let mut fragment = MainFragment::new();
+            let root = fragment.on_create();
+            stack.add_titled(root, "main_fragment", "Main");
+            stack.set_visible_child_name("main_fragment");
 
-    let length_label: Label = builder
-        .object("length")
-        .expect("Couldn't find 'length' in list_item.xml");
-    length_label.set_label(format!("{}", packet.len()).as_str());
 
-    let info_label: Label = builder
-        .object("info")
-        .expect("Couldn't find 'info' in list_item.xml");
 
-    let protocol = match packet.get_interface() {
-        Interfaces::Ethernet => {
-            let ethernet_layer = packet.get_layer(0).unwrap().as_any().downcast_ref::<EthernetLayer>().unwrap();
+            _self.init_actions(&window);
 
-            match ethernet_layer.get_type() {
-                Types::IPv4 => {
-                    let ipv4_layer = packet.get_layer(1).unwrap().as_any().downcast_ref::<IPv4Layer>().unwrap();
+            window.show();
 
-                    source_label.set_label(&ipv4_layer.get_source_ip().to_string());
-                    destination_label.set_label(&ipv4_layer.get_destination_ip().to_string());
+        });
 
-                    ipv4_layer.get_protocol().to_string()
-                }
-                Types::Arp => {
-                    source_label.set_label(&ethernet_layer.get_source().to_string());
-                    destination_label.set_label(&ethernet_layer.get_destination().to_string());
-                    ethernet_layer.get_type().to_string()
-                }
-                Types::IPv6 => {
-                    let ipv6_layer = packet.get_layer(1).unwrap().as_any().downcast_ref::<IPv6Layer>().unwrap();
+        self.app.run();
+    }
 
-                    source_label.set_label(&ipv6_layer.get_source_ip().to_string());
-                    destination_label.set_label(&ipv6_layer.get_destination_ip().to_string());
 
-                    ipv6_layer.get_next_header().to_string()
-                }
-                Types::Broadcast => {
-                    source_label.set_label(&ethernet_layer.get_source().to_string());
-                    destination_label.set_label(&ethernet_layer.get_destination().to_string());
-                    ethernet_layer.get_type().to_string()
-                }
-                _ => {
-                    ethernet_layer.get_type().to_string()
-                }
+    fn init_titlebar(&self, window: &ApplicationWindow) -> Builder {
+        let builder = Builder::from_file("res/ui/titlebar-ui.xml");
+
+        let titlebar: gtk::Box = builder
+            .object("titlebar")
+            .expect("Couldn't find 'titlebar' in titlebar-ui.xml");
+
+        window.set_titlebar(Some(&titlebar));
+        titlebar.set_size_request(-1, 32);
+
+        titlebar.style_context().add_class("wifi");
+
+
+        let network_type_label: Label = builder
+            .object("network_type_label")
+            .expect("Couldn't find 'network_type_label' in titlebar-ui.xml");
+        network_type_label.set_label("wlp2s0");
+
+
+
+        let minimize_button: Button = builder
+            .object("minimize_button")
+            .expect("Couldn't find 'minimize_button' in titlebar-ui.xml");
+
+        let window_clone = window.clone();
+        minimize_button.connect_clicked(move |_| {
+            window_clone.iconify();
+        });
+
+        let maximize_button: Button = builder
+            .object("maximize_button")
+            .expect("Couldn't find 'maximize_button' in titlebar-ui.xml");
+
+        let window_clone = window.clone();
+        maximize_button.connect_clicked(move |_| {
+            if window_clone.is_maximized() {
+                window_clone.unmaximize();
+                return;
             }
 
-        }
-        Interfaces::WiFi => {
-            "[WiFi] TODO".to_string()
-        }
-        Interfaces::Bluetooth => {
-            "[Bluetooth] TODO".to_string()
-        }
-    };
+            window_clone.maximize();
+        });
 
-    row.style_context().add_class(&protocol);
-    protocol_label.set_label(&protocol);
+        let close_button: Button = builder
+            .object("close_button")
+            .expect("Couldn't find 'close_button' in titlebar-ui.xml");
 
+        let app_clone = self.app.clone();
+        close_button.connect_clicked(move |_| {
+            app_clone.quit();
+        });
 
-    row
+        builder
+    }
+
+    fn init_actions(&self, window: &ApplicationWindow) {
+        /*
+        let action = SimpleAction::new("quit", None);
+        let app_clone = app.clone();
+        action.connect_activate(move |_, _| {
+            app_clone.quit();
+        });
+        window.add_action(&action);
+
+        let action = SimpleAction::new("show-about-dialog", None);
+        let window_clone = window.clone();
+        action.connect_activate(move |_, _| {
+            show_about(&window_clone);
+        });
+        window.add_action(&action);
+        */
+    }
 }
+
+
+
+
+
+
 
 pub fn show_about(window: &ApplicationWindow) {
     /*

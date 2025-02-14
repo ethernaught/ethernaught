@@ -1,7 +1,8 @@
+use gtk::Paned;
 
 pub trait Fragment {
 
-    fn on_create(&self);
+    fn on_create(&mut self) -> &Paned;
 
     fn on_resume(&self);
 
