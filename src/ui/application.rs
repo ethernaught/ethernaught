@@ -1,5 +1,5 @@
 use std::process::exit;
-use gtk::{AboutDialog, ApplicationWindow, Builder, Image, Application, TreeViewColumn, CellRendererText, ScrolledWindow, Button, ListBoxRow, Label, CssProvider, StyleContext, gdk, Stack, Container};
+use gtk::{AboutDialog, ApplicationWindow, Builder, Image, Application, TreeViewColumn, CellRendererText, ScrolledWindow, Button, ListBoxRow, Label, CssProvider, StyleContext, gdk, Stack, Container, TreeView, Widget, Window};
 use gtk::gdk_pixbuf::PixbufLoader;
 use gtk::prelude::*;
 use gtk::gio::SimpleAction;
@@ -37,7 +37,7 @@ impl OApplication {
             let builder = Builder::from_file("res/ui/gtk3/window.ui");
 
             let provider = CssProvider::new();
-            provider.load_from_path("res/ui/gtk3/style.css").expect("Failed to load CSS file.");
+            provider.load_from_path("res/ui/gtk3/window.css").expect("Failed to load CSS file.");
 
             StyleContext::add_provider_for_screen(
                 &gdk::Screen::default().expect("Failed to get default screen."),
@@ -56,14 +56,14 @@ impl OApplication {
 
 
 
-            let titlebar_builder = _self.init_titlebar(&window);
+            window.set_titlebar(Some(&_self.init_titlebar(&window)));
 
             let stack = Stack::new();
             window.add(&stack);
             stack.show();
 
 
-            let mut fragment = MainFragment::new();
+            let mut fragment = MainFragment::new(_self.clone());
             let root = fragment.on_create();
             stack.add_titled(root, "main_fragment", "Main");
             stack.set_visible_child_name("main_fragment");
@@ -73,21 +73,27 @@ impl OApplication {
             _self.init_actions(&window);
 
             window.show();
-
         });
 
         self.app.run();
     }
 
+    pub fn get_window(&self) -> Option<Window> {
+        self.app.active_window()
+    }
 
-    fn init_titlebar(&self, window: &ApplicationWindow) -> Builder {
+    pub fn get_titlebar(&self) -> Option<Widget> {
+        self.app.active_window().unwrap().titlebar()
+    }
+
+    fn init_titlebar(&self, window: &ApplicationWindow) -> Widget {
         let builder = Builder::from_file("res/ui/titlebar-ui.xml");
 
         let titlebar: gtk::Box = builder
             .object("titlebar")
             .expect("Couldn't find 'titlebar' in titlebar-ui.xml");
 
-        window.set_titlebar(Some(&titlebar));
+        //window.set_titlebar(Some(&titlebar));
         titlebar.set_size_request(-1, 32);
 
         titlebar.style_context().add_class("wifi");
@@ -132,7 +138,7 @@ impl OApplication {
             app_clone.quit();
         });
 
-        builder
+        titlebar.upcast()
     }
 
     fn init_actions(&self, window: &ApplicationWindow) {
@@ -151,6 +157,22 @@ impl OApplication {
         });
         window.add_action(&action);
         */
+    }
+
+    pub fn get_child_by_name(&self, widget: &Widget, name: &str) -> Option<Widget> {
+        if widget.widget_name().as_str() == name {
+            return Some(widget.clone());
+        }
+
+        if let Some(container) = widget.dynamic_cast_ref::<Container>() {
+            for child in container.children() {
+                if let Some(found) = self.get_child_by_name(&child, name) {
+                    return Some(found);
+                }
+            }
+        }
+
+        None
     }
 }
 

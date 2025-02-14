@@ -20,55 +20,28 @@
 
                 <child>
                     <object class="GtkButton" id="menu_button">
+                        <property name="name">menu_button</property>
                         <property name="visible">True</property>
                         <property name="width-request">24</property>
                         <property name="height-request">24</property>
-
-                        <child>
-                            <object class="GtkImage">
-                                <property name="visible">True</property>
-                                <property name="width-request">24</property>
-                                <property name="height-request">24</property>
-                                <property name="icon-name">menu-button</property>
-                                <property name="file">res/images/ic_menu.svg</property>
-                            </object>
-                        </child>
                     </object>
                 </child>
 
                 <child>
                     <object class="GtkButton" id="back_button">
+                        <property name="name">back_button</property>
                         <property name="visible">True</property>
                         <property name="width-request">24</property>
                         <property name="height-request">24</property>
-
-                        <child>
-                            <object class="GtkImage">
-                                <property name="visible">True</property>
-                                <property name="width-request">24</property>
-                                <property name="height-request">24</property>
-                                <property name="icon-name">back-button</property>
-                                <property name="file">res/images/ic_back.svg</property>
-                            </object>
-                        </child>
                     </object>
                 </child>
 
                 <child>
                     <object class="GtkButton" id="next_button">
+                        <property name="name">next_button</property>
                         <property name="visible">True</property>
                         <property name="width-request">24</property>
                         <property name="height-request">24</property>
-
-                        <child>
-                            <object class="GtkImage">
-                                <property name="visible">True</property>
-                                <property name="width-request">24</property>
-                                <property name="height-request">24</property>
-                                <property name="icon-name">next-button</property>
-                                <property name="file">res/images/ic_next.svg</property>
-                            </object>
-                        </child>
                     </object>
                 </child>
 
@@ -105,36 +78,15 @@
                         <property name="visible">True</property>
                         <property name="width-request">24</property>
                         <property name="height-request">24</property>
-
-                        <child>
-                            <object class="GtkImage" id="start_icon">
-                                <property name="visible">True</property>
-                                <property name="width-request">24</property>
-                                <property name="height-request">24</property>
-                                <property name="icon-name">packet-capture-start</property>
-                                <property name="file">res/images/ic_start.svg</property>
-                            </object>
-                        </child>
                     </object>
                 </child>
 
                 <child>
                     <object class="GtkButton" id="stop_button">
                         <property name="name">stop_button</property>
-                        <property name="visible">True</property>
+                        <property name="visible">False</property>
                         <property name="width-request">24</property>
                         <property name="height-request">24</property>
-                        <property name="visible">False</property>
-
-                        <child>
-                            <object class="GtkImage" id="stop_icon">
-                                <property name="visible">True</property>
-                                <property name="width-request">24</property>
-                                <property name="height-request">24</property>
-                                <property name="icon-name">packet-capture-stop</property>
-                                <property name="file">res/images/ic_stop.svg</property>
-                            </object>
-                        </child>
                     </object>
                 </child>
             </object>
@@ -151,56 +103,29 @@
 
                 <child>
                     <object class="GtkButton" id="minimize_button">
+                        <property name="name">window_minimize</property>
                         <property name="visible">True</property>
                         <property name="width-request">16</property>
                         <property name="height-request">16</property>
-
-                        <child>
-                            <object class="GtkImage">
-                                <property name="visible">True</property>
-                                <property name="width-request">16</property>
-                                <property name="height-request">16</property>
-                                <property name="icon-name">minimize</property>
-                                <property name="file">res/images/ic_minimize.svg</property>
-                            </object>
-                        </child>
                     </object>
                 </child>
 
 
                 <child>
                     <object class="GtkButton" id="maximize_button">
+                        <property name="name">window_maximize</property>
                         <property name="visible">True</property>
                         <property name="width-request">16</property>
                         <property name="height-request">16</property>
-
-                        <child>
-                            <object class="GtkImage">
-                                <property name="visible">True</property>
-                                <property name="width-request">16</property>
-                                <property name="height-request">16</property>
-                                <property name="icon-name">maximize</property>
-                                <property name="file">res/images/ic_maximize.svg</property>
-                            </object>
-                        </child>
                     </object>
                 </child>
 
                 <child>
                     <object class="GtkButton" id="close_button">
+                        <property name="name">window_close</property>
                         <property name="visible">True</property>
                         <property name="width-request">16</property>
                         <property name="height-request">16</property>
-
-                        <child>
-                            <object class="GtkImage">
-                                <property name="visible">True</property>
-                                <property name="width-request">16</property>
-                                <property name="height-request">16</property>
-                                <property name="icon-name">close</property>
-                                <property name="file">res/images/ic_close.svg</property>
-                            </object>
-                        </child>
                     </object>
                 </child>
             </object>

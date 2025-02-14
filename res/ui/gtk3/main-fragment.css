@@ -1,0 +1,131 @@
+
+
+/*
+menubar {
+    background-color: #2b2d30;
+}
+*/
+
+
+#list_header_scroll_layout {
+    background-color: #1e1f22;
+    border-bottom: solid 1px #393b40;
+}
+
+#list_header_scroll_layout slider {
+    background-color: transparent;
+}
+
+#list_header_scroll_layout label {
+    padding: 4px 10px;
+    font-size: 12px;
+    color: #cbd7dc;
+    background-color: #1e1f22;
+}
+
+list {
+    background-color: #1e1f22;
+}
+
+list row {
+    background-color: #1e1f22;
+}
+
+list row label {
+    padding: 2px 10px;
+    font-size: 14px;
+    color: #a7a7a7;
+}
+
+list row #number {
+    color: #494e57;
+}
+
+
+list row.ARP {
+    background-color: #05211b;/*#151a19;*/
+}
+
+list row.Broadcast {
+    background-color: #000000;/*#151a19;*/
+}
+
+list row.TCP {
+    background-color: #1e0926/*#151a19;*/
+}
+
+list row.UDP {
+    background-color: #070c1f;/*#1e0f00;*/
+}
+
+list row.ICMP {
+    background-color: #260d07;/*#1e1c00;*/
+}
+
+list row.GRE {
+    background-color: #122407;/*#1c161d;*/
+}
+
+
+list row:active,
+        list row:active box {
+    background-color: #26282e;
+}
+
+
+
+
+
+
+
+#sidebar_title {
+    padding: 4px 4px 3px 4px;
+    border-bottom: solid 1px #393b40;
+}
+
+#sidebar_title button {
+    min-height: 0;
+    padding: 8px;
+    border-radius: 6px;
+    border: none;
+    background-size: auto;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#sidebar_title #dismiss_button {
+    background-image: url('../../images/ic_dismiss.svg');
+}
+
+#sidebar_title button:hover {
+    background-color: rgba(127, 127, 127, 0.2);
+}
+
+
+#hex_content {
+    background-color: #1e1f22;
+}
+
+
+/*
+#hex_content textview {
+    padding: 10px;
+}
+*/
+#hex_content text {
+    color: #9b9d9f;
+    background-color: #1e1f22;
+}
+
+#hex_content box {
+    padding: 10px 10px 10px 0;
+}
+
+#hex_content box:nth-child(1) {
+    padding-left: 10px;
+    border-right: solid 1px #2b2d30;
+}
+
+#hex_content box:nth-child(1) text {
+    color: #494e57;
+}

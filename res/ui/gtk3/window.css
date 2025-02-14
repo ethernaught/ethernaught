@@ -1,0 +1,213 @@
+window {
+    background-color: #2b2d30;
+    border-top: solid 1px #1e1f22;
+    border-left: solid 1px #5a5d63;
+    border-right: solid 1px #5a5d63;
+    border-bottom: solid 1px #5a5d63;
+}
+
+window.maximized {
+    border-left: none;
+    border-right: none;
+    border-bottom: none;
+}
+
+button:focus, button:checked {
+    outline: none;
+    border: none;
+    box-shadow: none;
+}
+
+
+
+
+
+#titlebar {
+    min-height: 0;
+    border-radius: 0;
+    border-top: solid 1px #5a5d63;
+    border-left: solid 1px #5a5d63;
+    border-right: solid 1px #5a5d63;
+    padding: 4px 8px;
+    background: linear-gradient(90deg, #2b2d30 0%, #59436e 20%, #2b2d30 40%);
+}
+
+window.maximized #titlebar {
+    border-top: none;
+    border-left: none;
+    border-right: none;
+}
+
+
+
+#titlebar.ethernet {
+    background: linear-gradient(90deg, #2b2d30 0%, #5e5030 20%, #2b2d30 40%);
+}
+
+#titlebar.wifi {
+    background: linear-gradient(90deg, #2b2d30 0%, #5e3058 20%, #2b2d30 40%);
+}
+
+#titlebar.vpn {
+    background: linear-gradient(90deg, #2b2d30 0%, #376141 20%, #2b2d30 40%);
+}
+
+#titlebar.bluetooth {
+    background: linear-gradient(90deg, #2b2d30 0%, #394366 20%, #2b2d30 40%);
+}
+
+#titlebar_menu #network_type_icon {
+    min-height: 0;
+    padding: 4px;
+    margin: 4px;
+    border-radius: 6px;
+    background-color: #59436e;
+}
+
+#titlebar.ethernet #network_type_icon {
+    background-color: #5e5030;
+}
+
+#titlebar.wifi #network_type_icon {
+    background-color: #5e3058;
+}
+
+#titlebar.vpn #network_type_icon {
+    background-color: #376141;
+}
+
+#titlebar.bluetooth #network_type_icon {
+    background-color: #394366;
+}
+
+#network_type_label {
+    color: #cbd7dc;
+    font-size: 14px;
+}
+
+
+#titlebar button {
+    min-height: 0;
+    padding: 8px;
+    border-radius: 6px;
+    border: none;
+    background-size: auto;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#titlebar button:hover {
+    background-color: rgba(127, 127, 127, 0.2);
+}
+
+#titlebar_window_options {
+    padding: 4px;
+}
+
+#titlebar_window_options button {
+    padding: 4px;
+}
+
+#titlebar_window_options button {
+    border-radius: 100%;
+}
+
+#titlebar_window_options #window_minimize {
+    background-image: url('../../images/ic_minimize.svg');
+}
+
+#titlebar_window_options #window_maximize {
+    background-image: url('../../images/ic_maximize.svg');
+}
+
+#titlebar_window_options #window_close {
+    background-image: url('../../images/ic_close.svg');
+}
+
+
+
+#titlebar_menu button,
+        #titlebar_app_options button {
+    padding: 8px;
+}
+
+#titlebar_menu #menu_button {
+    background-image: url('../../images/ic_menu.svg');
+}
+
+#titlebar_menu #back_button {
+    background-image: url('../../images/ic_back.svg');
+}
+
+#titlebar_menu #next_button {
+    background-image: url('../../images/ic_next.svg');
+}
+
+
+
+#titlebar_app_options #start_button {
+    background-image: url('../../images/ic_start.svg');
+}
+
+#titlebar_app_options #stop_button {
+    background-image: url('../../images/ic_stop.svg');
+}
+
+
+
+
+
+
+#titlebar_app_options #stop_button {
+    background-color: #DB5C5C;
+}
+
+#titlebar_app_options.running #start_button {
+    background-color: #57965C;
+    background-image: url('../../images/ic_restart.svg');
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+scrollbar trough {
+    background-color: #1e1f22;
+}
+
+scrollbar slider {
+    background-color: #444446;
+    border: none;
+    border-radius: 0;
+}
+
+scrollbar.vertical slider {
+    padding: 0 2px;
+}
+
+scrollbar.horizontal slider {
+    padding: 2px 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+

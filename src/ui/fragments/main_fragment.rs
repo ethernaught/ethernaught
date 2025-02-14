@@ -1,6 +1,8 @@
+use std::sync::{Arc, Mutex};
+use std::sync::mpsc::channel;
 use std::time::Duration;
 use gtk::prelude::*;
-use gtk::{gdk, glib, Adjustment, Application, ApplicationWindow, Builder, Button, Container, CssProvider, Image, Label, ListBox, ListBoxRow, Paned, ScrolledWindow, Stack, StyleContext, TextTag, TextView};
+use gtk::{gdk, glib, Adjustment, Application, ApplicationWindow, Builder, Button, Container, CssProvider, Image, Label, ListBox, ListBoxRow, Paned, ScrolledWindow, Stack, StyleContext, TextTag, TextView, Widget};
 use gtk::ffi::GtkPaned;
 use gtk::gdk::EventMask;
 use gtk::glib::ControlFlow::Continue;
@@ -11,20 +13,20 @@ use crate::packet::layers::layer_1::inter::types::Types;
 use crate::packet::layers::layer_2::ethernet::ipv4_layer::IPv4Layer;
 use crate::packet::layers::layer_2::ethernet::ipv6_layer::IPv6Layer;
 use crate::packet::packet::Packet;
+use crate::pcap::packet_capture;
+use crate::ui::application::OApplication;
 use crate::ui::fragments::inter::fragment::Fragment;
 
 pub struct MainFragment {
-    builder: Builder,
+    app: OApplication,
     root: Option<Paned>
 }
 
 impl MainFragment {
 
-    pub fn new() -> Self {
-        let builder = Builder::from_file("res/ui/gtk3/main-fragment.ui");
-
+    pub fn new(app: OApplication) -> Self {
         Self {
-            builder,
+            app,
             root: None
         }
     }
@@ -32,18 +34,30 @@ impl MainFragment {
 
 impl Fragment for MainFragment {
 
-    fn on_create(&mut self) -> &Paned {
-        self.root = Some(self.builder
+    fn on_create(&mut self) -> &Container {
+        let builder = Builder::from_file("res/ui/gtk3/main-fragment.ui");
+
+        let provider = CssProvider::new();
+        provider.load_from_path("res/ui/gtk3/main-fragment.css").expect("Failed to load CSS file.");
+
+        StyleContext::add_provider_for_screen(
+            &gdk::Screen::default().expect("Failed to get default screen."),
+            &provider,
+            gtk::STYLE_PROVIDER_PRIORITY_APPLICATION,
+        );
+
+
+        self.root = Some(builder
             .object("window_layout")
             .expect("Couldn't find 'window_layout' in main-fragment.ui"));
 
-        let content_layout: gtk::Box = self.builder
+        let content_layout: gtk::Box = builder
             .object("content_layout")
             .expect("Couldn't find 'content_layout' in window.ui");
         self.root.as_ref().unwrap().set_child_shrink(&content_layout, false);
         self.root.as_ref().unwrap().set_child_resize(&content_layout, true);
 
-        let sidebar_layout: gtk::Box = self.builder
+        let sidebar_layout: gtk::Box = builder
             .object("sidebar_layout")
             .expect("Couldn't find 'sidebar_layout' in window.ui");
         self.root.as_ref().unwrap().set_child_shrink(&sidebar_layout, false);
@@ -52,40 +66,39 @@ impl Fragment for MainFragment {
 
 
 
+        let (tx, rx) = channel();
 
-        /*
-        let titlebar_app_options: gtk::Box = titlebar_builder
-            .object("titlebar_app_options")
-            .expect("Couldn't find 'titlebar_app_options' in titlebar-ui.xml");
+        let tx = Arc::new(Mutex::new(tx));
 
-        let start_button: Button = titlebar_builder
-            .object("start_button")
-            .expect("Couldn't find 'start_button' in titlebar-ui.xml");
+        let titlebar = self.app.get_titlebar().unwrap();
 
-        let start_icon: Image = titlebar_builder
-            .object("start_icon")
-            .expect("Couldn't find 'start_icon' in titlebar-ui.xml");
+        let titlebar_app_options = Arc::new(self.app.get_child_by_name(&titlebar, "titlebar_app_options").unwrap());
+        let stop_button = Arc::new(self.app.get_child_by_name(&titlebar_app_options, "stop_button").unwrap());
+        let start_button = self.app.get_child_by_name(&titlebar_app_options, "start_button").unwrap();
 
-        let stop_button: Button = titlebar_builder
-            .object("stop_button")
-            .expect("Couldn't find 'stop_button' in titlebar-ui.xml");
+        if let Some(start_button) = start_button.downcast_ref::<Button>() {
+            let titlebar_app_options = titlebar_app_options.clone();
+            let stop_button_clone = stop_button.clone();
 
+            start_button.connect_clicked(move |_| {
+                titlebar_app_options.style_context().add_class("running");
+                stop_button_clone.show();
 
+                println!("Start button clicked!");
+                packet_capture(tx.clone());
+            });
+        }
 
+        if let Some(stop_button) = stop_button.downcast_ref::<Button>() {
+            let titlebar_app_options = titlebar_app_options.clone();
+            let stop_button_clone = stop_button.clone();
 
-
-
-
-        start_button.connect_clicked(move |_| {
-            titlebar_app_options.style_context().add_class("running");
-            start_icon.set_from_file(Some("res/images/ic_restart.svg"));
-            stop_button.show();
-
-            println!("Start button clicked!");
-            packet_capture(tx.clone());
-        });
-        */
-
+            stop_button.connect_clicked(move |_| {
+                titlebar_app_options.style_context().remove_class("running");
+                stop_button_clone.hide();
+                println!("Stop button clicked!");
+            });
+        }
 
 
 
@@ -95,13 +108,13 @@ impl Fragment for MainFragment {
         let hadjustment = Adjustment::new(0.0, 0.0, 1000.0, 10.0, 100.0, 100.0);
         let vadjustment = Adjustment::new(0.0, 0.0, 1000.0, 10.0, 100.0, 100.0);
 
-        let list_header_scroll_layout: ScrolledWindow = self.builder
+        let list_header_scroll_layout: ScrolledWindow = builder
             .object("list_header_scroll_layout")
             .expect("Couldn't find 'list_header_scroll_layout' in window.ui");
         list_header_scroll_layout.set_hadjustment(Some(&hadjustment));
         list_header_scroll_layout.set_vadjustment(None::<&Adjustment>);
 
-        let list_scroll_layout: ScrolledWindow = self.builder
+        let list_scroll_layout: ScrolledWindow = builder
             .object("list_scroll_layout")
             .expect("Couldn't find 'list_scroll_layout' in window.ui");
 
@@ -134,9 +147,9 @@ impl Fragment for MainFragment {
         ];
 
 
-        let line_numbers: TextView = self.builder.object("hex_line_numbers").unwrap();
-        let hex_text_view: TextView = self.builder.object("hex_text_view").unwrap();
-        let ascii_text_view: TextView = self.builder.object("ascii_text_view").unwrap();
+        let line_numbers: TextView = builder.object("hex_line_numbers").unwrap();
+        let hex_text_view: TextView = builder.object("hex_text_view").unwrap();
+        let ascii_text_view: TextView = builder.object("ascii_text_view").unwrap();
 
         let line_numbers_string = hex_data.chunks(16)
             .enumerate()
@@ -320,11 +333,6 @@ impl Fragment for MainFragment {
 
 
 
-        /*
-
-        let (tx, rx) = channel();
-
-        let tx = Arc::new(Mutex::new(tx));
 
         let mut i = 0;
 
@@ -341,9 +349,9 @@ impl Fragment for MainFragment {
                 }
             }
             Continue
-        });*/
+        });
 
-        &self.root.as_ref().unwrap()
+        &self.root.as_ref().unwrap().upcast_ref()
     }
 
     fn on_resume(&self) {

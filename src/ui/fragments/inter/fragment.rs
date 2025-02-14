@@ -1,8 +1,8 @@
-use gtk::Paned;
+use gtk::Container;
 
 pub trait Fragment {
 
-    fn on_create(&mut self) -> &Paned;
+    fn on_create(&mut self) -> &Container;
 
     fn on_resume(&self);
 

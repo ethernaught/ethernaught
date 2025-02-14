@@ -136,19 +136,10 @@
 
                         <child>
                             <object class="GtkButton" id="dismiss_button">
+                                <property name="name">dismiss_button</property>
                                 <property name="visible">True</property>
                                 <property name="width-request">16</property>
                                 <property name="height-request">16</property>
-
-                                <child>
-                                    <object class="GtkImage">
-                                        <property name="visible">True</property>
-                                        <property name="width-request">16</property>
-                                        <property name="height-request">16</property>
-                                        <property name="icon-name">dismiss</property>
-                                        <property name="file">res/images/ic_dismiss.svg</property>
-                                    </object>
-                                </child>
                             </object>
                         </child>
                     </object>
