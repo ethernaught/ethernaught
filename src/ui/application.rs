@@ -70,6 +70,16 @@ impl OApplication {
         self.app.run();
     }
 
+    pub fn start_activity(&self, mut activity: Box<dyn Activity>) {
+        let stack = self.app.active_window().unwrap().children()[0].clone().downcast::<Stack>().unwrap();
+
+        let name = activity.get_name();
+        let title = activity.get_title();
+        let root = activity.on_create();
+        stack.add_titled(root, &name, &title);
+        stack.set_visible_child_name(&activity.get_name());
+    }
+
     pub fn get_window(&self) -> Option<Window> {
         self.app.active_window()
     }

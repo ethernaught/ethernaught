@@ -70,4 +70,8 @@ impl Fragment for MainFragment {
     fn on_destroy(&self) {
         todo!()
     }
+
+    fn dyn_clone(&self) -> Box<dyn Fragment> {
+        Box::new(self.clone())
+    }
 }

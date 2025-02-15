@@ -148,6 +148,10 @@ impl Activity for MainActivity {
     fn on_destroy(&self) {
         todo!()
     }
+
+    fn dyn_clone(&self) -> Box<dyn Activity> {
+        Box::new(self.clone())
+    }
 }
 
 

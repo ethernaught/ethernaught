@@ -9,4 +9,6 @@ pub trait Fragment {
     fn on_pause(&self);
 
     fn on_destroy(&self);
+
+    fn dyn_clone(&self) -> Box<dyn Fragment>;
 }

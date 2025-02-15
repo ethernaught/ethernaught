@@ -1,9 +1,10 @@
 use gtk::{gdk, Builder, Container, CssProvider, ListBox, Paned, Stack, StyleContext};
 use gtk::glib::Cast;
-use gtk::prelude::{BuilderExtManual, CssProviderExt, ListBoxExt, StackExt};
+use gtk::prelude::{BuilderExtManual, CssProviderExt, ListBoxExt, ListBoxRowExt, StackExt};
 use pcap::devices::Device;
 use crate::ui::application::OApplication;
 use crate::ui::activity::inter::activity::Activity;
+use crate::ui::activity::main_activity::MainActivity;
 use crate::ui::adapters::devices_adapter::DevicesAdapter;
 
 #[derive(Clone)]
@@ -58,12 +59,15 @@ impl Activity for DevicesActivity {
 
         let device_adapter = DevicesAdapter::new(&list_box);
 
-        Device::list().expect("Failed to get device list").iter().for_each(|d| {
+        let devices = Device::list().expect("Failed to get device list");
+        devices.iter().for_each(|d| {
             device_adapter.add(d);
         });
 
-        list_box.connect_row_activated(|_, row| {
-            println!("Row clicked!");
+        let app = self.app.clone();
+        list_box.connect_row_activated(move |_, row| {
+            let device = devices[row.index() as usize].get_name();
+            app.start_activity(Box::new(MainActivity::new(app.clone())));
         });
 
         self.devices_adapter = Some(device_adapter);
@@ -81,5 +85,9 @@ impl Activity for DevicesActivity {
 
     fn on_destroy(&self) {
         todo!()
+    }
+
+    fn dyn_clone(&self) -> Box<dyn Activity> {
+        Box::new(self.clone())
     }
 }
