@@ -3,7 +3,8 @@ use std::sync::mpsc::Sender;
 use std::thread;
 use std::time::{SystemTime, UNIX_EPOCH};
 use gtk::prelude::SocketExtManual;
-use pcap::{Capture, Device};
+use pcap::capture::Capture;
+use pcap::devices::Device;
 use crate::packet::packet::Packet;
 use crate::packet::inter::interfaces::Interfaces;
 use crate::packet::layers::inter::layer::Layer;
@@ -21,17 +22,15 @@ pub fn packet_capture(tx: Arc<Mutex<Sender<Packet>>>) {
 
         println!("Devices: {:?}", devices);
 
-        let device = devices.into_iter().find(|d| d.name.contains("wlp7s0"))
+        let device = devices.into_iter().find(|d| d.get_name().contains("wlp7s0"))
             .expect("No suitable device found");
 
-        println!("Listening on device: {}", device.name);
+        println!("Listening on device: {}", device.get_name());
 
-        let mut cap = Capture::from_device(device)
-            .expect("Failed to open device")
-            .promisc(true)
-            .immediate_mode(true)
-            .open()
-            .expect("Failed to start capture");
+        let mut cap = Capture::from_device(device).expect("Failed to open device");
+        cap.set_promiscuous_mode(true);
+        cap.set_immediate_mode(true);
+        cap.open().expect("Failed to start capture");
 
         let interface = Interfaces::Ethernet;
 
@@ -41,19 +40,21 @@ pub fn packet_capture(tx: Arc<Mutex<Sender<Packet>>>) {
             .as_millis() as f64;
 
         while let Ok(packet) = cap.next_packet() {
-            let timestamp = (get_timestamp(packet.header.ts.tv_sec as u32, packet.header.ts.tv_usec as u32)-now)/1000.0;
+            //let timestamp = (get_timestamp(packet.header.ts.tv_sec as u32, packet.header.ts.tv_usec as u32)-now)/1000.0;
+            let timestamp = 0;
+            let len = 0;
 
-            let mut frame = Packet::new(interface.clone(), timestamp, packet.header.len);
+            let mut frame = Packet::new(interface.clone(), timestamp as f64, len);
 
             match frame.get_interface() {
                 Interfaces::Ethernet => {
-                    let ethernet_layer = EthernetLayer::from_bytes(packet.data).expect("Failed to parse Ethernet frame");
+                    let ethernet_layer = EthernetLayer::from_bytes(packet.get_data()).expect("Failed to parse Ethernet frame");
                     frame.add_layer(ethernet_layer.dyn_clone());
                     let mut off = ethernet_layer.len();
 
                     match ethernet_layer.get_type() {
                         Types::IPv4 => {
-                            let ipv4_layer = IPv4Layer::from_bytes(&packet.data[off..]).expect("Failed to parse IPv4 frame");
+                            let ipv4_layer = IPv4Layer::from_bytes(&packet.get_data()[off..]).expect("Failed to parse IPv4 frame");
                             frame.add_layer(ipv4_layer.dyn_clone());
                             off += ipv4_layer.len();
 
@@ -61,12 +62,12 @@ pub fn packet_capture(tx: Arc<Mutex<Sender<Packet>>>) {
                                 Protocols::Icmp => {}
                                 Protocols::Igmp => {}
                                 Protocols::Tcp => {
-                                    let tcp_layer = TcpLayer::from_bytes(&packet.data[off..]).expect("Failed to parse TCP frame");
+                                    let tcp_layer = TcpLayer::from_bytes(&packet.get_data()[off..]).expect("Failed to parse TCP frame");
                                     frame.add_layer(tcp_layer.dyn_clone());
                                     off += tcp_layer.len();
                                 }
                                 Protocols::Udp => {
-                                    let udp_layer = UdpLayer::from_bytes(&packet.data[off..]).expect("Failed to parse UDP frame");
+                                    let udp_layer = UdpLayer::from_bytes(&packet.get_data()[off..]).expect("Failed to parse UDP frame");
                                     frame.add_layer(udp_layer.dyn_clone());
                                     off += udp_layer.len();
                                 }

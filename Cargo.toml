@@ -7,4 +7,5 @@ edition = "2021"
 
 [dependencies]
 gtk = "0.18.1"
-pcap = "2.2.0"
+pcap = { path = "../pcap" }
+#pcap = "2.2.0"

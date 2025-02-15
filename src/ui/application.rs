@@ -61,8 +61,8 @@ impl OApplication {
             window.add(&stack);
             stack.show();
 
-            let mut activity = DevicesActivity::new(_self.clone());
-            //let mut activity = MainActivity::new(_self.clone());
+            //let mut activity = DevicesActivity::new(_self.clone());
+            let mut activity = MainActivity::new(_self.clone());
             let name = activity.get_name();
             let title = activity.get_title();
             let root = activity.on_create();
