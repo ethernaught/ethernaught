@@ -1,6 +1,6 @@
-use gtk::{gdk, Builder, Container, CssProvider, Paned, Stack, StyleContext};
+use gtk::{gdk, Builder, Container, CssProvider, ListBox, Paned, Stack, StyleContext};
 use gtk::glib::Cast;
-use gtk::prelude::{BuilderExtManual, CssProviderExt, StackExt};
+use gtk::prelude::{BuilderExtManual, CssProviderExt, ListBoxExt, StackExt};
 use pcap::devices::Device;
 use crate::ui::application::OApplication;
 use crate::ui::activity::inter::activity::Activity;
@@ -51,14 +51,19 @@ impl Activity for DevicesActivity {
             .expect("Couldn't find 'devices_layout' in devices-activity.ui"));
 
 
-        let list_box = builder
+        let list_box: ListBox = builder
             .object("list_box")
             .expect("Couldn't find 'list_box' in devices-activity.ui");
+        list_box.set_selection_mode(gtk::SelectionMode::Single);
 
         let device_adapter = DevicesAdapter::new(&list_box);
 
         Device::list().expect("Failed to get device list").iter().for_each(|d| {
             device_adapter.add(d);
+        });
+
+        list_box.connect_row_activated(|_, row| {
+            println!("Row clicked!");
         });
 
         self.devices_adapter = Some(device_adapter);

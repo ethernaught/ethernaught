@@ -1,6 +1,6 @@
 use gtk::{Builder, DrawingArea, Label, ListBox, ListBoxRow};
-use gtk::glib::Propagation;
-use gtk::prelude::{BuilderExtManual, ContainerExt, GLAreaExt, LabelExt, WidgetExt};
+use gtk::glib::{Cast, Propagation};
+use gtk::prelude::{BinExt, BuilderExtManual, ContainerExt, GLAreaExt, LabelExt, ListBoxExt, ListBoxRowExt, WidgetExt};
 use pcap::devices::Device;
 
 #[derive(Clone)]
@@ -50,7 +50,7 @@ impl DevicesAdapter {
             cr.paint().unwrap();
 
             cr.set_source_rgb(0.145, 0.212, 0.153);
-            cr.set_line_width(2.0);
+            cr.set_line_width(3.0);
 
             if !values.is_empty() {
                 let width = drawing_area_clone.allocated_width() as f64;
@@ -74,7 +74,6 @@ impl DevicesAdapter {
         drawing_area.set_hexpand(true);
 
         row_root.add(&drawing_area);
-
         row.show_all();
 
         self.list_box.add(&row);
