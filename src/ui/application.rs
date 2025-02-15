@@ -25,7 +25,7 @@ impl OApplication {
         }
     }
 
-    pub fn on_create(&self) {
+    pub fn run(&self) {
         let _self = self.clone();
         self.app.connect_activate(move |app| {
             let builder = Builder::from_file("res/ui/gtk3/window.ui");
@@ -54,8 +54,8 @@ impl OApplication {
             window.add(&stack);
             stack.show();
 
-            //let mut activity = DevicesActivity::new(_self.clone());
-            let mut activity = MainActivity::new(_self.clone());
+            let mut activity = DevicesActivity::new(_self.clone());
+            //let mut activity = MainActivity::new(_self.clone());
             let name = activity.get_name();
             let title = activity.get_title();
             let root = activity.on_create();
