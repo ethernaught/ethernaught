@@ -20,45 +20,45 @@ impl PacketAdapter {
         }
     }
 
-    pub fn add_item(&self, number: u32, packet: Packet) {
-        let builder = Builder::from_file("res/ui/list_item.xml");
+    pub fn add(&self, number: u32, packet: &Packet) {
+        let builder = Builder::from_file("res/ui/packet_list_item.xml");
         let row: ListBoxRow = builder
             .object("row")
-            .expect("Couldn't find 'row' in list_item.xml");
+            .expect("Couldn't find 'row' in packet_list_item.xml");
 
         //row.style_context().add_class(&packet.get_type().to_string());
 
         let number_label: Label = builder
             .object("number")
-            .expect("Couldn't find 'number' in list_item.xml");
+            .expect("Couldn't find 'number' in packet_list_item.xml");
         number_label.set_label(format!("{}", number).as_str());
 
         let time_label: Label = builder
             .object("time")
-            .expect("Couldn't find 'time' in list_item.xml");
+            .expect("Couldn't find 'time' in packet_list_item.xml");
         time_label.set_label(format!("{:.5}", packet.get_frame_time()).as_str());
 
         let source_label: Label = builder
             .object("source")
-            .expect("Couldn't find 'source' in list_item.xml");
+            .expect("Couldn't find 'source' in packet_list_item.xml");
 
         let destination_label: Label = builder
             .object("destination")
-            .expect("Couldn't find 'destination' in list_item.xml");
+            .expect("Couldn't find 'destination' in packet_list_item.xml");
 
         let protocol_label: Label = builder
             .object("protocol")
-            .expect("Couldn't find 'protocol' in list_item.xml");
+            .expect("Couldn't find 'protocol' in packet_list_item.xml");
         //protocol_label.set_label(&packet.get_type().to_string());
 
         let length_label: Label = builder
             .object("length")
-            .expect("Couldn't find 'length' in list_item.xml");
+            .expect("Couldn't find 'length' in packet_list_item.xml");
         length_label.set_label(format!("{}", packet.len()).as_str());
 
         let info_label: Label = builder
             .object("info")
-            .expect("Couldn't find 'info' in list_item.xml");
+            .expect("Couldn't find 'info' in packet_list_item.xml");
 
         let protocol = match packet.get_interface() {
             Interfaces::Ethernet => {

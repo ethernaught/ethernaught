@@ -122,7 +122,7 @@ impl Activity for MainActivity {
                 Ok(packet) => {
                     i += 1;
 
-                    main_fragment.get_packet_adapter().unwrap().add_item(i, packet);
+                    main_fragment.get_packet_adapter().unwrap().add(i, &packet);
                     //let row = main_fragment.create_row(i, packet);
                     //list_box.add(&row);
                     //row.show_all();

@@ -1,13 +1,16 @@
 use gtk::{gdk, Builder, Container, CssProvider, Paned, Stack, StyleContext};
 use gtk::glib::Cast;
 use gtk::prelude::{BuilderExtManual, CssProviderExt, StackExt};
+use pcap::devices::Device;
 use crate::ui::application::OApplication;
 use crate::ui::activity::inter::activity::Activity;
+use crate::ui::adapters::devices_adapter::DevicesAdapter;
 
 #[derive(Clone)]
 pub struct DevicesActivity {
     app: OApplication,
-    root: Option<Container>
+    root: Option<Container>,
+    devices_adapter: Option<DevicesAdapter>
 }
 
 impl DevicesActivity {
@@ -15,7 +18,8 @@ impl DevicesActivity {
     pub fn new(app: OApplication) -> Self {
         Self {
             app,
-            root: None
+            root: None,
+            devices_adapter: None
         }
     }
 }
@@ -42,10 +46,22 @@ impl Activity for DevicesActivity {
             gtk::STYLE_PROVIDER_PRIORITY_APPLICATION,
         );
 
-
         self.root = Some(builder
             .object("devices_layout")
             .expect("Couldn't find 'devices_layout' in devices-activity.ui"));
+
+
+        let list_box = builder
+            .object("list_box")
+            .expect("Couldn't find 'list_box' in devices-activity.ui");
+
+        let device_adapter = DevicesAdapter::new(&list_box);
+
+        Device::list().expect("Failed to get device list").iter().for_each(|d| {
+            device_adapter.add(d);
+        });
+
+        self.devices_adapter = Some(device_adapter);
 
         &self.root.as_ref().unwrap().upcast_ref()
     }
