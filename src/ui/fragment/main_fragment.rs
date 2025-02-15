@@ -1,11 +1,5 @@
 use gtk::prelude::*;
 use gtk::{gdk, glib, Adjustment, Application, ApplicationWindow, Builder, Button, Container, CssProvider, Image, Label, ListBox, ListBoxRow, Paned, ScrolledWindow, Stack, StyleContext, TextTag, TextView, Widget};
-use crate::packet::inter::interfaces::Interfaces;
-use crate::packet::layers::layer_1::ethernet_layer::EthernetLayer;
-use crate::packet::layers::layer_1::inter::types::Types;
-use crate::packet::layers::layer_2::ethernet::ipv4_layer::IPv4Layer;
-use crate::packet::layers::layer_2::ethernet::ipv6_layer::IPv6Layer;
-use crate::packet::packet::Packet;
 use crate::ui::activity::inter::activity::Activity;
 use crate::ui::adapters::packet_adapter::PacketAdapter;
 use crate::ui::fragment::inter::fragment::Fragment;

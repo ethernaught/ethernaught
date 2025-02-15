@@ -1,11 +1,11 @@
 use gtk::{Builder, Label, ListBox, ListBoxRow};
 use gtk::prelude::{BuilderExtManual, ContainerExt, LabelExt, StyleContextExt, WidgetExt};
-use crate::packet::inter::interfaces::Interfaces;
-use crate::packet::layers::layer_1::ethernet_layer::EthernetLayer;
-use crate::packet::layers::layer_1::inter::types::Types;
-use crate::packet::layers::layer_2::ethernet::ipv4_layer::IPv4Layer;
-use crate::packet::layers::layer_2::ethernet::ipv6_layer::IPv6Layer;
-use crate::packet::packet::Packet;
+use pcap::packet::inter::interfaces::Interfaces;
+use pcap::packet::layers::layer_1::ethernet_layer::EthernetLayer;
+use pcap::packet::layers::layer_1::inter::types::Types;
+use pcap::packet::layers::layer_2::ethernet::ipv4_layer::IPv4Layer;
+use pcap::packet::layers::layer_2::ethernet::ipv6_layer::IPv6Layer;
+use pcap::packet::packet::Packet;
 
 #[derive(Clone)]
 pub struct PacketAdapter {

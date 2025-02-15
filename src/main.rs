@@ -1,5 +1,4 @@
 mod pcaps;
-mod packet;
 mod ui;
 
 use pcap::devices::Device;
