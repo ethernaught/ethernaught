@@ -7,8 +7,9 @@ use pcap::capture::Capture;
 use pcap::devices::Device;
 use pcap::packet::packet::Packet;
 
-pub fn packet_capture(tx: Arc<Mutex<Sender<Packet>>>) {
+pub fn packet_capture(tx: Arc<Mutex<Sender<Packet>>>, device: Device) {
     thread::spawn(move || {
+        /*
         let devices = Device::list().expect("Failed to get device list");
 
         println!("Devices: {:?}", devices);
@@ -17,6 +18,7 @@ pub fn packet_capture(tx: Arc<Mutex<Sender<Packet>>>) {
             .expect("No suitable device found");
 
         println!("Listening on device: {}", device.get_name());
+        */
 
         let mut cap = Capture::from_device(device).expect("Failed to open device");
         cap.set_promiscuous_mode(true);

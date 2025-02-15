@@ -4,6 +4,7 @@ use std::time::Duration;
 use gtk::prelude::*;
 use gtk::{gdk, glib, Adjustment, Application, ApplicationWindow, Builder, Button, Container, CssProvider, Image, Label, ListBox, ListBoxRow, Paned, ScrolledWindow, Stack, StyleContext, TextTag, TextView, Widget};
 use gtk::glib::ControlFlow::Continue;
+use pcap::devices::Device;
 use crate::main;
 use crate::pcaps::packet_capture;
 use crate::ui::application::OApplication;
@@ -15,15 +16,17 @@ use crate::ui::fragment::sidebar_fragment::SidebarFragment;
 #[derive(Clone)]
 pub struct MainActivity {
     app: OApplication,
-    root: Option<Container>
+    root: Option<Container>,
+    device: Device
 }
 
 impl MainActivity {
 
-    pub fn new(app: OApplication) -> Self {
+    pub fn new(app: OApplication, device: Device) -> Self {
         Self {
             app,
-            root: None
+            root: None,
+            device
         }
     }
 }
@@ -83,12 +86,16 @@ impl Activity for MainActivity {
 
 
         let titlebar = self.app.get_titlebar().unwrap();
+        let menu_buttons = Arc::new(self.app.get_child_by_name(&titlebar, "navigation_menu_1").unwrap());
+        menu_buttons.show();
 
         let app_buttons = Arc::new(self.app.get_child_by_name(&titlebar, "app_buttons").unwrap());
+        app_buttons.show();
         let stop_button = Arc::new(self.app.get_child_by_name(&app_buttons, "stop_button").unwrap());
         let start_button = self.app.get_child_by_name(&app_buttons, "start_button").unwrap();
 
         if let Some(start_button) = start_button.downcast_ref::<Button>() {
+            let device = self.device.clone();
             let app_buttons = app_buttons.clone();
             let stop_button_clone = stop_button.clone();
 
@@ -97,7 +104,7 @@ impl Activity for MainActivity {
                 stop_button_clone.show();
 
                 println!("Start button clicked!");
-                packet_capture(tx.clone());
+                packet_capture(tx.clone(), device.clone());
             });
         }
 

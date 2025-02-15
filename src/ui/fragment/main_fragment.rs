@@ -54,7 +54,7 @@ impl Fragment for MainFragment {
             .expect("Couldn't find 'list_box' in window.ui");
 
         self.packet_adapter = Some(PacketAdapter::new(&list_box));
-        list_scroll_layout.add(&list_box);
+        //list_scroll_layout.add(&list_box);
 
         &self.root.as_ref().unwrap().upcast_ref()
     }
