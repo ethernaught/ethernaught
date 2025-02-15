@@ -49,11 +49,12 @@ impl Fragment for MainFragment {
         list_scroll_layout.set_hadjustment(Some(&hadjustment));
         list_scroll_layout.set_vadjustment(Some(&vadjustment));
 
+        let list_box: ListBox = builder
+            .object("list_box")
+            .expect("Couldn't find 'list_box' in window.ui");
 
-        let list_box = ListBox::new();
         self.packet_adapter = Some(PacketAdapter::new(&list_box));
         list_scroll_layout.add(&list_box);
-        list_box.show_all();
 
         &self.root.as_ref().unwrap().upcast_ref()
     }
