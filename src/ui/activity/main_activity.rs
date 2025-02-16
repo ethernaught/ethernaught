@@ -68,20 +68,18 @@ impl Activity for MainActivity {
 
 
 
+        /*
         let mut sidebar_fragment = SidebarFragment::new();
         let sidebar = sidebar_fragment.on_create();
         root.add(sidebar);
         root.set_child_shrink(sidebar, false);
-
+        */
 
 
 
 
 
         let (tx, rx) = channel();
-        let tx = Arc::new(Mutex::new(tx));
-
-
 
 
 
@@ -98,6 +96,7 @@ impl Activity for MainActivity {
             let device = self.device.clone();
             let app_buttons = app_buttons.clone();
             let stop_button_clone = stop_button.clone();
+            let tx = Arc::new(Mutex::new(tx));
 
             start_button.connect_clicked(move |_| {
                 app_buttons.style_context().add_class("running");
@@ -154,6 +153,10 @@ impl Activity for MainActivity {
 
     fn on_destroy(&self) {
         todo!()
+    }
+
+    fn start_fragment(&self, fragment: Box<dyn Fragment>) {
+
     }
 
     fn dyn_clone(&self) -> Box<dyn Activity> {

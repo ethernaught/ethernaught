@@ -1,4 +1,5 @@
 use gtk::Container;
+use crate::ui::fragment::inter::fragment::Fragment;
 
 pub trait Activity {
 
@@ -13,6 +14,8 @@ pub trait Activity {
     fn on_pause(&self);
 
     fn on_destroy(&self);
+
+    fn start_fragment(&self, fragment: Box<dyn Fragment>);
 
     fn dyn_clone(&self) -> Box<dyn Activity>;
 }

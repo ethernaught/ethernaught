@@ -14,7 +14,7 @@ use crate::ui::application::OApplication;
 
 fn main() {
 
-    //let device = "eth0"; // Change to your network interface
+    /*
     let devices = Device::list().expect("Failed to get device list");
     let device = devices.into_iter().find(|d| d.get_name().contains("wlp7s0")).unwrap();
 
@@ -31,7 +31,9 @@ fn main() {
         let mut last_update = SystemTime::now();
         let mut byte_count = 0u64;
 
-        while let Ok(packet) = cap.next_packet() {
+        loop {
+        //while let Ok(packet) = cap.next_packet() {
+            let packet = cap.next_packet().unwrap();
             byte_count += packet.len() as u64;
 
             let now = SystemTime::now();
@@ -63,8 +65,9 @@ fn main() {
     loop {
         thread::sleep(Duration::from_secs(1));
     }
+    */
 
 
-    //let app = OApplication::new();
-    //app.run();
+    let app = OApplication::new();
+    app.run();
 }

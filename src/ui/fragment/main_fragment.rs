@@ -1,6 +1,7 @@
 use gtk::prelude::*;
 use gtk::{gdk, glib, Adjustment, Application, ApplicationWindow, Builder, Button, Container, CssProvider, Image, Label, ListBox, ListBoxRow, Paned, ScrolledWindow, Stack, StyleContext, TextTag, TextView, Widget};
 use crate::ui::activity::inter::activity::Activity;
+use crate::ui::activity::main_activity::MainActivity;
 use crate::ui::adapters::packet_adapter::PacketAdapter;
 use crate::ui::fragment::inter::fragment::Fragment;
 
@@ -55,6 +56,10 @@ impl Fragment for MainFragment {
 
         self.packet_adapter = Some(PacketAdapter::new(&list_box));
         //list_scroll_layout.add(&list_box);
+
+        list_box.connect_row_activated(move |_, row| {
+
+        });
 
         &self.root.as_ref().unwrap().upcast_ref()
     }

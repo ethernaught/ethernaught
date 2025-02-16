@@ -6,6 +6,7 @@ use crate::ui::application::OApplication;
 use crate::ui::activity::inter::activity::Activity;
 use crate::ui::activity::main_activity::MainActivity;
 use crate::ui::adapters::devices_adapter::DevicesAdapter;
+use crate::ui::fragment::inter::fragment::Fragment;
 
 #[derive(Clone)]
 pub struct DevicesActivity {
@@ -84,6 +85,10 @@ impl Activity for DevicesActivity {
 
     fn on_destroy(&self) {
         todo!()
+    }
+
+    fn start_fragment(&self, fragment: Box<dyn Fragment>) {
+
     }
 
     fn dyn_clone(&self) -> Box<dyn Activity> {
