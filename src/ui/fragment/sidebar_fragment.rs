@@ -1,10 +1,11 @@
 use std::any::Any;
-use gtk::{Builder, Container, Paned, TextTag, TextView};
+use gtk::{Builder, Button, Container, Paned, TextTag, TextView};
 use gtk::gdk::EventMask;
 use gtk::glib::Propagation;
-use gtk::prelude::{BuilderExtManual, Cast, PanedExt, TextBufferExt, TextTagTableExt, TextViewExt, WidgetExt, WidgetExtManual};
+use gtk::prelude::{BuilderExtManual, ButtonExt, Cast, PanedExt, TextBufferExt, TextTagTableExt, TextViewExt, WidgetExt, WidgetExtManual};
 use pcap::packet::packet::Packet;
 use crate::ui::activity::inter::activity::Activity;
+use crate::ui::activity::main_activity::MainActivity;
 use crate::ui::fragment::inter::fragment::Fragment;
 
 #[derive(Clone)]
@@ -33,6 +34,22 @@ impl Fragment for SidebarFragment {
         self.root = Some(builder
             .object("sidebar_layout")
             .expect("Couldn't find 'sidebar_layout' in window.ui"));
+
+
+        let dismiss_button: Button = builder
+            .object("dismiss_button")
+            .expect("Couldn't find 'dismiss_button' in window.ui");
+
+        let _self = self.clone();
+        dismiss_button.connect_clicked(move |_| {
+            let main_activity = _self.activity.as_any().downcast_ref::<MainActivity>().unwrap();
+            main_activity.close_sidebar();
+        });
+
+
+
+
+
 
 
 

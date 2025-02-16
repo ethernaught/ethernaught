@@ -46,6 +46,17 @@ impl MainActivity {
         root.add(content);
         root.set_child_shrink(content, false);
     }
+
+    pub fn close_sidebar(&self) {
+        let root = self.root.as_ref().unwrap().downcast_ref::<Paned>().unwrap();
+
+        match root.child2() {
+            Some(child) => {
+                root.remove(&child);
+            }
+            None => {}
+        }
+    }
 }
 
 impl Activity for MainActivity {
