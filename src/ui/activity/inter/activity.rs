@@ -1,5 +1,5 @@
+use std::any::Any;
 use gtk::Container;
-use crate::ui::fragment::inter::fragment::Fragment;
 
 pub trait Activity {
 
@@ -15,7 +15,16 @@ pub trait Activity {
 
     fn on_destroy(&self);
 
-    fn start_fragment(&self, fragment: Box<dyn Fragment>);
+    fn as_any(&self) -> &dyn Any;
+
+    fn as_any_mut(&mut self) -> &mut dyn Any;
 
     fn dyn_clone(&self) -> Box<dyn Activity>;
+}
+
+impl Clone for Box<dyn Activity> {
+
+    fn clone(&self) -> Box<dyn Activity> {
+        self.dyn_clone()
+    }
 }

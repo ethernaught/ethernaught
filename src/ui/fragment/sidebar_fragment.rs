@@ -1,3 +1,4 @@
+use std::any::Any;
 use gtk::{Builder, Container, Paned, TextTag, TextView};
 use gtk::gdk::EventMask;
 use gtk::glib::Propagation;
@@ -237,6 +238,14 @@ impl Fragment for SidebarFragment {
 
     fn on_destroy(&self) {
         todo!()
+    }
+
+    fn as_any(&self) -> &dyn Any {
+        self
+    }
+
+    fn as_any_mut(&mut self) -> &mut dyn Any {
+        self
     }
 
     fn dyn_clone(&self) -> Box<dyn Fragment> {

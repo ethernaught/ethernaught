@@ -1,3 +1,4 @@
+use std::any::Any;
 use gtk::Container;
 
 pub trait Fragment {
@@ -9,6 +10,10 @@ pub trait Fragment {
     fn on_pause(&self);
 
     fn on_destroy(&self);
+
+    fn as_any(&self) -> &dyn Any;
+
+    fn as_any_mut(&mut self) -> &mut dyn Any;
 
     fn dyn_clone(&self) -> Box<dyn Fragment>;
 }

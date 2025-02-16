@@ -1,3 +1,4 @@
+use std::any::Any;
 use gtk::{gdk, Builder, Container, CssProvider, ListBox, Paned, Stack, StyleContext};
 use gtk::glib::Cast;
 use gtk::prelude::{BuilderExtManual, CssProviderExt, ListBoxExt, ListBoxRowExt, StackExt};
@@ -6,7 +7,6 @@ use crate::ui::application::OApplication;
 use crate::ui::activity::inter::activity::Activity;
 use crate::ui::activity::main_activity::MainActivity;
 use crate::ui::adapters::devices_adapter::DevicesAdapter;
-use crate::ui::fragment::inter::fragment::Fragment;
 
 #[derive(Clone)]
 pub struct DevicesActivity {
@@ -87,8 +87,12 @@ impl Activity for DevicesActivity {
         todo!()
     }
 
-    fn start_fragment(&self, fragment: Box<dyn Fragment>) {
+    fn as_any(&self) -> &dyn Any {
+        self
+    }
 
+    fn as_any_mut(&mut self) -> &mut dyn Any {
+        self
     }
 
     fn dyn_clone(&self) -> Box<dyn Activity> {

@@ -1,3 +1,4 @@
+use std::any::Any;
 use std::sync::{Arc, Mutex};
 use std::sync::mpsc::channel;
 use std::time::Duration;
@@ -29,6 +30,21 @@ impl MainActivity {
             device: device.clone()
         }
     }
+
+    pub fn open_sidebar(&self, mut fragment: Box<dyn Fragment>) {
+        let root = self.root.as_ref().unwrap().downcast_ref::<Paned>().unwrap();
+
+        match root.child2() {
+            Some(child) => {
+                root.remove(&child);
+            }
+            None => {}
+        }
+
+        let content = fragment.on_create();
+        root.add(content);
+        root.set_child_shrink(content, false);
+    }
 }
 
 impl Activity for MainActivity {
@@ -56,10 +72,11 @@ impl Activity for MainActivity {
         let mut root: Paned = builder
             .object("window_layout")
             .expect("Couldn't find 'window_layout' in main-activity.ui");
+        self.root = Some(root.clone().upcast());
 
 
 
-        let mut main_fragment = MainFragment::new();
+        let mut main_fragment = MainFragment::new(self.dyn_clone());
         let content = main_fragment.on_create();
         root.add(content);
         root.set_child_shrink(content, false);
@@ -139,7 +156,6 @@ impl Activity for MainActivity {
             Continue
         });
 
-        self.root = Some(root.upcast());
         &self.root.as_ref().unwrap().upcast_ref()
     }
 
@@ -155,8 +171,12 @@ impl Activity for MainActivity {
         todo!()
     }
 
-    fn start_fragment(&self, fragment: Box<dyn Fragment>) {
+    fn as_any(&self) -> &dyn Any {
+        self
+    }
 
+    fn as_any_mut(&mut self) -> &mut dyn Any {
+        self
     }
 
     fn dyn_clone(&self) -> Box<dyn Activity> {
