@@ -66,7 +66,7 @@ impl Activity for DevicesActivity {
 
         let app = self.app.clone();
         list_box.connect_row_activated(move |_, row| {
-            app.start_activity(Box::new(MainActivity::new(app.clone(), devices[row.index() as usize].clone())));
+            app.start_activity(Box::new(MainActivity::new(app.clone(), &devices[row.index() as usize])));
         });
 
         self.devices_adapter = Some(device_adapter);

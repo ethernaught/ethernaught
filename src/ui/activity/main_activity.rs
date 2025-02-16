@@ -22,11 +22,11 @@ pub struct MainActivity {
 
 impl MainActivity {
 
-    pub fn new(app: OApplication, device: Device) -> Self {
+    pub fn new(app: OApplication, device: &Device) -> Self {
         Self {
             app,
             root: None,
-            device
+            device: device.clone()
         }
     }
 }
