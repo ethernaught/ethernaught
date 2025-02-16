@@ -34,7 +34,7 @@ impl PacketAdapter {
         let number_label: Label = builder
             .object("number")
             .expect("Couldn't find 'number' in packet_list_item.xml");
-        number_label.set_label(format!("{}", self.packets.lock().as_ref().unwrap().len()).as_str());
+        number_label.set_label(format!("{}", self.packets.lock().as_ref().unwrap().len()+1).as_str());
 
         let time_label: Label = builder
             .object("time")
