@@ -6,6 +6,7 @@ use gtk::prelude::*;
 use gtk::{gdk, glib, Adjustment, Application, ApplicationWindow, Builder, Button, Container, CssProvider, Image, Label, ListBox, ListBoxRow, Paned, ScrolledWindow, Stack, StyleContext, TextTag, TextView, Widget};
 use gtk::glib::ControlFlow::Continue;
 use pcap::devices::Device;
+use pcap::packet::packet::Packet;
 use crate::main;
 use crate::pcaps::packet_capture;
 use crate::ui::application::OApplication;
@@ -84,18 +85,6 @@ impl Activity for MainActivity {
 
 
 
-
-        /*
-        let mut sidebar_fragment = SidebarFragment::new();
-        let sidebar = sidebar_fragment.on_create();
-        root.add(sidebar);
-        root.set_child_shrink(sidebar, false);
-        */
-
-
-
-
-
         let (tx, rx) = channel();
 
 
@@ -138,17 +127,12 @@ impl Activity for MainActivity {
 
 
 
-        let mut i = 0;
+        let _self = self.clone();
         glib::timeout_add_local(Duration::from_millis(10), move || {
             let main_fragment = main_fragment.clone();
             match rx.try_recv() {
                 Ok(packet) => {
-                    i += 1;
-
-                    main_fragment.get_packet_adapter().unwrap().add(i, &packet);
-                    //let row = main_fragment.create_row(i, packet);
-                    //list_box.add(&row);
-                    //row.show_all();
+                    main_fragment.get_packet_adapter().unwrap().add(packet);
                 }
                 _ => {
                 }
@@ -169,6 +153,10 @@ impl Activity for MainActivity {
 
     fn on_destroy(&self) {
         todo!()
+    }
+
+    fn get_application(&self) -> &OApplication {
+        &self.app
     }
 
     fn as_any(&self) -> &dyn Any {

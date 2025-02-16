@@ -1,5 +1,6 @@
 use std::any::Any;
 use gtk::Container;
+use crate::ui::activity::inter::activity::Activity;
 
 pub trait Fragment {
 
@@ -10,6 +11,8 @@ pub trait Fragment {
     fn on_pause(&self);
 
     fn on_destroy(&self);
+
+    fn get_activity(&self) -> &Box<dyn Activity>;
 
     fn as_any(&self) -> &dyn Any;
 

@@ -87,6 +87,10 @@ impl Activity for DevicesActivity {
         todo!()
     }
 
+    fn get_application(&self) -> &OApplication {
+        &self.app
+    }
+
     fn as_any(&self) -> &dyn Any {
         self
     }

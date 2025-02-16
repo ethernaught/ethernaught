@@ -1,6 +1,8 @@
 use std::any::Any;
 use gtk::prelude::*;
 use gtk::{gdk, glib, Adjustment, Application, ApplicationWindow, Builder, Button, Container, CssProvider, Image, Label, ListBox, ListBoxRow, Paned, ScrolledWindow, Stack, StyleContext, TextTag, TextView, Widget};
+use pcap::packet::inter::interfaces::Interfaces;
+use pcap::packet::packet::Packet;
 use crate::ui::activity::inter::activity::Activity;
 use crate::ui::activity::main_activity::MainActivity;
 use crate::ui::adapters::packet_adapter::PacketAdapter;
@@ -64,7 +66,9 @@ impl Fragment for MainFragment {
         list_box.connect_row_activated(move |_, row| {
             let main_activity = _self.activity.as_any().downcast_ref::<MainActivity>().unwrap();
 
-            let mut sidebar_fragment = SidebarFragment::new();
+            let packet = _self.packet_adapter.as_ref().unwrap().get_packet_by_index(row.index() as usize);
+
+            let mut sidebar_fragment = SidebarFragment::new(_self.activity.dyn_clone(), packet);
             main_activity.open_sidebar(sidebar_fragment.dyn_clone());
         });
 
@@ -81,6 +85,10 @@ impl Fragment for MainFragment {
 
     fn on_destroy(&self) {
         todo!()
+    }
+
+    fn get_activity(&self) -> &Box<dyn Activity> {
+        &self.activity
     }
 
     fn as_any(&self) -> &dyn Any {

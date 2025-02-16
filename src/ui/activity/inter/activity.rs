@@ -1,5 +1,6 @@
 use std::any::Any;
 use gtk::Container;
+use crate::ui::application::OApplication;
 
 pub trait Activity {
 
@@ -14,6 +15,8 @@ pub trait Activity {
     fn on_pause(&self);
 
     fn on_destroy(&self);
+
+    fn get_application(&self) -> &OApplication;
 
     fn as_any(&self) -> &dyn Any;
 

@@ -1,3 +1,4 @@
+use std::sync::{Arc, Mutex};
 use gtk::{Builder, Label, ListBox, ListBoxRow};
 use gtk::prelude::{BuilderExtManual, ContainerExt, LabelExt, StyleContextExt, WidgetExt};
 use pcap::packet::inter::interfaces::Interfaces;
@@ -9,18 +10,20 @@ use pcap::packet::packet::Packet;
 
 #[derive(Clone)]
 pub struct PacketAdapter {
-    list_box: ListBox
+    list_box: ListBox,
+    packets: Arc<Mutex<Vec<Packet>>>
 }
 
 impl PacketAdapter {
 
     pub fn new(list_box: &ListBox) -> Self {
         Self {
-            list_box: list_box.clone()
+            list_box: list_box.clone(),
+            packets: Arc::new(Mutex::new(Vec::new()))
         }
     }
 
-    pub fn add(&self, number: u32, packet: &Packet) {
+    pub fn add(&mut self, packet: Packet) {
         let builder = Builder::from_file("res/ui/packet_list_item.xml");
         let row: ListBoxRow = builder
             .object("row")
@@ -31,7 +34,7 @@ impl PacketAdapter {
         let number_label: Label = builder
             .object("number")
             .expect("Couldn't find 'number' in packet_list_item.xml");
-        number_label.set_label(format!("{}", number).as_str());
+        number_label.set_label(format!("{}", self.packets.lock().as_ref().unwrap().len()).as_str());
 
         let time_label: Label = builder
             .object("time")
@@ -108,8 +111,14 @@ impl PacketAdapter {
         row.style_context().add_class(&protocol);
         protocol_label.set_label(&protocol);
 
+        self.packets.lock().as_mut().unwrap().push(packet);
+
         row.show_all();
 
         self.list_box.add(&row);
+    }
+
+    pub fn get_packet_by_index(&self, index: usize) -> Packet {
+        self.packets.lock().unwrap().get(index).unwrap().clone()
     }
 }

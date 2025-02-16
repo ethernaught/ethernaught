@@ -3,18 +3,24 @@ use gtk::{Builder, Container, Paned, TextTag, TextView};
 use gtk::gdk::EventMask;
 use gtk::glib::Propagation;
 use gtk::prelude::{BuilderExtManual, Cast, PanedExt, TextBufferExt, TextTagTableExt, TextViewExt, WidgetExt, WidgetExtManual};
+use pcap::packet::packet::Packet;
+use crate::ui::activity::inter::activity::Activity;
 use crate::ui::fragment::inter::fragment::Fragment;
 
 #[derive(Clone)]
 pub struct SidebarFragment {
-    root: Option<Container>
+    activity: Box<dyn Activity>,
+    root: Option<Container>,
+    packet: Packet
 }
 
 impl SidebarFragment {
 
-    pub fn new() -> Self {
+    pub fn new(activity: Box<dyn Activity>, packet: Packet) -> Self {
         Self {
-            root: None
+            activity,
+            root: None,
+            packet
         }
     }
 }
@@ -27,6 +33,13 @@ impl Fragment for SidebarFragment {
         self.root = Some(builder
             .object("sidebar_layout")
             .expect("Couldn't find 'sidebar_layout' in window.ui"));
+
+
+
+
+
+
+        println!("{:?}", self.packet);
 
 
         let hex_data = vec![
@@ -238,6 +251,10 @@ impl Fragment for SidebarFragment {
 
     fn on_destroy(&self) {
         todo!()
+    }
+
+    fn get_activity(&self) -> &Box<dyn Activity> {
+        &self.activity
     }
 
     fn as_any(&self) -> &dyn Any {
