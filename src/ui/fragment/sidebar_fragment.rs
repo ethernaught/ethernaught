@@ -75,8 +75,7 @@ impl Fragment for SidebarFragment {
         let mut off = 0;
         let points: Vec<usize> = self.packet.get_layers().iter().map(|layer| {
             off += layer.len();
-            let current_off = off;
-            current_off
+            off
         }).collect();
 
         println!("{:?}", points);
