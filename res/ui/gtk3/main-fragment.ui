@@ -109,6 +109,7 @@
 
                 <child>
                     <object class="GtkListBox" id="list_box">
+                        <property name="name">list_box</property>
                         <property name="visible">True</property>
                         <property name="hexpand">True</property>
                         <property name="vexpand">True</property>

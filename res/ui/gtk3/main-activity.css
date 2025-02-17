@@ -23,55 +23,55 @@ menubar {
     background-color: #1e1f22;
 }
 
-#list_box list {
+#list_box {
     background-color: #1e1f22;
 }
 
-#list_box list row {
+#list_box row {
     background-color: #1e1f22;
     outline: none;
     border: none;
     box-shadow: none;
 }
 
-#list_box list row label {
+#list_box row label {
     padding: 2px 10px;
     font-size: 14px;
     color: #a7a7a7;
 }
 
-#list_box list row #number {
+#list_box row #number {
     color: #494e57;
 }
 
 
-#list_box list row.ARP {
+#list_box row.ARP {
     background-color: #05211b;/*#151a19;*/
 }
 
-#list_box list row.Broadcast {
+#list_box row.Broadcast {
     background-color: #000000;/*#151a19;*/
 }
 
-#list_box list row.TCP {
+#list_box row.TCP {
     background-color: #1e0926/*#151a19;*/
 }
 
-#list_box list row.UDP {
+#list_box row.UDP {
     background-color: #070c1f;/*#1e0f00;*/
 }
 
-#list_box list row.ICMP {
+#list_box row.ICMP {
     background-color: #260d07;/*#1e1c00;*/
 }
 
-#list_box list row.GRE {
+#list_box row.GRE {
     background-color: #122407;/*#1c161d;*/
 }
 
 
-#list_box list row:active,
-        #list_box list row:active box {
+#list_box row:active,
+        #list_box row:active box {
     background-color: #26282e;
 }
 

@@ -5,10 +5,18 @@ use gtk::{gdk, Builder, Button, Container, EventBox, Expander, Label, ListBox, L
 use gtk::gdk::EventMask;
 use gtk::glib::{clone, Propagation};
 use gtk::prelude::{BuilderExtManual, ButtonExt, Cast, ContainerExt, LabelExt, PanedExt, StyleContextExt, TextBufferExt, TextTagExt, TextTagTableExt, TextViewExt, WidgetExt, WidgetExtManual};
+use pcap::packet::inter::interfaces::Interfaces;
+use pcap::packet::layers::inter::layer::Layer;
+use pcap::packet::layers::layer_1::ethernet_layer::EthernetLayer;
+use pcap::packet::layers::layer_1::inter::types::Types;
+use pcap::packet::layers::layer_2::ethernet::inter::protocols::Protocols;
+use pcap::packet::layers::layer_2::ethernet::ipv4_layer::IPv4Layer;
+use pcap::packet::layers::layer_2::ethernet::ipv6_layer::IPv6Layer;
 use pcap::packet::packet::Packet;
 use crate::ui::activity::inter::activity::Activity;
 use crate::ui::activity::main_activity::MainActivity;
 use crate::ui::fragment::inter::fragment::Fragment;
+use crate::ui::handlers::expanders::{create_ethernet_layer_expander, create_ipv4_layer_expander};
 
 #[derive(Clone)]
 pub struct SidebarFragment {
@@ -55,85 +63,59 @@ impl Fragment for SidebarFragment {
             .object("details_layout")
             .expect("Couldn't find 'details_layout' in window.ui");
 
-        let expander = Expander::new(Some("Ethernet II"));
 
+        match self.packet.get_interface() {
+            Interfaces::Ethernet => {
+                let ethernet_layer = self.packet.get_layer(0).unwrap().as_any().downcast_ref::<EthernetLayer>().unwrap();
+                details_layout.add(&create_ethernet_layer_expander(&ethernet_layer));
 
-        let list_box = ListBox::new();
+                match ethernet_layer.get_type() {
+                    Types::IPv4 => {
+                        let ipv4_layer = self.packet.get_layer(1).unwrap().as_any().downcast_ref::<IPv4Layer>().unwrap();
+                        details_layout.add(&create_ipv4_layer_expander(&ipv4_layer));
 
+                        match ipv4_layer.get_protocol() {
+                            Protocols::Icmp => {}
+                            Protocols::Igmp => {}
+                            Protocols::Tcp => {}
+                            Protocols::Udp => {}
+                            Protocols::Ipv6 => {}
+                            Protocols::Gre => {}
+                            Protocols::Icmpv6 => {}
+                            Protocols::Ospf => {}
+                            Protocols::Sps => {}
+                        }
+                    }
+                    Types::Arp => {
+                    }
+                    Types::IPv6 => {
+                        let ipv6_layer = self.packet.get_layer(1).unwrap().as_any().downcast_ref::<IPv6Layer>().unwrap();
+                        //details_layout.add(&create_ethernet_layer_expander(&ethernet_layer));
 
+                        match ipv6_layer.get_next_header() {
+                            Protocols::Icmp => {}
+                            Protocols::Igmp => {}
+                            Protocols::Tcp => {}
+                            Protocols::Udp => {}
+                            Protocols::Ipv6 => {}
+                            Protocols::Gre => {}
+                            Protocols::Icmpv6 => {}
+                            Protocols::Ospf => {}
+                            Protocols::Sps => {}
+                        }
+                    }
+                    Types::Broadcast => {
+                    }
+                }
 
-        let row = ListBoxRow::new();
-
-        let label = Label::new(Some("Destination: (**:**:**:**:**:**)"));
-        label.set_xalign(0.0);
-        row.add(&label);
-
-        list_box.add(&row);
-
-
-
-
-        expander.add(&list_box);
-
-        expander.show_all();
-
-
-        /*
-        let container = gtk::Box::new(Orientation::Vertical, 0);
-
-
-
-
-
-        let label = Label::new(Some("Destination: (**:**:**:**:**:**)"));
-        //let label = Button::with_label("Destination: (**:**:**:**:**:**)");
-        label.set_sensitive(true);
-        label.set_can_focus(true);
-        label.set_xalign(0.0);
-        container.add(&label);
-
-
-
-        label.set_has_window(true);
-
-        label.add_events(EventMask::ENTER_NOTIFY_MASK | EventMask::LEAVE_NOTIFY_MASK);
-
-        label.connect_enter_notify_event(|label, _| {
-            println!("ENTER");
-            label.set_label("Hovered!");
-            label.style_context().add_class("hover");
-            Propagation::Proceed
-        });
-
-        label.connect_leave_notify_event(|label, _| {
-            println!("EXIT");
-            label.set_label("Hover over me!");
-            label.style_context().remove_class("hover");
-            Propagation::Proceed
-        });
-
-
-
-
-        let label = Label::new(Some("Source: (**:**:**:**:**:**)"));
-        //let label = Button::with_label("Source: (**:**:**:**:**:**)");
-        label.set_xalign(0.0);
-        container.add(&label);
-
-        let label = Label::new(Some("Type: IPv4 (0x0800)"));
-        //let label = Button::with_label("Type: IPv4 (0x0800)");
-        label.set_xalign(0.0);
-        container.add(&label);
-
-        expander.add(&container);
-
-        expander.show_all();
-        */
-
-
-        details_layout.add(&expander);
-
-
+            }
+            Interfaces::WiFi => {
+                //"[WiFi] TODO".to_string()
+            }
+            Interfaces::Bluetooth => {
+                //"[Bluetooth] TODO".to_string()
+            }
+        };
 
 
 
@@ -340,222 +322,6 @@ impl Fragment for SidebarFragment {
                     buffer.apply_tag(&hover_tag, &start_iter, &end_iter);
 
                     previous_char_offset.set(Some(range_end));
-                }
-
-                Propagation::Proceed
-            }
-        });
-        */
-
-
-
-
-
-        /*
-
-        // Create Tags
-        let buffer = ascii_text_view.buffer().unwrap();
-        //let tag_table = buffer.tag_table().unwrap();
-
-        ascii_text_view.set_events(EventMask::POINTER_MOTION_MASK);
-
-        let hover_tag = TextTag::builder()
-            .name("hover_char")
-            .background("#59436e") // Highlight with yellow background
-            .build();
-        buffer.tag_table().unwrap().add(&hover_tag);
-
-        let previous_char_offset = Rc::new(Cell::new(None));
-        let points_clone = points.clone();
-
-        ascii_text_view.connect_motion_notify_event({
-            let previous_char_offset = previous_char_offset.clone();
-            move |text_view, event| {
-                let (mouse_x, mouse_y) = event.position();
-
-                let mouse_x = mouse_x-10 as f64;
-                let mouse_y = mouse_y-10 as f64;
-
-                let buffer = text_view.buffer().unwrap();
-
-                if let Some(iter) = text_view.iter_at_location(mouse_x as i32, mouse_y as i32) {
-                    let char_offset = iter.offset();
-
-                    let range_start = points_clone.iter().enumerate().find(|(_, &point)| (char_offset as usize) < point).map(|(index, &point)| {
-                        if index > 0 { points_clone[index - 1] } else { 0 }
-                    }).unwrap_or(0) as i32;
-
-                    let range_end = points_clone.iter().enumerate().find(|(_, &point)| (char_offset as usize) < point).map(|(_, &point)| point)
-                        .unwrap_or(*points_clone.last().unwrap()) as i32;
-
-                    if previous_char_offset.get() == Some(range_end) {
-                        return Propagation::Proceed;
-                    }
-
-                    if let Some(prev_offset) = previous_char_offset.get() {
-                        let prev_iter = buffer.iter_at_offset(prev_offset);
-                        buffer.remove_tag(&hover_tag, &buffer.iter_at_offset(0), &prev_iter);
-                    }
-
-                    let start_iter = buffer.iter_at_offset(range_start);
-                    let end_iter = buffer.iter_at_offset(range_end);
-
-                    buffer.apply_tag(&hover_tag, &start_iter, &end_iter);
-
-                    previous_char_offset.set(Some(range_end));
-                }
-
-                Propagation::Proceed
-            }
-        });
-        */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        /*
-        let hex_ascii_string = hex_data.chunks(16)
-            .map(|chunk| {
-                let hex_part = chunk.iter()
-                    .map(|b| format!("{:02X}", b))
-                    .collect::<Vec<_>>()
-                    .join(" ");
-
-                let ascii_part = chunk.iter()
-                    .map(|&b| {
-                        // Check if byte is a printable ASCII character (0x20 to 0x7E)
-                        if (b >= 0x20 && b <= 0x7E) {
-                            char::from_u32(b as u32).unwrap_or('.')
-                        } else {
-                            '.' // Non-printable characters replaced with '.'
-                        }
-                    })
-                    .collect::<String>();
-
-                format!("{: <47} {}", hex_part, ascii_part)
-            })
-            .collect::<Vec<_>>()
-            .join("\n");
-
-        // Insert Text
-        ascii_text_view.buffer().unwrap().set_text(&ascii_string);
-        */
-
-
-
-        /*
-        let layer_1 = TextTag::builder().name("layer_1").background("#3f5222").build();
-        let layer_2 = TextTag::builder().name("layer_2").background("#1c314a").build();
-        let layer_3 = TextTag::builder().name("layer_3").background("#070c1f").build();
-        tag_table.add(&layer_1);
-        tag_table.add(&layer_2);
-        tag_table.add(&layer_3);
-
-        let start_iter = buffer.start_iter();
-        let mut end_iter = start_iter.clone();
-        end_iter.forward_chars(14);
-        buffer.apply_tag(&layer_1, &start_iter, &end_iter);
-
-        let start_iter = end_iter;
-        //start_iter.forward_chars(14);
-        let mut end_iter = start_iter.clone();
-        end_iter.forward_chars(20);
-        buffer.apply_tag(&layer_2, &start_iter, &end_iter);
-
-        let start_iter = end_iter;
-        let mut end_iter = start_iter.clone();
-        end_iter.forward_chars(8);
-        buffer.apply_tag(&layer_3, &start_iter, &end_iter);
-        */
-
-
-
-        /*
-        //let hover_tag = layer_1;
-        let hover_start = buffer.iter_at_offset(0); // "Special"
-        let mut hover_end = buffer.iter_at_offset(14); // "words"
-
-        ascii_text_view.connect_motion_notify_event(move |text_view, event| {
-            let (mouse_x, mouse_y) = event.position();
-
-            // Get text offset from coordinates
-            let buffer = text_view.buffer().unwrap();
-            if let Some(iter) = text_view.iter_at_location(mouse_x as i32, mouse_y as i32) {
-                // Remove previous highlight
-                buffer.remove_all_tags(&hover_start, &hover_end);
-
-                // Check if the mouse is inside the word range
-                if iter.offset() >= hover_start.offset() && iter.offset() <= hover_end.offset() {
-
-                    let layer_1 = TextTag::builder().name("layer_1").background("#3f5222").build();
-                    buffer.apply_tag(&layer_1, &hover_start, &hover_end);
-                }
-            }
-
-            Propagation::Proceed
-        });
-        */
-
-
-
-        /*
-        // Enable Mouse Motion Events
-        ascii_text_view.set_events(EventMask::POINTER_MOTION_MASK);
-
-        // Create Hover Tag (Initially Invisible)
-        let hover_tag = TextTag::builder()
-            .name("hover_char")
-            .background("#59436e") // Highlight with yellow background
-            .build();
-        buffer.tag_table().unwrap().add(&hover_tag);
-
-        // Track Previously Hovered Character
-        let previous_char_offset = std::rc::Rc::new(std::cell::Cell::new(None));
-
-        // Connect Mouse Hover Event
-        ascii_text_view.connect_motion_notify_event({
-            let previous_char_offset = previous_char_offset.clone();
-            move |text_view, event| {
-                let (mouse_x, mouse_y) = event.position();
-
-                let mouse_x = mouse_x-10 as f64;
-                let mouse_y = mouse_y-10 as f64;
-
-                let buffer = text_view.buffer().unwrap();
-
-                if let Some(iter) = text_view.iter_at_location(mouse_x as i32, mouse_y as i32) {
-                    let char_offset = iter.offset();
-
-                    // If we're still hovering the same character, do nothing
-                    if previous_char_offset.get() == Some(char_offset) {
-                        return Propagation::Proceed;
-                    }
-
-                    // Remove the tag from the previously highlighted character
-                    if let Some(prev_offset) = previous_char_offset.get() {
-                        let prev_iter = buffer.iter_at_offset(prev_offset);
-                        let mut next_iter = prev_iter.clone();
-                        next_iter.forward_char();
-                        buffer.remove_tag(&hover_tag, &prev_iter, &next_iter);
-                    }
-
-                    // Apply the tag to the new character
-                    let mut next_iter = iter.clone();
-                    next_iter.forward_char(); // Move one char forward
-                    buffer.apply_tag(&hover_tag, &iter, &next_iter);
-
-                    // Update the previously hovered character
-                    previous_char_offset.set(Some(char_offset));
                 }
 
                 Propagation::Proceed
