@@ -11,6 +11,7 @@ use pcap::capture::Capture;
 use crate::ui::application::OApplication;
 
 //SIDEBAR SHOULD BE A FRAGMENT...
+//export GTK_DEBUG=interactive
 
 fn main() {
 
