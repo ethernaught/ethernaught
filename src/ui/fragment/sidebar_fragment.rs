@@ -12,11 +12,12 @@ use pcap::packet::layers::layer_1::inter::types::Types;
 use pcap::packet::layers::layer_2::ethernet::inter::protocols::Protocols;
 use pcap::packet::layers::layer_2::ethernet::ipv4_layer::IPv4Layer;
 use pcap::packet::layers::layer_2::ethernet::ipv6_layer::IPv6Layer;
+use pcap::packet::layers::layer_3::ip::udp_layer::UdpLayer;
 use pcap::packet::packet::Packet;
 use crate::ui::activity::inter::activity::Activity;
 use crate::ui::activity::main_activity::MainActivity;
 use crate::ui::fragment::inter::fragment::Fragment;
-use crate::ui::handlers::expanders::{create_ethernet_layer_expander, create_ipv4_layer_expander};
+use crate::ui::handlers::expanders::{create_ethernet_layer_expander, create_ipv4_layer_expander, create_udp_layer_expander};
 
 #[derive(Clone)]
 pub struct SidebarFragment {
@@ -78,7 +79,10 @@ impl Fragment for SidebarFragment {
                             Protocols::Icmp => {}
                             Protocols::Igmp => {}
                             Protocols::Tcp => {}
-                            Protocols::Udp => {}
+                            Protocols::Udp => {
+                                let udp_layer = self.packet.get_layer(2).unwrap().as_any().downcast_ref::<UdpLayer>().unwrap();
+                                details_layout.add(&create_udp_layer_expander(&udp_layer));
+                            }
                             Protocols::Ipv6 => {}
                             Protocols::Gre => {}
                             Protocols::Icmpv6 => {}
@@ -96,7 +100,10 @@ impl Fragment for SidebarFragment {
                             Protocols::Icmp => {}
                             Protocols::Igmp => {}
                             Protocols::Tcp => {}
-                            Protocols::Udp => {}
+                            Protocols::Udp => {
+                                let udp_layer = self.packet.get_layer(2).unwrap().as_any().downcast_ref::<UdpLayer>().unwrap();
+                                details_layout.add(&create_udp_layer_expander(&udp_layer));
+                            }
                             Protocols::Ipv6 => {}
                             Protocols::Gre => {}
                             Protocols::Icmpv6 => {}
