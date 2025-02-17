@@ -132,3 +132,15 @@ list row:active,
 #hex_content box:nth-child(1) text {
     color: #494e57;
 }
+
+
+
+
+
+
+expander box {
+    padding-left: 16px;
+    background-color: red;
+}
+
+

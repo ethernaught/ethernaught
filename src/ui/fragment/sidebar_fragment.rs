@@ -1,10 +1,10 @@
 use std::any::Any;
 use std::cell::Cell;
 use std::rc::Rc;
-use gtk::{Builder, Button, Container, Expander, Label, Paned, TextTag, TextView};
+use gtk::{Builder, Button, Container, Expander, Label, Orientation, Paned, TextTag, TextView};
 use gtk::gdk::EventMask;
 use gtk::glib::Propagation;
-use gtk::prelude::{BuilderExtManual, ButtonExt, Cast, ContainerExt, PanedExt, TextBufferExt, TextTagExt, TextTagTableExt, TextViewExt, WidgetExt, WidgetExtManual};
+use gtk::prelude::{BuilderExtManual, ButtonExt, Cast, ContainerExt, LabelExt, PanedExt, TextBufferExt, TextTagExt, TextTagTableExt, TextViewExt, WidgetExt, WidgetExtManual};
 use pcap::packet::packet::Packet;
 use crate::ui::activity::inter::activity::Activity;
 use crate::ui::activity::main_activity::MainActivity;
@@ -55,10 +55,24 @@ impl Fragment for SidebarFragment {
             .object("sidebar_details")
             .expect("Couldn't find 'sidebar_details' in window.ui");
 
-        let expander = Expander::new(Some("Expand me!"));
-        let label = Label::new(Some("Hidden content revealed!"));
+        let expander = Expander::new(Some("Ethernet II"));
 
-        expander.add(&label);
+        let container = gtk::Box::new(Orientation::Vertical, 0);
+
+        let label = Label::new(Some("Destination: (**:**:**:**:**:**)"));
+        label.set_xalign(0.0);
+        container.add(&label);
+
+        let label = Label::new(Some("Source: (**:**:**:**:**:**)"));
+        label.set_xalign(0.0);
+        container.add(&label);
+
+        let label = Label::new(Some("Type: IPv4 (0x0800)"));
+        label.set_xalign(0.0);
+        container.add(&label);
+
+        expander.add(&container);
+
         expander.show_all();
 
 
