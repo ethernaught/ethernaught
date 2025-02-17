@@ -1,6 +1,6 @@
 use std::any::Any;
-use gtk::{Expander, Label, ListBox, ListBoxRow};
-use gtk::prelude::{ContainerExt, LabelExt, WidgetExt};
+use gtk::{Expander, Image, Label, ListBox, ListBoxRow, Orientation};
+use gtk::prelude::{BoxExt, ContainerExt, ExpanderExt, LabelExt, WidgetExt};
 use pcap::packet::layers::layer_1::ethernet_layer::EthernetLayer;
 use pcap::packet::layers::layer_2::ethernet::ipv4_layer::IPv4Layer;
 use pcap::packet::layers::layer_3::ip::udp_layer::UdpLayer;
@@ -21,7 +21,18 @@ pub fn create_ethernet_layer_expander(layer: &EthernetLayer) -> Expander {
 }
 
 pub fn create_ipv4_layer_expander(layer: &IPv4Layer) -> Expander {
-    let expander = Expander::new(Some("Internet Protocol Version 4"));
+    let expander = Expander::new(None);
+
+    let icon = Image::from_icon_name(Some("view-more-symbolic"), gtk::IconSize::Button);
+
+    let expander_box = gtk::Box::new(Orientation::Horizontal, 5);
+    expander_box.add(&icon);
+    expander_box.add(&Label::new(Some("Internet Protocol Version 4")));
+    expander.set_label_widget(Some(&expander_box));
+
+
+
+
 
     let list_box = ListBox::new();
 
