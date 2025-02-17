@@ -1,10 +1,10 @@
 use std::any::Any;
 use std::cell::Cell;
 use std::rc::Rc;
-use gtk::{Builder, Button, Container, Paned, TextTag, TextView};
+use gtk::{Builder, Button, Container, Expander, Label, Paned, TextTag, TextView};
 use gtk::gdk::EventMask;
 use gtk::glib::Propagation;
-use gtk::prelude::{BuilderExtManual, ButtonExt, Cast, PanedExt, TextBufferExt, TextTagExt, TextTagTableExt, TextViewExt, WidgetExt, WidgetExtManual};
+use gtk::prelude::{BuilderExtManual, ButtonExt, Cast, ContainerExt, PanedExt, TextBufferExt, TextTagExt, TextTagTableExt, TextViewExt, WidgetExt, WidgetExtManual};
 use pcap::packet::packet::Packet;
 use crate::ui::activity::inter::activity::Activity;
 use crate::ui::activity::main_activity::MainActivity;
@@ -47,6 +47,28 @@ impl Fragment for SidebarFragment {
             let main_activity = _self.activity.as_any().downcast_ref::<MainActivity>().unwrap();
             main_activity.close_sidebar();
         });
+
+
+
+
+        let sidebar_details: gtk::Box = builder
+            .object("sidebar_details")
+            .expect("Couldn't find 'sidebar_details' in window.ui");
+
+        let expander = Expander::new(Some("Expand me!"));
+        let label = Label::new(Some("Hidden content revealed!"));
+
+        expander.add(&label);
+        expander.show_all();
+
+
+        sidebar_details.add(&expander);
+
+
+
+
+
+
 
 
 

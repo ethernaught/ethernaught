@@ -113,7 +113,7 @@
                 </child>
 
                 <child>
-                    <object class="GtkBox">
+                    <object class="GtkBox" id="sidebar_details">
                         <property name="visible">True</property>
                         <property name="hexpand">True</property>
                         <property name="vexpand">True</property>
