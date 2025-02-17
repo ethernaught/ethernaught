@@ -1,5 +1,5 @@
 use std::process::exit;
-use gtk::{AboutDialog, ApplicationWindow, Builder, Image, Application, TreeViewColumn, CellRendererText, ScrolledWindow, Button, ListBoxRow, Label, CssProvider, StyleContext, gdk, Stack, Container, TreeView, Widget, Window};
+use gtk::{AboutDialog, ApplicationWindow, Builder, Image, Application, TreeViewColumn, CellRendererText, ScrolledWindow, Button, ListBoxRow, Label, CssProvider, StyleContext, gdk, Stack, Container, TreeView, Widget, Window, gio, MenuBar, MenuItem};
 use gtk::gdk_pixbuf::PixbufLoader;
 use gtk::prelude::*;
 use gtk::gio::SimpleAction;
@@ -141,6 +141,26 @@ impl OApplication {
         close_button.connect_clicked(move |_| {
             app_clone.quit();
         });
+
+
+
+        let menu_button: Button = builder
+            .object("menu_button")
+            .expect("Couldn't find 'menu_button' in titlebar-ui.xml");
+
+        menu_button.connect_clicked(move |_| {
+            println!("ON CLICK");
+        });
+
+        /*
+        let builder = Builder::from_file("res/ui/omniscient-ui.xml");
+        let menubar: MenuBar = builder
+            .object("main_window_menu")
+            .expect("Couldn't find 'main_window_menu' in omniscient-ui.xml");
+        menubar.show_all();
+
+        titlebar.add(&menubar);
+        */
 
         titlebar.upcast()
     }
