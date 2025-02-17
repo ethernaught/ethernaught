@@ -21,6 +21,9 @@ list {
 
 list row {
     background-color: #2b2d30;
+    outline: none;
+    border: none;
+    box-shadow: none;
 }
 
 list row label {

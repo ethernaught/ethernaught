@@ -65,8 +65,11 @@ impl Fragment for SidebarFragment {
 
 
         let line_numbers: TextView = builder.object("hex_line_numbers").unwrap();
+        line_numbers.set_cursor_visible(false);
         let hex_text_view: TextView = builder.object("hex_text_view").unwrap();
+        hex_text_view.set_cursor_visible(false);
         let ascii_text_view: TextView = builder.object("ascii_text_view").unwrap();
+        ascii_text_view.set_cursor_visible(false);
 
 
         let mut off = 0;
@@ -118,7 +121,18 @@ impl Fragment for SidebarFragment {
         ascii_text_view.buffer().unwrap().set_text(&ascii_string);
 
 
-        /*
+
+
+
+
+
+
+
+
+
+
+
+
         let buffer = hex_text_view.buffer().unwrap();
 
         hex_text_view.set_events(EventMask::POINTER_MOTION_MASK);
@@ -173,13 +187,11 @@ impl Fragment for SidebarFragment {
                 Propagation::Proceed
             }
         });
-        */
 
 
 
 
 
-        /*
 
         // Create Tags
         let buffer = ascii_text_view.buffer().unwrap();
@@ -236,7 +248,6 @@ impl Fragment for SidebarFragment {
                 Propagation::Proceed
             }
         });
-        */
 
 
 
