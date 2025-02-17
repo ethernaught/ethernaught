@@ -2,7 +2,7 @@ use std::any::Any;
 use gtk::{Builder, Button, Container, Paned, TextTag, TextView};
 use gtk::gdk::EventMask;
 use gtk::glib::Propagation;
-use gtk::prelude::{BuilderExtManual, ButtonExt, Cast, PanedExt, TextBufferExt, TextTagTableExt, TextViewExt, WidgetExt, WidgetExtManual};
+use gtk::prelude::{BuilderExtManual, ButtonExt, Cast, PanedExt, TextBufferExt, TextTagExt, TextTagTableExt, TextViewExt, WidgetExt, WidgetExtManual};
 use pcap::packet::packet::Packet;
 use crate::ui::activity::inter::activity::Activity;
 use crate::ui::activity::main_activity::MainActivity;
@@ -65,6 +65,32 @@ impl Fragment for SidebarFragment {
         let line_numbers: TextView = builder.object("hex_line_numbers").unwrap();
         let hex_text_view: TextView = builder.object("hex_text_view").unwrap();
         let ascii_text_view: TextView = builder.object("ascii_text_view").unwrap();
+
+
+        let mut off = 0;
+        let points: Vec<usize> = self.packet.get_layers().iter().map(|layer| {
+            off += layer.len();
+            let current_off = off;
+            current_off
+        }).collect();
+
+        println!("{:?}", points);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         let line_numbers_string = hex_data.chunks(16)
             .enumerate()
@@ -191,6 +217,8 @@ impl Fragment for SidebarFragment {
         */
 
 
+
+        /*
         // Enable Mouse Motion Events
         ascii_text_view.set_events(EventMask::POINTER_MOTION_MASK);
 
@@ -243,6 +271,70 @@ impl Fragment for SidebarFragment {
                 Propagation::Proceed
             }
         });
+        */
+
+
+
+
+
+
+        ascii_text_view.set_events(EventMask::POINTER_MOTION_MASK);
+
+        let hover_tag = TextTag::builder()
+            .name("hover_char")
+            .background("#59436e") // Highlight with yellow background
+            .build();
+        buffer.tag_table().unwrap().add(&hover_tag);
+
+        let previous_char_offset = std::rc::Rc::new(std::cell::Cell::new(None));
+
+        ascii_text_view.connect_motion_notify_event({
+            let previous_char_offset = previous_char_offset.clone();
+            move |text_view, event| {
+                let (mouse_x, mouse_y) = event.position();
+
+                let mouse_x = mouse_x-10 as f64;
+                let mouse_y = mouse_y-10 as f64;
+
+                let buffer = text_view.buffer().unwrap();
+
+                if let Some(iter) = text_view.iter_at_location(mouse_x as i32, mouse_y as i32) {
+                    let char_offset = iter.offset();
+
+                    let range_start = points.iter().enumerate().find(|(_, &point)| (char_offset as usize) < point).map(|(index, &point)| {
+                        if index > 0 { points[index - 1] } else { 0 }
+                    }).unwrap_or(0) as i32;
+
+                    let range_end = points.iter().enumerate().find(|(_, &point)| (char_offset as usize) < point).map(|(_, &point)| point)
+                        .unwrap_or(*points.last().unwrap()) as i32;
+
+                    if previous_char_offset.get() == Some(range_end) {
+                        return Propagation::Proceed;
+                    }
+
+                    if let Some(prev_offset) = previous_char_offset.get() {
+                        let prev_iter = buffer.iter_at_offset(prev_offset);
+                        buffer.remove_tag(&hover_tag, &buffer.iter_at_offset(0), &prev_iter);
+                    }
+
+                    let start_iter = buffer.iter_at_offset(range_start);
+                    let end_iter = buffer.iter_at_offset(range_end);
+
+                    buffer.apply_tag(&hover_tag, &start_iter, &end_iter);
+
+                    previous_char_offset.set(Some(range_end));
+                }
+
+                Propagation::Proceed
+            }
+        });
+
+
+
+
+
+
+
 
         &self.root.as_ref().unwrap().upcast_ref()
     }
