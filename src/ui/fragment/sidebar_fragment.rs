@@ -1,4 +1,6 @@
 use std::any::Any;
+use std::cell::Cell;
+use std::rc::Rc;
 use gtk::{Builder, Button, Container, Paned, TextTag, TextView};
 use gtk::gdk::EventMask;
 use gtk::glib::Propagation;
@@ -79,28 +81,12 @@ impl Fragment for SidebarFragment {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
         let line_numbers_string = hex_data.chunks(16)
             .enumerate()
             .map(|(i, _)| format!("{:08X}", i * 16))  // Format line numbers in hex
             .collect::<Vec<_>>()
             .join("\n");
         line_numbers.buffer().unwrap().set_text(&line_numbers_string);
-
-
-
 
 
 
@@ -112,7 +98,27 @@ impl Fragment for SidebarFragment {
 
 
 
+        let ascii_string = hex_data.chunks(16)
+            .map(|chunk| {
+                chunk.iter()
+                    .map(|&b| {
+                        // Check if byte is a printable ASCII character (0x20 to 0x7E)
+                        if (b >= 0x20 && b <= 0x7E) {
+                            // Convert byte to char using `char::from_u32()`
+                            char::from_u32(b as u32).unwrap_or('.') // Fall back to '.' if invalid
+                        } else {
+                            '.' // Non-printable characters replaced with '.'
+                        }
+                    })
+                    .collect::<String>()
+            })
+            .collect::<Vec<_>>()
+            .join("\n");
 
+        ascii_text_view.buffer().unwrap().set_text(&ascii_string);
+
+
+        /*
         let buffer = hex_text_view.buffer().unwrap();
 
         hex_text_view.set_events(EventMask::POINTER_MOTION_MASK);
@@ -167,29 +173,13 @@ impl Fragment for SidebarFragment {
                 Propagation::Proceed
             }
         });
+        */
 
 
 
 
 
-        let ascii_string = hex_data.chunks(16)
-            .map(|chunk| {
-                chunk.iter()
-                    .map(|&b| {
-                        // Check if byte is a printable ASCII character (0x20 to 0x7E)
-                        if (b >= 0x20 && b <= 0x7E) {
-                            // Convert byte to char using `char::from_u32()`
-                            char::from_u32(b as u32).unwrap_or('.') // Fall back to '.' if invalid
-                        } else {
-                            '.' // Non-printable characters replaced with '.'
-                        }
-                    })
-                    .collect::<String>()
-            })
-            .collect::<Vec<_>>()
-            .join("\n");
-
-        ascii_text_view.buffer().unwrap().set_text(&ascii_string);
+        /*
 
         // Create Tags
         let buffer = ascii_text_view.buffer().unwrap();
@@ -246,6 +236,14 @@ impl Fragment for SidebarFragment {
                 Propagation::Proceed
             }
         });
+        */
+
+
+
+
+
+
+
 
 
 
@@ -280,6 +278,7 @@ impl Fragment for SidebarFragment {
         // Insert Text
         ascii_text_view.buffer().unwrap().set_text(&ascii_string);
         */
+
 
 
         /*
@@ -391,15 +390,6 @@ impl Fragment for SidebarFragment {
             }
         });
         */
-
-
-
-
-
-
-
-
-
 
 
 
