@@ -48,7 +48,7 @@
 
                         <child>
                             <object class="GtkBox">
-                                <property name="name">hex_content</property>
+                                <property name="name">hex_layout</property>
                                 <property name="visible">True</property>
                                 <property name="hexpand">True</property>
                                 <property name="vexpand">True</property>
@@ -113,13 +113,24 @@
                 </child>
 
                 <child>
-                    <object class="GtkBox" id="sidebar_details">
-                        <property name="name">sidebar_details</property>
+                    <object class="GtkScrolledWindow" id="details_scroll_layout">
                         <property name="visible">True</property>
                         <property name="hexpand">True</property>
                         <property name="vexpand">True</property>
-                        <property name="orientation">vertical</property>
+                        <property name="overlay-scrolling">false</property>
+                        <property name="hscrollbar-policy">automatic</property>
+                        <property name="vscrollbar-policy">automatic</property>
 
+                        <child>
+                            <object class="GtkBox" id="details_layout">
+                                <property name="name">sidebar_details</property>
+                                <property name="visible">True</property>
+                                <property name="hexpand">True</property>
+                                <property name="vexpand">True</property>
+                                <property name="orientation">vertical</property>
+
+                            </object>
+                        </child>
                     </object>
                 </child>
 

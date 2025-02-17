@@ -1,10 +1,10 @@
 use std::any::Any;
 use std::cell::Cell;
 use std::rc::Rc;
-use gtk::{Builder, Button, Container, Expander, Label, Orientation, Paned, TextTag, TextView};
+use gtk::{gdk, Builder, Button, Container, EventBox, Expander, Label, ListBox, ListBoxRow, Orientation, Paned, TextTag, TextView};
 use gtk::gdk::EventMask;
-use gtk::glib::Propagation;
-use gtk::prelude::{BuilderExtManual, ButtonExt, Cast, ContainerExt, LabelExt, PanedExt, TextBufferExt, TextTagExt, TextTagTableExt, TextViewExt, WidgetExt, WidgetExtManual};
+use gtk::glib::{clone, Propagation};
+use gtk::prelude::{BuilderExtManual, ButtonExt, Cast, ContainerExt, LabelExt, PanedExt, StyleContextExt, TextBufferExt, TextTagExt, TextTagTableExt, TextViewExt, WidgetExt, WidgetExtManual};
 use pcap::packet::packet::Packet;
 use crate::ui::activity::inter::activity::Activity;
 use crate::ui::activity::main_activity::MainActivity;
@@ -51,32 +51,87 @@ impl Fragment for SidebarFragment {
 
 
 
-        let sidebar_details: gtk::Box = builder
-            .object("sidebar_details")
-            .expect("Couldn't find 'sidebar_details' in window.ui");
+        let details_layout: gtk::Box = builder
+            .object("details_layout")
+            .expect("Couldn't find 'details_layout' in window.ui");
 
         let expander = Expander::new(Some("Ethernet II"));
 
-        let container = gtk::Box::new(Orientation::Vertical, 0);
+
+        let list_box = ListBox::new();
+
+
+
+        let row = ListBoxRow::new();
 
         let label = Label::new(Some("Destination: (**:**:**:**:**:**)"));
         label.set_xalign(0.0);
+        row.add(&label);
+
+        list_box.add(&row);
+
+
+
+
+        expander.add(&list_box);
+
+        expander.show_all();
+
+
+        /*
+        let container = gtk::Box::new(Orientation::Vertical, 0);
+
+
+
+
+
+        let label = Label::new(Some("Destination: (**:**:**:**:**:**)"));
+        //let label = Button::with_label("Destination: (**:**:**:**:**:**)");
+        label.set_sensitive(true);
+        label.set_can_focus(true);
+        label.set_xalign(0.0);
         container.add(&label);
 
+
+
+        label.set_has_window(true);
+
+        label.add_events(EventMask::ENTER_NOTIFY_MASK | EventMask::LEAVE_NOTIFY_MASK);
+
+        label.connect_enter_notify_event(|label, _| {
+            println!("ENTER");
+            label.set_label("Hovered!");
+            label.style_context().add_class("hover");
+            Propagation::Proceed
+        });
+
+        label.connect_leave_notify_event(|label, _| {
+            println!("EXIT");
+            label.set_label("Hover over me!");
+            label.style_context().remove_class("hover");
+            Propagation::Proceed
+        });
+
+
+
+
         let label = Label::new(Some("Source: (**:**:**:**:**:**)"));
+        //let label = Button::with_label("Source: (**:**:**:**:**:**)");
         label.set_xalign(0.0);
         container.add(&label);
 
         let label = Label::new(Some("Type: IPv4 (0x0800)"));
+        //let label = Button::with_label("Type: IPv4 (0x0800)");
         label.set_xalign(0.0);
         container.add(&label);
 
         expander.add(&container);
 
         expander.show_all();
+        */
 
 
-        sidebar_details.add(&expander);
+        details_layout.add(&expander);
 
 
 
