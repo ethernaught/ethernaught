@@ -136,11 +136,19 @@ list row:active,
 
 
 
+#sidebar_details {
+    padding: 10px;
+}
 
+expander {
+    color: #9b9d9f;
+    /*background-color: #2b2d30;*/
+}
 
 expander box {
+    color: #9b9d9f;
     padding-left: 16px;
-    background-color: red;
+    background-color: #2b2d30;
 }
 
 
