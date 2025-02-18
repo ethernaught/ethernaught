@@ -75,9 +75,16 @@ impl HexEditor {
             let row = i / BYTES_PER_ROW;
             let col = i % BYTES_PER_ROW;
 
-            let hex_x = self.padding + col as f64 * (char_width * 2.0 + hex_spacing);
+            let hex_x = self.padding + col as f64 * (char_width * 2.0 + hex_spacing) + 100.0;//100 = TEMP
             let y = self.padding + row as f64 * row_height;
-            let ascii_x = ascii_offset + col as f64 * char_width;
+            let ascii_x = ascii_offset + col as f64 * char_width + 100.0;//100 = TEMP
+
+
+            let line_number = format!("{:08X}", row * BYTES_PER_ROW);
+            cr.set_source_rgb(self.text_color.0, self.text_color.1, self.text_color.2);
+            cr.move_to(self.padding, y);
+            cr.show_text(&line_number);
+
 
 
             if Some(i) == self.cursor {
