@@ -14,7 +14,7 @@ pub fn create_ethernet_layer_expander(layer: &EthernetLayer) -> Container {
 
     list_box.add(&create_row("Destination:", format!("({})", layer.get_destination().to_string())));
     list_box.add(&create_row("Source:", format!("({})", layer.get_source().to_string())));
-    list_box.add(&create_row("Type:", format!("{:?} (0x{:04x})", layer.get_type(), layer.get_type().get_code())));
+    list_box.add(&create_row("Type:", format!("{:?} (0x{:04X})", layer.get_type(), layer.get_type().get_code())));
 
     dropdown.add(&list_box);
 
@@ -27,12 +27,12 @@ pub fn create_ipv4_layer_expander(layer: &IPv4Layer) -> Container {
     list_box.add(&create_row("Version:", layer.get_version().to_string()));
     list_box.add(&create_row("TOS:", layer.get_tos().to_string())); // SHOULD BE - Differentiated Services Field
     list_box.add(&create_row("Total Length:", layer.get_total_length().to_string()));
-    list_box.add(&create_row("Identification:", format!("0x{:04x} ({})", layer.get_identification(), layer.get_identification())));
+    list_box.add(&create_row("Identification:", format!("0x{:04X} ({})", layer.get_identification(), layer.get_identification())));
     //list_box.add(&create_row(format!("Header: ({})", layer.get_version()).as_str())); //FLAGS
     list_box.add(&create_row("Time to Live:", layer.get_ttl().to_string()));
     list_box.add(&create_row("Protocol:", format!("{:?} ({})", layer.get_protocol(), layer.get_protocol().get_code())));
 
-    list_box.add(&create_row("Header Checksum:", format!("0x{:04x}", layer.get_checksum())));
+    list_box.add(&create_row("Header Checksum:", format!("0x{:04X}", layer.get_checksum())));
     list_box.add(&create_row("Source Address:", layer.get_source_ip().to_string()));
     list_box.add(&create_row("Destination Address:", layer.get_destination_ip().to_string()));
 
@@ -62,7 +62,7 @@ pub fn create_udp_layer_expander(layer: &UdpLayer) -> Container {
     list_box.add(&create_row("Source Port:", layer.get_source_port().to_string()));
     list_box.add(&create_row("Destination Port:", layer.get_destination_port().to_string()));
     list_box.add(&create_row("Length:", layer.get_length().to_string()));
-    list_box.add(&create_row("Checksum:", format!("0x{:04x}", layer.get_checksum())));
+    list_box.add(&create_row("Checksum:", format!("0x{:04X}", layer.get_checksum())));
 
     dropdown.add(&list_box);
 
@@ -78,7 +78,7 @@ pub fn create_tcp_layer_expander(layer: &TcpLayer) -> Container {
     list_box.add(&create_row("Acknowledgement Number:", layer.get_window_size().to_string()));
     //FLAGS
     list_box.add(&create_row("Window:", layer.get_window_size().to_string()));
-    list_box.add(&create_row("Checksum:", format!("0x{:04x}", layer.get_checksum())));
+    list_box.add(&create_row("Checksum:", format!("0x{:04X}", layer.get_checksum())));
     list_box.add(&create_row("Urgent Pointer:", layer.get_urgent_pointer().to_string()));
 
     dropdown.add(&list_box);
