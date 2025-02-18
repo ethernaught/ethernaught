@@ -1,81 +1,111 @@
 use std::any::Any;
-use gtk::{Expander, Image, Label, ListBox, ListBoxRow, Orientation};
-use gtk::prelude::{BoxExt, ContainerExt, ExpanderExt, LabelExt, WidgetExt};
+use std::fmt::format;
+use gtk::{Button, Container, Expander, Image, Label, ListBox, ListBoxRow, Orientation};
+use gtk::glib::Cast;
+use gtk::prelude::{BinExt, BoxExt, ButtonExt, ContainerExt, ExpanderExt, ImageExt, LabelExt, WidgetExt};
 use pcap::packet::layers::layer_1::ethernet_layer::EthernetLayer;
 use pcap::packet::layers::layer_2::ethernet::ipv4_layer::IPv4Layer;
 use pcap::packet::layers::layer_3::ip::udp_layer::UdpLayer;
 
-pub fn create_ethernet_layer_expander(layer: &EthernetLayer) -> Expander {
-    let expander = Expander::new(Some("Ethernet II"));
+pub fn create_ethernet_layer_expander(layer: &EthernetLayer) -> Container {
+    let (dropdown, list_box) = create_dropdown("Ethernet II");
 
-    let list_box = ListBox::new();
+    list_box.add(&create_row("Destination:", format!("({})", layer.get_destination().to_string())));
+    list_box.add(&create_row("Source:", format!("({})", layer.get_source().to_string())));
+    list_box.add(&create_row("Type:", format!("{:?} (0x{:04x})", layer.get_type(), layer.get_type().get_code())));
 
-    list_box.add(&create_row(format!("Destination: ({})", layer.get_destination().to_string()).as_str()));
-    list_box.add(&create_row(format!("Source: ({})", layer.get_source().to_string()).as_str()));
-    list_box.add(&create_row(format!("Type: {:?} (0x{:04x})", layer.get_type(), layer.get_type().get_code()).as_str()));
+    dropdown.add(&list_box);
 
-    expander.add(&list_box);
-    expander.show_all();
-
-    expander
+    dropdown.upcast()
 }
 
-pub fn create_ipv4_layer_expander(layer: &IPv4Layer) -> Expander {
-    let expander = Expander::new(None);
+pub fn create_ipv4_layer_expander(layer: &IPv4Layer) -> Container {
+    let (dropdown, list_box) = create_dropdown("Internet Protocol Version 4");
 
-    let icon = Image::from_icon_name(Some("view-more-symbolic"), gtk::IconSize::Button);
-
-    let expander_box = gtk::Box::new(Orientation::Horizontal, 5);
-    expander_box.add(&icon);
-    expander_box.add(&Label::new(Some("Internet Protocol Version 4")));
-    expander.set_label_widget(Some(&expander_box));
-
-
-
-
-
-    let list_box = ListBox::new();
-
-    list_box.add(&create_row(format!("Version: {}", layer.get_version()).as_str()));
-    list_box.add(&create_row(format!("TOS: {}", layer.get_tos()).as_str())); // SHOULD BE - Differentiated Services Field
-    list_box.add(&create_row(format!("Total Length: {}", layer.get_total_length()).as_str()));
-    list_box.add(&create_row(format!("Identification: 0x{:04x} ({})", layer.get_identification(), layer.get_identification()).as_str()));
+    list_box.add(&create_row("Version:", layer.get_version().to_string()));
+    list_box.add(&create_row("TOS:", layer.get_tos().to_string())); // SHOULD BE - Differentiated Services Field
+    list_box.add(&create_row("Total Length:", layer.get_total_length().to_string()));
+    list_box.add(&create_row("Identification:", format!("0x{:04x} ({})", layer.get_identification(), layer.get_identification())));
     //list_box.add(&create_row(format!("Header: ({})", layer.get_version()).as_str())); //FLAGS
-    list_box.add(&create_row(format!("Time to Live: {}", layer.get_ttl()).as_str()));
-    list_box.add(&create_row(format!("Protocol: {:?} ({})", layer.get_protocol(), layer.get_protocol().get_code()).as_str()));
+    list_box.add(&create_row("Time to Live:", layer.get_ttl().to_string()));
+    list_box.add(&create_row("Protocol:", format!("{:?} ({})", layer.get_protocol(), layer.get_protocol().get_code())));
 
-    list_box.add(&create_row(format!("Header Checksum: 0x{:04x}", layer.get_checksum()).as_str()));
-    list_box.add(&create_row(format!("Source Address: {}", layer.get_source_ip().to_string()).as_str()));
-    list_box.add(&create_row(format!("Destination Address: {}", layer.get_destination_ip().to_string()).as_str()));
+    list_box.add(&create_row("Header Checksum:", format!("0x{:04x}", layer.get_checksum())));
+    list_box.add(&create_row("Source Address:", layer.get_source_ip().to_string()));
+    list_box.add(&create_row("Destination Address:", layer.get_destination_ip().to_string()));
 
-    expander.add(&list_box);
-    expander.show_all();
+    dropdown.add(&list_box);
 
-    expander
+    dropdown.upcast()
 }
 
-pub fn create_udp_layer_expander(layer: &UdpLayer) -> Expander {
-    let expander = Expander::new(Some("User Datagram Protocol"));
+pub fn create_udp_layer_expander(layer: &UdpLayer) -> Container {
+    let (dropdown, list_box) = create_dropdown("User Datagram Protocol");
 
-    let list_box = ListBox::new();
+    list_box.add(&create_row("Source Port:", layer.get_source_port().to_string()));
+    list_box.add(&create_row("Destination Port:", layer.get_destination_port().to_string()));
+    list_box.add(&create_row("Length:", layer.get_length().to_string()));
+    list_box.add(&create_row("Checksum:", format!("0x{:04x}", layer.get_checksum())));
 
-    list_box.add(&create_row(format!("Source Port: {}", layer.get_source_port()).as_str()));
-    list_box.add(&create_row(format!("Destination Port: {}", layer.get_destination_port()).as_str()));
-    list_box.add(&create_row(format!("Length: {}", layer.get_length()).as_str()));
-    list_box.add(&create_row(format!("Checksum: 0x{:04x}", layer.get_checksum()).as_str()));
+    dropdown.add(&list_box);
 
-    expander.add(&list_box);
-    expander.show_all();
-
-    expander
+    dropdown.upcast()
 }
 
-fn create_row(title: &str) -> ListBoxRow {
-    let row = ListBoxRow::new();
+fn create_dropdown(title: &str) -> (Container, ListBox) {
+    let dropdown = gtk::Box::new(Orientation::Vertical, 0);
+    dropdown.show();
+    dropdown.set_widget_name("dropdown");
+
+    let hbox = gtk::Box::new(Orientation::Horizontal, 10);
+    let icon = Image::from_file("res/images/ic_expand_less.svg");
 
     let label = Label::new(Some(title));
     label.set_xalign(0.0);
-    row.add(&label);
+
+    hbox.add(&icon);
+    hbox.add(&label);
+
+    let button = Button::new();
+    button.set_child(Some(&hbox));
+
+    let list_box = ListBox::new();
+
+    let list_box_clone = list_box.clone();
+    button.connect_clicked(move |_| {
+        list_box_clone.set_visible(!list_box_clone.is_visible());
+
+        if list_box_clone.is_visible() {
+            icon.set_from_file(Some("res/images/ic_expand_more.svg"));
+            return;
+        }
+
+        icon.set_from_file(Some("res/images/ic_expand_less.svg"));
+    });
+
+    dropdown.add(&button);
+    button.show_all();
+
+    (dropdown.upcast(), list_box)
+}
+
+fn create_row(key: &str, value: String) -> ListBoxRow {
+    let row = ListBoxRow::new();
+
+    let hbox = gtk::Box::new(Orientation::Horizontal, 10);
+
+    let label = Label::new(Some(key));
+    label.set_widget_name("key");
+    label.set_xalign(0.0);
+    hbox.add(&label);
+
+    let label = Label::new(Some(value.as_str()));
+    label.set_widget_name("value");
+    label.set_xalign(0.0);
+    hbox.add(&label);
+
+    row.add(&hbox);
+    row.show_all();
 
     row
 }

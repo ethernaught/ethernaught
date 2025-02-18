@@ -70,8 +70,8 @@ menubar {
 }
 
 
-#list_box row:active,
-        #list_box row:active box {
+list row:active,
+        list row:active box {
     background-color: #26282e;
 }
 
@@ -142,22 +142,31 @@ menubar {
 
 
 
-/*
-#sidebar_details {
+
+
+#dropdown button {
     padding: 10px;
-}
-*/
-expander {
-    padding: 0 10px;
+    border: 0;
+    border-radius: 0;
+    font-weight: bold;
     color: #9b9d9f;
-    /*background-color: #2b2d30;*/
+    background: transparent;
 }
 
-expander label {
-    padding: 10px;
+#dropdown button:hover {
+    background-color: #59436e;
 }
 
-expander box {
-    background-color: #2b2d30;
+#dropdown list {
+    padding-left: 32px;
+}
+
+#dropdown list row:hover {
+    background-color: #59436e;
+}
+
+#dropdown list #key {
+    font-weight: bold;
+    min-width: 180px;
 }
 
