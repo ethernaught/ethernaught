@@ -141,6 +141,8 @@ impl Fragment for SidebarFragment {
         println!("{:?}", self.packet);
 
 
+
+        /*
         let hex_data = self.packet.to_bytes();
 
 
@@ -272,6 +274,7 @@ impl Fragment for SidebarFragment {
                 Propagation::Proceed
             }
         });
+        */
 
 
 

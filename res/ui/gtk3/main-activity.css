@@ -170,3 +170,7 @@ list row:active,
     min-width: 180px;
 }
 
+#dropdown list #value {
+    font-family: monospace;
+}
+
