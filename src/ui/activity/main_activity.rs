@@ -8,7 +8,7 @@ use gtk::glib::ControlFlow::Continue;
 use pcap::devices::Device;
 use pcap::packet::packet::Packet;
 use crate::main;
-use crate::pcaps::packet_capture;
+use crate::pcaps::CaptureService;
 use crate::ui::application::OApplication;
 use crate::ui::activity::inter::activity::Activity;
 use crate::ui::fragment::inter::fragment::Fragment;
@@ -19,16 +19,17 @@ use crate::ui::fragment::sidebar_fragment::SidebarFragment;
 pub struct MainActivity {
     app: OApplication,
     root: Option<Container>,
-    device: Device
+    capture_service: CaptureService
 }
 
 impl MainActivity {
 
     pub fn new(app: OApplication, device: &Device) -> Self {
+
         Self {
             app,
             root: None,
-            device: device.clone()
+            capture_service: CaptureService::new(device)
         }
     }
 
@@ -97,7 +98,7 @@ impl Activity for MainActivity {
 
 
         let (tx, rx) = channel();
-
+        self.capture_service.set_tx(tx);
 
 
         let titlebar = self.app.get_titlebar().unwrap();
@@ -110,17 +111,18 @@ impl Activity for MainActivity {
         let start_button = self.app.get_child_by_name(&app_buttons, "start_button").unwrap();
 
         if let Some(start_button) = start_button.downcast_ref::<Button>() {
-            let device = self.device.clone();
+            //let device = self.device.clone();
             let app_buttons = app_buttons.clone();
             let stop_button_clone = stop_button.clone();
-            let tx = Arc::new(Mutex::new(tx));
+            //let tx = Arc::new(Mutex::new(tx));
 
+            let packet_service = self.capture_service.clone();
             start_button.connect_clicked(move |_| {
                 app_buttons.style_context().add_class("running");
                 stop_button_clone.show();
 
                 println!("Start button clicked!");
-                packet_capture(tx.clone(), device.clone());
+                packet_service.start();
             });
         }
 
@@ -128,10 +130,13 @@ impl Activity for MainActivity {
             let app_buttons = app_buttons.clone();
             let stop_button_clone = stop_button.clone();
 
+            let packet_service = self.capture_service.clone();
             stop_button.connect_clicked(move |_| {
                 app_buttons.style_context().remove_class("running");
                 stop_button_clone.hide();
+
                 println!("Stop button clicked!");
+                packet_service.stop();
             });
         }
 
