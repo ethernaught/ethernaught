@@ -66,9 +66,12 @@ impl Fragment for SidebarFragment {
             .expect("Couldn't find 'hex_content' in window.ui");
 
         let mut editor = Rc::new(RefCell::new(HexEditor::new(self.packet.to_bytes())));
+        editor.borrow_mut().set_line_number_color(0.286, 0.306, 0.341);
         editor.borrow_mut().set_cursor_color(0.608, 0.616, 0.624);
         editor.borrow_mut().set_selection_color(0.349, 0.263, 0.431);
         editor.borrow_mut().set_text_color(0.608, 0.616, 0.624);
+
+        //editor.borrow_mut().set_selection(0, 14);
 
         let drawing_area = DrawingArea::new();
         drawing_area.set_widget_name("hex_editor");
