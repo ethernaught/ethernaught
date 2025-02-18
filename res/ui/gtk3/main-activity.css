@@ -1,80 +1,28 @@
-
-
-/*
-menubar {
-    background-color: #2b2d30;
-}
-*/
-
-
-#list_header_scroll_layout {
-    background-color: #1e1f22;
-    border-bottom: solid 1px #393b40;
-}
-
-#list_header_scroll_layout slider {
-    background-color: transparent;
-}
-
-#list_header_scroll_layout label {
-    padding: 4px 10px;
-    font-size: 12px;
-    color: #cbd7dc;
-    background-color: #1e1f22;
-}
-
-#list_box {
-    background-color: #1e1f22;
-}
-
-#list_box row {
+#tree_view {
+    color: #a7a7a7;
     background-color: #1e1f22;
     outline: none;
-    border: none;
-    box-shadow: none;
 }
 
-#list_box row label {
-    padding: 2px 10px;
+#tree_view button {
+    padding: 10px 4px;
     font-size: 14px;
+    border: none;
+    border-bottom: solid 1px #393b40;
+    font-weight: normal;
     color: #a7a7a7;
+    background-color: #1e1f22;
 }
 
-#list_box row #number {
-    color: #494e57;
+#tree_view *:hover {
+    background-color: #59436e;
 }
-
-
-#list_box row.ARP {
-    background-color: #05211b;/*#151a19;*/
-}
-
-#list_box row.Broadcast {
-    background-color: #000000;/*#151a19;*/
-}
-
-#list_box row.TCP {
-    background-color: #1e0926/*#151a19;*/
-}
-
-#list_box row.UDP {
-    background-color: #070c1f;/*#1e0f00;*/
-}
-
-#list_box row.ICMP {
-    background-color: #260d07;/*#1e1c00;*/
-}
-
-#list_box row.GRE {
-    background-color: #122407;/*#1c161d;*/
-}
-
-
+/*
 list row:active,
         list row:active box {
     background-color: #26282e;
 }
-
+*/
 
 
 

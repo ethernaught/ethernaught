@@ -11,93 +11,6 @@
         <property name="width-request">200</property>
 
         <child>
-            <object class="GtkScrolledWindow" id="list_header_scroll_layout">
-                <property name="name">list_header_scroll_layout</property>
-                <property name="visible">True</property>
-                <property name="hexpand">True</property>
-                <property name="height-request">40</property>
-                <property name="hscrollbar-policy">automatic</property>
-                <property name="vscrollbar-policy">never</property>
-
-                <child>
-                    <object class="GtkBox">
-                        <property name="visible">True</property>
-                        <property name="hexpand">True</property>
-                        <property name="orientation">horizontal</property>
-                        <property name="spacing">0</property>
-
-                        <child>
-                            <object class="GtkLabel" id="number">
-                                <property name="visible">True</property>
-                                <property name="label">No.</property>
-                                <property name="width-request">100</property>
-                                <property name="halign">start</property>
-                                <property name="xalign">0.0</property>
-                            </object>
-                        </child>
-
-                        <child>
-                            <object class="GtkLabel" id="time">
-                                <property name="visible">True</property>
-                                <property name="label">Time</property>
-                                <property name="width-request">150</property>
-                                <property name="halign">start</property>
-                                <property name="xalign">0.0</property>
-                            </object>
-                        </child>
-
-                        <child>
-                            <object class="GtkLabel" id="source">
-                                <property name="visible">True</property>
-                                <property name="label">Source</property>
-                                <property name="width-request">150</property>
-                                <property name="halign">start</property>
-                                <property name="xalign">0.0</property>
-                            </object>
-                        </child>
-
-                        <child>
-                            <object class="GtkLabel" id="destination">
-                                <property name="visible">True</property>
-                                <property name="label">Destination</property>
-                                <property name="width-request">150</property>
-                                <property name="xalign">0.0</property>
-                            </object>
-                        </child>
-
-                        <child>
-                            <object class="GtkLabel" id="protocol">
-                                <property name="visible">True</property>
-                                <property name="label">Protocol</property>
-                                <property name="width-request">80</property>
-                                <property name="xalign">0.0</property>
-                            </object>
-                        </child>
-
-                        <child>
-                            <object class="GtkLabel" id="length">
-                                <property name="visible">True</property>
-                                <property name="label">Length</property>
-                                <property name="width-request">80</property>
-                                <property name="xalign">0.0</property>
-                            </object>
-                        </child>
-
-                        <child>
-                            <object class="GtkLabel" id="info">
-                                <property name="visible">True</property>
-                                <property name="label">Info</property>
-                                <property name="xalign">0.0</property>
-                                <property name="hexpand">True</property>
-                            </object>
-                        </child>
-                    </object>
-                </child>
-
-            </object>
-        </child>
-
-        <child>
             <object class="GtkScrolledWindow" id="list_scroll_layout">
                 <property name="name">list_scroll_layout</property>
                 <property name="visible">True</property>
@@ -108,8 +21,8 @@
                 <property name="vscrollbar-policy">automatic</property>
 
                 <child>
-                    <object class="GtkListBox" id="list_box">
-                        <property name="name">list_box</property>
+                    <object class="GtkTreeView" id="tree_view">
+                        <property name="name">tree_view</property>
                         <property name="visible">True</property>
                         <property name="hexpand">True</property>
                         <property name="vexpand">True</property>
