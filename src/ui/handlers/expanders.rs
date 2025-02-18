@@ -6,6 +6,7 @@ use gtk::prelude::{BinExt, BoxExt, ButtonExt, ContainerExt, ExpanderExt, ImageEx
 use pcap::packet::layers::layer_1::ethernet_layer::EthernetLayer;
 use pcap::packet::layers::layer_2::ethernet::ipv4_layer::IPv4Layer;
 use pcap::packet::layers::layer_2::ethernet::ipv6_layer::IPv6Layer;
+use pcap::packet::layers::layer_3::ip::tcp_layer::TcpLayer;
 use pcap::packet::layers::layer_3::ip::udp_layer::UdpLayer;
 
 pub fn create_ethernet_layer_expander(layer: &EthernetLayer) -> Container {
@@ -62,6 +63,23 @@ pub fn create_udp_layer_expander(layer: &UdpLayer) -> Container {
     list_box.add(&create_row("Destination Port:", layer.get_destination_port().to_string()));
     list_box.add(&create_row("Length:", layer.get_length().to_string()));
     list_box.add(&create_row("Checksum:", format!("0x{:04x}", layer.get_checksum())));
+
+    dropdown.add(&list_box);
+
+    dropdown.upcast()
+}
+
+pub fn create_tcp_layer_expander(layer: &TcpLayer) -> Container {
+    let (dropdown, list_box) = create_dropdown("Transmission Control Protocol");
+
+    list_box.add(&create_row("Source Port:", layer.get_source_port().to_string()));
+    list_box.add(&create_row("Destination Port:", layer.get_destination_port().to_string()));
+    list_box.add(&create_row("Sequence Number:", layer.get_window_size().to_string()));
+    list_box.add(&create_row("Acknowledgement Number:", layer.get_window_size().to_string()));
+    //FLAGS
+    list_box.add(&create_row("Window:", layer.get_window_size().to_string()));
+    list_box.add(&create_row("Checksum:", format!("0x{:04x}", layer.get_checksum())));
+    list_box.add(&create_row("Urgent Pointer:", layer.get_urgent_pointer().to_string()));
 
     dropdown.add(&list_box);
 

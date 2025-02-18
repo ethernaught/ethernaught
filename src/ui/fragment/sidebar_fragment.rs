@@ -12,12 +12,13 @@ use pcap::packet::layers::layer_1::inter::types::Types;
 use pcap::packet::layers::layer_2::ethernet::inter::protocols::Protocols;
 use pcap::packet::layers::layer_2::ethernet::ipv4_layer::IPv4Layer;
 use pcap::packet::layers::layer_2::ethernet::ipv6_layer::IPv6Layer;
+use pcap::packet::layers::layer_3::ip::tcp_layer::TcpLayer;
 use pcap::packet::layers::layer_3::ip::udp_layer::UdpLayer;
 use pcap::packet::packet::Packet;
 use crate::ui::activity::inter::activity::Activity;
 use crate::ui::activity::main_activity::MainActivity;
 use crate::ui::fragment::inter::fragment::Fragment;
-use crate::ui::handlers::expanders::{create_ethernet_layer_expander, create_ipv4_layer_expander, create_ipv6_layer_expander, create_udp_layer_expander};
+use crate::ui::handlers::expanders::{create_ethernet_layer_expander, create_ipv4_layer_expander, create_ipv6_layer_expander, create_tcp_layer_expander, create_udp_layer_expander};
 use crate::ui::widgets::hex_editor::HexEditor;
 
 #[derive(Clone)]
@@ -135,7 +136,10 @@ impl Fragment for SidebarFragment {
                         match ipv4_layer.get_protocol() {
                             Protocols::Icmp => {}
                             Protocols::Igmp => {}
-                            Protocols::Tcp => {}
+                            Protocols::Tcp => {
+                                let tcp_layer = self.packet.get_layer(2).unwrap().as_any().downcast_ref::<TcpLayer>().unwrap();
+                                details_layout.add(&create_tcp_layer_expander(&tcp_layer));
+                            }
                             Protocols::Udp => {
                                 let udp_layer = self.packet.get_layer(2).unwrap().as_any().downcast_ref::<UdpLayer>().unwrap();
                                 details_layout.add(&create_udp_layer_expander(&udp_layer));
@@ -156,7 +160,10 @@ impl Fragment for SidebarFragment {
                         match ipv6_layer.get_next_header() {
                             Protocols::Icmp => {}
                             Protocols::Igmp => {}
-                            Protocols::Tcp => {}
+                            Protocols::Tcp => {
+                                let tcp_layer = self.packet.get_layer(2).unwrap().as_any().downcast_ref::<TcpLayer>().unwrap();
+                                details_layout.add(&create_tcp_layer_expander(&tcp_layer));
+                            }
                             Protocols::Udp => {
                                 let udp_layer = self.packet.get_layer(2).unwrap().as_any().downcast_ref::<UdpLayer>().unwrap();
                                 details_layout.add(&create_udp_layer_expander(&udp_layer));
