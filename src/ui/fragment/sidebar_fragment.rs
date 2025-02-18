@@ -1,7 +1,7 @@
 use std::any::Any;
-use std::cell::Cell;
+use std::cell::{Cell, RefCell};
 use std::rc::Rc;
-use gtk::{gdk, Builder, Button, Container, EventBox, Expander, Label, ListBox, ListBoxRow, Orientation, Paned, TextTag, TextView};
+use gtk::{gdk, Builder, Button, Container, DrawingArea, EventBox, Expander, Label, ListBox, ListBoxRow, Orientation, Paned, ScrolledWindow, TextTag, TextView};
 use gtk::gdk::EventMask;
 use gtk::glib::{clone, Propagation};
 use gtk::prelude::{BuilderExtManual, ButtonExt, Cast, ContainerExt, LabelExt, PanedExt, StyleContextExt, TextBufferExt, TextTagExt, TextTagTableExt, TextViewExt, WidgetExt, WidgetExtManual};
@@ -18,6 +18,7 @@ use crate::ui::activity::inter::activity::Activity;
 use crate::ui::activity::main_activity::MainActivity;
 use crate::ui::fragment::inter::fragment::Fragment;
 use crate::ui::handlers::expanders::{create_ethernet_layer_expander, create_ipv4_layer_expander, create_udp_layer_expander};
+use crate::ui::widgets::hex_editor::HexEditor;
 
 #[derive(Clone)]
 pub struct SidebarFragment {
@@ -56,6 +57,59 @@ impl Fragment for SidebarFragment {
             let main_activity = _self.activity.as_any().downcast_ref::<MainActivity>().unwrap();
             main_activity.close_sidebar();
         });
+
+
+
+
+        let hex_content: gtk::Box = builder
+            .object("hex_content")
+            .expect("Couldn't find 'hex_content' in window.ui");
+
+        let mut editor = Rc::new(RefCell::new(HexEditor::new(self.packet.to_bytes())));
+        editor.borrow_mut().set_cursor_color(0.608, 0.616, 0.624);
+        editor.borrow_mut().set_selection_color(0.349, 0.263, 0.431);
+        editor.borrow_mut().set_text_color(0.608, 0.616, 0.624);
+
+        let drawing_area = DrawingArea::new();
+        drawing_area.set_widget_name("hex_editor");
+        let (width, height) = editor.borrow_mut().content_size();
+        drawing_area.set_size_request(width, height);
+        drawing_area.set_hexpand(true);
+        drawing_area.set_vexpand(true);
+        drawing_area.show();
+
+        drawing_area.add_events(EventMask::POINTER_MOTION_MASK);
+
+        let editor_clone = Rc::clone(&editor);
+        let drawing_clone = drawing_area.clone();
+        drawing_area.connect_motion_notify_event(move |_, event| {
+            let (x, y) = event.position();
+            editor_clone.borrow_mut().update_cursor(x, y);
+            drawing_clone.queue_draw();
+            Propagation::Proceed
+        });
+
+        let editor_clone = Rc::clone(&editor);
+        drawing_area.connect_draw(clone!(@strong editor => move |_, cr| {
+            editor_clone.borrow_mut().draw_hex_editor(cr);
+            Propagation::Proceed
+        }));
+
+        hex_content.add(&drawing_area);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

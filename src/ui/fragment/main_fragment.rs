@@ -89,7 +89,6 @@ impl Fragment for MainFragment {
 
 
 
-
         &self.root.as_ref().unwrap().upcast_ref()
     }
 

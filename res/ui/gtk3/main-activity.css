@@ -111,34 +111,9 @@ list row:active,
 
 
 
-#hex_layout {
+#hex_content {
     background-color: #1e1f22;
 }
-
-
-/*
-#hex_layout textview {
-    padding: 10px;
-}
-*/
-#hex_layout text {
-    color: #9b9d9f;
-    background-color: #1e1f22;
-}
-
-#hex_layout box {
-    padding: 10px 10px 10px 0;
-}
-
-#hex_layout box:nth-child(1) {
-    padding-left: 10px;
-    border-right: solid 1px #2b2d30;
-}
-
-#hex_layout box:nth-child(1) text {
-    color: #494e57;
-}
-
 
 
 
