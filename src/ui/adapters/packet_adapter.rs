@@ -1,6 +1,6 @@
 use std::sync::{Arc, Mutex};
 use gtk::{Builder, Label, ListBox, ListBoxRow, ListStore};
-use gtk::prelude::{BuilderExtManual, ContainerExt, GtkListStoreExtManual, LabelExt, StyleContextExt, WidgetExt};
+use gtk::prelude::{BuilderExtManual, ContainerExt, GtkListStoreExt, GtkListStoreExtManual, LabelExt, StyleContextExt, WidgetExt};
 use pcap::packet::inter::interfaces::Interfaces;
 use pcap::packet::layers::layer_1::ethernet_layer::EthernetLayer;
 use pcap::packet::layers::layer_1::inter::types::Types;
@@ -84,5 +84,10 @@ impl PacketAdapter {
 
     pub fn get_packet_by_index(&self, index: usize) -> Packet {
         self.packets.lock().unwrap().get(index).unwrap().clone()
+    }
+
+    pub fn clear(&mut self) {
+        self.model.clear();
+        self.packets.lock().unwrap().clear();
     }
 }

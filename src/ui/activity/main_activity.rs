@@ -111,10 +111,9 @@ impl Activity for MainActivity {
         let start_button = self.app.get_child_by_name(&app_buttons, "start_button").unwrap();
 
         if let Some(start_button) = start_button.downcast_ref::<Button>() {
-            //let device = self.device.clone();
             let app_buttons = app_buttons.clone();
             let stop_button_clone = stop_button.clone();
-            //let tx = Arc::new(Mutex::new(tx));
+            let main_fragment = main_fragment.clone();
 
             let packet_service = self.capture_service.clone();
             start_button.connect_clicked(move |_| {
@@ -122,6 +121,7 @@ impl Activity for MainActivity {
                 stop_button_clone.show();
 
                 println!("Start button clicked!");
+                main_fragment.get_packet_adapter().unwrap().clear();
                 packet_service.start();
             });
         }
