@@ -5,6 +5,7 @@ use gtk::glib::Cast;
 use gtk::prelude::{BinExt, BoxExt, ButtonExt, ContainerExt, ExpanderExt, ImageExt, LabelExt, WidgetExt};
 use pcap::packet::layers::layer_1::ethernet_layer::EthernetLayer;
 use pcap::packet::layers::layer_2::ethernet::ipv4_layer::IPv4Layer;
+use pcap::packet::layers::layer_2::ethernet::ipv6_layer::IPv6Layer;
 use pcap::packet::layers::layer_3::ip::udp_layer::UdpLayer;
 
 pub fn create_ethernet_layer_expander(layer: &EthernetLayer) -> Container {
@@ -31,6 +32,21 @@ pub fn create_ipv4_layer_expander(layer: &IPv4Layer) -> Container {
     list_box.add(&create_row("Protocol:", format!("{:?} ({})", layer.get_protocol(), layer.get_protocol().get_code())));
 
     list_box.add(&create_row("Header Checksum:", format!("0x{:04x}", layer.get_checksum())));
+    list_box.add(&create_row("Source Address:", layer.get_source_ip().to_string()));
+    list_box.add(&create_row("Destination Address:", layer.get_destination_ip().to_string()));
+
+    dropdown.add(&list_box);
+
+    dropdown.upcast()
+}
+
+pub fn create_ipv6_layer_expander(layer: &IPv6Layer) -> Container {
+    let (dropdown, list_box) = create_dropdown("Internet Protocol Version 6");
+
+    list_box.add(&create_row("Version:", layer.get_version().to_string()));
+    list_box.add(&create_row("Payload Length:", layer.get_payload_length().to_string()));
+    list_box.add(&create_row("Next Header:", format!("{:?} ({})", layer.get_next_header(), layer.get_next_header().get_code())));
+    list_box.add(&create_row("Hop Limit:", layer.get_hop_limit().to_string()));
     list_box.add(&create_row("Source Address:", layer.get_source_ip().to_string()));
     list_box.add(&create_row("Destination Address:", layer.get_destination_ip().to_string()));
 
