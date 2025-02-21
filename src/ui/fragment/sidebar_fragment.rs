@@ -134,6 +134,7 @@ impl Fragment for SidebarFragment {
                         details_layout.add(&create_ipv4_layer_expander(&ipv4_layer));
 
                         match ipv4_layer.get_protocol() {
+                            Protocols::HopByHop => {}
                             Protocols::Icmp => {}
                             Protocols::Igmp => {}
                             Protocols::Tcp => {
@@ -158,6 +159,7 @@ impl Fragment for SidebarFragment {
                         details_layout.add(&create_ipv6_layer_expander(&ipv6_layer));
 
                         match ipv6_layer.get_next_header() {
+                            Protocols::HopByHop => {}
                             Protocols::Icmp => {}
                             Protocols::Igmp => {}
                             Protocols::Tcp => {
