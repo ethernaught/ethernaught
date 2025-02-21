@@ -1,0 +1,9 @@
+<svg xmlns='http://www.w3.org/2000/svg' height='24' viewBox='0 0 24 24' width='24'>
+    <path
+        d='M3 3 h18 q3 0 3 3 v12 q0 3 -3 3 h-18 q-3 0 -3 -3 v-12 q0 -3 3 -3'
+        fill='#ffffff' />
+        
+    <path
+        d='M7.25 12 a4.75 4.75 0 1 0 9.5 0 a4.75 4.75 0 1 0 -9.5 0'
+        fill='#ae232f' />
+</svg>

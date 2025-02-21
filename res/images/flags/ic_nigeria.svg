@@ -1,0 +1,13 @@
+<svg xmlns='http://www.w3.org/2000/svg' height='24' viewBox='0 0 24 24' width='24'>
+    <path
+        d='M3 3 h18 q3 0 3 3 v12 q0 3 -3 3 h-18 q-3 0 -3 -3 v-12 q0 -3 3 -3'
+        fill='#ffffff' />
+
+    <path
+        d='M3 3 h5 v18 h-5 q-3 0 -3 -3 v-12 q0 -3 3 -3'
+        fill='#3b8655' />
+
+    <path
+        d='M16 3 h5 q3 0 3 3 v12 q0 3 -3 3 h-5'
+        fill='#3b8655' />
+</svg>
