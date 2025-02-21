@@ -1,10 +1,10 @@
 use std::any::Any;
-use std::cell::{Cell, RefCell};
+use std::cell::RefCell;
 use std::rc::Rc;
-use gtk::{gdk, Builder, Button, Container, DrawingArea, EventBox, Expander, Label, ListBox, ListBoxRow, Orientation, Paned, ScrolledWindow, TextTag, TextView};
+use gtk::{Builder, Button, Container, DrawingArea};
 use gtk::gdk::EventMask;
 use gtk::glib::{clone, Propagation};
-use gtk::prelude::{BuilderExtManual, ButtonExt, Cast, ContainerExt, LabelExt, PanedExt, StyleContextExt, TextBufferExt, TextTagExt, TextTagTableExt, TextViewExt, WidgetExt, WidgetExtManual};
+use gtk::prelude::{BuilderExtManual, ButtonExt, Cast, ContainerExt, PanedExt, WidgetExt, WidgetExtManual};
 use pcap::packet::inter::interfaces::Interfaces;
 use pcap::packet::layers::inter::layer::Layer;
 use pcap::packet::layers::layer_1::ethernet_layer::EthernetLayer;

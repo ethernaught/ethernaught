@@ -1,8 +1,6 @@
-use std::any::Any;
-use std::fmt::format;
-use gtk::{Button, Container, Expander, Image, Label, ListBox, ListBoxRow, Orientation};
+use gtk::{Button, Container, Image, Label, ListBox, ListBoxRow, Orientation};
 use gtk::glib::Cast;
-use gtk::prelude::{BinExt, BoxExt, ButtonExt, ContainerExt, ExpanderExt, ImageExt, LabelExt, WidgetExt};
+use gtk::prelude::{ButtonExt, ContainerExt, ImageExt, LabelExt, WidgetExt};
 use pcap::packet::layers::layer_1::ethernet_layer::EthernetLayer;
 use pcap::packet::layers::layer_2::ethernet::ipv4_layer::IPv4Layer;
 use pcap::packet::layers::layer_2::ethernet::ipv6_layer::IPv6Layer;
