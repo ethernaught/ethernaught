@@ -2,8 +2,8 @@ use gtk::{Button, Container, Image, Label, ListBox, ListBoxRow, Orientation};
 use gtk::glib::Cast;
 use gtk::prelude::{ButtonExt, ContainerExt, ImageExt, LabelExt, WidgetExt};
 use pcap::packet::layers::layer_1::ethernet_layer::EthernetLayer;
-use pcap::packet::layers::layer_2::ethernet::ipv4_layer::IPv4Layer;
-use pcap::packet::layers::layer_2::ethernet::ipv6_layer::IPv6Layer;
+use pcap::packet::layers::layer_2::ethernet::ipv4_layer::Ipv4Layer;
+use pcap::packet::layers::layer_2::ethernet::ipv6_layer::Ipv6Layer;
 use pcap::packet::layers::layer_3::ip::tcp_layer::TcpLayer;
 use pcap::packet::layers::layer_3::ip::udp_layer::UdpLayer;
 
@@ -19,7 +19,7 @@ pub fn create_ethernet_layer_expander(layer: &EthernetLayer) -> Container {
     dropdown.upcast()
 }
 
-pub fn create_ipv4_layer_expander(layer: &IPv4Layer) -> Container {
+pub fn create_ipv4_layer_expander(layer: &Ipv4Layer) -> Container {
     let (dropdown, list_box) = create_dropdown("Internet Protocol Version 4");
 
     list_box.add(&create_row("Version:", layer.get_version().to_string()));
@@ -39,7 +39,7 @@ pub fn create_ipv4_layer_expander(layer: &IPv4Layer) -> Container {
     dropdown.upcast()
 }
 
-pub fn create_ipv6_layer_expander(layer: &IPv6Layer) -> Container {
+pub fn create_ipv6_layer_expander(layer: &Ipv6Layer) -> Container {
     let (dropdown, list_box) = create_dropdown("Internet Protocol Version 6");
 
     list_box.add(&create_row("Version:", layer.get_version().to_string()));

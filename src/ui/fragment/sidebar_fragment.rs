@@ -9,9 +9,10 @@ use pcap::packet::inter::interfaces::Interfaces;
 use pcap::packet::layers::inter::layer::Layer;
 use pcap::packet::layers::layer_1::ethernet_layer::EthernetLayer;
 use pcap::packet::layers::layer_1::inter::types::Types;
+use pcap::packet::layers::layer_1_5::ethernet::arp_extension::ArpLayer;
 use pcap::packet::layers::layer_2::ethernet::inter::protocols::Protocols;
-use pcap::packet::layers::layer_2::ethernet::ipv4_layer::IPv4Layer;
-use pcap::packet::layers::layer_2::ethernet::ipv6_layer::IPv6Layer;
+use pcap::packet::layers::layer_2::ethernet::ipv4_layer::Ipv4Layer;
+use pcap::packet::layers::layer_2::ethernet::ipv6_layer::Ipv6Layer;
 use pcap::packet::layers::layer_3::ip::tcp_layer::TcpLayer;
 use pcap::packet::layers::layer_3::ip::udp_layer::UdpLayer;
 use pcap::packet::packet::Packet;
@@ -130,7 +131,7 @@ impl Fragment for SidebarFragment {
 
                 match ethernet_layer.get_type() {
                     Types::IPv4 => {
-                        let ipv4_layer = self.packet.get_layer(1).unwrap().as_any().downcast_ref::<IPv4Layer>().unwrap();
+                        let ipv4_layer = self.packet.get_layer(1).unwrap().as_any().downcast_ref::<Ipv4Layer>().unwrap();
                         details_layout.add(&create_ipv4_layer_expander(&ipv4_layer));
 
                         match ipv4_layer.get_protocol() {
@@ -153,9 +154,11 @@ impl Fragment for SidebarFragment {
                         }
                     }
                     Types::Arp => {
+                        //let arp_layer = self.packet.get_layer(1).unwrap().as_any().downcast_ref::<ArpLayer>().unwrap();
+                        //details_layout.add(&create_arp_layer_expander(&arp_layer));
                     }
                     Types::IPv6 => {
-                        let ipv6_layer = self.packet.get_layer(1).unwrap().as_any().downcast_ref::<IPv6Layer>().unwrap();
+                        let ipv6_layer = self.packet.get_layer(1).unwrap().as_any().downcast_ref::<Ipv6Layer>().unwrap();
                         details_layout.add(&create_ipv6_layer_expander(&ipv6_layer));
 
                         match ipv6_layer.get_next_header() {

@@ -4,8 +4,8 @@ use gtk::prelude::{BuilderExtManual, ContainerExt, GtkListStoreExt, GtkListStore
 use pcap::packet::inter::interfaces::Interfaces;
 use pcap::packet::layers::layer_1::ethernet_layer::EthernetLayer;
 use pcap::packet::layers::layer_1::inter::types::Types;
-use pcap::packet::layers::layer_2::ethernet::ipv4_layer::IPv4Layer;
-use pcap::packet::layers::layer_2::ethernet::ipv6_layer::IPv6Layer;
+use pcap::packet::layers::layer_2::ethernet::ipv4_layer::Ipv4Layer;
+use pcap::packet::layers::layer_2::ethernet::ipv6_layer::Ipv6Layer;
 use pcap::packet::packet::Packet;
 
 #[derive(Clone)]
@@ -30,7 +30,7 @@ impl PacketAdapter {
 
                 match ethernet_layer.get_type() {
                     Types::IPv4 => {
-                        let ipv4_layer = packet.get_layer(1).unwrap().as_any().downcast_ref::<IPv4Layer>().unwrap();
+                        let ipv4_layer = packet.get_layer(1).unwrap().as_any().downcast_ref::<Ipv4Layer>().unwrap();
 
                         //source.set_label(&ipv4_layer.get_source_ip().to_string());
                         //destination_label.set_label(&ipv4_layer.get_destination_ip().to_string());
@@ -38,7 +38,7 @@ impl PacketAdapter {
                         (ipv4_layer.get_source_ip().to_string(), ipv4_layer.get_destination_ip().to_string(), ipv4_layer.get_protocol().to_string())
                     }
                     Types::IPv6 => {
-                        let ipv6_layer = packet.get_layer(1).unwrap().as_any().downcast_ref::<IPv6Layer>().unwrap();
+                        let ipv6_layer = packet.get_layer(1).unwrap().as_any().downcast_ref::<Ipv6Layer>().unwrap();
 
                         //source_label.set_label(&ipv6_layer.get_source_ip().to_string());
                         //destination_label.set_label(&ipv6_layer.get_destination_ip().to_string());
