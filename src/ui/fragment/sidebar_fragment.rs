@@ -19,7 +19,7 @@ use pcap::packet::packet::Packet;
 use crate::ui::activity::inter::activity::Activity;
 use crate::ui::activity::main_activity::MainActivity;
 use crate::ui::fragment::inter::fragment::Fragment;
-use crate::ui::handlers::expanders::{create_ethernet_layer_expander, create_ipv4_layer_expander, create_ipv6_layer_expander, create_tcp_layer_expander, create_udp_layer_expander};
+use crate::ui::handlers::expanders::{create_arp_layer_expander, create_ethernet_layer_expander, create_ipv4_layer_expander, create_ipv6_layer_expander, create_tcp_layer_expander, create_udp_layer_expander};
 use crate::ui::widgets::hex_editor::HexEditor;
 
 #[derive(Clone)]
@@ -154,8 +154,8 @@ impl Fragment for SidebarFragment {
                         }
                     }
                     Types::Arp => {
-                        //let arp_layer = self.packet.get_layer(1).unwrap().as_any().downcast_ref::<ArpLayer>().unwrap();
-                        //details_layout.add(&create_arp_layer_expander(&arp_layer));
+                        let arp_layer = self.packet.get_layer(1).unwrap().as_any().downcast_ref::<ArpLayer>().unwrap();
+                        details_layout.add(&create_arp_layer_expander(&arp_layer));
                     }
                     Types::IPv6 => {
                         let ipv6_layer = self.packet.get_layer(1).unwrap().as_any().downcast_ref::<Ipv6Layer>().unwrap();

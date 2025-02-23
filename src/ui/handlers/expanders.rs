@@ -1,7 +1,9 @@
+use std::fmt::format;
 use gtk::{Button, Container, Image, Label, ListBox, ListBoxRow, Orientation};
 use gtk::glib::Cast;
 use gtk::prelude::{ButtonExt, ContainerExt, ImageExt, LabelExt, WidgetExt};
 use pcap::packet::layers::layer_1::ethernet_layer::EthernetLayer;
+use pcap::packet::layers::layer_1_5::ethernet::arp_extension::ArpLayer;
 use pcap::packet::layers::layer_2::ethernet::ipv4_layer::Ipv4Layer;
 use pcap::packet::layers::layer_2::ethernet::ipv6_layer::Ipv6Layer;
 use pcap::packet::layers::layer_3::ip::tcp_layer::TcpLayer;
@@ -33,6 +35,28 @@ pub fn create_ipv4_layer_expander(layer: &Ipv4Layer) -> Container {
     list_box.add(&create_row("Header Checksum:", format!("0x{:04X}", layer.get_checksum())));
     list_box.add(&create_row("Source Address:", layer.get_source_ip().to_string()));
     list_box.add(&create_row("Destination Address:", layer.get_destination_ip().to_string()));
+
+    dropdown.add(&list_box);
+
+    dropdown.upcast()
+}
+
+pub fn create_arp_layer_expander(layer: &ArpLayer) -> Container {
+    let (dropdown, list_box) = create_dropdown("Address Resolution Protocol");
+
+    //SHOULD BE LIKE Ethernet (1)
+    list_box.add(&create_row("Hardware Type:", format!("{} ({})", layer.get_hardware_type().to_string(), layer.get_hardware_type().to_string())));
+
+    list_box.add(&create_row("Hardware Size:", layer.get_hardware_size().to_string()));
+    list_box.add(&create_row("Protocol Size:", layer.get_hardware_size().to_string()));
+
+    //SHOULD BE LIKE reply (2)
+    list_box.add(&create_row("Opcode:", format!("{} ({})", layer.get_opcode().to_string(), layer.get_opcode().to_string())));
+
+    list_box.add(&create_row("Sender MAC Address:", layer.get_sender_mac().to_string()));
+    list_box.add(&create_row("Sender IP Address:", layer.get_sender_ip().to_string()));
+    list_box.add(&create_row("Target MAC Address:", layer.get_target_mac().to_string()));
+    list_box.add(&create_row("Target IP Address:", layer.get_target_ip().to_string()));
 
     dropdown.add(&list_box);
 
