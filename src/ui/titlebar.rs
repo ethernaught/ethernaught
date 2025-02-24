@@ -1,5 +1,6 @@
 use std::process::exit;
 use gtk::{AboutDialog, ApplicationWindow, Builder, Image, Application, TreeViewColumn, CellRendererText, ScrolledWindow, Button, ListBoxRow, Label, CssProvider, StyleContext, gdk, Stack, Container, TreeView, Widget, Window, gio, MenuBar, MenuItem, Menu};
+use gtk::ffi::GtkMenuBar;
 use gtk::gdk_pixbuf::PixbufLoader;
 use gtk::prelude::*;
 use gtk::gio::SimpleAction;
@@ -39,11 +40,10 @@ impl TitleBar {
 
 
 
-
+        //self.init_menu_bar();
 
         //self.app.set_menubar(Some(&menubar));
 
-        root.add(&self.init_menu_bar());
 
 
         self.root = Some(root.upcast());
@@ -51,23 +51,16 @@ impl TitleBar {
         self.root.as_ref().unwrap()
     }
 
-    fn init_menu_bar(&self) -> Container {
+    fn init_menu_bar(&self) -> Widget {
         let builder = Builder::from_file("res/ui/omniscient-ui.xml");
-        let menubar: MenuBar = builder
+        let menu: gio::MenuModel = builder
             .object("main_window_menu")
             .expect("Couldn't find 'main_window_menu' in omniscient-ui.xml");
 
+        let menubar = MenuBar::new();
+        menubar.bind_model(Some(&menu), None, false);
 
-
-        let file_menu_item: MenuItem = builder
-            .object("file_menu_item")
-            .expect("Couldn't find 'file_menu_item' in omniscient-ui.xml");
-
-        let file_menu: Menu = builder
-            .object("file_menu")
-            .expect("Couldn't find 'file_menu' in omniscient-ui.xml");
-
-        file_menu_item.set_submenu(Some(&file_menu));
+        menubar.show_all();
 
         menubar.upcast()
     }
@@ -81,7 +74,11 @@ impl TitleBar {
             println!("ON CLICK");
         });
 
+        let navigation_options: gtk::Box = builder
+            .object("navigation_options")
+            .expect("Couldn't find 'navigation_options' in titlebar-ui.xml");
 
+        navigation_options.add(&self.init_menu_bar());
 
         /*
         let back_button: Button = builder

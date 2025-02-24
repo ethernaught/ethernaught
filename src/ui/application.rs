@@ -4,6 +4,7 @@ use gtk::gdk_pixbuf::PixbufLoader;
 use gtk::prelude::*;
 use gtk::gio::SimpleAction;
 use gtk::glib::PropertyGet;
+use gtk::glib::translate::ToGlibPtr;
 use gtk::prelude::{ActionMapExt, GtkWindowExt};
 use crate::ui::activity::devices_activity::DevicesActivity;
 use crate::ui::activity::inter::activity::Activity;
@@ -64,6 +65,10 @@ impl OApplication {
         });
 
         self.app.run();
+    }
+
+    fn add(&self, menubar: Option<&impl IsA<gio::MenuModel>>) {
+
     }
 
     pub fn start_activity(&self, mut activity: Box<dyn Activity>) {
