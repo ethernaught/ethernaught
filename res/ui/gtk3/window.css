@@ -211,15 +211,22 @@ menuitem {
     border: none;
 }
 
+menuitem menuitem {
+    margin: 0 5px;
+    border-radius: 5px;
+}
+
 menuitem menuitem:hover {
     background-color: #59436e;
 }
 
 separator {
+    margin: 5px 0;
     background-color: #5a5d63;
 }
 
 menu {
+    padding: 5px 0;
     border-radius: 0;
     border: solid 1px #5a5d63;
     background-color: #2b2d30;
