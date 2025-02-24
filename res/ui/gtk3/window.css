@@ -198,6 +198,10 @@ window.maximized #window_options #window_maximize {
 
 
 
+
+
+
+
 menubar * {
     box-shadow: none;
 }
@@ -205,6 +209,10 @@ menubar * {
 menuitem {
     color: #cbd7dc;
     border: none;
+}
+
+menuitem menuitem:hover {
+    background-color: #59436e;
 }
 
 separator {
