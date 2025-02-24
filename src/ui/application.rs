@@ -1,5 +1,5 @@
 use std::process::exit;
-use gtk::{AboutDialog, ApplicationWindow, Builder, Image, Application, TreeViewColumn, CellRendererText, ScrolledWindow, Button, ListBoxRow, Label, CssProvider, StyleContext, gdk, Stack, Container, TreeView, Widget, Window, gio, MenuBar, MenuItem};
+use gtk::{AboutDialog, ApplicationWindow, Builder, Image, Application, TreeViewColumn, CellRendererText, ScrolledWindow, Button, ListBoxRow, Label, CssProvider, StyleContext, gdk, Stack, Container, TreeView, Widget, Window, gio, MenuBar, MenuItem, Menu};
 use gtk::gdk_pixbuf::PixbufLoader;
 use gtk::prelude::*;
 use gtk::gio::SimpleAction;
@@ -8,6 +8,7 @@ use gtk::prelude::{ActionMapExt, GtkWindowExt};
 use crate::ui::activity::devices_activity::DevicesActivity;
 use crate::ui::activity::inter::activity::Activity;
 use crate::ui::activity::main_activity::MainActivity;
+use crate::ui::titlebar::TitleBar;
 //use crate::config::VERSION;
 
 #[derive(Clone)]
@@ -48,19 +49,14 @@ impl OApplication {
             //window.set_decorated(false);
             window.set_border_width(1);
 
-            window.set_titlebar(Some(&_self.init_titlebar(&window)));
+            let mut titlebar = TitleBar::new(_self.clone());
+            window.set_titlebar(Some(titlebar.on_create()));
 
             let stack = Stack::new();
             window.add(&stack);
             stack.show();
 
-            let mut activity = DevicesActivity::new(_self.clone());
-            //let mut activity = MainActivity::new(_self.clone());
-            let name = activity.get_name();
-            let title = activity.get_title();
-            let root = activity.on_create();
-            stack.add_titled(root, &name, &title);
-            //stack.set_visible_child_name(&activity.get_name());
+            _self.start_activity(Box::new(DevicesActivity::new(_self.clone())));
 
             _self.init_actions(&window);
 
@@ -80,6 +76,7 @@ impl OApplication {
         stack.set_visible_child_name(&activity.get_name());
     }
 
+    /*
     //WE NEED TO POSSIBLY UPDATE BUTTONS AFTER PRESSED...
     pub fn on_back_pressed(&self) {
         let stack = self.app.active_window().unwrap().children()[0].clone().downcast::<Stack>().unwrap();
@@ -95,7 +92,7 @@ impl OApplication {
     }
 
     //WE NEED TO ADJUST STACK AFTER - IE REMOVING SOME AND UPDATE BUTTONS...
-    fn on_next_pressed(&self) {
+    pub fn on_next_pressed(&self) {
         let stack = self.app.active_window().unwrap().children()[0].clone().downcast::<Stack>().unwrap();
 
         let children = stack.children();
@@ -107,6 +104,11 @@ impl OApplication {
             }
         }
     }
+    */
+
+    pub fn get_application(&self) -> Application {
+        self.app.clone()
+    }
 
     pub fn get_window(&self) -> Option<Window> {
         self.app.active_window()
@@ -114,101 +116,6 @@ impl OApplication {
 
     pub fn get_titlebar(&self) -> Option<Widget> {
         self.app.active_window().unwrap().titlebar()
-    }
-
-    fn init_titlebar(&self, window: &ApplicationWindow) -> Widget {
-        let builder = Builder::from_file("res/ui/titlebar-ui.xml");
-
-        let titlebar: gtk::Box = builder
-            .object("titlebar")
-            .expect("Couldn't find 'titlebar' in titlebar-ui.xml");
-
-        //window.set_titlebar(Some(&titlebar));
-        //titlebar.set_size_request(-1, 32);
-
-        /*
-        titlebar.style_context().add_class("wifi");
-
-
-        let network_type_label: Label = builder
-            .object("network_type_label")
-            .expect("Couldn't find 'network_type_label' in titlebar-ui.xml");
-        network_type_label.set_label("wlp2s0");
-        */
-
-        let back_button: Button = builder
-            .object("back_button")
-            .expect("Couldn't find 'back_button' in titlebar-ui.xml");
-
-        let _self = self.clone();
-        back_button.connect_clicked(move |_| {
-            _self.on_back_pressed();
-        });
-
-
-        let next_button: Button = builder
-            .object("next_button")
-            .expect("Couldn't find 'next_button' in titlebar-ui.xml");
-
-        let _self = self.clone();
-        next_button.connect_clicked(move |_| {
-            _self.on_next_pressed();
-        });
-
-
-        let minimize_button: Button = builder
-            .object("minimize_button")
-            .expect("Couldn't find 'minimize_button' in titlebar-ui.xml");
-
-        let window_clone = window.clone();
-        minimize_button.connect_clicked(move |_| {
-            window_clone.iconify();
-        });
-
-        let maximize_button: Button = builder
-            .object("maximize_button")
-            .expect("Couldn't find 'maximize_button' in titlebar-ui.xml");
-
-        let window_clone = window.clone();
-        maximize_button.connect_clicked(move |_| {
-            if window_clone.is_maximized() {
-                window_clone.unmaximize();
-                return;
-            }
-
-            window_clone.maximize();
-        });
-
-        let close_button: Button = builder
-            .object("close_button")
-            .expect("Couldn't find 'close_button' in titlebar-ui.xml");
-
-        let app_clone = self.app.clone();
-        close_button.connect_clicked(move |_| {
-            app_clone.quit();
-        });
-
-
-
-        let menu_button: Button = builder
-            .object("menu_button")
-            .expect("Couldn't find 'menu_button' in titlebar-ui.xml");
-
-        menu_button.connect_clicked(move |_| {
-            println!("ON CLICK");
-        });
-
-        /*
-        let builder = Builder::from_file("res/ui/omniscient-ui.xml");
-        let menubar: MenuBar = builder
-            .object("main_window_menu")
-            .expect("Couldn't find 'main_window_menu' in omniscient-ui.xml");
-        menubar.show_all();
-
-        titlebar.add(&menubar);
-        */
-
-        titlebar.upcast()
     }
 
     fn init_actions(&self, window: &ApplicationWindow) {

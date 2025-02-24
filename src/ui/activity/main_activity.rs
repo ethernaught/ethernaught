@@ -99,7 +99,7 @@ impl Activity for MainActivity {
 
 
         let titlebar = self.app.get_titlebar().unwrap();
-        let menu_buttons = Arc::new(self.app.get_child_by_name(&titlebar, "navigation_menu_1").unwrap());
+        let menu_buttons = Arc::new(self.app.get_child_by_name(&titlebar, "navigation_menu").unwrap());
         menu_buttons.show();
 
 

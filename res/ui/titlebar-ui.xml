@@ -12,7 +12,7 @@
 
         <child>
             <object class="GtkBox">
-                <property name="name">navigation_menu</property>
+                <property name="name">navigation_options</property>
                 <property name="visible">True</property>
                 <property name="hexpand">True</property>
                 <property name="orientation">horizontal</property>
@@ -29,7 +29,7 @@
 
                 <child>
                     <object class="GtkBox">
-                        <property name="name">navigation_menu_1</property>
+                        <property name="name">navigation_menu</property>
                         <property name="visible">False</property>
                         <property name="hexpand">True</property>
                         <property name="orientation">horizontal</property>
@@ -106,7 +106,7 @@
 
         <child>
             <object class="GtkBox">
-                <property name="name">window_buttons</property>
+                <property name="name">window_options</property>
                 <property name="visible">True</property>
                 <property name="orientation">horizontal</property>
                 <property name="spacing">10</property>

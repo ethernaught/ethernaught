@@ -63,20 +63,20 @@ window.maximized #titlebar {
 
 
 
-#navigation_menu button,
+#navigation_options button,
         #app_buttons button {
     padding: 8px;
 }
 
-#navigation_menu #menu_button {
+#navigation_options #menu_button {
     background-image: url('../../images/ic_menu.svg');
 }
 
-#navigation_menu #back_button {
+#navigation_options #back_button {
     background-image: url('../../images/ic_back.svg');
 }
 
-#navigation_menu #next_button {
+#navigation_options #next_button {
     background-image: url('../../images/ic_next.svg');
 }
 
@@ -98,7 +98,7 @@ window.maximized #titlebar {
     background: linear-gradient(90deg, #2b2d30 0%, #394366 20%, #2b2d30 40%);
 }
 
-#navigation_menu #network_type_icon {
+#navigation_options #network_type_icon {
     min-height: 0;
     padding: 4px;
     margin: 4px;
@@ -160,31 +160,31 @@ window.maximized #titlebar {
 
 
 
-#window_buttons {
+#window_options {
     padding: 4px;
 }
 
-#window_buttons button {
+#window_options button {
     padding: 4px;
 }
 
-#window_buttons button {
+#window_options button {
     border-radius: 100%;
 }
 
-#window_buttons #window_minimize {
+#window_options #window_minimize {
     background-image: url('../../images/ic_minimize.svg');
 }
 
-#window_buttons #window_maximize {
+#window_options #window_maximize {
     background-image: url('../../images/ic_maximize.svg');
 }
 
-window.maximized #window_buttons #window_maximize {
+window.maximized #window_options #window_maximize {
     background-image: url('../../images/ic_maximize_active.svg');
 }
 
-#window_buttons #window_close {
+#window_options #window_close {
     background-image: url('../../images/ic_close.svg');
 }
 
