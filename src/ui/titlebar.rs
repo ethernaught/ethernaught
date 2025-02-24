@@ -40,36 +40,36 @@ impl TitleBar {
 
 
 
-        let builder = Builder::from_file("res/ui/omniscient-ui.xml");
-        let menubar: MenuBar = builder
-            .object("main_window_menu")
-            .expect("Couldn't find 'main_window_menu' in omniscient-ui.xml");
-        //menubar.show_all();
-        //Self::set_submenus(&menubar);
-
-        // Connect the 'File' menu item to its submenu
-        let file_menu_item: MenuItem = builder
-            .object("file_menu_item")
-            .expect("Couldn't find 'file_menu_item' in omniscient-ui.xml");
-
-        let file_menu: gtk::Menu = builder
-            .object("file_menu")
-            .expect("Couldn't find 'file_menu' in omniscient-ui.xml");
-
-
-
-        // Set the submenu for the 'File' menu item
-        file_menu_item.set_submenu(Some(&file_menu));
 
         //self.app.set_menubar(Some(&menubar));
 
-        root.add(&menubar);
-        menubar.show_all();
+        root.add(&self.init_menu_bar());
 
 
         self.root = Some(root.upcast());
 
         self.root.as_ref().unwrap()
+    }
+
+    fn init_menu_bar(&self) -> Container {
+        let builder = Builder::from_file("res/ui/omniscient-ui.xml");
+        let menubar: MenuBar = builder
+            .object("main_window_menu")
+            .expect("Couldn't find 'main_window_menu' in omniscient-ui.xml");
+
+
+
+        let file_menu_item: MenuItem = builder
+            .object("file_menu_item")
+            .expect("Couldn't find 'file_menu_item' in omniscient-ui.xml");
+
+        let file_menu: Menu = builder
+            .object("file_menu")
+            .expect("Couldn't find 'file_menu' in omniscient-ui.xml");
+
+        file_menu_item.set_submenu(Some(&file_menu));
+
+        menubar.upcast()
     }
 
     fn init_navigation_options(&mut self, builder: &Builder) {
