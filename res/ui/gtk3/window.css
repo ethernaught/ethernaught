@@ -78,7 +78,7 @@ window.maximized #titlebar {
     margin: 4px;
 }
 
-#navigation_menu {
+#navigation_buttons {
     padding: 4px 0;
 }
 
@@ -91,11 +91,11 @@ window.maximized #titlebar {
     background-image: url('../../images/ic_menu.svg');
 }
 
-#navigation_menu #back_button {
+#navigation_buttons #back_button {
     background-image: url('../../images/ic_back.svg');
 }
 
-#navigation_menu #next_button {
+#navigation_buttons #next_button {
     background-image: url('../../images/ic_next.svg');
 }
 

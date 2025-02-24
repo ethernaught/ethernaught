@@ -51,20 +51,6 @@ impl TitleBar {
         self.root.as_ref().unwrap()
     }
 
-    fn init_menu_bar(&self) -> Widget {
-        let builder = Builder::from_file("res/ui/omniscient-ui.xml");
-        let menu: gio::MenuModel = builder
-            .object("main_window_menu")
-            .expect("Couldn't find 'main_window_menu' in omniscient-ui.xml");
-
-        let menubar = MenuBar::new();
-        menubar.bind_model(Some(&menu), None, false);
-
-        menubar.show_all();
-
-        menubar.upcast()
-    }
-
     fn init_navigation_options(&mut self, builder: &Builder) {
         let menu_button: Button = builder
             .object("menu_button")
@@ -74,11 +60,20 @@ impl TitleBar {
             println!("ON CLICK");
         });
 
-        let navigation_options: gtk::Box = builder
-            .object("navigation_options")
-            .expect("Couldn't find 'navigation_options' in titlebar-ui.xml");
+        let navigation_menubar: MenuBar = builder
+            .object("navigation_menubar")
+            .expect("Couldn't find 'navigation_menubar' in titlebar-ui.xml");
 
-        navigation_options.add(&self.init_menu_bar());
+        let menu_builder = Builder::from_file("res/ui/omniscient-ui.xml");
+        let menu: gio::MenuModel = menu_builder
+            .object("main_window_menu")
+            .expect("Couldn't find 'main_window_menu' in omniscient-ui.xml");
+
+        //let menubar = MenuBar::new();
+        navigation_menubar.bind_model(Some(&menu), None, false);
+        navigation_menubar.show_all();
+
+        //navigation_menubar.add(&self.init_menu_bar());
 
         /*
         let back_button: Button = builder
