@@ -84,19 +84,23 @@ pub fn create_icmp_layer_expander(layer: &IcmpLayer) -> Container {
     let (dropdown, list_box) = create_dropdown("Internet Control Message Protocol");
 
     //SHOULD BE LIKE 8 (Echo (ping) request)
-    list_box.add(&create_row("Type:", format!("{} ({})", layer.get_icmp_type(), layer.get_icmp_type().to_string())));
+    list_box.add(&create_row("Type:", format!("{} ({})", layer.get_type(), layer.get_type().to_string())));
     list_box.add(&create_row("Code:", layer.get_code().to_string()));
 
     //SHOULD BE LIKE 0x544c [correct]
     list_box.add(&create_row("Checksum:", format!("0x{:04X}", layer.get_checksum())));
 
+    let identifier_be = layer.get_identifier().to_be();
+    let identifier_le = layer.get_identifier().to_le();
     //SHOULD BE 92 (0x005c)
-    list_box.add(&create_row("Identifier (BE):", layer.get_identifier().to_string()));
-    //list_box.add(&create_row("Identifier (LE):", layer.get_identifier().to_string()));
+    list_box.add(&create_row("Identifier (BE):", format!("{} (0x{:04X})", identifier_be, identifier_be)));
+    list_box.add(&create_row("Identifier (LE):", format!("{} (0x{:04X})", identifier_le, identifier_le)));
 
+    let sequence_number_be = layer.get_sequence_number().to_be();
+    let sequence_number_le = layer.get_sequence_number().to_le();
     //SHOULD BE 92 (0x005c)
-    list_box.add(&create_row("Sequence Number (BE):", layer.get_sequence().to_string()));
-    //list_box.add(&create_row("Sequence Number (LE):", layer.get_sequence().to_string()));
+    list_box.add(&create_row("Sequence Number (BE):", format!("{} (0x{:04X})", sequence_number_be, sequence_number_be)));
+    list_box.add(&create_row("Sequence Number (LE):", format!("{} (0x{:04X})", sequence_number_le, sequence_number_le)));
 
     dropdown.add(&list_box);
 
@@ -107,21 +111,23 @@ pub fn create_icmpv6_layer_expander(layer: &Icmpv6Layer) -> Container {
     let (dropdown, list_box) = create_dropdown("Internet Control Message Protocol Version 6");
 
     //SHOULD BE LIKE 8 (Echo (ping) request)
-    list_box.add(&create_row("Type:", format!("{} ({})", layer.get_icmp_type(), layer.get_icmp_type().to_string())));
+    list_box.add(&create_row("Type:", format!("{} ({})", layer.get_type(), layer.get_type().to_string())));
     list_box.add(&create_row("Code:", layer.get_code().to_string()));
 
     //SHOULD BE LIKE 0x544c [correct]
     list_box.add(&create_row("Checksum:", format!("0x{:04X}", layer.get_checksum())));
 
+    let identifier_be = layer.get_identifier().to_be();
+    let identifier_le = layer.get_identifier().to_le();
     //SHOULD BE 92 (0x005c)
-    list_box.add(&create_row("Identifier (BE):", layer.get_identifier().to_string()));
-    //list_box.add(&create_row("Identifier (LE):", layer.get_identifier().to_string()));
+    list_box.add(&create_row("Identifier (BE):", format!("{} (0x{:04X})", identifier_be, identifier_be)));
+    list_box.add(&create_row("Identifier (LE):", format!("{} (0x{:04X})", identifier_le, identifier_le)));
 
+    let sequence_number_be = layer.get_sequence_number().to_be();
+    let sequence_number_le = layer.get_sequence_number().to_le();
     //SHOULD BE 92 (0x005c)
-    list_box.add(&create_row("Sequence Number (BE):", layer.get_sequence().to_string()));
-    //list_box.add(&create_row("Sequence Number (LE):", layer.get_sequence().to_string()));
-
-    dropdown.add(&list_box);
+    list_box.add(&create_row("Sequence Number (BE):", format!("{} (0x{:04X})", sequence_number_be, sequence_number_be)));
+    list_box.add(&create_row("Sequence Number (LE):", format!("{} (0x{:04X})", sequence_number_le, sequence_number_le)));
 
     dropdown.add(&list_box);
 
