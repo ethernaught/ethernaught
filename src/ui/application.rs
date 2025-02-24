@@ -70,10 +70,6 @@ impl OApplication {
         self.app.run();
     }
 
-    fn add(&self, menubar: Option<&impl IsA<gio::MenuModel>>) {
-
-    }
-
     pub fn start_activity(&self, mut activity: Box<dyn Activity>) {
         let stack = self.app.active_window().unwrap().children()[0].clone().downcast::<Stack>().unwrap();
 
