@@ -13,13 +13,15 @@ use pcap::packet::layers::layer_2_5::ethernet::arp_extension::ArpLayer;
 use pcap::packet::layers::layer_3::ethernet::inter::protocols::Protocols;
 use pcap::packet::layers::layer_3::ethernet::ipv4_layer::Ipv4Layer;
 use pcap::packet::layers::layer_3::ethernet::ipv6_layer::Ipv6Layer;
+use pcap::packet::layers::layer_3_5::ethernet::icmp_layer::IcmpLayer;
+use pcap::packet::layers::layer_3_5::ethernet::icmpv6_layer::Icmpv6Layer;
 use pcap::packet::layers::layer_4::ip::tcp_layer::TcpLayer;
 use pcap::packet::layers::layer_4::ip::udp_layer::UdpLayer;
 use pcap::packet::packet::Packet;
 use crate::ui::activity::inter::activity::Activity;
 use crate::ui::activity::main_activity::MainActivity;
 use crate::ui::fragment::inter::fragment::Fragment;
-use crate::ui::handlers::expanders::{create_arp_layer_expander, create_ethernet_layer_expander, create_ipv4_layer_expander, create_ipv6_layer_expander, create_tcp_layer_expander, create_udp_layer_expander};
+use crate::ui::handlers::expanders::{create_arp_layer_expander, create_ethernet_layer_expander, create_icmp_layer_expander, create_icmpv6_layer_expander, create_ipv4_layer_expander, create_ipv6_layer_expander, create_tcp_layer_expander, create_udp_layer_expander};
 use crate::ui::widgets::hex_editor::HexEditor;
 
 #[derive(Clone)]
@@ -136,7 +138,10 @@ impl Fragment for SidebarFragment {
 
                         match ipv4_layer.get_protocol() {
                             Protocols::HopByHop => {}
-                            Protocols::Icmp => {}
+                            Protocols::Icmp => {
+                                let icmp_layer = self.packet.get_layer(2).unwrap().as_any().downcast_ref::<IcmpLayer>().unwrap();
+                                details_layout.add(&create_icmp_layer_expander(&icmp_layer));
+                            }
                             Protocols::Igmp => {}
                             Protocols::Tcp => {
                                 let tcp_layer = self.packet.get_layer(2).unwrap().as_any().downcast_ref::<TcpLayer>().unwrap();
@@ -175,7 +180,10 @@ impl Fragment for SidebarFragment {
                             }
                             Protocols::Ipv6 => {}
                             Protocols::Gre => {}
-                            Protocols::Icmpv6 => {}
+                            Protocols::Icmpv6 => {
+                                let icmpv6_layer = self.packet.get_layer(2).unwrap().as_any().downcast_ref::<Icmpv6Layer>().unwrap();
+                                details_layout.add(&create_icmpv6_layer_expander(&icmpv6_layer));
+                            }
                             Protocols::Ospf => {}
                             Protocols::Sps => {}
                         }

@@ -6,6 +6,8 @@ use pcap::packet::layers::layer_2::ethernet_layer::EthernetLayer;
 use pcap::packet::layers::layer_2_5::ethernet::arp_extension::ArpLayer;
 use pcap::packet::layers::layer_3::ethernet::ipv4_layer::Ipv4Layer;
 use pcap::packet::layers::layer_3::ethernet::ipv6_layer::Ipv6Layer;
+use pcap::packet::layers::layer_3_5::ethernet::icmp_layer::IcmpLayer;
+use pcap::packet::layers::layer_3_5::ethernet::icmpv6_layer::Icmpv6Layer;
 use pcap::packet::layers::layer_4::ip::tcp_layer::TcpLayer;
 use pcap::packet::layers::layer_4::ip::udp_layer::UdpLayer;
 
@@ -45,13 +47,13 @@ pub fn create_arp_layer_expander(layer: &ArpLayer) -> Container {
     let (dropdown, list_box) = create_dropdown("Address Resolution Protocol");
 
     //SHOULD BE LIKE Ethernet (1)
-    list_box.add(&create_row("Hardware Type:", format!("{} ({})", layer.get_hardware_type().to_string(), layer.get_hardware_type().to_string())));
+    list_box.add(&create_row("Hardware Type:", format!("{} ({})", layer.get_hardware_type().to_string(), layer.get_hardware_type())));
 
     list_box.add(&create_row("Hardware Size:", layer.get_hardware_size().to_string()));
     list_box.add(&create_row("Protocol Size:", layer.get_hardware_size().to_string()));
 
     //SHOULD BE LIKE reply (2)
-    list_box.add(&create_row("Opcode:", format!("{} ({})", layer.get_opcode().to_string(), layer.get_opcode().to_string())));
+    list_box.add(&create_row("Opcode:", format!("{} ({})", layer.get_opcode().to_string(), layer.get_opcode())));
 
     list_box.add(&create_row("Sender MAC Address:", layer.get_sender_mac().to_string()));
     list_box.add(&create_row("Sender IP Address:", layer.get_sender_ip().to_string()));
@@ -72,6 +74,54 @@ pub fn create_ipv6_layer_expander(layer: &Ipv6Layer) -> Container {
     list_box.add(&create_row("Hop Limit:", layer.get_hop_limit().to_string()));
     list_box.add(&create_row("Source Address:", layer.get_source_ip().to_string()));
     list_box.add(&create_row("Destination Address:", layer.get_destination_ip().to_string()));
+
+    dropdown.add(&list_box);
+
+    dropdown.upcast()
+}
+
+pub fn create_icmp_layer_expander(layer: &IcmpLayer) -> Container {
+    let (dropdown, list_box) = create_dropdown("Internet Control Message Protocol");
+
+    //SHOULD BE LIKE 8 (Echo (ping) request)
+    list_box.add(&create_row("Type:", format!("{} ({})", layer.get_icmp_type(), layer.get_icmp_type().to_string())));
+    list_box.add(&create_row("Code:", layer.get_code().to_string()));
+
+    //SHOULD BE LIKE 0x544c [correct]
+    list_box.add(&create_row("Checksum:", format!("0x{:04X}", layer.get_checksum())));
+
+    //SHOULD BE 92 (0x005c)
+    list_box.add(&create_row("Identifier (BE):", layer.get_identifier().to_string()));
+    //list_box.add(&create_row("Identifier (LE):", layer.get_identifier().to_string()));
+
+    //SHOULD BE 92 (0x005c)
+    list_box.add(&create_row("Sequence Number (BE):", layer.get_sequence().to_string()));
+    //list_box.add(&create_row("Sequence Number (LE):", layer.get_sequence().to_string()));
+
+    dropdown.add(&list_box);
+
+    dropdown.upcast()
+}
+
+pub fn create_icmpv6_layer_expander(layer: &Icmpv6Layer) -> Container {
+    let (dropdown, list_box) = create_dropdown("Internet Control Message Protocol Version 6");
+
+    //SHOULD BE LIKE 8 (Echo (ping) request)
+    list_box.add(&create_row("Type:", format!("{} ({})", layer.get_icmp_type(), layer.get_icmp_type().to_string())));
+    list_box.add(&create_row("Code:", layer.get_code().to_string()));
+
+    //SHOULD BE LIKE 0x544c [correct]
+    list_box.add(&create_row("Checksum:", format!("0x{:04X}", layer.get_checksum())));
+
+    //SHOULD BE 92 (0x005c)
+    list_box.add(&create_row("Identifier (BE):", layer.get_identifier().to_string()));
+    //list_box.add(&create_row("Identifier (LE):", layer.get_identifier().to_string()));
+
+    //SHOULD BE 92 (0x005c)
+    list_box.add(&create_row("Sequence Number (BE):", layer.get_sequence().to_string()));
+    //list_box.add(&create_row("Sequence Number (LE):", layer.get_sequence().to_string()));
+
+    dropdown.add(&list_box);
 
     dropdown.add(&list_box);
 
