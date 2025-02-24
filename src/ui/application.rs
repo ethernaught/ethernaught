@@ -51,6 +51,8 @@ impl OApplication {
             //window.set_decorated(false);
             window.set_border_width(1);
 
+            window.set_icon_from_file("res/images/ic_launcher.svg").expect("Failed to load icon");
+
             let mut titlebar = TitleBar::new(_self.clone());
             window.set_titlebar(Some(titlebar.on_create()));
 
@@ -151,11 +153,11 @@ impl OApplication {
 }
 
 pub fn show_about(window: &ApplicationWindow) {
-    //let svg_data = include_bytes!("../res/images/ic_launcher.svg");
-    //let loader = PixbufLoader::with_type("svg").expect("Failed to create SVG loader");
-    //loader.write(svg_data).expect("Failed to load SVG data");
-    //loader.close().expect("Failed to close SVG loader");
-    //let icon_pixbuf = loader.pixbuf().expect("Failed to get Pixbuf from SVG");
+    let svg_data = include_bytes!("../../res/images/ic_launcher.svg");
+    let loader = PixbufLoader::with_type("svg").expect("Failed to create SVG loader");
+    loader.write(svg_data).expect("Failed to load SVG data");
+    loader.close().expect("Failed to close SVG loader");
+    let icon_pixbuf = loader.pixbuf().expect("Failed to get Pixbuf from SVG");
 
     let dialog = AboutDialog::builder()
         .transient_for(window)
@@ -186,7 +188,7 @@ pub fn show_about(window: &ApplicationWindow) {
         LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\r\n\
         OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\r\n\
         SOFTWARE.")
-        //.logo(&icon_pixbuf)
+        .logo(&icon_pixbuf)
         .build();
 
     dialog.present();
