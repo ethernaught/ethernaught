@@ -190,20 +190,22 @@ window.maximized #window_options #window_maximize {
 
 
 
-menubar {
+menubar * {
     box-shadow: none;
 }
 
 menuitem {
     border: none;
-    box-shadow: none;
+}
+
+separator {
+    background-color: #5a5d63;
 }
 
 menu {
     border-radius: 0;
     border: solid 1px #5a5d63;
     background-color: #2b2d30;
-    box-shadow: none;
 }
 
 
