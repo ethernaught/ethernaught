@@ -92,13 +92,11 @@ pub fn create_icmp_layer_expander(layer: &IcmpLayer) -> Container {
 
     let identifier_be = layer.get_identifier().to_be();
     let identifier_le = layer.get_identifier().to_le();
-    //SHOULD BE 92 (0x005c)
     list_box.add(&create_row("Identifier (BE):", format!("{} (0x{:04X})", identifier_be, identifier_be)));
     list_box.add(&create_row("Identifier (LE):", format!("{} (0x{:04X})", identifier_le, identifier_le)));
 
     let sequence_number_be = layer.get_sequence_number().to_be();
     let sequence_number_le = layer.get_sequence_number().to_le();
-    //SHOULD BE 92 (0x005c)
     list_box.add(&create_row("Sequence Number (BE):", format!("{} (0x{:04X})", sequence_number_be, sequence_number_be)));
     list_box.add(&create_row("Sequence Number (LE):", format!("{} (0x{:04X})", sequence_number_le, sequence_number_le)));
 
@@ -119,13 +117,11 @@ pub fn create_icmpv6_layer_expander(layer: &Icmpv6Layer) -> Container {
 
     let identifier_be = layer.get_identifier().to_be();
     let identifier_le = layer.get_identifier().to_le();
-    //SHOULD BE 92 (0x005c)
     list_box.add(&create_row("Identifier (BE):", format!("{} (0x{:04X})", identifier_be, identifier_be)));
     list_box.add(&create_row("Identifier (LE):", format!("{} (0x{:04X})", identifier_le, identifier_le)));
 
     let sequence_number_be = layer.get_sequence_number().to_be();
     let sequence_number_le = layer.get_sequence_number().to_le();
-    //SHOULD BE 92 (0x005c)
     list_box.add(&create_row("Sequence Number (BE):", format!("{} (0x{:04X})", sequence_number_be, sequence_number_be)));
     list_box.add(&create_row("Sequence Number (LE):", format!("{} (0x{:04X})", sequence_number_le, sequence_number_le)));
 
