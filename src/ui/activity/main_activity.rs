@@ -3,10 +3,10 @@ use std::sync::Arc;
 use std::sync::mpsc::channel;
 use std::time::Duration;
 use gtk::prelude::*;
-use gtk::{gdk, glib, Builder, Button, Container, CssProvider, Paned, StyleContext};
+use gtk::{gdk, glib, Builder, Button, Container, CssProvider, Label, Paned, StyleContext};
 use gtk::glib::ControlFlow::Continue;
 use pcap::devices::Device;
-use crate::pcaps::CaptureService;
+use crate::capture_service::CaptureService;
 use crate::ui::application::OApplication;
 use crate::ui::activity::inter::activity::Activity;
 use crate::ui::fragment::inter::fragment::Fragment;
@@ -101,6 +101,11 @@ impl Activity for MainActivity {
         let titlebar = self.app.get_titlebar().unwrap();
         let menu_buttons = Arc::new(self.app.get_child_by_name(&titlebar, "navigation_menu_1").unwrap());
         menu_buttons.show();
+
+
+        self.app.get_child_by_name(&titlebar, "network_type_label").unwrap().downcast_ref::<Label>().unwrap().set_label(&self.capture_service.get_device().get_name());
+
+
 
         let app_buttons = Arc::new(self.app.get_child_by_name(&titlebar, "app_buttons").unwrap());
         app_buttons.show();

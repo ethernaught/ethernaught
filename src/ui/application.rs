@@ -80,6 +80,34 @@ impl OApplication {
         stack.set_visible_child_name(&activity.get_name());
     }
 
+    //WE NEED TO POSSIBLY UPDATE BUTTONS AFTER PRESSED...
+    pub fn on_back_pressed(&self) {
+        let stack = self.app.active_window().unwrap().children()[0].clone().downcast::<Stack>().unwrap();
+
+        let children = stack.children();
+        if let Some(current) = stack.visible_child() {
+            if let Some(pos) = children.iter().position(|child| child == &current) {
+                if pos > 0 {
+                    stack.set_visible_child(&children[pos - 1]);
+                }
+            }
+        }
+    }
+
+    //WE NEED TO ADJUST STACK AFTER - IE REMOVING SOME AND UPDATE BUTTONS...
+    fn on_next_pressed(&self) {
+        let stack = self.app.active_window().unwrap().children()[0].clone().downcast::<Stack>().unwrap();
+
+        let children = stack.children();
+        if let Some(current) = stack.visible_child() {
+            if let Some(pos) = children.iter().position(|child| child == &current) {
+                if pos + 1 < children.len() {
+                    stack.set_visible_child(&children[pos + 1]);
+                }
+            }
+        }
+    }
+
     pub fn get_window(&self) -> Option<Window> {
         self.app.active_window()
     }
@@ -108,6 +136,24 @@ impl OApplication {
         network_type_label.set_label("wlp2s0");
         */
 
+        let back_button: Button = builder
+            .object("back_button")
+            .expect("Couldn't find 'back_button' in titlebar-ui.xml");
+
+        let _self = self.clone();
+        back_button.connect_clicked(move |_| {
+            _self.on_back_pressed();
+        });
+
+
+        let next_button: Button = builder
+            .object("next_button")
+            .expect("Couldn't find 'next_button' in titlebar-ui.xml");
+
+        let _self = self.clone();
+        next_button.connect_clicked(move |_| {
+            _self.on_next_pressed();
+        });
 
 
         let minimize_button: Button = builder

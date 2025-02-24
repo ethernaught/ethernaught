@@ -1,4 +1,4 @@
-mod pcaps;
+mod capture_service;
 mod ui;
 
 use std::sync::{Arc, Mutex};
