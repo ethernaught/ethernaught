@@ -107,13 +107,13 @@ impl Activity for MainActivity {
 
 
 
-        let app_buttons = Arc::new(self.app.get_child_by_name(&titlebar, "app_buttons").unwrap());
-        app_buttons.show();
-        let stop_button = Arc::new(self.app.get_child_by_name(&app_buttons, "stop_button").unwrap());
-        let start_button = self.app.get_child_by_name(&app_buttons, "start_button").unwrap();
+        let app_options = Arc::new(self.app.get_child_by_name(&titlebar, "app_options").unwrap());
+        app_options.show();
+        let stop_button = Arc::new(self.app.get_child_by_name(&app_options, "stop_button").unwrap());
+        let start_button = self.app.get_child_by_name(&app_options, "start_button").unwrap();
 
         if let Some(start_button) = start_button.downcast_ref::<Button>() {
-            let app_buttons = app_buttons.clone();
+            let app_buttons = app_options.clone();
             let stop_button_clone = stop_button.clone();
             let main_fragment = main_fragment.clone();
 
@@ -129,7 +129,7 @@ impl Activity for MainActivity {
         }
 
         if let Some(stop_button) = stop_button.downcast_ref::<Button>() {
-            let app_buttons = app_buttons.clone();
+            let app_buttons = app_options.clone();
             let stop_button_clone = stop_button.clone();
 
             let packet_service = self.capture_service.clone();

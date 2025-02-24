@@ -8,7 +8,7 @@
         <property name="hexpand">True</property>
         <property name="orientation">horizontal</property>
         <property name="spacing">30</property>
-        <property name="height-request">32</property>
+        <property name="height-request">40</property>
 
         <child>
             <object class="GtkBox" id="navigation_options">
@@ -34,6 +34,8 @@
                         <property name="hexpand">True</property>
                         <property name="orientation">horizontal</property>
                         <property name="spacing">10</property>
+
+
 
                         <child>
                             <object class="GtkButton" id="back_button">
@@ -76,8 +78,8 @@
         </child>
 
         <child>
-            <object class="GtkBox" id="app_buttons">
-                <property name="name">app_buttons</property>
+            <object class="GtkBox" id="app_options">
+                <property name="name">app_options</property>
                 <property name="visible">False</property>
                 <property name="orientation">horizontal</property>
                 <property name="spacing">10</property>
