@@ -6,9 +6,7 @@ use gtk::prelude::*;
 use gtk::gio::SimpleAction;
 use gtk::glib::PropertyGet;
 use gtk::prelude::{ActionMapExt, GtkWindowExt};
-use crate::ui::activity::devices_activity::DevicesActivity;
 use crate::ui::activity::inter::activity::Activity;
-use crate::ui::activity::main_activity::MainActivity;
 use crate::ui::application::OApplication;
 
 pub struct TitleBar {
@@ -69,11 +67,8 @@ impl TitleBar {
             .object("main_window_menu")
             .expect("Couldn't find 'main_window_menu' in omniscient-ui.xml");
 
-        //let menubar = MenuBar::new();
         navigation_menubar.bind_model(Some(&menu), None, false);
         navigation_menubar.show_all();
-
-        //navigation_menubar.add(&self.init_menu_bar());
 
         /*
         let back_button: Button = builder

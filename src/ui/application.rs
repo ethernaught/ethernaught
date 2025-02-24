@@ -10,6 +10,7 @@ use crate::ui::activity::devices_activity::DevicesActivity;
 use crate::ui::activity::inter::activity::Activity;
 use crate::ui::activity::main_activity::MainActivity;
 use crate::ui::titlebar::TitleBar;
+use crate::VERSION;
 //use crate::config::VERSION;
 
 #[derive(Clone)]
@@ -124,21 +125,12 @@ impl OApplication {
     }
 
     fn init_actions(&self, window: &ApplicationWindow) {
-        /*
-        let action = SimpleAction::new("quit", None);
-        let app_clone = app.clone();
-        action.connect_activate(move |_, _| {
-            app_clone.quit();
-        });
-        window.add_action(&action);
-
         let action = SimpleAction::new("show-about-dialog", None);
         let window_clone = window.clone();
         action.connect_activate(move |_, _| {
             show_about(&window_clone);
         });
         window.add_action(&action);
-        */
     }
 
     pub fn get_child_by_name(&self, widget: &Widget, name: &str) -> Option<Widget> {
@@ -158,19 +150,12 @@ impl OApplication {
     }
 }
 
-
-
-
-
-
-
 pub fn show_about(window: &ApplicationWindow) {
-    /*
-    let svg_data = include_bytes!("../res/images/ic_launcher.svg");
-    let loader = PixbufLoader::with_type("svg").expect("Failed to create SVG loader");
-    loader.write(svg_data).expect("Failed to load SVG data");
-    loader.close().expect("Failed to close SVG loader");
-    let icon_pixbuf = loader.pixbuf().expect("Failed to get Pixbuf from SVG");
+    //let svg_data = include_bytes!("../res/images/ic_launcher.svg");
+    //let loader = PixbufLoader::with_type("svg").expect("Failed to create SVG loader");
+    //loader.write(svg_data).expect("Failed to load SVG data");
+    //loader.close().expect("Failed to close SVG loader");
+    //let icon_pixbuf = loader.pixbuf().expect("Failed to get Pixbuf from SVG");
 
     let dialog = AboutDialog::builder()
         .transient_for(window)
@@ -201,9 +186,8 @@ pub fn show_about(window: &ApplicationWindow) {
         LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\r\n\
         OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\r\n\
         SOFTWARE.")
-        .logo(&icon_pixbuf)
+        //.logo(&icon_pixbuf)
         .build();
 
     dialog.present();
-    */
 }

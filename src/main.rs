@@ -13,6 +13,8 @@ use crate::ui::application::OApplication;
 //SIDEBAR SHOULD BE A FRAGMENT...
 //export GTK_DEBUG=interactive
 
+pub static VERSION: &str = "1.0";
+
 fn main() {
 
     /*
