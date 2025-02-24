@@ -2,10 +2,10 @@ use std::sync::{Arc, Mutex};
 use gtk::{Builder, Label, ListBox, ListBoxRow, ListStore};
 use gtk::prelude::{BuilderExtManual, ContainerExt, GtkListStoreExt, GtkListStoreExtManual, LabelExt, StyleContextExt, WidgetExt};
 use pcap::packet::inter::interfaces::Interfaces;
-use pcap::packet::layers::layer_1::ethernet_layer::EthernetLayer;
-use pcap::packet::layers::layer_1::inter::types::Types;
-use pcap::packet::layers::layer_2::ethernet::ipv4_layer::Ipv4Layer;
-use pcap::packet::layers::layer_2::ethernet::ipv6_layer::Ipv6Layer;
+use pcap::packet::layers::layer_2::ethernet_layer::EthernetLayer;
+use pcap::packet::layers::layer_2::inter::types::Types;
+use pcap::packet::layers::layer_3::ethernet::ipv4_layer::Ipv4Layer;
+use pcap::packet::layers::layer_3::ethernet::ipv6_layer::Ipv6Layer;
 use pcap::packet::packet::Packet;
 
 #[derive(Clone)]

@@ -2,12 +2,12 @@ use std::fmt::format;
 use gtk::{Button, Container, Image, Label, ListBox, ListBoxRow, Orientation};
 use gtk::glib::Cast;
 use gtk::prelude::{ButtonExt, ContainerExt, ImageExt, LabelExt, WidgetExt};
-use pcap::packet::layers::layer_1::ethernet_layer::EthernetLayer;
-use pcap::packet::layers::layer_1_5::ethernet::arp_extension::ArpLayer;
-use pcap::packet::layers::layer_2::ethernet::ipv4_layer::Ipv4Layer;
-use pcap::packet::layers::layer_2::ethernet::ipv6_layer::Ipv6Layer;
-use pcap::packet::layers::layer_3::ip::tcp_layer::TcpLayer;
-use pcap::packet::layers::layer_3::ip::udp_layer::UdpLayer;
+use pcap::packet::layers::layer_2::ethernet_layer::EthernetLayer;
+use pcap::packet::layers::layer_2_5::ethernet::arp_extension::ArpLayer;
+use pcap::packet::layers::layer_3::ethernet::ipv4_layer::Ipv4Layer;
+use pcap::packet::layers::layer_3::ethernet::ipv6_layer::Ipv6Layer;
+use pcap::packet::layers::layer_4::ip::tcp_layer::TcpLayer;
+use pcap::packet::layers::layer_4::ip::udp_layer::UdpLayer;
 
 pub fn create_ethernet_layer_expander(layer: &EthernetLayer) -> Container {
     let (dropdown, list_box) = create_dropdown("Ethernet II");
