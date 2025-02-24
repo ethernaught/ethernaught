@@ -10,14 +10,13 @@
     <path d='M7 12 a5 5 0 1 0 10 0 a5 5 0 1 0 -10 0' fill='url(#centerGradient)' />
     <path d='M10 12 a2 2 0 1 0 4 0 a2 2 0 1 0 -4 0' fill='#5555ff' />
     <path d='M11 12 a1 1 0 1 0 2 0 a1 1 0 1 0 -2 0' fill='#000000' />
-    
-    
-    <path d='M5 12 a7 6 0 1 0 14 0 a7 6 0 1 0 -14 0' fill='transparent' stroke='#333333' />
-    <path d='M5 13 a7 6 0 1 0 14 0 a7 6 0 1 0 -14 0' fill='transparent' stroke='#555555' />
-    
-    <path d='M4 12 a7.5 8.5 0 1 0 16 0 a7.5 8.5 0 1 0 -16 0' fill='transparent' stroke='#333333' />
-    <path d='M3 12 a7.5 8.5 0 1 0 16 0 a7.5 8.5 0 1 0 -16 0' fill='transparent' stroke='#555555' />
-    
+
+    <path d='M5.5 12 a6 6 0 1 0 12 0 a6 6 0 1 0 -12 0' fill='transparent' stroke='#333333' />
+    <path d='M6.5 12 a6 6 0 1 0 12 0 a6 6 0 1 0 -12 0' fill='transparent' stroke='#5555ff' />
+
+    <path d='M3.8 11.5 a8 7 0 1 0 17 0 a8 7 0 1 0 -17 0' fill='transparent' stroke='#333333' />
+    <path d='M3.8 12.5 a8 7 0 1 0 17 0 a8 7 0 1 0 -17 0' fill='transparent' stroke='#55ff55' />
+
     <path d='M2 12 a10 10 0 1 0 20 0 a10 10 0 1 0 -20 0' fill='transparent' stroke='#333333' />
-    <path d='M2.8 12 a10 10 0 1 0 20 0 a10 10 0 1 0 -20 0' fill='transparent' stroke='#555555' />
+    <path d='M2.8 12 a10 10 0 1 0 20 0 a10 10 0 1 0 -20 0' fill='transparent' stroke='#ff5555' />
 </svg>
