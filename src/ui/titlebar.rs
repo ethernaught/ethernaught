@@ -1,4 +1,6 @@
+use std::cell::RefCell;
 use std::process::exit;
+use std::rc::Rc;
 use gtk::{AboutDialog, ApplicationWindow, Builder, Image, Application, TreeViewColumn, CellRendererText, ScrolledWindow, Button, ListBoxRow, Label, CssProvider, StyleContext, gdk, Stack, Container, TreeView, Widget, Window, gio, MenuBar, MenuItem, Menu};
 use gtk::ffi::GtkMenuBar;
 use gtk::gdk_pixbuf::PixbufLoader;
@@ -50,13 +52,6 @@ impl TitleBar {
     }
 
     fn init_navigation_options(&mut self, builder: &Builder) {
-        let menu_button: Button = builder
-            .object("menu_button")
-            .expect("Couldn't find 'menu_button' in titlebar-ui.xml");
-
-        menu_button.connect_clicked(move |_| {
-            println!("ON CLICK");
-        });
 
         let navigation_menubar: MenuBar = builder
             .object("navigation_menubar")
@@ -68,7 +63,31 @@ impl TitleBar {
             .expect("Couldn't find 'main_window_menu' in ethernaut-ui.xml");
 
         navigation_menubar.bind_model(Some(&menu), None, false);
-        navigation_menubar.show_all();
+        //navigation_menubar.show_all();
+
+
+        let navigation_buttons: gtk::Box = builder
+            .object("navigation_buttons")
+            .expect("Couldn't find 'navigation_buttons' in ethernaut-ui.xml");
+
+
+        let menu_button: Button = builder
+            .object("menu_button")
+            .expect("Couldn't find 'menu_button' in titlebar-ui.xml");
+
+        let toggle = Rc::new(RefCell::new(false));
+        menu_button.connect_clicked(move |_| {
+            let mut state = toggle.borrow_mut();
+            *state = !*state;
+
+            if *state {
+                navigation_buttons.hide();
+                navigation_menubar.show_all();
+                return;
+            }
+            navigation_menubar.hide();
+            navigation_buttons.show_all();
+        });
 
         /*
         let back_button: Button = builder
