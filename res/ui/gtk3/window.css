@@ -221,7 +221,7 @@ menuitem menuitem:hover {
     background-color: #59436e;
 }
 
-separator {
+menu separator {
     margin: 5px 0;
     background-color: #5a5d63;
 }
