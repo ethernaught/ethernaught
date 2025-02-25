@@ -1,4 +1,6 @@
 use std::any::Any;
+use std::cell::RefCell;
+use std::rc::Rc;
 use std::sync::Arc;
 use std::sync::mpsc::channel;
 use std::time::Duration;
@@ -91,6 +93,7 @@ impl Activity for MainActivity {
         root.set_child_shrink(content, false);
         root.set_child_resize(content, true);
 
+        let main_fragment = Rc::new(RefCell::new(main_fragment));
 
 
         let (tx, rx) = channel();
@@ -98,43 +101,43 @@ impl Activity for MainActivity {
 
 
         let titlebar = self.app.get_titlebar().unwrap();
-        let menu_buttons = Arc::new(self.app.get_child_by_name(&titlebar, "navigation_buttons").unwrap());
-        menu_buttons.show();
+        //let menu_buttons =self.app.get_child_by_name(&titlebar, "navigation_buttons").unwrap();
+        //menu_buttons.show();
 
 
         self.app.get_child_by_name(&titlebar, "network_type_label").unwrap().downcast_ref::<Label>().unwrap().set_label(&self.capture_service.get_device().get_name());
 
 
 
-        let app_options = Arc::new(self.app.get_child_by_name(&titlebar, "app_options").unwrap());
-        app_options.show();
-        let stop_button = Arc::new(self.app.get_child_by_name(&app_options, "stop_button").unwrap());
-        let start_button = self.app.get_child_by_name(&app_options, "start_button").unwrap();
+        let app_options = Rc::new(RefCell::new(self.app.get_child_by_name(&titlebar, "app_options").unwrap()));
+        app_options.borrow().show();
+        let stop_button = Rc::new(RefCell::new(self.app.get_child_by_name(&app_options.borrow(), "stop_button").unwrap()));
+        let start_button = self.app.get_child_by_name(&app_options.borrow(), "start_button").unwrap();
 
         if let Some(start_button) = start_button.downcast_ref::<Button>() {
-            let app_options = app_options.clone();
-            let stop_button_clone = stop_button.clone();
-            let main_fragment = main_fragment.clone();
+            let app_options = Rc::clone(&app_options);
+            let stop_button = Rc::clone(&stop_button);
+            let main_fragment = Rc::clone(&main_fragment);;
 
             let packet_service = self.capture_service.clone();
             start_button.connect_clicked(move |_| {
-                app_options.style_context().add_class("running");
-                stop_button_clone.show();
+                app_options.borrow().style_context().add_class("running");
+                stop_button.borrow().show();
 
                 println!("Start button clicked!");
-                main_fragment.get_packet_adapter().unwrap().clear();
+                main_fragment.borrow().get_packet_adapter().unwrap().clear();
                 packet_service.start();
             });
         }
 
-        if let Some(stop_button) = stop_button.downcast_ref::<Button>() {
-            let app_options = app_options.clone();
-            let stop_button_clone = stop_button.clone();
+        if let Some(button) = stop_button.borrow().downcast_ref::<Button>() {
+            let app_options = Rc::clone(&app_options);
+            let stop_button = Rc::clone(&stop_button);
 
             let packet_service = self.capture_service.clone();
-            stop_button.connect_clicked(move |_| {
-                app_options.style_context().remove_class("running");
-                stop_button_clone.hide();
+            button.connect_clicked(move |_| {
+                app_options.borrow().style_context().remove_class("running");
+                stop_button.borrow().hide();
 
                 println!("Stop button clicked!");
                 packet_service.stop();
@@ -145,11 +148,11 @@ impl Activity for MainActivity {
 
 
         let _self = self.clone();
+        let main_fragment = Rc::clone(&main_fragment);
         glib::timeout_add_local(Duration::from_millis(10), move || {
-            let main_fragment = main_fragment.clone();
             match rx.try_recv() {
                 Ok(packet) => {
-                    main_fragment.get_packet_adapter().unwrap().add(packet);
+                    main_fragment.borrow().get_packet_adapter().unwrap().add(packet);
                 }
                 _ => {
                 }

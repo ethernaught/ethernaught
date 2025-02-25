@@ -206,13 +206,15 @@ menubar * {
 }
 
 menuitem {
-    color: #cbd7dc;
     border: none;
+    color: #cbd7dc;
+    font-size: 14px;
 }
 
 menuitem menuitem {
     margin: 0 5px;
     border-radius: 5px;
+    font-size: 12px;
 }
 
 menuitem menuitem:hover {
