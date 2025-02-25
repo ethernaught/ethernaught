@@ -22,7 +22,6 @@ pub struct MainActivity {
 impl MainActivity {
 
     pub fn new(app: OApplication, device: &Device) -> Self {
-
         Self {
             app,
             root: None,
@@ -113,13 +112,13 @@ impl Activity for MainActivity {
         let start_button = self.app.get_child_by_name(&app_options, "start_button").unwrap();
 
         if let Some(start_button) = start_button.downcast_ref::<Button>() {
-            let app_buttons = app_options.clone();
+            let app_options = app_options.clone();
             let stop_button_clone = stop_button.clone();
             let main_fragment = main_fragment.clone();
 
             let packet_service = self.capture_service.clone();
             start_button.connect_clicked(move |_| {
-                app_buttons.style_context().add_class("running");
+                app_options.style_context().add_class("running");
                 stop_button_clone.show();
 
                 println!("Start button clicked!");
@@ -129,12 +128,12 @@ impl Activity for MainActivity {
         }
 
         if let Some(stop_button) = stop_button.downcast_ref::<Button>() {
-            let app_buttons = app_options.clone();
+            let app_options = app_options.clone();
             let stop_button_clone = stop_button.clone();
 
             let packet_service = self.capture_service.clone();
             stop_button.connect_clicked(move |_| {
-                app_buttons.style_context().remove_class("running");
+                app_options.style_context().remove_class("running");
                 stop_button_clone.hide();
 
                 println!("Stop button clicked!");
