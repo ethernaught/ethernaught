@@ -19,7 +19,7 @@
                     <object class="GtkLabel">
                         <property name="name">title</property>
                         <property name="visible">True</property>
-                        <property name="label">Omniscient</property>
+                        <property name="label">Ethernaut</property>
                     </object>
                 </child>
             </object>

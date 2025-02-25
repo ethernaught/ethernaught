@@ -76,7 +76,7 @@
             <section>
                 <item>
                     <attribute name="action">win.show-about-dialog</attribute>
-                    <attribute name="label" translatable="yes">About Omniscient</attribute>
+                    <attribute name="label" translatable="yes">About Ethernaut</attribute>
                 </item>
             </section>
         </submenu>

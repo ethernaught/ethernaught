@@ -62,10 +62,10 @@ impl TitleBar {
             .object("navigation_menubar")
             .expect("Couldn't find 'navigation_menubar' in titlebar-ui.xml");
 
-        let menu_builder = Builder::from_file("res/ui/omniscient-ui.xml");
+        let menu_builder = Builder::from_file("res/ui/ethernaut-ui.xml");
         let menu: gio::MenuModel = menu_builder
             .object("main_window_menu")
-            .expect("Couldn't find 'main_window_menu' in omniscient-ui.xml");
+            .expect("Couldn't find 'main_window_menu' in ethernaut-ui.xml");
 
         navigation_menubar.bind_model(Some(&menu), None, false);
         navigation_menubar.show_all();

@@ -21,7 +21,7 @@ pub struct OApplication {
 impl OApplication {
 
     pub fn new() -> Self {
-        let app = Application::new(Some("com.omniscient.rust"), Default::default());
+        let app = Application::new(Some("com.ethernaut.rust"), Default::default());
 
         Self {
             app
@@ -158,14 +158,14 @@ pub fn show_about(window: &ApplicationWindow) {
     let dialog = AboutDialog::builder()
         .transient_for(window)
         .modal(true)
-        .program_name("Omniscient")
+        .program_name("Ethernaut")
         .version(VERSION)
         .authors(vec!["DrBrad"])
-        .website_label("https://omniscient.com")
-        .website("https://omniscient.com")
+        .website_label("https://ethernaut.com")
+        .website("https://ethernaut.com")
         .comments("")
-        .copyright("Copyright (c) 2024 Omniscient")
-        .license("Copyright (c) 2024 Omniscient\r\n\r\n\
+        .copyright("Copyright (c) 2024 Ethernaut")
+        .license("Copyright (c) 2024 Ethernaut\r\n\r\n\
         \
         Permission is hereby granted, free of charge, to any person obtaining a copy\r\n\
         of this software and associated documentation files (the \"Software\"), to deal\r\n\
