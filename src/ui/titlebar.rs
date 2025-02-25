@@ -63,32 +63,6 @@ impl TitleBar {
             .expect("Couldn't find 'main_window_menu' in ethernaut-ui.xml");
 
         navigation_menubar.bind_model(Some(&menu), None, false);
-        //navigation_menubar.show_all();
-
-        //let is_menu_open = Rc::new(RefCell::new(false));
-
-
-
-        /*
-        for child in navigation_menubar.children() {
-            if let Some(menu_item) = child.downcast_ref::<MenuItem>() {
-                let mut update_menu_state = Rc::clone(&is_menu_open);
-                menu_item.connect_select(move |_| {
-                    *update_menu_state.borrow_mut() = true;
-                });
-
-                menu_item.connect_button_press_event(move |_, _| {
-                    println!("ACTIVATED");
-                    Propagation::Proceed
-                });
-
-                let mut update_menu_state = Rc::clone(&is_menu_open);
-                menu_item.connect_deselect(move |_| {
-                    *update_menu_state.borrow_mut() = false;
-                });
-            }
-        }
-        */
 
 
         let navigation_menubar = Rc::new(RefCell::new(navigation_menubar));
