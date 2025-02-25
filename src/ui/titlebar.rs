@@ -100,10 +100,9 @@ impl TitleBar {
         let navigation_menubar_clone = Rc::clone(&navigation_menubar);
         let navigation_buttons_clone = Rc::clone(&navigation_buttons);
 
-        navigation_menubar.borrow().connect_button_press_event(move |_, event| {
+        navigation_menubar.borrow().connect_deactivate(move |_| {
             navigation_menubar_clone.borrow().hide();
             navigation_buttons_clone.borrow().show_all();
-            Propagation::Proceed
         });
 
         let menu_button: Button = builder
