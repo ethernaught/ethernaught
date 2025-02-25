@@ -65,14 +65,21 @@ impl TitleBar {
         navigation_menubar.bind_model(Some(&menu), None, false);
         //navigation_menubar.show_all();
 
-        let is_menu_open = Rc::new(RefCell::new(false));
+        //let is_menu_open = Rc::new(RefCell::new(false));
 
 
+
+        /*
         for child in navigation_menubar.children() {
             if let Some(menu_item) = child.downcast_ref::<MenuItem>() {
                 let mut update_menu_state = Rc::clone(&is_menu_open);
                 menu_item.connect_select(move |_| {
                     *update_menu_state.borrow_mut() = true;
+                });
+
+                menu_item.connect_button_press_event(move |_, _| {
+                    println!("ACTIVATED");
+                    Propagation::Proceed
                 });
 
                 let mut update_menu_state = Rc::clone(&is_menu_open);
@@ -81,6 +88,7 @@ impl TitleBar {
                 });
             }
         }
+        */
 
 
         let navigation_menubar = Rc::new(RefCell::new(navigation_menubar));
@@ -92,12 +100,9 @@ impl TitleBar {
         let navigation_menubar_clone = Rc::clone(&navigation_menubar);
         let navigation_buttons_clone = Rc::clone(&navigation_buttons);
 
-        let update_menu_state = Rc::clone(&is_menu_open);
         navigation_menubar.borrow().connect_button_press_event(move |_, event| {
-            if *update_menu_state.borrow() {
-                navigation_menubar_clone.borrow().hide();
-                navigation_buttons_clone.borrow().show_all();
-            }
+            navigation_menubar_clone.borrow().hide();
+            navigation_buttons_clone.borrow().show_all();
             Propagation::Proceed
         });
 
