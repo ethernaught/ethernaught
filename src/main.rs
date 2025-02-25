@@ -3,7 +3,8 @@ mod ui;
 
 use std::sync::{Arc, Mutex};
 use std::sync::mpsc::channel;
-use std::thread;
+use std::{env, thread};
+use std::process::{exit, Command};
 use std::time::{Duration, SystemTime, UNIX_EPOCH};
 use pcap::devices::Device;
 use gtk::prelude::*;
@@ -16,6 +17,19 @@ use crate::ui::application::OApplication;
 pub static VERSION: &str = "1.0";
 
 fn main() {
+
+    if !is_root() {
+        println!("Requesting root access...");
+        println!("{:?}", env::current_exe().unwrap());
+        /*
+        let status = Command::new("pkexec")
+            .arg(env::current_exe().unwrap()) // Relaunch itself with root
+            .status()
+            .expect("Failed to execute pkexec");
+
+        exit(status.code().unwrap_or(1)); // Exit with the new process status
+        */
+    }
 
     /*
     let devices = Device::list().expect("Failed to get device list");
@@ -73,4 +87,11 @@ fn main() {
 
     let app = OApplication::new();
     app.run();
+}
+
+fn is_root() -> bool {
+    match env::var("USER") {
+        Ok(user) => user == "root",
+        Err(_) => false,
+    }
 }
