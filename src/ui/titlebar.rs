@@ -6,7 +6,7 @@ use gtk::ffi::GtkMenuBar;
 use gtk::gdk_pixbuf::PixbufLoader;
 use gtk::prelude::*;
 use gtk::gio::SimpleAction;
-use gtk::glib::PropertyGet;
+use gtk::glib::{clone, Propagation, PropertyGet};
 use gtk::prelude::{ActionMapExt, GtkWindowExt};
 use crate::ui::activity::inter::activity::Activity;
 use crate::ui::application::OApplication;
@@ -65,28 +65,77 @@ impl TitleBar {
         navigation_menubar.bind_model(Some(&menu), None, false);
         //navigation_menubar.show_all();
 
+        let is_menu_open = Rc::new(RefCell::new(false));
+
+
+        for child in navigation_menubar.children() {
+            if let Some(menu_item) = child.downcast_ref::<MenuItem>() {
+                //if let Some(menu) = menu_item.submenu().unwrap().downcast_ref::<MenuItem>() {
+                let mut update_menu_state = Rc::clone(&is_menu_open);
+                menu_item.connect_select(move |_| {
+                    *update_menu_state.borrow_mut() = true;
+                });
+
+                let mut update_menu_state = Rc::clone(&is_menu_open);
+                menu_item.connect_deselect(move |_| {
+                    *update_menu_state.borrow_mut() = false;
+                });
+                //}
+            }
+        }
+
+        /*
+        navigation_menubar.connect_event(move |_, event| {
+            //println!("Event! {:?}", event);
+            Propagation::Proceed
+        });
+        */
+
+
+
+
+        //let toggle = Rc::new(RefCell::new(false));
+
 
         let navigation_buttons: gtk::Box = builder
             .object("navigation_buttons")
             .expect("Couldn't find 'navigation_buttons' in ethernaut-ui.xml");
 
 
+        let navigation_menubar_clone = navigation_menubar.clone();
+        let navigation_buttons_clone = navigation_buttons.clone();
+
+        let update_menu_state = Rc::clone(&is_menu_open);
+        navigation_menubar.connect_button_press_event(move |_, event| {
+            if *update_menu_state.borrow() {
+                navigation_menubar_clone.hide();
+                navigation_buttons_clone.show_all();
+            }
+            Propagation::Proceed
+        });
+
+
+
+
+
+
+
         let menu_button: Button = builder
             .object("menu_button")
             .expect("Couldn't find 'menu_button' in titlebar-ui.xml");
 
-        let toggle = Rc::new(RefCell::new(false));
         menu_button.connect_clicked(move |_| {
-            let mut state = toggle.borrow_mut();
-            *state = !*state;
+            //let mut state = toggle.borrow_mut();
+            //*state = !*state;
 
-            if *state {
+            //if *state {
                 navigation_buttons.hide();
                 navigation_menubar.show_all();
-                return;
-            }
-            navigation_menubar.hide();
-            navigation_buttons.show_all();
+                navigation_menubar.select_first(true);
+            //    return;
+            //}
+            //navigation_menubar.hide();
+            //navigation_buttons.show_all();
         });
 
         /*
