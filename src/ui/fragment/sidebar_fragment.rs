@@ -6,17 +6,17 @@ use gtk::gdk::EventMask;
 use gtk::glib::{clone, Propagation};
 use gtk::prelude::{BuilderExtManual, ButtonExt, Cast, ContainerExt, PanedExt, WidgetExt, WidgetExtManual};
 use pcap::packet::inter::interfaces::Interfaces;
+use pcap::packet::layers::ethernet_frame::arp::arp_extension::ArpLayer;
+use pcap::packet::layers::ethernet_frame::ethernet_frame::EthernetFrame;
+use pcap::packet::layers::ethernet_frame::inter::types::Types;
+use pcap::packet::layers::ethernet_frame::ip::icmp::icmp_layer::IcmpLayer;
+use pcap::packet::layers::ethernet_frame::ip::icmpv6::icmpv6_layer::Icmpv6Layer;
+use pcap::packet::layers::ethernet_frame::ip::inter::protocols::Protocols;
+use pcap::packet::layers::ethernet_frame::ip::ipv4_layer::Ipv4Layer;
+use pcap::packet::layers::ethernet_frame::ip::ipv6_layer::Ipv6Layer;
+use pcap::packet::layers::ethernet_frame::ip::tcp::tcp_layer::TcpLayer;
+use pcap::packet::layers::ethernet_frame::ip::udp::udp_layer::UdpLayer;
 use pcap::packet::layers::inter::layer::Layer;
-use pcap::packet::layers::layer_2::ethernet_layer::EthernetLayer;
-use pcap::packet::layers::layer_2::inter::types::Types;
-use pcap::packet::layers::layer_2_5::ethernet::arp_extension::ArpLayer;
-use pcap::packet::layers::layer_3::ethernet::inter::protocols::Protocols;
-use pcap::packet::layers::layer_3::ethernet::ipv4_layer::Ipv4Layer;
-use pcap::packet::layers::layer_3::ethernet::ipv6_layer::Ipv6Layer;
-use pcap::packet::layers::layer_3_5::ethernet::icmp_layer::IcmpLayer;
-use pcap::packet::layers::layer_3_5::ethernet::icmpv6_layer::Icmpv6Layer;
-use pcap::packet::layers::layer_4::ip::tcp_layer::TcpLayer;
-use pcap::packet::layers::layer_4::ip::udp_layer::UdpLayer;
 use pcap::packet::packet::Packet;
 use crate::ui::activity::inter::activity::Activity;
 use crate::ui::activity::main_activity::MainActivity;
@@ -128,27 +128,27 @@ impl Fragment for SidebarFragment {
 
         match self.packet.get_interface() {
             Interfaces::Ethernet => {
-                let ethernet_layer = self.packet.get_layer(0).unwrap().as_any().downcast_ref::<EthernetLayer>().unwrap();
-                details_layout.add(&create_ethernet_layer_expander(&ethernet_layer));
+                let ethernet_frame = self.packet.get_frame().as_any().downcast_ref::<EthernetFrame>().unwrap();
+                details_layout.add(&create_ethernet_layer_expander(&ethernet_frame));
 
-                match ethernet_layer.get_type() {
+                match ethernet_frame.get_type() {
                     Types::IPv4 => {
-                        let ipv4_layer = self.packet.get_layer(1).unwrap().as_any().downcast_ref::<Ipv4Layer>().unwrap();
+                        let ipv4_layer = ethernet_frame.get_data().unwrap().as_any().downcast_ref::<Ipv4Layer>().unwrap();
                         details_layout.add(&create_ipv4_layer_expander(&ipv4_layer));
 
                         match ipv4_layer.get_protocol() {
                             Protocols::HopByHop => {}
                             Protocols::Icmp => {
-                                let icmp_layer = self.packet.get_layer(2).unwrap().as_any().downcast_ref::<IcmpLayer>().unwrap();
+                                let icmp_layer = ipv4_layer.get_data().unwrap().as_any().downcast_ref::<IcmpLayer>().unwrap();
                                 details_layout.add(&create_icmp_layer_expander(&icmp_layer));
                             }
                             Protocols::Igmp => {}
                             Protocols::Tcp => {
-                                let tcp_layer = self.packet.get_layer(2).unwrap().as_any().downcast_ref::<TcpLayer>().unwrap();
+                                let tcp_layer = ipv4_layer.get_data().unwrap().as_any().downcast_ref::<TcpLayer>().unwrap();
                                 details_layout.add(&create_tcp_layer_expander(&tcp_layer));
                             }
                             Protocols::Udp => {
-                                let udp_layer = self.packet.get_layer(2).unwrap().as_any().downcast_ref::<UdpLayer>().unwrap();
+                                let udp_layer = ipv4_layer.get_data().unwrap().as_any().downcast_ref::<UdpLayer>().unwrap();
                                 details_layout.add(&create_udp_layer_expander(&udp_layer));
                             }
                             Protocols::Ipv6 => {}
@@ -159,11 +159,11 @@ impl Fragment for SidebarFragment {
                         }
                     }
                     Types::Arp => {
-                        let arp_layer = self.packet.get_layer(1).unwrap().as_any().downcast_ref::<ArpLayer>().unwrap();
+                        let arp_layer = ethernet_frame.get_data().unwrap().as_any().downcast_ref::<ArpLayer>().unwrap();
                         details_layout.add(&create_arp_layer_expander(&arp_layer));
                     }
                     Types::IPv6 => {
-                        let ipv6_layer = self.packet.get_layer(1).unwrap().as_any().downcast_ref::<Ipv6Layer>().unwrap();
+                        let ipv6_layer = ethernet_frame.get_data().unwrap().as_any().downcast_ref::<Ipv6Layer>().unwrap();
                         details_layout.add(&create_ipv6_layer_expander(&ipv6_layer));
 
                         match ipv6_layer.get_next_header() {
@@ -171,17 +171,17 @@ impl Fragment for SidebarFragment {
                             Protocols::Icmp => {}
                             Protocols::Igmp => {}
                             Protocols::Tcp => {
-                                let tcp_layer = self.packet.get_layer(2).unwrap().as_any().downcast_ref::<TcpLayer>().unwrap();
+                                let tcp_layer = ipv6_layer.get_data().unwrap().as_any().downcast_ref::<TcpLayer>().unwrap();
                                 details_layout.add(&create_tcp_layer_expander(&tcp_layer));
                             }
                             Protocols::Udp => {
-                                let udp_layer = self.packet.get_layer(2).unwrap().as_any().downcast_ref::<UdpLayer>().unwrap();
+                                let udp_layer = ipv6_layer.get_data().unwrap().as_any().downcast_ref::<UdpLayer>().unwrap();
                                 details_layout.add(&create_udp_layer_expander(&udp_layer));
                             }
                             Protocols::Ipv6 => {}
                             Protocols::Gre => {}
                             Protocols::Icmpv6 => {
-                                let icmpv6_layer = self.packet.get_layer(2).unwrap().as_any().downcast_ref::<Icmpv6Layer>().unwrap();
+                                let icmpv6_layer = ipv6_layer.get_data().unwrap().as_any().downcast_ref::<Icmpv6Layer>().unwrap();
                                 details_layout.add(&create_icmpv6_layer_expander(&icmpv6_layer));
                             }
                             Protocols::Ospf => {}

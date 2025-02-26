@@ -2,16 +2,16 @@ use std::fmt::format;
 use gtk::{Button, Container, Image, Label, ListBox, ListBoxRow, Orientation};
 use gtk::glib::Cast;
 use gtk::prelude::{ButtonExt, ContainerExt, ImageExt, LabelExt, WidgetExt};
-use pcap::packet::layers::layer_2::ethernet_layer::EthernetLayer;
-use pcap::packet::layers::layer_2_5::ethernet::arp_extension::ArpLayer;
-use pcap::packet::layers::layer_3::ethernet::ipv4_layer::Ipv4Layer;
-use pcap::packet::layers::layer_3::ethernet::ipv6_layer::Ipv6Layer;
-use pcap::packet::layers::layer_3_5::ethernet::icmp_layer::IcmpLayer;
-use pcap::packet::layers::layer_3_5::ethernet::icmpv6_layer::Icmpv6Layer;
-use pcap::packet::layers::layer_4::ip::tcp_layer::TcpLayer;
-use pcap::packet::layers::layer_4::ip::udp_layer::UdpLayer;
+use pcap::packet::layers::ethernet_frame::arp::arp_extension::ArpLayer;
+use pcap::packet::layers::ethernet_frame::ethernet_frame::EthernetFrame;
+use pcap::packet::layers::ethernet_frame::ip::icmp::icmp_layer::IcmpLayer;
+use pcap::packet::layers::ethernet_frame::ip::icmpv6::icmpv6_layer::Icmpv6Layer;
+use pcap::packet::layers::ethernet_frame::ip::ipv4_layer::Ipv4Layer;
+use pcap::packet::layers::ethernet_frame::ip::ipv6_layer::Ipv6Layer;
+use pcap::packet::layers::ethernet_frame::ip::tcp::tcp_layer::TcpLayer;
+use pcap::packet::layers::ethernet_frame::ip::udp::udp_layer::UdpLayer;
 
-pub fn create_ethernet_layer_expander(layer: &EthernetLayer) -> Container {
+pub fn create_ethernet_layer_expander(layer: &EthernetFrame) -> Container {
     let (dropdown, list_box) = create_dropdown("Ethernet II");
 
     list_box.add(&create_row("Destination:", format!("({})", layer.get_destination().to_string())));
