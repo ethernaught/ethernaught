@@ -123,6 +123,13 @@ impl OApplication {
     }
 
     fn init_actions(&self, window: &ApplicationWindow) {
+        let action = SimpleAction::new("quit", None);
+        let app = self.app.clone();
+        action.connect_activate(move |_, _| {
+            app.quit();
+        });
+        window.add_action(&action);
+
         let action = SimpleAction::new("show-about-dialog", None);
         let window_clone = window.clone();
         action.connect_activate(move |_, _| {
