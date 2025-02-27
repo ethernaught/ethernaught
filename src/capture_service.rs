@@ -38,7 +38,7 @@ impl CaptureService {
         let mut _self = self.clone();
         thread::spawn(move || {
             let mut cap = Capture::from_device(&_self.device).expect("Failed to open device");
-            cap.set_promiscuous_mode(true);
+            //cap.set_promiscuous_mode(true).expect("Failed to set promiscuous mode");
             cap.set_immediate_mode(true);
             cap.open().expect("Failed to start capture");
 
