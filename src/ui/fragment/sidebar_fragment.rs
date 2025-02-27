@@ -15,6 +15,9 @@ use pcap::packet::layers::ethernet_frame::ip::inter::protocols::Protocols;
 use pcap::packet::layers::ethernet_frame::ip::ipv4_layer::Ipv4Layer;
 use pcap::packet::layers::ethernet_frame::ip::ipv6_layer::Ipv6Layer;
 use pcap::packet::layers::ethernet_frame::ip::tcp::tcp_layer::TcpLayer;
+use pcap::packet::layers::ethernet_frame::ip::udp::dhcp::dhcp_layer::DhcpLayer;
+use pcap::packet::layers::ethernet_frame::ip::udp::inter::udp_payloads::UdpPayloads;
+use pcap::packet::layers::ethernet_frame::ip::udp::inter::udp_types::UdpTypes;
 use pcap::packet::layers::ethernet_frame::ip::udp::udp_layer::UdpLayer;
 use pcap::packet::layers::inter::layer::Layer;
 use pcap::packet::packet::Packet;
@@ -150,6 +153,23 @@ impl Fragment for SidebarFragment {
                             Protocols::Udp => {
                                 let udp_layer = ipv4_layer.get_data().unwrap().as_any().downcast_ref::<UdpLayer>().unwrap();
                                 details_layout.add(&create_udp_layer_expander(&udp_layer));
+
+                                match udp_layer.get_payload() {
+                                    UdpPayloads::Known(_type, payload) => {
+                                        match _type {
+                                            UdpTypes::Dhcp => {
+                                                let dhcp_layer = payload.as_any().downcast_ref::<DhcpLayer>().unwrap();
+                                                //details_layout.add(&create_dhcp_layer_expander(&dhcp_layer));
+                                            }
+                                            UdpTypes::Dns => {}
+                                            UdpTypes::Quick => {}
+                                            UdpTypes::uTp => {}
+                                            UdpTypes::BitTorrent => {}
+                                            UdpTypes::Unknown => {}
+                                        }
+                                    }
+                                    UdpPayloads::Unknown(_) => {}
+                                }
                             }
                             Protocols::Ipv6 => {}
                             Protocols::Gre => {}
@@ -177,6 +197,23 @@ impl Fragment for SidebarFragment {
                             Protocols::Udp => {
                                 let udp_layer = ipv6_layer.get_data().unwrap().as_any().downcast_ref::<UdpLayer>().unwrap();
                                 details_layout.add(&create_udp_layer_expander(&udp_layer));
+
+                                match udp_layer.get_payload() {
+                                    UdpPayloads::Known(_type, payload) => {
+                                        match _type {
+                                            UdpTypes::Dhcp => {
+                                                let dhcp_layer = payload.as_any().downcast_ref::<DhcpLayer>().unwrap();
+                                                //details_layout.add(&create_dhcp_layer_expander(&dhcp_layer));
+                                            }
+                                            UdpTypes::Dns => {}
+                                            UdpTypes::Quick => {}
+                                            UdpTypes::uTp => {}
+                                            UdpTypes::BitTorrent => {}
+                                            UdpTypes::Unknown => {}
+                                        }
+                                    }
+                                    UdpPayloads::Unknown(_) => {}
+                                }
                             }
                             Protocols::Ipv6 => {}
                             Protocols::Gre => {}
