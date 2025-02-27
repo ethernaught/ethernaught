@@ -9,6 +9,7 @@ use pcap::packet::layers::ethernet_frame::ip::icmpv6::icmpv6_layer::Icmpv6Layer;
 use pcap::packet::layers::ethernet_frame::ip::ipv4_layer::Ipv4Layer;
 use pcap::packet::layers::ethernet_frame::ip::ipv6_layer::Ipv6Layer;
 use pcap::packet::layers::ethernet_frame::ip::tcp::tcp_layer::TcpLayer;
+use pcap::packet::layers::ethernet_frame::ip::udp::dhcp::dhcp_layer::DhcpLayer;
 use pcap::packet::layers::ethernet_frame::ip::udp::udp_layer::UdpLayer;
 
 pub fn create_ethernet_layer_expander(layer: &EthernetFrame) -> Container {
@@ -138,6 +139,20 @@ pub fn create_udp_layer_expander(layer: &UdpLayer) -> Container {
     list_box.add(&create_row("Length:", layer.get_length().to_string()));
     list_box.add(&create_row("Checksum:", format!("0x{:04X}", layer.get_checksum())));
 
+    dropdown.add(&list_box);
+
+    dropdown.upcast()
+}
+
+pub fn create_dhcp_layer_expander(layer: &DhcpLayer) -> Container {
+    let (dropdown, list_box) = create_dropdown("Dynamic Host Configuration Protocol");
+
+    /*
+    list_box.add(&create_row("Source Port:", layer.get_source_port().to_string()));
+    list_box.add(&create_row("Destination Port:", layer.get_destination_port().to_string()));
+    list_box.add(&create_row("Length:", layer.get_length().to_string()));
+    list_box.add(&create_row("Checksum:", format!("0x{:04X}", layer.get_checksum())));
+    */
     dropdown.add(&list_box);
 
     dropdown.upcast()

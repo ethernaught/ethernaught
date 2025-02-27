@@ -24,7 +24,7 @@ use pcap::packet::packet::Packet;
 use crate::ui::activity::inter::activity::Activity;
 use crate::ui::activity::main_activity::MainActivity;
 use crate::ui::fragment::inter::fragment::Fragment;
-use crate::ui::handlers::expanders::{create_arp_layer_expander, create_ethernet_layer_expander, create_icmp_layer_expander, create_icmpv6_layer_expander, create_ipv4_layer_expander, create_ipv6_layer_expander, create_tcp_layer_expander, create_udp_layer_expander};
+use crate::ui::handlers::expanders::{create_arp_layer_expander, create_dhcp_layer_expander, create_ethernet_layer_expander, create_icmp_layer_expander, create_icmpv6_layer_expander, create_ipv4_layer_expander, create_ipv6_layer_expander, create_tcp_layer_expander, create_udp_layer_expander};
 use crate::ui::widgets::hex_editor::HexEditor;
 
 #[derive(Clone)]
@@ -159,7 +159,7 @@ impl Fragment for SidebarFragment {
                                         match _type {
                                             UdpTypes::Dhcp => {
                                                 let dhcp_layer = payload.as_any().downcast_ref::<DhcpLayer>().unwrap();
-                                                //details_layout.add(&create_dhcp_layer_expander(&dhcp_layer));
+                                                details_layout.add(&create_dhcp_layer_expander(&dhcp_layer));
                                             }
                                             UdpTypes::Dns => {}
                                             UdpTypes::Quick => {}
@@ -203,7 +203,7 @@ impl Fragment for SidebarFragment {
                                         match _type {
                                             UdpTypes::Dhcp => {
                                                 let dhcp_layer = payload.as_any().downcast_ref::<DhcpLayer>().unwrap();
-                                                //details_layout.add(&create_dhcp_layer_expander(&dhcp_layer));
+                                                details_layout.add(&create_dhcp_layer_expander(&dhcp_layer));
                                             }
                                             UdpTypes::Dns => {}
                                             UdpTypes::Quick => {}
