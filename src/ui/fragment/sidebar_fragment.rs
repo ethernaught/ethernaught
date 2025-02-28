@@ -7,7 +7,7 @@ use gtk::gdk::EventMask;
 use gtk::glib::{clone, Propagation};
 use gtk::prelude::{BuilderExtManual, ButtonExt, Cast, ContainerExt, PanedExt, WidgetExt, WidgetExtManual};
 use pcap::packet::inter::interfaces::Interfaces;
-use pcap::packet::layers::ethernet_frame::arp::arp_extension::ArpLayer;
+use pcap::packet::layers::ethernet_frame::arp::arp_extension::ArpExtension;
 use pcap::packet::layers::ethernet_frame::ethernet_frame::EthernetFrame;
 use pcap::packet::layers::ethernet_frame::inter::types::Types;
 use pcap::packet::layers::ethernet_frame::ip::icmp::icmp_layer::IcmpLayer;
@@ -180,7 +180,7 @@ impl Fragment for SidebarFragment {
                         }
                     }
                     Types::Arp => {
-                        let arp_layer = ethernet_frame.get_data().unwrap().as_any().downcast_ref::<ArpLayer>().unwrap();
+                        let arp_layer = ethernet_frame.get_data().unwrap().as_any().downcast_ref::<ArpExtension>().unwrap();
                         details_layout.add(&create_arp_layer_expander(&arp_layer));
                     }
                     Types::IPv6 => {

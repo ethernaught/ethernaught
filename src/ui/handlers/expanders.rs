@@ -3,7 +3,7 @@ use std::net::IpAddr;
 use gtk::{Button, Container, Image, Label, ListBox, ListBoxRow, Orientation};
 use gtk::glib::Cast;
 use gtk::prelude::{ButtonExt, ContainerExt, ImageExt, LabelExt, WidgetExt};
-use pcap::packet::layers::ethernet_frame::arp::arp_extension::ArpLayer;
+use pcap::packet::layers::ethernet_frame::arp::arp_extension::ArpExtension;
 use pcap::packet::layers::ethernet_frame::ethernet_frame::EthernetFrame;
 use pcap::packet::layers::ethernet_frame::ip::icmp::icmp_layer::IcmpLayer;
 use pcap::packet::layers::ethernet_frame::ip::icmpv6::icmpv6_layer::Icmpv6Layer;
@@ -46,7 +46,7 @@ pub fn create_ipv4_layer_expander(layer: &Ipv4Layer) -> Container {
     dropdown.upcast()
 }
 
-pub fn create_arp_layer_expander(layer: &ArpLayer) -> Container {
+pub fn create_arp_layer_expander(layer: &ArpExtension) -> Container {
     let (dropdown, list_box) = create_dropdown("Address Resolution Protocol");
 
     //SHOULD BE LIKE Ethernet (1)
