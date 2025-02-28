@@ -1,5 +1,6 @@
 use std::any::Any;
 use std::cell::RefCell;
+use std::net::IpAddr;
 use std::rc::Rc;
 use gtk::{Builder, Button, Container, DrawingArea};
 use gtk::gdk::EventMask;
@@ -152,7 +153,7 @@ impl Fragment for SidebarFragment {
                             }
                             Protocols::Udp => {
                                 let udp_layer = ipv4_layer.get_data().unwrap().as_any().downcast_ref::<UdpLayer>().unwrap();
-                                details_layout.add(&create_udp_layer_expander(&udp_layer));
+                                details_layout.add(&create_udp_layer_expander(&udp_layer, IpAddr::V4(ipv4_layer.get_source_address()), IpAddr::V4(ipv4_layer.get_destination_address())));
 
                                 match udp_layer.get_payload() {
                                     UdpPayloads::Known(_type, payload) => {
@@ -196,7 +197,7 @@ impl Fragment for SidebarFragment {
                             }
                             Protocols::Udp => {
                                 let udp_layer = ipv6_layer.get_data().unwrap().as_any().downcast_ref::<UdpLayer>().unwrap();
-                                details_layout.add(&create_udp_layer_expander(&udp_layer));
+                                details_layout.add(&create_udp_layer_expander(&udp_layer, IpAddr::V6(ipv6_layer.get_source_address()), IpAddr::V6(ipv6_layer.get_destination_address())));
 
                                 match udp_layer.get_payload() {
                                     UdpPayloads::Known(_type, payload) => {

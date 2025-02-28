@@ -1,4 +1,5 @@
 use std::fmt::format;
+use std::net::IpAddr;
 use gtk::{Button, Container, Image, Label, ListBox, ListBoxRow, Orientation};
 use gtk::glib::Cast;
 use gtk::prelude::{ButtonExt, ContainerExt, ImageExt, LabelExt, WidgetExt};
@@ -132,13 +133,15 @@ pub fn create_icmpv6_layer_expander(layer: &Icmpv6Layer) -> Container {
     dropdown.upcast()
 }
 
-pub fn create_udp_layer_expander(layer: &UdpLayer) -> Container {
+pub fn create_udp_layer_expander(layer: &UdpLayer, source_address: IpAddr, destination_address: IpAddr) -> Container {
     let (dropdown, list_box) = create_dropdown("User Datagram Protocol");
 
     list_box.add(&create_row("Source Port:", layer.get_source_port().to_string()));
     list_box.add(&create_row("Destination Port:", layer.get_destination_port().to_string()));
     list_box.add(&create_row("Length:", layer.get_length().to_string()));
-    list_box.add(&create_row("Checksum:", format!("0x{:04X}", layer.get_checksum())));
+
+    let checksum_string = if layer.validate_checksum(source_address, destination_address) { "correct" } else { "incorrect" };
+    list_box.add(&create_row("Checksum:", format!("0x{:04X} [{}]", layer.get_checksum(), checksum_string)));
 
     dropdown.add(&list_box);
 
