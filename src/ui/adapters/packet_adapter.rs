@@ -43,15 +43,15 @@ impl PacketAdapter {
 
                                 match udp_layer.get_payload() {
                                     UdpPayloads::Known(_type, _) => {
-                                        (ipv4_layer.get_source_ip().to_string(), ipv4_layer.get_destination_ip().to_string(), udp_layer.get_type().to_string())
+                                        (ipv4_layer.get_source_address().to_string(), ipv4_layer.get_destination_address().to_string(), udp_layer.get_type().to_string())
                                     }
                                     UdpPayloads::Unknown(_) => {
-                                        (ipv4_layer.get_source_ip().to_string(), ipv4_layer.get_destination_ip().to_string(), ipv4_layer.get_protocol().to_string())
+                                        (ipv4_layer.get_source_address().to_string(), ipv4_layer.get_destination_address().to_string(), ipv4_layer.get_protocol().to_string())
                                     }
                                 }
                             }
                             _ => {
-                                (ipv4_layer.get_source_ip().to_string(), ipv4_layer.get_destination_ip().to_string(), ipv4_layer.get_protocol().to_string())
+                                (ipv4_layer.get_source_address().to_string(), ipv4_layer.get_destination_address().to_string(), ipv4_layer.get_protocol().to_string())
                             }
                         }
                     }
@@ -64,25 +64,25 @@ impl PacketAdapter {
 
                                 match udp_layer.get_payload() {
                                     UdpPayloads::Known(_type, _) => {
-                                        (ipv6_layer.get_source_ip().to_string(), ipv6_layer.get_destination_ip().to_string(), udp_layer.get_type().to_string())
+                                        (ipv6_layer.get_source_address().to_string(), ipv6_layer.get_destination_address().to_string(), udp_layer.get_type().to_string())
                                     }
                                     UdpPayloads::Unknown(_) => {
-                                        (ipv6_layer.get_source_ip().to_string(), ipv6_layer.get_destination_ip().to_string(), ipv6_layer.get_next_header().to_string())
+                                        (ipv6_layer.get_source_address().to_string(), ipv6_layer.get_destination_address().to_string(), ipv6_layer.get_next_header().to_string())
                                     }
                                 }
                             }
                             _ => {
-                                (ipv6_layer.get_source_ip().to_string(), ipv6_layer.get_destination_ip().to_string(), ipv6_layer.get_next_header().to_string())
+                                (ipv6_layer.get_source_address().to_string(), ipv6_layer.get_destination_address().to_string(), ipv6_layer.get_next_header().to_string())
                             }
                         }
                     }
                     Types::Broadcast => {
                         //source_label.set_label(&ethernet_layer.get_source().to_string());
                         //destination_label.set_label(&ethernet_layer.get_destination().to_string());
-                        (ethernet_frame.get_source().to_string(), ethernet_frame.get_destination().to_string(), ethernet_frame.get_type().to_string())
+                        (ethernet_frame.get_source_mac().to_string(), ethernet_frame.get_destination_mac().to_string(), ethernet_frame.get_type().to_string())
                     }
                     _ => {
-                        (ethernet_frame.get_source().to_string(), ethernet_frame.get_destination().to_string(), ethernet_frame.get_type().to_string())
+                        (ethernet_frame.get_source_mac().to_string(), ethernet_frame.get_destination_mac().to_string(), ethernet_frame.get_type().to_string())
                     }
                 }
 

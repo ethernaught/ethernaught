@@ -15,8 +15,8 @@ use pcap::packet::layers::ethernet_frame::ip::udp::udp_layer::UdpLayer;
 pub fn create_ethernet_layer_expander(layer: &EthernetFrame) -> Container {
     let (dropdown, list_box) = create_dropdown("Ethernet II");
 
-    list_box.add(&create_row("Destination:", format!("({})", layer.get_destination().to_string())));
-    list_box.add(&create_row("Source:", format!("({})", layer.get_source().to_string())));
+    list_box.add(&create_row("Destination:", format!("({})", layer.get_destination_mac().to_string())));
+    list_box.add(&create_row("Source:", format!("({})", layer.get_source_mac().to_string())));
     list_box.add(&create_row("Type:", format!("{:?} (0x{:04X})", layer.get_type(), layer.get_type().get_code())));
 
     dropdown.add(&list_box);
@@ -35,9 +35,10 @@ pub fn create_ipv4_layer_expander(layer: &Ipv4Layer) -> Container {
     list_box.add(&create_row("Time to Live:", layer.get_ttl().to_string()));
     list_box.add(&create_row("Protocol:", format!("{:?} ({})", layer.get_protocol(), layer.get_protocol().get_code())));
 
-    list_box.add(&create_row("Header Checksum:", format!("0x{:04X}", layer.get_checksum())));
-    list_box.add(&create_row("Source Address:", layer.get_source_ip().to_string()));
-    list_box.add(&create_row("Destination Address:", layer.get_destination_ip().to_string()));
+    let checksum_string = if layer.validate_checksum() { "correct" } else { "incorrect" };
+    list_box.add(&create_row("Header Checksum:", format!("0x{:04X} [{}]", layer.get_checksum(), checksum_string)));
+    list_box.add(&create_row("Source Address:", layer.get_source_address().to_string()));
+    list_box.add(&create_row("Destination Address:", layer.get_destination_address().to_string()));
 
     dropdown.add(&list_box);
 
@@ -57,9 +58,9 @@ pub fn create_arp_layer_expander(layer: &ArpLayer) -> Container {
     list_box.add(&create_row("Opcode:", format!("{} ({})", layer.get_opcode().to_string(), layer.get_opcode())));
 
     list_box.add(&create_row("Sender MAC Address:", layer.get_sender_mac().to_string()));
-    list_box.add(&create_row("Sender IP Address:", layer.get_sender_ip().to_string()));
+    list_box.add(&create_row("Sender IP Address:", layer.get_sender_address().to_string()));
     list_box.add(&create_row("Target MAC Address:", layer.get_target_mac().to_string()));
-    list_box.add(&create_row("Target IP Address:", layer.get_target_ip().to_string()));
+    list_box.add(&create_row("Target IP Address:", layer.get_target_address().to_string()));
 
     dropdown.add(&list_box);
 
@@ -73,8 +74,8 @@ pub fn create_ipv6_layer_expander(layer: &Ipv6Layer) -> Container {
     list_box.add(&create_row("Payload Length:", layer.get_payload_length().to_string()));
     list_box.add(&create_row("Next Header:", format!("{:?} ({})", layer.get_next_header(), layer.get_next_header().get_code())));
     list_box.add(&create_row("Hop Limit:", layer.get_hop_limit().to_string()));
-    list_box.add(&create_row("Source Address:", layer.get_source_ip().to_string()));
-    list_box.add(&create_row("Destination Address:", layer.get_destination_ip().to_string()));
+    list_box.add(&create_row("Source Address:", layer.get_source_address().to_string()));
+    list_box.add(&create_row("Destination Address:", layer.get_destination_address().to_string()));
 
     dropdown.add(&list_box);
 
