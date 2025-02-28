@@ -166,10 +166,10 @@ impl Fragment for SidebarFragment {
                                             UdpTypes::Quick => {}
                                             UdpTypes::uTp => {}
                                             UdpTypes::BitTorrent => {}
-                                            UdpTypes::Unknown => {}
+                                            _ => {}
                                         }
                                     }
-                                    UdpPayloads::Unknown(_) => {}
+                                    _ => {}
                                 }
                             }
                             Protocols::Ipv6 => {}
@@ -210,10 +210,10 @@ impl Fragment for SidebarFragment {
                                             UdpTypes::Quick => {}
                                             UdpTypes::uTp => {}
                                             UdpTypes::BitTorrent => {}
-                                            UdpTypes::Unknown => {}
+                                            _ => {}
                                         }
                                     }
-                                    UdpPayloads::Unknown(_) => {}
+                                    _ => {}
                                 }
                             }
                             Protocols::Ipv6 => {}

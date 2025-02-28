@@ -45,7 +45,7 @@ impl PacketAdapter {
                                     UdpPayloads::Known(_type, _) => {
                                         (ipv4_layer.get_source_address().to_string(), ipv4_layer.get_destination_address().to_string(), udp_layer.get_type().to_string())
                                     }
-                                    UdpPayloads::Unknown(_) => {
+                                    _ => {
                                         (ipv4_layer.get_source_address().to_string(), ipv4_layer.get_destination_address().to_string(), ipv4_layer.get_protocol().to_string())
                                     }
                                 }
@@ -66,7 +66,7 @@ impl PacketAdapter {
                                     UdpPayloads::Known(_type, _) => {
                                         (ipv6_layer.get_source_address().to_string(), ipv6_layer.get_destination_address().to_string(), udp_layer.get_type().to_string())
                                     }
-                                    UdpPayloads::Unknown(_) => {
+                                    _ => {
                                         (ipv6_layer.get_source_address().to_string(), ipv6_layer.get_destination_address().to_string(), ipv6_layer.get_next_header().to_string())
                                     }
                                 }
