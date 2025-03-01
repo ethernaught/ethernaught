@@ -10,6 +10,7 @@ use pcap::packet::packet::Packet;
 
 #[derive(Clone)]
 pub struct CaptureService {
+    cap: Capture,
     device: Device,
     running: Arc<AtomicBool>,
     tx: Option<Sender<Packet>>
@@ -18,11 +19,21 @@ pub struct CaptureService {
 impl CaptureService {
 
     pub fn new(device: &Device) -> Self {
+        let mut cap = Capture::from_device(&device).expect("Failed to open device");
+        //cap.set_promiscuous_mode(true).expect("Failed to set promiscuous mode");
+        cap.set_immediate_mode(true);
+        cap.open().expect("Failed to start capture");
+
         Self {
+            cap,
             device: device.clone(),
             running: Arc::new(AtomicBool::new(false)),
             tx: None
         }
+    }
+
+    pub fn send(&self, packet: Packet) {
+        self.cap.send_packet(packet);
     }
 
     pub fn set_tx(&mut self, tx: Sender<Packet>) {
@@ -37,21 +48,16 @@ impl CaptureService {
         self.running.store(true, Ordering::Relaxed);
         let mut _self = self.clone();
         thread::spawn(move || {
-            let mut cap = Capture::from_device(&_self.device).expect("Failed to open device");
-            //cap.set_promiscuous_mode(true).expect("Failed to set promiscuous mode");
-            cap.set_immediate_mode(true);
-            cap.open().expect("Failed to start capture");
-
             let now = SystemTime::now()
                 .duration_since(UNIX_EPOCH)
                 .expect("Time went backwards")
                 .as_millis() as f64;
 
             while _self.running.load(Ordering::Relaxed) {
-                match cap.next_packet() {
+                match _self.cap.next_packet() {
                     Ok(packet) => {
                         //packet.get_frame_time()-now);
-                        _self.tx.as_mut().unwrap().send(packet).expect("Failed to send packet");
+                        _self.tx.as_ref().unwrap().send(packet).expect("Failed to send packet");
                     }
                     _ => {
                         break;

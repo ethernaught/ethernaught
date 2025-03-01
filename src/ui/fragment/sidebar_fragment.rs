@@ -66,6 +66,17 @@ impl Fragment for SidebarFragment {
             main_activity.close_sidebar();
         });
 
+        let replay_button: Button = builder
+            .object("replay_button")
+            .expect("Couldn't find 'replay_button' in window.ui");
+
+        let _self = self.clone();
+        replay_button.connect_clicked(move |_| {
+            let main_activity = _self.activity.as_any().downcast_ref::<MainActivity>().unwrap();
+            main_activity.get_capture_service().send(_self.packet.clone());
+        });
+
+
 
 
 

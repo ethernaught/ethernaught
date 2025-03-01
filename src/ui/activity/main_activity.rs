@@ -31,6 +31,10 @@ impl MainActivity {
         }
     }
 
+    pub fn get_capture_service(&self) -> &CaptureService {
+        &self.capture_service
+    }
+
     pub fn open_sidebar(&self, mut fragment: Box<dyn Fragment>) {
         let root = self.root.as_ref().unwrap().downcast_ref::<Paned>().unwrap();
 
