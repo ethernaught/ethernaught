@@ -19,7 +19,13 @@ button:focus, button:checked {
 }
 
 
-
+tooltip {
+    border: solid 1px #5a5d63;
+    border-radius: 0;
+    color: #cbd7dc;
+    background-color: #2b2d30;
+    font-size: 12px;
+}
 
 
 #titlebar {

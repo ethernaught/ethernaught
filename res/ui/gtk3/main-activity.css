@@ -48,6 +48,10 @@ list row:active,
     background-image: url('../../images/ic_dismiss.svg');
 }
 
+#sidebar_title #replay_button {
+    background-image: url('../../images/ic_replay.svg');
+}
+
 #sidebar_title button:hover {
     background-color: rgba(127, 127, 127, 0.2);
 }
