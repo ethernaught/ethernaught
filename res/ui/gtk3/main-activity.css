@@ -25,6 +25,33 @@ list row:active,
 */
 
 
+#side_navbar_layout {
+    padding: 0 4px;
+}
+
+#side_navbar_layout button {
+    min-height: 0;
+    padding: 4px;
+    border-radius: 6px;
+    border: none;
+    background-size: auto;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#side_navbar_layout button:hover {
+    background-color: rgba(127, 127, 127, 0.2);
+}
+
+#side_navbar_layout #terminal_button {
+    background-image: url('../../images/ic_terminal.svg');
+}
+
+
+
+
+
+
 
 
 
