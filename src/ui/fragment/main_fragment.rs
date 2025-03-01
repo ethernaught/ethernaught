@@ -136,7 +136,7 @@ impl Fragment for MainFragment {
 
         let is_scrolled_to_bottom = move || {
             let adj = adj_ref.borrow();
-            (adj.upper() - adj.value() - adj.page_size()).abs() < 50.0
+            (adj.upper() - adj.value() - adj.page_size()).abs() < 100.0
         };
 
         model.connect_row_inserted(move |_, _, _| {
