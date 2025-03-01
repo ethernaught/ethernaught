@@ -56,7 +56,7 @@ pub fn create_arp_layer_expander(layer: &ArpExtension) -> Container {
     list_box.add(&create_row("Protocol Size:", layer.get_hardware_size().to_string()));
 
     //SHOULD BE LIKE reply (2)
-    list_box.add(&create_row("Opcode:", format!("{} ({})", layer.get_opcode().to_string(), layer.get_opcode())));
+    list_box.add(&create_row("Opcode:", format!("{} ({})", layer.get_opcode().to_string(), layer.get_opcode().get_code())));
 
     list_box.add(&create_row("Sender MAC Address:", layer.get_sender_mac().to_string()));
     list_box.add(&create_row("Sender IP Address:", layer.get_sender_address().to_string()));
