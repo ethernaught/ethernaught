@@ -21,7 +21,7 @@
                 <child>
                     <object class="GtkButton" id="terminal_button">
                         <property name="name">terminal_button</property>
-                        <property name="tooltip-text">Main Menu</property>
+                        <property name="tooltip-text">Terminal</property>
                         <property name="visible">True</property>
                         <property name="width-request">24</property>
                         <property name="height-request">24</property>
