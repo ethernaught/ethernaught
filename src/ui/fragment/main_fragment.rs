@@ -1,4 +1,6 @@
 use std::any::Any;
+use std::cell::RefCell;
+use std::rc::Rc;
 use gtk::prelude::*;
 use gtk::{gdk, glib, Adjustment, Application, ApplicationWindow, Builder, Button, CellRendererText, Container, CssProvider, Image, Label, ListBox, ListBoxRow, ListStore, Paned, ScrolledWindow, Stack, StyleContext, TextTag, TextView, TreePath, TreeView, TreeViewColumn, Widget};
 use gtk::glib::Propagation::Proceed;
@@ -122,6 +124,26 @@ impl Fragment for MainFragment {
             }
 
             Proceed
+        });
+
+
+        let list_scroll_layout: ScrolledWindow = builder
+            .object("list_scroll_layout")
+            .expect("Couldn't find 'list_scroll_layout' in window.ui");
+
+        let adj_ref = Rc::new(RefCell::new(list_scroll_layout.vadjustment()));
+        let adj_ref_clone = adj_ref.clone();
+
+        let is_scrolled_to_bottom = move || {
+            let adj = adj_ref.borrow();
+            (adj.upper() - adj.value() - adj.page_size()).abs() < 50.0
+        };
+
+        model.connect_row_inserted(move |_, _, _| {
+            if is_scrolled_to_bottom() {
+                let adj = adj_ref_clone.borrow();
+                adj.set_value(adj.upper() - adj.page_size());
+            }
         });
 
 
