@@ -84,18 +84,20 @@ impl Activity for MainActivity {
             gtk::STYLE_PROVIDER_PRIORITY_APPLICATION,
         );
 
-        let mut root: Paned = builder
+        self.root = Some(builder
             .object("window_layout")
-            .expect("Couldn't find 'window_layout' in main-activity.ui");
-        self.root = Some(root.clone().upcast());
+            .expect("Couldn't find 'window_layout' in main-activity.ui"));
 
 
+        let mut window_pane: Paned = builder
+            .object("window_pane")
+            .expect("Couldn't find 'window_pane' in main-activity.ui");
 
         let mut main_fragment = MainFragment::new(self.dyn_clone());
         let content = main_fragment.on_create();
-        root.add(content);
-        root.set_child_shrink(content, false);
-        root.set_child_resize(content, true);
+        window_pane.add(content);
+        window_pane.set_child_shrink(content, false);
+        window_pane.set_child_resize(content, true);
 
         let main_fragment = Rc::new(RefCell::new(main_fragment));
 
