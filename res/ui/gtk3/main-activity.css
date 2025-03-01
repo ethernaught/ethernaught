@@ -25,9 +25,6 @@ list row:active,
 */
 
 
-#side_navbar_layout {
-    padding: 0 4px;
-}
 
 #side_navbar_layout button {
     min-height: 0;
@@ -52,6 +49,9 @@ list row:active,
 
 
 
+#window_pane {
+    border-left: solid 1px #1e1f22;
+}
 
 
 
