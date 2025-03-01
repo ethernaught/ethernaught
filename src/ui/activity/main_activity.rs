@@ -36,28 +36,28 @@ impl MainActivity {
     }
 
     pub fn open_sidebar(&self, mut fragment: Box<dyn Fragment>) {
-        let root = self.root.as_ref().unwrap().downcast_ref::<Paned>().unwrap();
-
-        match root.child2() {
-            Some(child) => {
-                root.remove(&child);
+        if let Some(pane) = self.app.get_child_by_name(self.root.as_ref().unwrap().upcast_ref(), "window_pane").unwrap().downcast_ref::<Paned>() {
+            match pane.child2() {
+                Some(child) => {
+                    pane.remove(&child);
+                }
+                None => {}
             }
-            None => {}
-        }
 
-        let content = fragment.on_create();
-        root.add(content);
-        root.set_child_shrink(content, false);
+            let content = fragment.on_create();
+            pane.add(content);
+            pane.set_child_shrink(content, false);
+        }
     }
 
     pub fn close_sidebar(&self) {
-        let root = self.root.as_ref().unwrap().downcast_ref::<Paned>().unwrap();
-
-        match root.child2() {
-            Some(child) => {
-                root.remove(&child);
+        if let Some(pane) = self.app.get_child_by_name(self.root.as_ref().unwrap().upcast_ref(), "window_pane").unwrap().downcast_ref::<Paned>() {
+            match pane.child2() {
+                Some(child) => {
+                    pane.remove(&child);
+                }
+                None => {}
             }
-            None => {}
         }
     }
 }
@@ -89,15 +89,15 @@ impl Activity for MainActivity {
             .expect("Couldn't find 'window_layout' in main-activity.ui"));
 
 
-        let mut window_pane: Paned = builder
+        let mut pane: Paned = builder
             .object("window_pane")
             .expect("Couldn't find 'window_pane' in main-activity.ui");
 
         let mut main_fragment = MainFragment::new(self.dyn_clone());
         let content = main_fragment.on_create();
-        window_pane.add(content);
-        window_pane.set_child_shrink(content, false);
-        window_pane.set_child_resize(content, true);
+        pane.add(content);
+        pane.set_child_shrink(content, false);
+        pane.set_child_resize(content, true);
 
         let main_fragment = Rc::new(RefCell::new(main_fragment));
 
