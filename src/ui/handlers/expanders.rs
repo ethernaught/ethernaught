@@ -1,8 +1,10 @@
+use std::cell::RefCell;
 use std::fmt::format;
 use std::net::IpAddr;
+use std::rc::Rc;
 use gtk::{Button, Container, Image, Label, ListBox, ListBoxRow, Orientation};
 use gtk::glib::Cast;
-use gtk::prelude::{ButtonExt, ContainerExt, ImageExt, LabelExt, WidgetExt};
+use gtk::prelude::{ButtonExt, ContainerExt, ImageExt, LabelExt, ListBoxExt, ListBoxRowExt, WidgetExt};
 use pcap::packet::layers::ethernet_frame::arp::arp_extension::ArpExtension;
 use pcap::packet::layers::ethernet_frame::ethernet_frame::EthernetFrame;
 use pcap::packet::layers::ethernet_frame::ip::icmp::icmp_layer::IcmpLayer;
@@ -12,9 +14,22 @@ use pcap::packet::layers::ethernet_frame::ip::ipv6_layer::Ipv6Layer;
 use pcap::packet::layers::ethernet_frame::ip::tcp::tcp_layer::TcpLayer;
 use pcap::packet::layers::ethernet_frame::ip::udp::dhcp::dhcp_layer::DhcpLayer;
 use pcap::packet::layers::ethernet_frame::ip::udp::udp_layer::UdpLayer;
+use crate::ui::widgets::hex_editor::HexEditor;
 
-pub fn create_ethernet_layer_expander(layer: &EthernetFrame) -> Container {
+pub fn create_ethernet_layer_expander(expander: Rc<RefCell<HexEditor>>, layer: &EthernetFrame) -> Container {
     let (dropdown, list_box) = create_dropdown("Ethernet II");
+
+    list_box.connect_row_activated(move |_, row| {
+        match row.index() {
+            0 => {
+                expander.borrow_mut().set_selection(0, 2);
+            }
+            1 => {
+                expander.borrow_mut().set_selection(2, 4);
+            }
+            _ => unimplemented!()
+        }
+    });
 
     list_box.add(&create_row("Destination:", format!("({})", layer.get_destination_mac().to_string())));
     list_box.add(&create_row("Source:", format!("({})", layer.get_source_mac().to_string())));

@@ -15,11 +15,11 @@ pub struct HexEditor {
     padding: f64
 }
 
-impl HexEditor {
+impl Default for HexEditor {
 
-    pub fn new(data: Vec<u8>) -> Self {
+    fn default() -> Self {
         Self {
-            data,
+            data: Vec::new(),
             cursor: None,
             selection: None,
             line_number_color: (0.0, 0.0, 0.0),
@@ -29,6 +29,16 @@ impl HexEditor {
             font_family: "Monospace".to_string(),
             font_size: 14.0,
             padding: 20.0
+        }
+    }
+}
+
+impl HexEditor {
+
+    pub fn from_bytes(data: Vec<u8>) -> Self {
+        Self {
+            data,
+            ..Default::default()
         }
     }
 
@@ -139,6 +149,10 @@ impl HexEditor {
         let content_height = (num_rows as f64) * row_height + self.padding;
 
         (content_width as i32, content_height as i32)
+    }
+
+    pub fn set_data(&mut self, data: Vec<u8>) {
+        self.data = data;
     }
 
     pub fn set_selection(&mut self, x: usize, x2: usize) {

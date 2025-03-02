@@ -64,6 +64,10 @@
                     <attribute name="label" translatable="yes">Packet Playground</attribute>
                 </item>
                 <item>
+                    <attribute name="action">win.api</attribute>
+                    <attribute name="label" translatable="yes">API</attribute>
+                </item>
+                <item>
                     <attribute name="action">win.firewall</attribute>
                     <attribute name="label" translatable="yes">Firewall Rules</attribute>
                 </item>

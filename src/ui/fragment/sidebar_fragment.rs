@@ -107,7 +107,7 @@ impl Fragment for SidebarFragment {
             .object("hex_content")
             .expect("Couldn't find 'hex_content' in window.ui");
 
-        let mut editor = Rc::new(RefCell::new(HexEditor::new(self.packet.to_bytes())));
+        let mut editor = Rc::new(RefCell::new(HexEditor::from_bytes(self.packet.to_bytes())));
         editor.borrow_mut().set_line_number_color(0.286, 0.306, 0.341);
         editor.borrow_mut().set_cursor_color(0.608, 0.616, 0.624);
         editor.borrow_mut().set_selection_color(0.349, 0.263, 0.431);
@@ -135,10 +135,10 @@ impl Fragment for SidebarFragment {
         });
 
         let editor_clone = Rc::clone(&editor);
-        drawing_area.connect_draw(clone!(@strong editor => move |_, cr| {
+        drawing_area.connect_draw(move |_, cr| {
             editor_clone.borrow_mut().draw_hex_editor(cr);
             Propagation::Proceed
-        }));
+        });
 
         hex_content.add(&drawing_area);
 
@@ -167,7 +167,7 @@ impl Fragment for SidebarFragment {
         match self.packet.get_interface() {
             Interfaces::Ethernet => {
                 let ethernet_frame = self.packet.get_frame().as_any().downcast_ref::<EthernetFrame>().unwrap();
-                details_layout.add(&create_ethernet_layer_expander(&ethernet_frame));
+                details_layout.add(&create_ethernet_layer_expander(Rc::clone(&editor), &ethernet_frame));
 
                 match ethernet_frame.get_type() {
                     Types::IPv4 => {
