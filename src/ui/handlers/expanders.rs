@@ -14,26 +14,33 @@ use pcap::packet::layers::ethernet_frame::ip::ipv6_layer::Ipv6Layer;
 use pcap::packet::layers::ethernet_frame::ip::tcp::tcp_layer::TcpLayer;
 use pcap::packet::layers::ethernet_frame::ip::udp::dhcp::dhcp_layer::DhcpLayer;
 use pcap::packet::layers::ethernet_frame::ip::udp::udp_layer::UdpLayer;
+use crate::layers::inter::selection::Selection;
 use crate::ui::widgets::hex_editor::HexEditor;
 
 pub fn create_ethernet_layer_expander(expander: Rc<RefCell<HexEditor>>, layer: &EthernetFrame) -> Container {
     let (dropdown, list_box) = create_dropdown("Ethernet II");
 
-    list_box.connect_row_activated(move |_, row| {
-        match row.index() {
-            0 => {
-                expander.borrow_mut().set_selection(0, 2);
-            }
-            1 => {
-                expander.borrow_mut().set_selection(2, 4);
-            }
-            _ => unimplemented!()
-        }
-    });
-
     list_box.add(&create_row("Destination:", format!("({})", layer.get_destination_mac().to_string())));
     list_box.add(&create_row("Source:", format!("({})", layer.get_source_mac().to_string())));
     list_box.add(&create_row("Type:", format!("{:?} (0x{:04X})", layer.get_type(), layer.get_type().get_code())));
+
+    let layer = layer.clone();
+    list_box.connect_row_activated(move |_, row| {
+        let (x, w) = match row.index() {
+            0 => {
+                layer.get_selection("destination")
+            }
+            1 => {
+                layer.get_selection("source")
+            }
+            2 => {
+                layer.get_selection("type")
+            }
+            _ => unimplemented!()
+        };
+
+        expander.borrow_mut().set_selection(x, w);
+    });
 
     dropdown.add(&list_box);
 

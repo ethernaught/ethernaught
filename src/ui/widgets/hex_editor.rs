@@ -106,7 +106,7 @@ impl HexEditor {
             match self.selection {
                 None => {}
                 Some((x, x2)) => {
-                    if i >= x && i <= x2  {
+                    if i >= x && i <= x2-1  {
                         cr.set_source_rgb(self.selection_color.0, self.selection_color.1, self.selection_color.2);
                         cr.rectangle(hex_x - 2.0, y - self.font_size, char_width * 2.0 + 4.0, self.font_size + 4.0);
                         cr.fill().unwrap();
