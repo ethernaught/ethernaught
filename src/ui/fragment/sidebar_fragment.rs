@@ -129,7 +129,7 @@ impl Fragment for SidebarFragment {
 
 
         hex_content.add(editor.borrow().get_drawing_area());
-
+        editor.borrow().get_drawing_area().show();
 
 
 

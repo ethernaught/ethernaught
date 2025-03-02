@@ -29,11 +29,10 @@ impl Default for HexEditor {
         drawing_area.set_widget_name("hex_editor");
         drawing_area.set_hexpand(true);
         drawing_area.set_vexpand(true);
-        drawing_area.show();
 
         drawing_area.add_events(EventMask::POINTER_MOTION_MASK);
 
-        let mut _self = Self {
+        let _self = Self {
             data: Rc::new(RefCell::new(Vec::new())),
             cursor: Rc::new(RefCell::new(None)),
             selection: Rc::new(RefCell::new(None)),
@@ -55,10 +54,13 @@ impl Default for HexEditor {
 impl HexEditor {
 
     pub fn from_bytes(data: Vec<u8>) -> Self {
-        Self {
+        let _self = Self {
             data: Rc::new(RefCell::new(data)),
             ..Default::default()
-        }
+        };
+        _self.update_content_size();
+
+        _self
     }
 
     pub fn update_cursor(&mut self, x: f64, y: f64) {
