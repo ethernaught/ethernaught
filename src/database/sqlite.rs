@@ -93,7 +93,7 @@ extern "C" {
         sql: *const i8,
         callback: Option<extern "C" fn(*mut c_void, i32, *mut *mut i8, *mut *mut i8) -> i32>,
         arg: *mut c_void,
-        errmsg: *mut *mut i8,
+        errmsg: *mut *mut i8
     ) -> i32;
 
     fn sqlite3_close(db: *mut c_void) -> i32;
