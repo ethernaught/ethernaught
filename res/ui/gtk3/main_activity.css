@@ -39,7 +39,8 @@ list row:active,
     background-position: center;
 }
 
-#side_navbar_layout button:hover {
+#side_navbar_layout button.selected,
+        #side_navbar_layout button:hover {
     background-color: rgba(127, 127, 127, 0.2);
 }
 

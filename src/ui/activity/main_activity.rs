@@ -1,5 +1,5 @@
 use std::any::Any;
-use std::cell::RefCell;
+use std::cell::{Cell, RefCell};
 use std::rc::Rc;
 use std::sync::Arc;
 use std::sync::mpsc::channel;
@@ -18,6 +18,7 @@ use crate::ui::fragment::terminal_fragment::TerminalFragment;
 #[derive(Clone)]
 pub struct MainActivity {
     app: OApplication,
+    footer_selected: Rc<RefCell<String>>,
     root: Option<Container>,
     capture_service: CaptureService
 }
@@ -28,6 +29,7 @@ impl MainActivity {
         Self {
             app,
             root: None,
+            footer_selected: Rc::new(RefCell::new(String::new())),
             capture_service: CaptureService::new(device)
         }
     }
@@ -36,7 +38,7 @@ impl MainActivity {
         &self.capture_service
     }
 
-    pub fn open_footerbar(&self, mut fragment: Box<dyn Fragment>) {
+    pub fn open_footerbar(&self, title: &str, mut fragment: Box<dyn Fragment>) {
         if let Some(pane) = self.app.get_child_by_name(self.root.as_ref().unwrap().upcast_ref(), "window_pane").unwrap().downcast_ref::<Paned>() {
             match pane.child2() {
                 Some(child) => {
@@ -45,6 +47,13 @@ impl MainActivity {
                 None => {}
             }
 
+            if self.footer_selected.borrow().as_str() != "" {
+                self.app.get_child_by_name(self.root.as_ref().unwrap().upcast_ref(), self.footer_selected.borrow().as_str()).unwrap().style_context().remove_class("selected");
+            }
+
+            self.app.get_child_by_name(self.root.as_ref().unwrap().upcast_ref(), title).unwrap().style_context().add_class("selected");
+
+            self.footer_selected.replace(title.to_string());
             let content = fragment.on_create();
             pane.add(content);
             pane.set_child_shrink(content, false);
@@ -55,6 +64,11 @@ impl MainActivity {
         if let Some(pane) = self.app.get_child_by_name(self.root.as_ref().unwrap().upcast_ref(), "window_pane").unwrap().downcast_ref::<Paned>() {
             match pane.child2() {
                 Some(child) => {
+                    if self.footer_selected.borrow().as_str() != "" {
+                        self.app.get_child_by_name(self.root.as_ref().unwrap().upcast_ref(), self.footer_selected.borrow().as_str()).unwrap().style_context().remove_class("selected");
+                    }
+
+                    self.footer_selected.replace(String::new());
                     pane.remove(&child);
                 }
                 None => {}
@@ -137,12 +151,27 @@ impl Activity for MainActivity {
             .object("window_pane")
             .expect("Couldn't find 'window_pane' in main_activity.ui");
 
-        self.open_footerbar(TerminalFragment::new(self.dyn_clone()).dyn_clone());
 
 
         let content = window_content_pane.upcast_ref::<Container>();
         window_pane.set_child_shrink(content, false);
         window_pane.set_child_resize(content, true);
+
+
+        let terminal_button: Button = builder
+            .object("terminal_button")
+            .expect("Couldn't find 'terminal_button' in window.ui");
+
+        let _self = self.clone();
+        terminal_button.connect_clicked(move |_| {
+            if _self.footer_selected.borrow().eq("terminal_button") {
+                _self.close_footerbar();
+                return;
+            }
+            _self.open_footerbar("terminal_button", TerminalFragment::new(_self.dyn_clone()).dyn_clone());
+        });
+
+
 
 
 
