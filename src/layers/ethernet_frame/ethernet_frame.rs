@@ -12,10 +12,10 @@ impl Selection for EthernetFrame {
                 (0, 6)
             }
             "source" => {
-                (6, 12)
+                (6, 6)
             }
             "type" => {
-                (12, 14)
+                (12, 2)
             }
             _ => unimplemented!()
         }

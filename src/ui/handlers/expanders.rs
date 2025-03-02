@@ -17,7 +17,7 @@ use pcap::packet::layers::ethernet_frame::ip::udp::udp_layer::UdpLayer;
 use crate::layers::inter::selection::Selection;
 use crate::ui::widgets::hex_editor::HexEditor;
 
-pub fn create_ethernet_layer_expander(expander: Rc<RefCell<HexEditor>>, layer: &EthernetFrame) -> Container {
+pub fn create_ethernet_layer_expander(offset: usize, expander: Rc<RefCell<HexEditor>>, layer: &EthernetFrame) -> Container {
     let (dropdown, list_box) = create_dropdown("Ethernet II");
 
     list_box.add(&create_row("Destination:", format!("({})", layer.get_destination_mac().to_string())));
@@ -39,7 +39,7 @@ pub fn create_ethernet_layer_expander(expander: Rc<RefCell<HexEditor>>, layer: &
             _ => unimplemented!()
         };
 
-        expander.borrow_mut().set_selection(x, w);
+        expander.borrow_mut().set_selection(offset+x, w);
     });
 
     dropdown.add(&list_box);
@@ -47,7 +47,7 @@ pub fn create_ethernet_layer_expander(expander: Rc<RefCell<HexEditor>>, layer: &
     dropdown.upcast()
 }
 
-pub fn create_ipv4_layer_expander(layer: &Ipv4Layer) -> Container {
+pub fn create_ipv4_layer_expander(offset: usize, expander: Rc<RefCell<HexEditor>>, layer: &Ipv4Layer) -> Container {
     let (dropdown, list_box) = create_dropdown("Internet Protocol Version 4");
 
     list_box.add(&create_row("Version:", layer.get_version().to_string()));
@@ -62,6 +62,42 @@ pub fn create_ipv4_layer_expander(layer: &Ipv4Layer) -> Container {
     list_box.add(&create_row("Header Checksum:", format!("0x{:04X} [{}]", layer.get_checksum(), checksum_string)));
     list_box.add(&create_row("Source Address:", layer.get_source_address().to_string()));
     list_box.add(&create_row("Destination Address:", layer.get_destination_address().to_string()));
+
+    let layer = layer.clone();
+    list_box.connect_row_activated(move |_, row| {
+        let (x, w) = match row.index() {
+            0 => {
+                layer.get_selection("version")
+            }
+            1 => {
+                layer.get_selection("tos")
+            }
+            2 => {
+                layer.get_selection("total_length")
+            }
+            3 => {
+                layer.get_selection("identification")
+            }
+            4 => {
+                layer.get_selection("ttl")
+            }
+            5 => {
+                layer.get_selection("protocol")
+            }
+            6 => {
+                layer.get_selection("checksum")
+            }
+            7 => {
+                layer.get_selection("source_address")
+            }
+            8 => {
+                layer.get_selection("destination_address")
+            }
+            _ => unimplemented!()
+        };
+
+        expander.borrow_mut().set_selection(offset+x, w);
+    });
 
     dropdown.add(&list_box);
 

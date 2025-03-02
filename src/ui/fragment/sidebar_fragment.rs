@@ -155,12 +155,12 @@ impl Fragment for SidebarFragment {
         match self.packet.get_interface() {
             Interfaces::Ethernet => {
                 let ethernet_frame = self.packet.get_frame().as_any().downcast_ref::<EthernetFrame>().unwrap();
-                details_layout.add(&create_ethernet_layer_expander(Rc::clone(&editor), &ethernet_frame));
+                details_layout.add(&create_ethernet_layer_expander(0, Rc::clone(&editor), &ethernet_frame));
 
                 match ethernet_frame.get_type() {
                     Types::IPv4 => {
                         let ipv4_layer = ethernet_frame.get_data().unwrap().as_any().downcast_ref::<Ipv4Layer>().unwrap();
-                        details_layout.add(&create_ipv4_layer_expander(&ipv4_layer));
+                        details_layout.add(&create_ipv4_layer_expander(ethernet_frame.len()-ipv4_layer.len(), Rc::clone(&editor), &ipv4_layer));
 
                         match ipv4_layer.get_protocol() {
                             Protocols::HopByHop => {}
