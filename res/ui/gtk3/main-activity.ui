@@ -19,6 +19,13 @@
                 <property name="spacing">10</property>
 
                 <child>
+                    <object class="GtkBox">
+                        <property name="visible">True</property>
+                        <property name="vexpand">True</property>
+                    </object>
+                </child>
+
+                <child>
                     <object class="GtkButton" id="terminal_button">
                         <property name="name">terminal_button</property>
                         <property name="tooltip-text">Terminal</property>
@@ -34,8 +41,16 @@
             <object class="GtkPaned" id="window_pane">
                 <property name="name">window_pane</property>
                 <property name="visible">True</property>
-                <property name="orientation">horizontal</property>
-                <property name="position">700</property>
+                <property name="orientation">vertical</property>
+
+                <child>
+                    <object class="GtkPaned" id="window_content_pane">
+                        <property name="name">window_content_pane</property>
+                        <property name="visible">True</property>
+                        <property name="orientation">horizontal</property>
+                        <property name="position">700</property>
+                    </object>
+                </child>
             </object>
         </child>
     </object>

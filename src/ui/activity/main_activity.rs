@@ -36,7 +36,7 @@ impl MainActivity {
     }
 
     pub fn open_sidebar(&self, mut fragment: Box<dyn Fragment>) {
-        if let Some(pane) = self.app.get_child_by_name(self.root.as_ref().unwrap().upcast_ref(), "window_pane").unwrap().downcast_ref::<Paned>() {
+        if let Some(pane) = self.app.get_child_by_name(self.root.as_ref().unwrap().upcast_ref(), "window_content_pane").unwrap().downcast_ref::<Paned>() {
             match pane.child2() {
                 Some(child) => {
                     pane.remove(&child);
@@ -51,7 +51,7 @@ impl MainActivity {
     }
 
     pub fn close_sidebar(&self) {
-        if let Some(pane) = self.app.get_child_by_name(self.root.as_ref().unwrap().upcast_ref(), "window_pane").unwrap().downcast_ref::<Paned>() {
+        if let Some(pane) = self.app.get_child_by_name(self.root.as_ref().unwrap().upcast_ref(), "window_content_pane").unwrap().downcast_ref::<Paned>() {
             match pane.child2() {
                 Some(child) => {
                     pane.remove(&child);
@@ -89,15 +89,15 @@ impl Activity for MainActivity {
             .expect("Couldn't find 'window_layout' in main-activity.ui"));
 
 
-        let mut pane: Paned = builder
-            .object("window_pane")
-            .expect("Couldn't find 'window_pane' in main-activity.ui");
+        let mut window_content_pane: Paned = builder
+            .object("window_content_pane")
+            .expect("Couldn't find 'window_content_pane' in main-activity.ui");
 
         let mut main_fragment = MainFragment::new(self.dyn_clone());
         let content = main_fragment.on_create();
-        pane.add(content);
-        pane.set_child_shrink(content, false);
-        pane.set_child_resize(content, true);
+        window_content_pane.add(content);
+        window_content_pane.set_child_shrink(content, false);
+        window_content_pane.set_child_resize(content, true);
 
         let main_fragment = Rc::new(RefCell::new(main_fragment));
 
