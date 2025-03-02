@@ -1,5 +1,4 @@
 use std::cell::RefCell;
-use std::fmt::format;
 use std::net::IpAddr;
 use std::rc::Rc;
 use gtk::{Button, Container, Image, Label, ListBox, ListBoxRow, Orientation};
@@ -41,6 +40,27 @@ pub fn create_ethernet_layer_expander(offset: usize, expander: Rc<RefCell<HexEdi
 
         expander.borrow_mut().set_selection(offset+x, w);
     });
+
+    dropdown.add(&list_box);
+    dropdown.upcast()
+}
+
+pub fn create_arp_layer_expander(layer: &ArpExtension) -> Container {
+    let (dropdown, list_box) = create_dropdown("Address Resolution Protocol");
+
+    //SHOULD BE LIKE Ethernet (1)
+    list_box.add(&create_row("Hardware Type:", format!("{} ({})", layer.get_hardware_type().to_string(), layer.get_hardware_type())));
+
+    list_box.add(&create_row("Hardware Size:", layer.get_hardware_size().to_string()));
+    list_box.add(&create_row("Protocol Size:", layer.get_hardware_size().to_string()));
+
+    //SHOULD BE LIKE reply (2)
+    list_box.add(&create_row("Opcode:", format!("{} ({})", layer.get_opcode().to_string(), layer.get_opcode().get_code())));
+
+    list_box.add(&create_row("Sender MAC Address:", layer.get_sender_mac().to_string()));
+    list_box.add(&create_row("Sender IP Address:", layer.get_sender_address().to_string()));
+    list_box.add(&create_row("Target MAC Address:", layer.get_target_mac().to_string()));
+    list_box.add(&create_row("Target IP Address:", layer.get_target_address().to_string()));
 
     dropdown.add(&list_box);
 
@@ -100,33 +120,10 @@ pub fn create_ipv4_layer_expander(offset: usize, expander: Rc<RefCell<HexEditor>
     });
 
     dropdown.add(&list_box);
-
     dropdown.upcast()
 }
 
-pub fn create_arp_layer_expander(layer: &ArpExtension) -> Container {
-    let (dropdown, list_box) = create_dropdown("Address Resolution Protocol");
-
-    //SHOULD BE LIKE Ethernet (1)
-    list_box.add(&create_row("Hardware Type:", format!("{} ({})", layer.get_hardware_type().to_string(), layer.get_hardware_type())));
-
-    list_box.add(&create_row("Hardware Size:", layer.get_hardware_size().to_string()));
-    list_box.add(&create_row("Protocol Size:", layer.get_hardware_size().to_string()));
-
-    //SHOULD BE LIKE reply (2)
-    list_box.add(&create_row("Opcode:", format!("{} ({})", layer.get_opcode().to_string(), layer.get_opcode().get_code())));
-
-    list_box.add(&create_row("Sender MAC Address:", layer.get_sender_mac().to_string()));
-    list_box.add(&create_row("Sender IP Address:", layer.get_sender_address().to_string()));
-    list_box.add(&create_row("Target MAC Address:", layer.get_target_mac().to_string()));
-    list_box.add(&create_row("Target IP Address:", layer.get_target_address().to_string()));
-
-    dropdown.add(&list_box);
-
-    dropdown.upcast()
-}
-
-pub fn create_ipv6_layer_expander(layer: &Ipv6Layer) -> Container {
+pub fn create_ipv6_layer_expander(offset: usize, expander: Rc<RefCell<HexEditor>>, layer: &Ipv6Layer) -> Container {
     let (dropdown, list_box) = create_dropdown("Internet Protocol Version 6");
 
     list_box.add(&create_row("Version:", layer.get_version().to_string()));
@@ -136,8 +133,34 @@ pub fn create_ipv6_layer_expander(layer: &Ipv6Layer) -> Container {
     list_box.add(&create_row("Source Address:", layer.get_source_address().to_string()));
     list_box.add(&create_row("Destination Address:", layer.get_destination_address().to_string()));
 
-    dropdown.add(&list_box);
+    let layer = layer.clone();
+    list_box.connect_row_activated(move |_, row| {
+        let (x, w) = match row.index() {
+            0 => {
+                layer.get_selection("version")
+            }
+            1 => {
+                layer.get_selection("payload_length")
+            }
+            2 => {
+                layer.get_selection("next_header")
+            }
+            3 => {
+                layer.get_selection("hop_limit")
+            }
+            4 => {
+                layer.get_selection("source_address")
+            }
+            5 => {
+                layer.get_selection("destination_address")
+            }
+            _ => unimplemented!()
+        };
 
+        expander.borrow_mut().set_selection(offset+x, w);
+    });
+
+    dropdown.add(&list_box);
     dropdown.upcast()
 }
 

@@ -207,7 +207,7 @@ impl Fragment for SidebarFragment {
                     }
                     Types::IPv6 => {
                         let ipv6_layer = ethernet_frame.get_data().unwrap().as_any().downcast_ref::<Ipv6Layer>().unwrap();
-                        details_layout.add(&create_ipv6_layer_expander(&ipv6_layer));
+                        details_layout.add(&create_ipv6_layer_expander(ethernet_frame.len()-ipv6_layer.len(), Rc::clone(&editor), &ipv6_layer));
 
                         match ipv6_layer.get_next_header() {
                             Protocols::HopByHop => {}

@@ -24,7 +24,7 @@ impl Selection for Ipv4Layer {
                 (6, 1)
             }
             "fragment_offset" => {
-                (7, 1)
+                (6, 2)
             }
             "ttl" => {
                 (8, 1)
