@@ -1,7 +1,7 @@
 use pcap::packet::layers::ethernet_frame::ip::ipv4_layer::Ipv4Layer;
-use crate::layers::inter::selection::Selection;
+use crate::layers::inter::extension::LayerExt;
 
-impl Selection for Ipv4Layer {
+impl LayerExt for Ipv4Layer {
 
     fn get_selection(&self, variable: &str) -> (usize, usize) {
         match variable {
@@ -43,5 +43,9 @@ impl Selection for Ipv4Layer {
             }
             _ => unimplemented!()
         }
+    }
+
+    fn to_string(&self) -> String {
+        todo!()
     }
 }

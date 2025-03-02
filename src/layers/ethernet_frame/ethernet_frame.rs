@@ -1,7 +1,7 @@
 use pcap::packet::layers::ethernet_frame::ethernet_frame::EthernetFrame;
-use crate::layers::inter::selection::Selection;
+use crate::layers::inter::extension::LayerExt;
 
-impl Selection for EthernetFrame {
+impl LayerExt for EthernetFrame {
 
     fn get_selection(&self, variable: &str) -> (usize, usize) {
         match variable {
@@ -19,5 +19,9 @@ impl Selection for EthernetFrame {
             }
             _ => unimplemented!()
         }
+    }
+
+    fn to_string(&self) -> String {
+        todo!()
     }
 }
