@@ -5,6 +5,9 @@ impl Selection for EthernetFrame {
 
     fn get_selection(&self, variable: &str) -> (usize, usize) {
         match variable {
+            "all" => {
+                (0, 14)
+            }
             "destination" => {
                 (0, 6)
             }

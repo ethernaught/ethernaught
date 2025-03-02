@@ -113,34 +113,22 @@ impl Fragment for SidebarFragment {
         editor.borrow_mut().set_selection_color(0.349, 0.263, 0.431);
         editor.borrow_mut().set_text_color(0.608, 0.616, 0.624);
 
-        //editor.borrow_mut().set_selection(0, 14);
-
-        let drawing_area = DrawingArea::new();
-        drawing_area.set_widget_name("hex_editor");
-        let (width, height) = editor.borrow_mut().content_size();
-        drawing_area.set_size_request(width, height);
-        drawing_area.set_hexpand(true);
-        drawing_area.set_vexpand(true);
-        drawing_area.show();
-
-        drawing_area.add_events(EventMask::POINTER_MOTION_MASK);
-
         let editor_clone = Rc::clone(&editor);
-        let drawing_clone = drawing_area.clone();
-        drawing_area.connect_motion_notify_event(move |_, event| {
+        editor.borrow().get_drawing_area().connect_motion_notify_event(move |drawing_area, event| {
             let (x, y) = event.position();
             editor_clone.borrow_mut().update_cursor(x, y);
-            drawing_clone.queue_draw();
+            drawing_area.queue_draw();
             Propagation::Proceed
         });
 
         let editor_clone = Rc::clone(&editor);
-        drawing_area.connect_draw(move |_, cr| {
+        editor.borrow().get_drawing_area().connect_draw(move |_, cr| {
             editor_clone.borrow_mut().draw_hex_editor(cr);
             Propagation::Proceed
         });
 
-        hex_content.add(&drawing_area);
+
+        hex_content.add(editor.borrow().get_drawing_area());
 
 
 
