@@ -19,10 +19,10 @@ pub struct CaptureService {
 impl CaptureService {
 
     pub fn new(device: &Device) -> Self {
-        let mut cap = Capture::from_device(&device).expect("Failed to open device");
+        let mut cap = Capture::new(&device).expect("Failed to open device");
         //cap.set_promiscuous_mode(true).expect("Failed to set promiscuous mode");
         cap.set_immediate_mode(true);
-        cap.open().expect("Failed to start capture");
+        //cap.open().expect("Failed to start capture");
 
         Self {
             cap,

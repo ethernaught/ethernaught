@@ -79,7 +79,7 @@ impl MainFragment {
 impl Fragment for MainFragment {
 
     fn on_create(&mut self) -> &Container {
-        let builder = Builder::from_file("res/ui/gtk3/main-fragment.ui");
+        let builder = Builder::from_file("res/ui/gtk3/main_fragment.ui");
 
         self.root = Some(builder
             .object("content_layout")

@@ -37,10 +37,10 @@ impl Activity for DevicesActivity {
     }
 
     fn on_create(&mut self) -> &Container {
-        let builder = Builder::from_file("res/ui/gtk3/devices-activity.ui");
+        let builder = Builder::from_file("res/ui/gtk3/devices_activity.ui");
 
         let provider = CssProvider::new();
-        provider.load_from_path("res/ui/gtk3/devices-activity.css").expect("Failed to load CSS file.");
+        provider.load_from_path("res/ui/gtk3/devices_activity.css").expect("Failed to load CSS file.");
 
         StyleContext::add_provider_for_screen(
             &gdk::Screen::default().expect("Failed to get default screen."),
@@ -50,12 +50,12 @@ impl Activity for DevicesActivity {
 
         self.root = Some(builder
             .object("devices_layout")
-            .expect("Couldn't find 'devices_layout' in devices-activity.ui"));
+            .expect("Couldn't find 'devices_layout' in devices_activity.ui"));
 
 
         let list_box: ListBox = builder
             .object("list_box")
-            .expect("Couldn't find 'list_box' in devices-activity.ui");
+            .expect("Couldn't find 'list_box' in devices_activity.ui");
         list_box.set_selection_mode(gtk::SelectionMode::Single);
 
         let device_adapter = DevicesAdapter::new(&list_box);

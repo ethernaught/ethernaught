@@ -73,10 +73,10 @@ impl Activity for MainActivity {
     }
 
     fn on_create(&mut self) -> &Container {
-        let builder = Builder::from_file("res/ui/gtk3/main-activity.ui");
+        let builder = Builder::from_file("res/ui/gtk3/main_activity.ui");
 
         let provider = CssProvider::new();
-        provider.load_from_path("res/ui/gtk3/main-activity.css").expect("Failed to load CSS file.");
+        provider.load_from_path("res/ui/gtk3/main_activity.css").expect("Failed to load CSS file.");
 
         StyleContext::add_provider_for_screen(
             &gdk::Screen::default().expect("Failed to get default screen."),
@@ -86,12 +86,12 @@ impl Activity for MainActivity {
 
         self.root = Some(builder
             .object("window_layout")
-            .expect("Couldn't find 'window_layout' in main-activity.ui"));
+            .expect("Couldn't find 'window_layout' in main_activity.ui"));
 
 
         let mut window_content_pane: Paned = builder
             .object("window_content_pane")
-            .expect("Couldn't find 'window_content_pane' in main-activity.ui");
+            .expect("Couldn't find 'window_content_pane' in main_activity.ui");
 
         let mut main_fragment = MainFragment::new(self.dyn_clone());
         let content = main_fragment.on_create();
