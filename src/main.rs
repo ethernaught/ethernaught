@@ -19,6 +19,8 @@ use crate::ui::application::OApplication;
 pub static VERSION: &str = "1.0";
 
 fn main() {
+    let target_double = format!("{}-{}", env::consts::ARCH, env::consts::OS);
+    println!("{}", target_double);
 
     if !is_root() {
         println!("Requesting root access...");
