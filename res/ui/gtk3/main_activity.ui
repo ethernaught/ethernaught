@@ -19,6 +19,16 @@
                 <property name="spacing">10</property>
 
                 <child>
+                    <object class="GtkButton" id="plugins_button">
+                        <property name="name">plugins_button</property>
+                        <property name="tooltip-text">Plugins</property>
+                        <property name="visible">True</property>
+                        <property name="width-request">24</property>
+                        <property name="height-request">24</property>
+                    </object>
+                </child>
+
+                <child>
                     <object class="GtkBox">
                         <property name="visible">True</property>
                         <property name="vexpand">True</property>
