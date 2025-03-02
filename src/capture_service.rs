@@ -10,7 +10,7 @@ use pcap::packet::packet::Packet;
 
 #[derive(Clone)]
 pub struct CaptureService {
-    cap: Capture,
+    cap: Option<Capture>,
     device: Device,
     running: Arc<AtomicBool>,
     tx: Option<Sender<Packet>>
@@ -19,10 +19,17 @@ pub struct CaptureService {
 impl CaptureService {
 
     pub fn new(device: &Device) -> Self {
-        let mut cap = Capture::new(&device).expect("Failed to open device");
-        //cap.set_promiscuous_mode(true).expect("Failed to set promiscuous mode");
-        cap.set_immediate_mode(true);
-        //cap.open().expect("Failed to start capture");
+        let cap = match Capture::from_device(&device) {
+            Ok(cap) => {
+                cap.set_immediate_mode(true);
+                cap.open().expect("Failed to start capture");
+                Some(cap)
+            }
+            Err(error) => {
+                println!("Failed to open capture: {}", error);
+                None
+            }
+        };
 
         Self {
             cap,
@@ -33,7 +40,12 @@ impl CaptureService {
     }
 
     pub fn send(&self, packet: Packet) {
-        self.cap.send_packet(packet);
+        match self.cap.as_ref() {
+            Some(cap) => {
+                cap.send_packet(packet);
+            }
+            _ => unimplemented!()
+        }
     }
 
     pub fn set_tx(&mut self, tx: Sender<Packet>) {
@@ -53,16 +65,21 @@ impl CaptureService {
                 .expect("Time went backwards")
                 .as_millis() as f64;
 
-            while _self.running.load(Ordering::Relaxed) {
-                match _self.cap.next_packet() {
-                    Ok(packet) => {
-                        //packet.get_frame_time()-now);
-                        _self.tx.as_ref().unwrap().send(packet).expect("Failed to send packet");
-                    }
-                    _ => {
-                        break;
+            match _self.cap.as_mut() {
+                Some(cap) => {
+                    while _self.running.load(Ordering::Relaxed) {
+                        match cap.next_packet() {
+                            Ok(packet) => {
+                                //packet.get_frame_time()-now);
+                                _self.tx.as_ref().unwrap().send(packet).expect("Failed to send packet");
+                            }
+                            _ => {
+                                break;
+                            }
+                        }
                     }
                 }
+                _ => unimplemented!()
             }
         });
     }
