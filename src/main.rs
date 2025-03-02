@@ -1,6 +1,7 @@
 mod capture_service;
 mod ui;
 mod layers;
+mod database;
 
 use std::sync::{Arc, Mutex};
 use std::sync::mpsc::channel;
