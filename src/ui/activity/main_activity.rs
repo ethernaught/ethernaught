@@ -36,6 +36,32 @@ impl MainActivity {
         &self.capture_service
     }
 
+    pub fn open_footerbar(&self, mut fragment: Box<dyn Fragment>) {
+        if let Some(pane) = self.app.get_child_by_name(self.root.as_ref().unwrap().upcast_ref(), "window_pane").unwrap().downcast_ref::<Paned>() {
+            match pane.child2() {
+                Some(child) => {
+                    pane.remove(&child);
+                }
+                None => {}
+            }
+
+            let content = fragment.on_create();
+            pane.add(content);
+            pane.set_child_shrink(content, false);
+        }
+    }
+
+    pub fn close_footerbar(&self) {
+        if let Some(pane) = self.app.get_child_by_name(self.root.as_ref().unwrap().upcast_ref(), "window_pane").unwrap().downcast_ref::<Paned>() {
+            match pane.child2() {
+                Some(child) => {
+                    pane.remove(&child);
+                }
+                None => {}
+            }
+        }
+    }
+
     pub fn open_sidebar(&self, mut fragment: Box<dyn Fragment>) {
         if let Some(pane) = self.app.get_child_by_name(self.root.as_ref().unwrap().upcast_ref(), "window_content_pane").unwrap().downcast_ref::<Paned>() {
             match pane.child2() {
@@ -100,6 +126,27 @@ impl Activity for MainActivity {
         window_content_pane.set_child_shrink(content, false);
         window_content_pane.set_child_resize(content, true);
 
+
+
+
+
+
+
+
+        let mut window_pane: Paned = builder
+            .object("window_pane")
+            .expect("Couldn't find 'window_pane' in main_activity.ui");
+
+        self.open_footerbar(TerminalFragment::new(self.dyn_clone()).dyn_clone());
+
+
+        let content = window_content_pane.upcast_ref::<Container>();
+        window_pane.set_child_shrink(content, false);
+        window_pane.set_child_resize(content, true);
+
+
+
+
         let main_fragment = Rc::new(RefCell::new(main_fragment));
 
 
@@ -151,19 +198,6 @@ impl Activity for MainActivity {
             });
         }
 
-
-
-
-
-        let mut window_pane: Paned = builder
-            .object("window_pane")
-            .expect("Couldn't find 'window_pane' in main_activity.ui");
-
-        let mut terminal_fragment = TerminalFragment::new(self.dyn_clone());
-        let content = terminal_fragment.on_create();
-        window_pane.add(content);
-        //window_pane.set_child_shrink(content, false);
-        //window_pane.set_child_resize(content, true);
 
 
 
