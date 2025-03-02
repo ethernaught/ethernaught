@@ -13,6 +13,7 @@ use crate::ui::application::OApplication;
 use crate::ui::activity::inter::activity::Activity;
 use crate::ui::fragment::inter::fragment::Fragment;
 use crate::ui::fragment::main_fragment::MainFragment;
+use crate::ui::fragment::terminal_fragment::TerminalFragment;
 
 #[derive(Clone)]
 pub struct MainActivity {
@@ -149,6 +150,24 @@ impl Activity for MainActivity {
                 packet_service.stop();
             });
         }
+
+
+
+
+
+        let mut window_pane: Paned = builder
+            .object("window_pane")
+            .expect("Couldn't find 'window_pane' in main_activity.ui");
+
+        let mut terminal_fragment = TerminalFragment::new(self.dyn_clone());
+        let content = terminal_fragment.on_create();
+        window_pane.add(content);
+        //window_pane.set_child_shrink(content, false);
+        //window_pane.set_child_resize(content, true);
+
+
+
+
 
 
 

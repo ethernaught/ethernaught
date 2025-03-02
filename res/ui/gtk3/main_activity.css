@@ -59,6 +59,17 @@ list row:active,
 
 
 
+#terminal_scroll_layout {
+    border-top: solid 1px #1e1f22;
+}
+
+
+
+
+
+
+
+
 #sidebar_title {
     padding: 4px 4px 3px 4px;
     border-bottom: solid 1px #393b40;
