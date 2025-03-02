@@ -2,7 +2,7 @@ use std::any::Any;
 use std::cell::RefCell;
 use std::net::IpAddr;
 use std::rc::Rc;
-use gtk::{Builder, Button, Container, DrawingArea};
+use gtk::{Builder, Button, Container, DrawingArea, Paned};
 use gtk::gdk::EventMask;
 use gtk::glib::{clone, Propagation};
 use gtk::prelude::{BuilderExtManual, ButtonExt, Cast, ContainerExt, PanedExt, WidgetExt, WidgetExtManual};
@@ -51,9 +51,32 @@ impl Fragment for SidebarFragment {
     fn on_create(&mut self) -> &Container {
         let builder = Builder::from_file("res/ui/gtk3/sidebar_fragment.ui");
 
+        let sidebar_content: Paned = builder
+            .object("sidebar_content")
+            .expect("Couldn't find 'sidebar_content' in window.ui");
+
+        let hex_scroll_layout: Container = builder
+            .object("hex_scroll_layout")
+            .expect("Couldn't find 'hex_scroll_layout' in window.ui");
+
+        sidebar_content.set_child_shrink(&hex_scroll_layout, false);
+        sidebar_content.set_child_resize(&hex_scroll_layout, true);
+
+        let details_scroll_layout: Container = builder
+            .object("details_scroll_layout")
+            .expect("Couldn't find 'details_scroll_layout' in window.ui");
+
+        sidebar_content.set_child_shrink(&details_scroll_layout, false);
+
+
         self.root = Some(builder
             .object("sidebar_layout")
             .expect("Couldn't find 'sidebar_layout' in window.ui"));
+
+
+
+
+
 
 
         let dismiss_button: Button = builder
