@@ -18,30 +18,34 @@ impl Database {
             return None;
         }
 
-        let create_table = "CREATE TABLE IF NOT EXISTS users (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            name TEXT NOT NULL,
-            age INTEGER NOT NULL
-        );";
-        execute_sql(db, create_table);
-
         Some(Self {
             db
         })
+    }
+
+    pub fn create_table(&mut self, name: &str, columns: &HashMap<String, String>) {
+        let mut column_definitions: Vec<String> = Vec::new();
+
+        for (column_name, column_type) in columns {
+            column_definitions.push(format!("{} {}", column_name, column_type));
+        }
+
+        let create_table = format!("CREATE TABLE IF NOT EXISTS {} (
+            {}
+        );", name, column_definitions.join(", "));
+
+        execute_sql(self.db, &create_table);
     }
 
     pub fn insert(&mut self, table: &str, fields: &HashMap<&str, String>) {
         let field_names: Vec<&str> = fields.keys().cloned().collect();
         let field_values: Vec<String> = fields.values().cloned().collect();
 
-        let field_names_str = field_names.join(", ");
-        let field_values_str = field_values.join(", ");
-
         let sql = format!(
             "INSERT INTO {} ({}) VALUES ({});",
             table,
-            field_names_str,
-            field_values_str
+            field_names.join(", "),
+            field_values.join(", ")
         );
 
         execute_sql(self.db, &sql);
