@@ -237,11 +237,14 @@ impl Activity for MainActivity {
         let _self = self.clone();
         let main_fragment = Rc::clone(&main_fragment);
         glib::timeout_add_local(Duration::from_millis(10), move || {
-            match rx.try_recv() {
-                Ok(packet) => {
-                    main_fragment.borrow().get_packet_adapter().unwrap().add(packet);
-                }
-                _ => {
+            loop {
+                match rx.try_recv() {
+                    Ok(packet) => {
+                        main_fragment.borrow().get_packet_adapter().unwrap().add(packet);
+                    }
+                    _ => {
+                        break;
+                    }
                 }
             }
             Continue
