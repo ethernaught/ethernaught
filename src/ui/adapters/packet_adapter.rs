@@ -29,8 +29,8 @@ impl PacketAdapter {
         }
     }
 
-    pub fn add(&mut self, packet: Packet) {
-        let (source_icon, source, destination_icon, destination, protocol) = match packet.get_interface() {
+    pub fn add(&mut self, packet: Packet, source_icon: Option<String>, destination_icon: Option<String>) {
+        let (source, destination, protocol) = match packet.get_interface() {
             Interfaces::Ethernet => {
                 let ethernet_frame = packet.get_frame().as_any().downcast_ref::<EthernetFrame>().unwrap();
 
@@ -44,15 +44,15 @@ impl PacketAdapter {
 
                                 match udp_layer.get_payload() {
                                     UdpPayloads::Known(_type, _) => {
-                                        (Pixbuf::from_file("res/images/flags/ic_amenia.svg").ok(), ipv4_layer.get_source_address().to_string(), Pixbuf::from_file("res/images/flags/ic_amenia.svg").ok(), ipv4_layer.get_destination_address().to_string(), udp_layer.get_type().to_string())
+                                        (ipv4_layer.get_source_address().to_string(), ipv4_layer.get_destination_address().to_string(), udp_layer.get_type().to_string())
                                     }
                                     _ => {
-                                        (Pixbuf::from_file("res/images/flags/ic_amenia.svg").ok(), ipv4_layer.get_source_address().to_string(), Pixbuf::from_file("res/images/flags/ic_amenia.svg").ok(), ipv4_layer.get_destination_address().to_string(), ipv4_layer.get_protocol().to_string())
+                                        (ipv4_layer.get_source_address().to_string(), ipv4_layer.get_destination_address().to_string(), ipv4_layer.get_protocol().to_string())
                                     }
                                 }
                             }
                             _ => {
-                                (Pixbuf::from_file("res/images/flags/ic_amenia.svg").ok(), ipv4_layer.get_source_address().to_string(), Pixbuf::from_file("res/images/flags/ic_amenia.svg").ok(), ipv4_layer.get_destination_address().to_string(), ipv4_layer.get_protocol().to_string())
+                                (ipv4_layer.get_source_address().to_string(), ipv4_layer.get_destination_address().to_string(), ipv4_layer.get_protocol().to_string())
                             }
                         }
                     }
@@ -65,28 +65,27 @@ impl PacketAdapter {
 
                                 match udp_layer.get_payload() {
                                     UdpPayloads::Known(_type, _) => {
-                                        (Pixbuf::from_file("res/images/flags/ic_amenia.svg").ok(), ipv6_layer.get_source_address().to_string(), Pixbuf::from_file("res/images/flags/ic_amenia.svg").ok(), ipv6_layer.get_destination_address().to_string(), udp_layer.get_type().to_string())
+                                        (ipv6_layer.get_source_address().to_string(), ipv6_layer.get_destination_address().to_string(), udp_layer.get_type().to_string())
                                     }
                                     _ => {
-                                        (Pixbuf::from_file("res/images/flags/ic_amenia.svg").ok(), ipv6_layer.get_source_address().to_string(), Pixbuf::from_file("res/images/flags/ic_amenia.svg").ok(), ipv6_layer.get_destination_address().to_string(), ipv6_layer.get_next_header().to_string())
+                                        (ipv6_layer.get_source_address().to_string(), ipv6_layer.get_destination_address().to_string(), ipv6_layer.get_next_header().to_string())
                                     }
                                 }
                             }
                             _ => {
-                                (Pixbuf::from_file("res/images/flags/ic_amenia.svg").ok(), ipv6_layer.get_source_address().to_string(), Pixbuf::from_file("res/images/flags/ic_amenia.svg").ok(), ipv6_layer.get_destination_address().to_string(), ipv6_layer.get_next_header().to_string())
+                                (ipv6_layer.get_source_address().to_string(), ipv6_layer.get_destination_address().to_string(), ipv6_layer.get_next_header().to_string())
                             }
                         }
                     }
                     Types::Broadcast => {
                         //source_label.set_label(&ethernet_layer.get_source().to_string());
                         //destination_label.set_label(&ethernet_layer.get_destination().to_string());
-                        (None, ethernet_frame.get_source_mac().to_string(), None, ethernet_frame.get_destination_mac().to_string(), ethernet_frame.get_type().to_string())
+                        (ethernet_frame.get_source_mac().to_string(), ethernet_frame.get_destination_mac().to_string(), ethernet_frame.get_type().to_string())
                     }
                     _ => {
-                        (None, ethernet_frame.get_source_mac().to_string(), None, ethernet_frame.get_destination_mac().to_string(), ethernet_frame.get_type().to_string())
+                        (ethernet_frame.get_source_mac().to_string(), ethernet_frame.get_destination_mac().to_string(), ethernet_frame.get_type().to_string())
                     }
                 }
-
             }
             Interfaces::WiFi => {
                 //"[WiFi] TODO".to_string()
@@ -112,12 +111,21 @@ impl PacketAdapter {
             //(8, &"TODO".to_string()),
         ];
 
-        if let Some(ref icon) = source_icon {
-            values.push((2, icon));
+        if let Some(source_icon) = source_icon {
+            let icon = Pixbuf::from_file("res/images/flags/ic_amenia.svg").ok().unwrap();
+            //let source_icon = Self::code_to_icon(&source_icon);
+            //if let Some(icon) = source_icon {
+                values.push((2, &icon));
+            //}
         }
 
-        if let Some(ref icon) = destination_icon {
-            values.push((4, icon));
+        if let Some(destination_icon) = destination_icon {
+            let icon = Pixbuf::from_file("res/images/flags/ic_amenia.svg").ok().unwrap();
+
+            //let destination_icon = Self::code_to_icon(&destination_icon);
+            //if let Some(icon) = destination_icon {
+                values.push((4, &icon));
+            //}
         }
 
         self.model.insert_with_values(None, &values);
@@ -132,5 +140,16 @@ impl PacketAdapter {
     pub fn clear(&mut self) {
         self.model.clear();
         self.packets.lock().unwrap().clear();
+    }
+
+
+    //TEMPORARY - MOVE THIS OUT LATER
+    fn code_to_icon(code: &str) -> Option<Pixbuf> {
+        match code {
+            "us" => {
+                Pixbuf::from_file("res/images/flags/ic_amenia.svg").ok()
+            }
+            _ => None
+        }
     }
 }
