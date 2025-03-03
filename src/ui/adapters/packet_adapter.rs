@@ -29,8 +29,8 @@ impl PacketAdapter {
         }
     }
 
-    pub fn add(&mut self, packet: Packet) {
-        let (source_icon, source, destination_icon, destination, protocol) = match packet.get_interface() {
+    pub fn add(&mut self, packet: Packet, source_icon: Option<String>, destination_icon: Option<String>) {
+        let (source, destination, protocol) = match packet.get_interface() {
             Interfaces::Ethernet => {
                 let ethernet_frame = packet.get_frame().as_any().downcast_ref::<EthernetFrame>().unwrap();
 
@@ -44,15 +44,15 @@ impl PacketAdapter {
 
                                 match udp_layer.get_payload() {
                                     UdpPayloads::Known(_type, _) => {
-                                        (Pixbuf::from_file("res/images/flags/ic_amenia.svg").ok(), ipv4_layer.get_source_address().to_string(), Pixbuf::from_file("res/images/flags/ic_amenia.svg").ok(), ipv4_layer.get_destination_address().to_string(), udp_layer.get_type().to_string())
+                                        (ipv4_layer.get_source_address().to_string(), ipv4_layer.get_destination_address().to_string(), udp_layer.get_type().to_string())
                                     }
                                     _ => {
-                                        (Pixbuf::from_file("res/images/flags/ic_amenia.svg").ok(), ipv4_layer.get_source_address().to_string(), Pixbuf::from_file("res/images/flags/ic_amenia.svg").ok(), ipv4_layer.get_destination_address().to_string(), ipv4_layer.get_protocol().to_string())
+                                        (ipv4_layer.get_source_address().to_string(), ipv4_layer.get_destination_address().to_string(), ipv4_layer.get_protocol().to_string())
                                     }
                                 }
                             }
                             _ => {
-                                (Pixbuf::from_file("res/images/flags/ic_amenia.svg").ok(), ipv4_layer.get_source_address().to_string(), Pixbuf::from_file("res/images/flags/ic_amenia.svg").ok(), ipv4_layer.get_destination_address().to_string(), ipv4_layer.get_protocol().to_string())
+                                (ipv4_layer.get_source_address().to_string(), ipv4_layer.get_destination_address().to_string(), ipv4_layer.get_protocol().to_string())
                             }
                         }
                     }
@@ -65,28 +65,27 @@ impl PacketAdapter {
 
                                 match udp_layer.get_payload() {
                                     UdpPayloads::Known(_type, _) => {
-                                        (Pixbuf::from_file("res/images/flags/ic_amenia.svg").ok(), ipv6_layer.get_source_address().to_string(), Pixbuf::from_file("res/images/flags/ic_amenia.svg").ok(), ipv6_layer.get_destination_address().to_string(), udp_layer.get_type().to_string())
+                                        (ipv6_layer.get_source_address().to_string(), ipv6_layer.get_destination_address().to_string(), udp_layer.get_type().to_string())
                                     }
                                     _ => {
-                                        (Pixbuf::from_file("res/images/flags/ic_amenia.svg").ok(), ipv6_layer.get_source_address().to_string(), Pixbuf::from_file("res/images/flags/ic_amenia.svg").ok(), ipv6_layer.get_destination_address().to_string(), ipv6_layer.get_next_header().to_string())
+                                        (ipv6_layer.get_source_address().to_string(), ipv6_layer.get_destination_address().to_string(), ipv6_layer.get_next_header().to_string())
                                     }
                                 }
                             }
                             _ => {
-                                (Pixbuf::from_file("res/images/flags/ic_amenia.svg").ok(), ipv6_layer.get_source_address().to_string(), Pixbuf::from_file("res/images/flags/ic_amenia.svg").ok(), ipv6_layer.get_destination_address().to_string(), ipv6_layer.get_next_header().to_string())
+                                (ipv6_layer.get_source_address().to_string(), ipv6_layer.get_destination_address().to_string(), ipv6_layer.get_next_header().to_string())
                             }
                         }
                     }
                     Types::Broadcast => {
                         //source_label.set_label(&ethernet_layer.get_source().to_string());
                         //destination_label.set_label(&ethernet_layer.get_destination().to_string());
-                        (None, ethernet_frame.get_source_mac().to_string(), None, ethernet_frame.get_destination_mac().to_string(), ethernet_frame.get_type().to_string())
+                        (ethernet_frame.get_source_mac().to_string(), ethernet_frame.get_destination_mac().to_string(), ethernet_frame.get_type().to_string())
                     }
                     _ => {
-                        (None, ethernet_frame.get_source_mac().to_string(), None, ethernet_frame.get_destination_mac().to_string(), ethernet_frame.get_type().to_string())
+                        (ethernet_frame.get_source_mac().to_string(), ethernet_frame.get_destination_mac().to_string(), ethernet_frame.get_type().to_string())
                     }
                 }
-
             }
             Interfaces::WiFi => {
                 //"[WiFi] TODO".to_string()
@@ -112,12 +111,20 @@ impl PacketAdapter {
             //(8, &"TODO".to_string()),
         ];
 
-        if let Some(ref icon) = source_icon {
-            values.push((2, icon));
+        let mut icon = None;
+        if let Some(source_icon) = source_icon {
+            icon = Self::code_to_icon(&source_icon);
+            if let Some(ref icon) = icon {
+                values.push((2, icon));
+            }
         }
 
-        if let Some(ref icon) = destination_icon {
-            values.push((4, icon));
+        let mut icon = None;
+        if let Some(destination_icon) = destination_icon {
+            icon = Self::code_to_icon(&destination_icon);
+            if let Some(ref icon) = icon {
+                values.push((4, icon));
+            }
         }
 
         self.model.insert_with_values(None, &values);
@@ -132,5 +139,124 @@ impl PacketAdapter {
     pub fn clear(&mut self) {
         self.model.clear();
         self.packets.lock().unwrap().clear();
+    }
+
+
+    //TEMPORARY - MOVE THIS OUT LATER
+    fn code_to_icon(code: &str) -> Option<Pixbuf> {
+        match code {
+            "AM" => {
+                Pixbuf::from_file("res/images/flags/ic_amenia.svg").ok()
+            }
+            "AT" => {
+                Pixbuf::from_file("res/images/flags/ic_austria.svg").ok()
+            }
+            "BE" => {
+                Pixbuf::from_file("res/images/flags/ic_belgium.svg").ok()
+            }
+            "BO" => {
+                Pixbuf::from_file("res/images/flags/ic_bolivia.svg").ok()
+            }
+            "BR" => {
+                Pixbuf::from_file("res/images/flags/ic_brazil.svg").ok()
+            }
+            "BG" => {
+                Pixbuf::from_file("res/images/flags/ic_bulgaria.svg").ok()
+            }
+            "CA" => {
+                Pixbuf::from_file("res/images/flags/ic_canada.svg").ok()
+            }
+            "TD" => {
+                Pixbuf::from_file("res/images/flags/ic_chad.svg").ok()
+            }
+            "CN" => {
+                Pixbuf::from_file("res/images/flags/ic_china.svg").ok()
+            }
+            "DK" => {
+                Pixbuf::from_file("res/images/flags/ic_denmark.svg").ok()
+            }
+            "EE" => {
+                Pixbuf::from_file("res/images/flags/ic_estonia.svg").ok()
+            }
+            "FI" => {
+                Pixbuf::from_file("res/images/flags/ic_finland.svg").ok()
+            }
+            "FR" => {
+                Pixbuf::from_file("res/images/flags/ic_france.svg").ok()
+            }
+            "GA" => {
+                Pixbuf::from_file("res/images/flags/ic_gabon.svg").ok()
+            }
+            "GE" => {
+                Pixbuf::from_file("res/images/flags/ic_georgia.svg").ok()
+            }
+            "DE" => {
+                Pixbuf::from_file("res/images/flags/ic_germany.svg").ok()
+            }
+            "GN" => {
+                Pixbuf::from_file("res/images/flags/ic_guinea.svg").ok()
+            }
+            "HU" => {
+                Pixbuf::from_file("res/images/flags/ic_hungary.svg").ok()
+            }
+            "IE" => {
+                Pixbuf::from_file("res/images/flags/ic_ireland.svg").ok()
+            }
+            "IT" => {
+                Pixbuf::from_file("res/images/flags/ic_italy.svg").ok()
+            }
+            "CI" => {
+                Pixbuf::from_file("res/images/flags/ic_ivory_coast.svg").ok()
+            }
+            "JP" => {
+                Pixbuf::from_file("res/images/flags/ic_japan.svg").ok()
+            }
+            "LV" => {
+                Pixbuf::from_file("res/images/flags/ic_latvia.svg").ok()
+            }
+            "LT" => {
+                Pixbuf::from_file("res/images/flags/ic_lithuania.svg").ok()
+            }
+            "LU" => {
+                Pixbuf::from_file("res/images/flags/ic_luxembourg.svg").ok()
+            }
+            "ML" => {
+                Pixbuf::from_file("res/images/flags/ic_mali.svg").ok()
+            }
+            "NL" => {
+                Pixbuf::from_file("res/images/flags/ic_netherlands.svg").ok()
+            }
+            "NG" => {
+                Pixbuf::from_file("res/images/flags/ic_nigeria.svg").ok()
+            }
+            "PA" => {
+                Pixbuf::from_file("res/images/flags/ic_panama.svg").ok()
+            }
+            "PE" => {
+                Pixbuf::from_file("res/images/flags/ic_peru.svg").ok()
+            }
+            "RO" => {
+                Pixbuf::from_file("res/images/flags/ic_romania.svg").ok()
+            }
+            "RU" => {
+                Pixbuf::from_file("res/images/flags/ic_russia.svg").ok()
+            }
+            "SE" => {
+                Pixbuf::from_file("res/images/flags/ic_sweden.svg").ok()
+            }
+            "CH" => {
+                Pixbuf::from_file("res/images/flags/ic_switzerland.svg").ok()
+            }
+            "UK" => {
+                Pixbuf::from_file("res/images/flags/ic_united_kingdom.svg").ok()
+            }
+            "US" => {
+                Pixbuf::from_file("res/images/flags/ic_united_states.svg").ok()
+            }
+            "YE" => {
+                Pixbuf::from_file("res/images/flags/ic_yemen.svg").ok()
+            }
+            _ => None
+        }
     }
 }
