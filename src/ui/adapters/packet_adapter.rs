@@ -244,7 +244,7 @@ impl PacketAdapter {
             "SE" => {
                 Pixbuf::from_file("res/images/flags/ic_sweden.svg").ok()
             }
-            "SZ" => {
+            "CH" => {
                 Pixbuf::from_file("res/images/flags/ic_switzerland.svg").ok()
             }
             "UK" => {
