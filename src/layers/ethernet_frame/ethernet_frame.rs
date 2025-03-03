@@ -1,5 +1,5 @@
 use pcap::packet::layers::ethernet_frame::ethernet_frame::EthernetFrame;
-use crate::layers::inter::extension::LayerExt;
+use crate::layers::inter::layer_ext::LayerExt;
 
 impl LayerExt for EthernetFrame {
 

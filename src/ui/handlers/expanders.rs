@@ -13,7 +13,7 @@ use pcap::packet::layers::ethernet_frame::ip::ipv6_layer::Ipv6Layer;
 use pcap::packet::layers::ethernet_frame::ip::tcp::tcp_layer::TcpLayer;
 use pcap::packet::layers::ethernet_frame::ip::udp::dhcp::dhcp_layer::DhcpLayer;
 use pcap::packet::layers::ethernet_frame::ip::udp::udp_layer::UdpLayer;
-use crate::layers::inter::extension::LayerExt;
+use crate::layers::inter::layer_ext::LayerExt;
 use crate::ui::widgets::hex_editor::HexEditor;
 
 pub fn create_ethernet_layer_expander(offset: usize, expander: Rc<RefCell<HexEditor>>, layer: &EthernetFrame) -> Container {

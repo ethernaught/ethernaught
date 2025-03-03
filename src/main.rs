@@ -26,14 +26,12 @@ fn main() {
     println!("{}", target_double);
 
 
-    /*
     let db = Database::open("database.db").unwrap();
 
     let addr = u32::from(Ipv4Addr::new(8, 8, 8, 8));
     let documents = db.get("ipv4_location", Some(vec!["id", "country_code"]), Some(format!("start <= {} AND end >= {}", addr, addr).as_str()));
 
     println!("{:?}", documents);
-    */
 
 
 

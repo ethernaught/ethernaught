@@ -1,5 +1,5 @@
 use pcap::packet::layers::ethernet_frame::ip::ipv4_layer::Ipv4Layer;
-use crate::layers::inter::extension::LayerExt;
+use crate::layers::inter::layer_ext::LayerExt;
 
 impl LayerExt for Ipv4Layer {
 
