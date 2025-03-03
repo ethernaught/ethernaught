@@ -2,7 +2,8 @@ use std::any::Any;
 use std::cell::RefCell;
 use std::rc::Rc;
 use gtk::prelude::*;
-use gtk::{gdk, glib, Adjustment, Application, ApplicationWindow, Builder, Button, CellRendererText, Container, CssProvider, Image, Label, ListBox, ListBoxRow, ListStore, Paned, ScrolledWindow, Stack, StyleContext, TextTag, TextView, TreePath, TreeView, TreeViewColumn, Widget};
+use gtk::{gdk, glib, Adjustment, Application, ApplicationWindow, Builder, Button, CellRendererPixbuf, CellRendererText, Container, CssProvider, Image, Label, ListBox, ListBoxRow, ListStore, Paned, ScrolledWindow, Stack, StyleContext, TextTag, TextView, TreePath, TreeView, TreeViewColumn, Widget};
+use gtk::gdk_pixbuf::Pixbuf;
 use gtk::glib::Propagation::Proceed;
 use gtk::glib::Type;
 use pcap::packet::inter::interfaces::Interfaces;
@@ -43,7 +44,83 @@ impl MainFragment {
         CellLayoutExt::add_attribute(&column, &renderer, "text", col_id);
 
         CellLayoutExt::set_cell_data_func(&column, &renderer, Some(Box::new(move |_, cell, model, iter| {
-            let protocol: String = model.value(iter, 4).get().unwrap_or_default();
+            let protocol: String = model.value(iter, 6).get().unwrap_or_default();
+
+            let color = match protocol.as_str() {
+                "ARP" => {
+                    "#05211b"
+                }
+                "Broadcast" => {
+                    "#000000"
+                }
+                "TCP" => {
+                    "#1e0926"
+                }
+                "UDP" => {
+                    "#070c1f"
+                }
+                "ICMP" => {
+                    "#260d07"
+                }
+                "GRE" => {
+                    "#122407"
+                }
+                _ => {
+                    "#1e1f22"
+                }
+            };
+
+            cell.set_property("cell-background", &color);
+        })));
+
+        tree.append_column(&column);
+    }
+
+    fn add_column_with_icon(&self, tree: &TreeView, title: &str, col_id: i32, min_width: i32) {
+        let column = TreeViewColumn::new();
+        column.set_min_width(min_width);
+        column.set_title(title);
+
+        let renderer = CellRendererPixbuf::new();
+        CellLayoutExt::pack_start(&column, &renderer, true);
+        CellLayoutExt::add_attribute(&column, &renderer, "pixbuf", col_id);
+
+        CellLayoutExt::set_cell_data_func(&column, &renderer, Some(Box::new(move |_, cell, model, iter| {
+            let protocol: String = model.value(iter, 6).get().unwrap_or_default();
+
+            let color = match protocol.as_str() {
+                "ARP" => {
+                    "#05211b"
+                }
+                "Broadcast" => {
+                    "#000000"
+                }
+                "TCP" => {
+                    "#1e0926"
+                }
+                "UDP" => {
+                    "#070c1f"
+                }
+                "ICMP" => {
+                    "#260d07"
+                }
+                "GRE" => {
+                    "#122407"
+                }
+                _ => {
+                    "#1e1f22"
+                }
+            };
+
+            cell.set_property("cell-background", &color);
+        })));
+
+        let renderer = CellRendererText::new();
+        CellLayoutExt::pack_start(&column, &renderer, true);
+        CellLayoutExt::add_attribute(&column, &renderer, "text", col_id+1);
+
+        CellLayoutExt::set_cell_data_func(&column, &renderer, Some(Box::new(move |_, cell, model, iter| {
+            let protocol: String = model.value(iter, 6).get().unwrap_or_default();
 
             let color = match protocol.as_str() {
                 "ARP" => {
@@ -85,7 +162,7 @@ impl Fragment for MainFragment {
             .object("content_layout")
             .expect("Couldn't find 'content_layout' in window.ui"));
 
-        let model = ListStore::new(&[Type::U32, Type::STRING, Type::STRING, Type::STRING, Type::STRING, Type::STRING, Type::STRING]);
+        let model = ListStore::new(&[Type::U32, Type::STRING, Pixbuf::static_type(), Type::STRING, Pixbuf::static_type(), Type::STRING, Type::STRING, Type::STRING, Type::STRING]);
         self.packet_adapter = Some(PacketAdapter::new(&model));
 
         let tree_view: TreeView = builder
@@ -96,11 +173,11 @@ impl Fragment for MainFragment {
 
         self.add_column(&tree_view, "No.", 0, 100);
         self.add_column(&tree_view, "Time", 1, 150);
-        self.add_column(&tree_view, "Source", 2, 150);
-        self.add_column(&tree_view, "Destination", 3, 150);
-        self.add_column(&tree_view, "Protocol", 4, 80);
-        self.add_column(&tree_view, "Length", 5, 80);
-        self.add_column(&tree_view, "Info", 6, 80);
+        self.add_column_with_icon(&tree_view, "Source", 2, 180);
+        self.add_column_with_icon(&tree_view, "Destination", 4, 180);
+        self.add_column(&tree_view, "Protocol", 6, 80);
+        self.add_column(&tree_view, "Length", 7, 80);
+        self.add_column(&tree_view, "Info", 8, 80);
 
         let _self = self.clone();
 

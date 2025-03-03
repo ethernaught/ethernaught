@@ -1,5 +1,6 @@
 use std::sync::{Arc, Mutex};
 use gtk::{Builder, Label, ListBox, ListBoxRow, ListStore};
+use gtk::gdk_pixbuf::Pixbuf;
 use gtk::prelude::{BuilderExtManual, ContainerExt, GtkListStoreExt, GtkListStoreExtManual, LabelExt, StyleContextExt, WidgetExt};
 use pcap::packet::inter::interfaces::Interfaces;
 use pcap::packet::layers::ethernet_frame::ethernet_frame::EthernetFrame;
@@ -96,17 +97,20 @@ impl PacketAdapter {
                 todo!()
             }
         };
+        let icon1 = Pixbuf::from_file("res/images/flags/ic_amenia.svg").ok();
 
         self.model.insert_with_values(
             None,
             &[
                 (0, &(1+self.packets.lock().as_ref().unwrap().len() as u32)),
                 (1, &packet.get_frame_time().to_string()),
-                (2, &source),
-                (3, &destination),
-                (4, &protocol),
-                (5, &packet.len().to_string()),
-                (6, &"TODO".to_string())
+                (2, icon1.as_ref().unwrap()),
+                (3, &source),
+                (4, icon1.as_ref().unwrap()),
+                (5, &destination),
+                (6, &protocol),
+                (7, &packet.len().to_string()),
+                (8, &"TODO".to_string())
             ],
         );
 
