@@ -1,7 +1,6 @@
 use std::any::Any;
 use std::cell::{Cell, RefCell};
 use std::rc::Rc;
-use std::sync::Arc;
 use std::sync::mpsc::channel;
 use std::time::Duration;
 use gtk::prelude::*;
@@ -238,11 +237,14 @@ impl Activity for MainActivity {
         let _self = self.clone();
         let main_fragment = Rc::clone(&main_fragment);
         glib::timeout_add_local(Duration::from_millis(10), move || {
-            match rx.try_recv() {
-                Ok((packet, source_icon, destination_icon)) => {
-                    main_fragment.borrow().get_packet_adapter().unwrap().add(packet, source_icon, destination_icon);
-                }
-                _ => {
+            loop {
+                match rx.try_recv() {
+                    Ok(packet) => {
+                        main_fragment.borrow().get_packet_adapter().unwrap().add(packet);
+                    }
+                    _ => {
+                        break;
+                    }
                 }
             }
             Continue
