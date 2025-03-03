@@ -78,7 +78,7 @@ impl Database {
         documents
     }
 
-    pub fn close(&mut self) {
+    pub fn close(&self) {
         unsafe { sqlite3_close(self.db) };
     }
 }

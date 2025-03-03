@@ -118,6 +118,8 @@ impl CaptureService {
                 }
                 _ => unimplemented!()
             }
+
+            db.close();
         });
     }
 
