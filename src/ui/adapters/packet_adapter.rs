@@ -8,9 +8,7 @@ use pcap::packet::layers::ethernet_frame::inter::types::Types;
 use pcap::packet::layers::ethernet_frame::ip::inter::protocols::Protocols;
 use pcap::packet::layers::ethernet_frame::ip::ipv4_layer::Ipv4Layer;
 use pcap::packet::layers::ethernet_frame::ip::ipv6_layer::Ipv6Layer;
-use pcap::packet::layers::ethernet_frame::ip::udp::dhcp::dhcp_layer::DhcpLayer;
 use pcap::packet::layers::ethernet_frame::ip::udp::inter::udp_payloads::UdpPayloads;
-use pcap::packet::layers::ethernet_frame::ip::udp::inter::udp_types::UdpTypes;
 use pcap::packet::layers::ethernet_frame::ip::udp::udp_layer::UdpLayer;
 use pcap::packet::packet::Packet;
 
@@ -29,7 +27,7 @@ impl PacketAdapter {
         }
     }
 
-    pub fn add(&mut self, packet: Packet, source_icon: Option<String>, destination_icon: Option<String>) {
+    pub fn add(&mut self, packet: Packet) {
         let (source, destination, protocol) = match packet.get_interface() {
             Interfaces::Ethernet => {
                 let ethernet_frame = packet.get_frame().as_any().downcast_ref::<EthernetFrame>().unwrap();
@@ -101,33 +99,15 @@ impl PacketAdapter {
         let frame_time = packet.get_frame_time().to_string();
         let packet_length = packet.len().to_string();
 
-        let mut values: Vec<(u32, &dyn ToValue)> = vec![
+        self.model.insert_with_values(None, &[
             (0, &packet_count),
             (1, &frame_time),
-            (3, &source),
-            (5, &destination),
-            (6, &protocol),
-            (7, &packet_length),
-            //(8, &"TODO".to_string()),
-        ];
-
-        let mut icon = None;
-        if let Some(source_icon) = source_icon {
-            icon = Self::code_to_icon(&source_icon);
-            if let Some(ref icon) = icon {
-                values.push((2, icon));
-            }
-        }
-
-        let mut icon = None;
-        if let Some(destination_icon) = destination_icon {
-            icon = Self::code_to_icon(&destination_icon);
-            if let Some(ref icon) = icon {
-                values.push((4, icon));
-            }
-        }
-
-        self.model.insert_with_values(None, &values);
+            (2, &source),
+            (3, &destination),
+            (4, &protocol),
+            (5, &packet_length),
+            //(6, &"TODO".to_string()),
+        ]);
 
         self.packets.lock().as_mut().unwrap().push(packet);
     }
