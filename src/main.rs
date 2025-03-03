@@ -6,11 +6,14 @@ mod database;
 use std::sync::{Arc, Mutex};
 use std::sync::mpsc::channel;
 use std::{env, thread};
+use std::collections::HashMap;
+use std::net::Ipv4Addr;
 use std::process::{exit, Command};
 use std::time::{Duration, SystemTime, UNIX_EPOCH};
 use pcap::devices::Device;
 use gtk::prelude::*;
 use pcap::capture::Capture;
+use crate::database::sqlite::Database;
 use crate::ui::application::OApplication;
 
 //SIDEBAR SHOULD BE A FRAGMENT...
@@ -21,6 +24,18 @@ pub static VERSION: &str = "1.0";
 fn main() {
     let target_double = format!("{}-{}", env::consts::ARCH, env::consts::OS);
     println!("{}", target_double);
+
+
+    /*
+    let db = Database::open("database.db").unwrap();
+
+    let addr = u32::from(Ipv4Addr::new(8, 8, 8, 8));
+    let documents = db.get("ipv4_location", Some(vec!["id", "country_code"]), Some(format!("start <= {} AND end >= {}", addr, addr).as_str()));
+
+    println!("{:?}", documents);
+    */
+
+
 
     if !is_root() {
         println!("Requesting root access...");
