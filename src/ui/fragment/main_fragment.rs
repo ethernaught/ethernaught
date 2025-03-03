@@ -82,7 +82,7 @@ impl MainFragment {
         column.set_title(title);
 
         let renderer = CellRendererPixbuf::new();
-        CellLayoutExt::pack_start(&column, &renderer, true);
+        CellLayoutExt::pack_start(&column, &renderer, false);
         CellLayoutExt::add_attribute(&column, &renderer, "pixbuf", col_id);
 
         CellLayoutExt::set_cell_data_func(&column, &renderer, Some(Box::new(move |_, cell, model, iter| {
@@ -113,6 +113,15 @@ impl MainFragment {
             };
 
             cell.set_property("cell-background", &color);
+
+            let icon: Option<Pixbuf> = model.value(iter, col_id).get().ok();
+
+            if let Some(icon) = icon {
+                cell.set_property("pixbuf", &icon);
+                cell.set_property("visible", &true);
+            } else {
+                cell.set_property("visible", &false);
+            }
         })));
 
         let renderer = CellRendererText::new();
