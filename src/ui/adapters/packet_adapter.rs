@@ -111,21 +111,20 @@ impl PacketAdapter {
             //(8, &"TODO".to_string()),
         ];
 
+        let mut icon = None;
         if let Some(source_icon) = source_icon {
-            let icon = Pixbuf::from_file("res/images/flags/ic_amenia.svg").ok().unwrap();
-            //let source_icon = Self::code_to_icon(&source_icon);
-            //if let Some(icon) = source_icon {
-                values.push((2, &icon));
-            //}
+            icon = Self::code_to_icon(&source_icon);
+            if let Some(ref icon) = icon {
+                values.push((2, icon));
+            }
         }
 
+        let mut icon = None;
         if let Some(destination_icon) = destination_icon {
-            let icon = Pixbuf::from_file("res/images/flags/ic_amenia.svg").ok().unwrap();
-
-            //let destination_icon = Self::code_to_icon(&destination_icon);
-            //if let Some(icon) = destination_icon {
-                values.push((4, &icon));
-            //}
+            icon = Self::code_to_icon(&destination_icon);
+            if let Some(ref icon) = icon {
+                values.push((4, icon));
+            }
         }
 
         self.model.insert_with_values(None, &values);
@@ -146,7 +145,7 @@ impl PacketAdapter {
     //TEMPORARY - MOVE THIS OUT LATER
     fn code_to_icon(code: &str) -> Option<Pixbuf> {
         match code {
-            "us" => {
+            "US" => {
                 Pixbuf::from_file("res/images/flags/ic_amenia.svg").ok()
             }
             _ => None
