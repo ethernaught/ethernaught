@@ -29,27 +29,6 @@ fn main() {
 
 
 
-
-
-    let e2: [u8; 8] = [0x00, 0x00, 0x70, 0xB3, 0xD5, 0xC3, 0x34, 0x69];
-    let eth2 = u64::from_be_bytes(e2);
-
-
-    let db = Database::open("database.db").expect("Couldn't open database.db");
-
-    let name = db.get(
-        "oui",
-        Some(vec!["id", "prefix", "name", "company"]),
-        Some(format!("start <= {} AND end >= {}", eth2, eth2).as_str())
-    );
-
-    println!("eth: {:?}", name);
-
-
-
-
-
-
     if !is_root() {
         println!("Requesting root access...");
         println!("{:?}", env::current_exe().unwrap());
