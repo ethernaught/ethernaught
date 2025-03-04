@@ -19,6 +19,8 @@ use crate::ui::application::OApplication;
 //SIDEBAR SHOULD BE A FRAGMENT...
 //export GTK_DEBUG=interactive
 
+//REDO - Ethernet address check (Mask handling...)
+
 pub static VERSION: &str = "1.0";
 
 fn main() {
