@@ -28,6 +28,29 @@ fn main() {
     println!("{}", target_double);
 
 
+
+
+    let e: [u8; 8] = [0x00, 0x00, 0x70, 0xB3, 0xD5, 0xC3, 0x30, 0x00];
+    let eth = u64::from_be_bytes(e);
+
+    let e1: [u8; 8] = [0x00, 0x00, 0x70, 0xB3, 0xD5, 0xC3, 0x3F, 0xFF];
+    let eth1 = u64::from_be_bytes(e1);
+
+
+    let e2: [u8; 8] = [0x00, 0x00, 0x70, 0xB3, 0xD5, 0xC3, 0x34, 0x69];
+    let eth2 = u64::from_be_bytes(e2);
+
+    println!("eth: {}  {} {}", eth, eth1, eth2);
+
+    if e < e2 && e1 > e2 {
+        println!("KNOWN");
+    }
+
+
+
+
+
+
     if !is_root() {
         println!("Requesting root access...");
         println!("{:?}", env::current_exe().unwrap());
