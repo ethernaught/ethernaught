@@ -22,6 +22,7 @@ use pcap::packet::layers::ethernet_frame::ip::udp::inter::udp_types::UdpTypes;
 use pcap::packet::layers::ethernet_frame::ip::udp::udp_layer::UdpLayer;
 use pcap::packet::layers::inter::layer::Layer;
 use pcap::packet::packet::Packet;
+use crate::database::sqlite::Database;
 use crate::ui::activity::inter::activity::Activity;
 use crate::ui::activity::main_activity::MainActivity;
 use crate::ui::fragment::inter::fragment::Fragment;
@@ -146,6 +147,7 @@ impl Fragment for SidebarFragment {
 
 
 
+        let db = Database::open("database.db").expect("Couldn't open database.db");
 
         let details_layout: gtk::Box = builder
             .object("details_layout")
@@ -155,7 +157,7 @@ impl Fragment for SidebarFragment {
         match self.packet.get_interface() {
             Interfaces::Ethernet => {
                 let ethernet_frame = self.packet.get_frame().as_any().downcast_ref::<EthernetFrame>().unwrap();
-                details_layout.add(&create_ethernet_layer_expander(0, Rc::clone(&editor), &ethernet_frame));
+                details_layout.add(&create_ethernet_layer_expander(&db, 0, Rc::clone(&editor), &ethernet_frame));
 
                 match ethernet_frame.get_type() {
                     Types::IPv4 => {

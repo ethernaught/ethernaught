@@ -13,14 +13,31 @@ use pcap::packet::layers::ethernet_frame::ip::ipv6_layer::Ipv6Layer;
 use pcap::packet::layers::ethernet_frame::ip::tcp::tcp_layer::TcpLayer;
 use pcap::packet::layers::ethernet_frame::ip::udp::dhcp::dhcp_layer::DhcpLayer;
 use pcap::packet::layers::ethernet_frame::ip::udp::udp_layer::UdpLayer;
+use crate::database::sqlite::Database;
 use crate::layers::inter::layer_ext::LayerExt;
+use crate::ui::handlers::ethernet_utils::ethernet_to_company;
 use crate::ui::widgets::hex_editor::HexEditor;
 
-pub fn create_ethernet_layer_expander(offset: usize, expander: Rc<RefCell<HexEditor>>, layer: &EthernetFrame) -> Container {
+pub fn create_ethernet_layer_expander(db: &Database, offset: usize, expander: Rc<RefCell<HexEditor>>, layer: &EthernetFrame) -> Container {
     let (dropdown, list_box) = create_dropdown("Ethernet II");
 
-    list_box.add(&create_row("Destination:", format!("({})", layer.get_destination_mac().to_string())));
-    list_box.add(&create_row("Source:", format!("({})", layer.get_source_mac().to_string())));
+    match ethernet_to_company(db, layer.get_destination_mac()) {
+        Some(company) => {
+            list_box.add(&create_row("Destination:", format!("{} ({})", company, layer.get_destination_mac().to_string())));
+        }
+        None => {
+            list_box.add(&create_row("Destination:", format!("({})", layer.get_destination_mac().to_string())));
+        }
+    }
+
+    match ethernet_to_company(db, layer.get_source_mac()) {
+        Some(company) => {
+            list_box.add(&create_row("Source:", format!("{} ({})", company, layer.get_source_mac().to_string())));
+        }
+        None => {
+            list_box.add(&create_row("Source:", format!("({})", layer.get_source_mac().to_string())));
+        }
+    }
     list_box.add(&create_row("Type:", format!("{:?} (0x{:04X})", layer.get_type(), layer.get_type().get_code())));
 
     let layer = layer.clone();
