@@ -16,9 +16,9 @@ use pcap::packet::layers::ethernet_frame::ip::udp::udp_layer::UdpLayer;
 use crate::database::sqlite::Database;
 use crate::layers::inter::layer_ext::LayerExt;
 use crate::ui::handlers::ethernet_utils::ethernet_to_company;
-use crate::ui::widgets::hex_editor::HexEditor;
+use crate::ui::widgets::hex_editor_2::HexEditor;
 
-pub fn create_ethernet_layer_expander(db: &Database, offset: usize, expander: Rc<RefCell<HexEditor>>, layer: &EthernetFrame) -> Container {
+pub fn create_ethernet_layer_expander(db: &Database, offset: usize, hex_editor: &HexEditor, layer: &EthernetFrame) -> Container {
     let (dropdown, list_box) = create_dropdown("Ethernet II");
 
     match ethernet_to_company(db, layer.get_destination_mac()) {
@@ -40,6 +40,7 @@ pub fn create_ethernet_layer_expander(db: &Database, offset: usize, expander: Rc
     }
     list_box.add(&create_row("Type:", format!("{:?} (0x{:04X})", layer.get_type(), layer.get_type().get_code())));
 
+    let hex_editor = hex_editor.clone();
     let layer = layer.clone();
     list_box.connect_row_activated(move |_, row| {
         let (x, w) = match row.index() {
@@ -55,7 +56,7 @@ pub fn create_ethernet_layer_expander(db: &Database, offset: usize, expander: Rc
             _ => unimplemented!()
         };
 
-        expander.borrow_mut().set_selection(offset+x, w);
+        hex_editor.set_selection(offset+x, w);
     });
 
     dropdown.add(&list_box);
@@ -84,7 +85,7 @@ pub fn create_arp_layer_expander(layer: &ArpExtension) -> Container {
     dropdown.upcast()
 }
 
-pub fn create_ipv4_layer_expander(offset: usize, expander: Rc<RefCell<HexEditor>>, layer: &Ipv4Layer) -> Container {
+pub fn create_ipv4_layer_expander(offset: usize, hex_editor: &HexEditor, layer: &Ipv4Layer) -> Container {
     let (dropdown, list_box) = create_dropdown("Internet Protocol Version 4");
 
     list_box.add(&create_row("Version:", layer.get_version().to_string()));
@@ -100,6 +101,7 @@ pub fn create_ipv4_layer_expander(offset: usize, expander: Rc<RefCell<HexEditor>
     list_box.add(&create_row("Source Address:", layer.get_source_address().to_string()));
     list_box.add(&create_row("Destination Address:", layer.get_destination_address().to_string()));
 
+    let hex_editor = hex_editor.clone();
     let layer = layer.clone();
     list_box.connect_row_activated(move |_, row| {
         let (x, w) = match row.index() {
@@ -133,14 +135,14 @@ pub fn create_ipv4_layer_expander(offset: usize, expander: Rc<RefCell<HexEditor>
             _ => unimplemented!()
         };
 
-        expander.borrow_mut().set_selection(offset+x, w);
+        hex_editor.set_selection(offset+x, w);
     });
 
     dropdown.add(&list_box);
     dropdown.upcast()
 }
 
-pub fn create_ipv6_layer_expander(offset: usize, expander: Rc<RefCell<HexEditor>>, layer: &Ipv6Layer) -> Container {
+pub fn create_ipv6_layer_expander(offset: usize, hex_editor: &HexEditor, layer: &Ipv6Layer) -> Container {
     let (dropdown, list_box) = create_dropdown("Internet Protocol Version 6");
 
     list_box.add(&create_row("Version:", layer.get_version().to_string()));
@@ -150,6 +152,7 @@ pub fn create_ipv6_layer_expander(offset: usize, expander: Rc<RefCell<HexEditor>
     list_box.add(&create_row("Source Address:", layer.get_source_address().to_string()));
     list_box.add(&create_row("Destination Address:", layer.get_destination_address().to_string()));
 
+    let hex_editor = hex_editor.clone();
     let layer = layer.clone();
     list_box.connect_row_activated(move |_, row| {
         let (x, w) = match row.index() {
@@ -174,7 +177,7 @@ pub fn create_ipv6_layer_expander(offset: usize, expander: Rc<RefCell<HexEditor>
             _ => unimplemented!()
         };
 
-        expander.borrow_mut().set_selection(offset+x, w);
+        hex_editor.set_selection(offset+x, w);
     });
 
     dropdown.add(&list_box);

@@ -1,2 +1,2 @@
 pub mod hex_editor;
-mod hex_editor_2;
+pub mod hex_editor_2;

@@ -281,8 +281,8 @@ impl HexEditor {
         self.imp().selection_color.borrow().clone()
     }
 
-    pub fn set_selection(&self, selection: (usize, usize)) {
-        *self.imp().selection.borrow_mut() = Some(selection);
+    pub fn set_selection(&self, a: usize, b: usize) {
+        *self.imp().selection.borrow_mut() = Some((a, b));
     }
 
     pub fn get_selection(&self) -> Option<(usize, usize)> {

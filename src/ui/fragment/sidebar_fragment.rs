@@ -2,7 +2,8 @@ use std::any::Any;
 use std::cell::RefCell;
 use std::net::IpAddr;
 use std::rc::Rc;
-use gtk::{Builder, Button, Container, DrawingArea, Paned};
+use gtk::{Builder, Button, Container, DrawingArea, Paned, ScrolledWindow};
+use gtk::ffi::GtkScrolledWindow;
 use gtk::gdk::EventMask;
 use gtk::glib::{clone, Propagation};
 use gtk::prelude::{BuilderExtManual, ButtonExt, Cast, ContainerExt, PanedExt, WidgetExt, WidgetExtManual};
@@ -27,7 +28,7 @@ use crate::ui::activity::inter::activity::Activity;
 use crate::ui::activity::main_activity::MainActivity;
 use crate::ui::fragment::inter::fragment::Fragment;
 use crate::ui::handlers::expanders::{create_arp_layer_expander, create_dhcp_layer_expander, create_ethernet_layer_expander, create_icmp_layer_expander, create_icmpv6_layer_expander, create_ipv4_layer_expander, create_ipv6_layer_expander, create_tcp_layer_expander, create_udp_layer_expander};
-use crate::ui::widgets::hex_editor::HexEditor;
+use crate::ui::widgets::hex_editor_2::HexEditor;
 
 #[derive(Clone)]
 pub struct SidebarFragment {
@@ -103,11 +104,22 @@ impl Fragment for SidebarFragment {
 
 
 
+        let hex_scroll_layout: ScrolledWindow = builder
+            .object("hex_scroll_layout")
+            .expect("Couldn't find 'hex_scroll_layout' in window.ui");
 
+        /*
         let hex_content: gtk::Box = builder
             .object("hex_content")
-            .expect("Couldn't find 'hex_content' in window.ui");
+            .expect("Couldn't find 'hex_content' in window.ui");*/
 
+        let hex_editor = HexEditor::new(self.packet.to_bytes());
+        hex_editor.set_hexpand(true);
+        hex_editor.set_vexpand(true);
+        hex_editor.show();
+        hex_scroll_layout.add(&hex_editor);
+
+        /*
         let mut editor = Rc::new(RefCell::new(HexEditor::from_bytes(self.packet.to_bytes())));
         editor.borrow_mut().set_line_number_color(0.286, 0.306, 0.341);
         editor.borrow_mut().set_cursor_color(0.608, 0.616, 0.624);
@@ -131,6 +143,7 @@ impl Fragment for SidebarFragment {
 
         hex_content.add(editor.borrow().get_drawing_area());
         editor.borrow().get_drawing_area().show();
+        */
 
 
 
@@ -157,12 +170,12 @@ impl Fragment for SidebarFragment {
         match self.packet.get_interface() {
             Interfaces::Ethernet => {
                 let ethernet_frame = self.packet.get_frame().as_any().downcast_ref::<EthernetFrame>().unwrap();
-                details_layout.add(&create_ethernet_layer_expander(&db, 0, Rc::clone(&editor), &ethernet_frame));
+                details_layout.add(&create_ethernet_layer_expander(&db, 0, &hex_editor, &ethernet_frame));
 
                 match ethernet_frame.get_type() {
                     Types::IPv4 => {
                         let ipv4_layer = ethernet_frame.get_data().unwrap().as_any().downcast_ref::<Ipv4Layer>().unwrap();
-                        details_layout.add(&create_ipv4_layer_expander(ethernet_frame.len()-ipv4_layer.len(), Rc::clone(&editor), &ipv4_layer));
+                        details_layout.add(&create_ipv4_layer_expander(ethernet_frame.len()-ipv4_layer.len(), &hex_editor, &ipv4_layer));
 
                         match ipv4_layer.get_protocol() {
                             Protocols::HopByHop => {}
@@ -209,7 +222,7 @@ impl Fragment for SidebarFragment {
                     }
                     Types::IPv6 => {
                         let ipv6_layer = ethernet_frame.get_data().unwrap().as_any().downcast_ref::<Ipv6Layer>().unwrap();
-                        details_layout.add(&create_ipv6_layer_expander(ethernet_frame.len()-ipv6_layer.len(), Rc::clone(&editor), &ipv6_layer));
+                        details_layout.add(&create_ipv6_layer_expander(ethernet_frame.len()-ipv6_layer.len(), &hex_editor, &ipv6_layer));
 
                         match ipv6_layer.get_next_header() {
                             Protocols::HopByHop => {}
