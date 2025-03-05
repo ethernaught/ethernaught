@@ -46,7 +46,6 @@ impl WidgetImpl for HexEditorImpl {
 
     fn realize(&self) {
         let widget = self.obj();
-        widget.add_events(EventMask::POINTER_MOTION_MASK);
         let allocation = widget.allocation();
 
         let mut attr = WindowAttr::default();
@@ -63,10 +62,7 @@ impl WidgetImpl for HexEditorImpl {
         widget.set_window(window);
         widget.set_realized(true);
 
-        widget.connect_motion_notify_event(|widget, event| {
-            println!("A");
-            Proceed
-        });
+        widget.add_events(EventMask::POINTER_MOTION_MASK);
     }
 
     fn draw(&self, cr: &Context) -> Propagation {
@@ -75,8 +71,6 @@ impl WidgetImpl for HexEditorImpl {
         let pango_context = widget.create_pango_context();
 
         style_context.set_state(StateFlags::NORMAL);
-        let cursor: Option<usize> = Some(20);
-        let selection: Option<(usize, usize)> = Some((1, 20));
         let text_color = style_context.color(StateFlags::NORMAL);
 
         let font_desc = style_context.font(StateFlags::NORMAL);
@@ -133,8 +127,7 @@ impl WidgetImpl for HexEditorImpl {
                 prev_row = row;
             }
 
-
-            match selection {
+            match *self.selection.borrow() {
                 Some((x, x2)) => {
                     if i >= x && i <= x+x2-1  {
                         let color = self.selection_color.borrow();
@@ -149,7 +142,7 @@ impl WidgetImpl for HexEditorImpl {
                 None => {}
             }
 
-            if Some(i) == cursor {
+            if Some(i) == *self.cursor.borrow() {
                 let color = self.cursor_color.borrow();
                 cr.set_source_rgba(color.red(), color.green(), color.blue(), color.alpha());
                 cr.rectangle(hex_x - 3.0, y + 1.0, char_width * 2.0 - 2.0, row_height - 2.0);
@@ -173,7 +166,40 @@ impl WidgetImpl for HexEditorImpl {
     }
 
     fn motion_notify_event(&self, event: &EventMotion) -> Propagation {
-        println!("MOVE");
+        *self.cursor.borrow_mut() = Some(2);
+        self.obj().queue_draw();
+        /*
+        let char_width = *self.font_size.borrow() * 0.6;
+        let hex_spacing = 3.0;
+        let row_height = *self.font_size.borrow() + 4.0;
+        let ascii_offset = (BYTES_PER_ROW as f64) * (char_width * 2.0 + hex_spacing) + 10.0;
+        let line_numbers_width = *self.padding.borrow() + 8.0 * char_width + 15.0;
+
+        let mut col = ((x - line_numbers_width) / (char_width * 2.0 + hex_spacing)).floor() as isize;
+        let row = ((y - (*self.padding.borrow() / 2.0)) / row_height).floor() as isize;
+
+        if x-line_numbers_width >= ascii_offset {
+            let ascii_col = ((x - line_numbers_width - ascii_offset) / char_width).floor() as isize;
+            col = ascii_col;
+        }
+
+        if col >= BYTES_PER_ROW as isize || row < 0 {
+            *self.cursor.borrow_mut() = None;
+            return;
+        }
+
+        if row >= 0 && col >= 0 {
+            let index = (row * BYTES_PER_ROW as isize + col) as usize;
+            if index < self.data.borrow().len() {
+                *self.cursor.borrow_mut() = Some(index);
+            } else {
+                *self.cursor.borrow_mut() = None;
+            }
+        } else {
+            *self.cursor.borrow_mut() = None;
+        }
+        */
+
         Proceed
     }
 }
