@@ -108,8 +108,6 @@ impl WidgetImpl for HexEditorImpl {
         cr.select_font_face(font_desc.family().unwrap().as_str(), FontSlant::Normal, font_weight);
         cr.set_font_size(font_size);
 
-        let mut prev_row = 0;
-
         for (i, &byte) in self.data.borrow().iter().enumerate() {
             let row = i / BYTES_PER_ROW;
             let col = i % BYTES_PER_ROW;
@@ -119,12 +117,24 @@ impl WidgetImpl for HexEditorImpl {
             let ascii_x = ascii_offset + col as f64 * char_width + line_numbers_width;
 
             if col == 0 {
-                let color = self.line_number_color.borrow();
+                let color = match *self.cursor.borrow() {
+                    Some(cursor) => {
+                        if cursor/BYTES_PER_ROW == row {
+                            text_color
+
+                        } else {
+                            *self.line_number_color.borrow()
+                        }
+                    }
+                    None => {
+                        *self.line_number_color.borrow()
+                    }
+                };
+
                 cr.set_source_rgba(color.red(), color.green(), color.blue(), color.alpha());
                 let line_number = format!("{:08X}", row * BYTES_PER_ROW);
                 cr.move_to(padding.left as f64, y + row_height - decent);
                 cr.show_text(&line_number);
-                prev_row = row;
             }
 
             match *self.selection.borrow() {
@@ -166,17 +176,46 @@ impl WidgetImpl for HexEditorImpl {
     }
 
     fn motion_notify_event(&self, event: &EventMotion) -> Propagation {
-        *self.cursor.borrow_mut() = Some(2);
-        self.obj().queue_draw();
+        let widget = self.obj();
+        let style_context = widget.style_context();
+        let pango_context = widget.create_pango_context();
+
+        style_context.set_state(StateFlags::NORMAL);
+
+        let font_desc = style_context.font(StateFlags::NORMAL);
+        let metrics = pango_context.metrics(Some(&font_desc), None);
+
+        let ascent = metrics.ascent() as f64 / pango::SCALE as f64;
+        let decent = metrics.descent() as f64 / pango::SCALE as f64;
+
         /*
-        let char_width = *self.font_size.borrow() * 0.6;
+        let font_size = if font_desc.is_size_absolute() {
+            font_desc.size() as f64
+        } else {
+            font_desc.size() as f64 / pango::SCALE as f64
+        };
+
+        let font_weight = match font_desc.weight() {
+            Weight::Bold => FontWeight::Bold,
+            _ => {
+                FontWeight::Normal
+            }
+        };
+        */
+
+        let padding = style_context.padding(StateFlags::NORMAL);
+
+        let char_width = metrics.approximate_char_width() as f64 / pango::SCALE as f64;
         let hex_spacing = 3.0;
-        let row_height = *self.font_size.borrow() + 4.0;
+        let row_height = ascent + decent;
         let ascii_offset = (BYTES_PER_ROW as f64) * (char_width * 2.0 + hex_spacing) + 10.0;
-        let line_numbers_width = *self.padding.borrow() + 8.0 * char_width + 15.0;
+        let line_numbers_width = padding.left as f64 + 8.0 * char_width + 15.0;
+
+
+        let (x, y) = event.position();
 
         let mut col = ((x - line_numbers_width) / (char_width * 2.0 + hex_spacing)).floor() as isize;
-        let row = ((y - (*self.padding.borrow() / 2.0)) / row_height).floor() as isize;
+        let row = ((y - (padding.top as f64 / 2.0)) / row_height).floor() as isize;
 
         if x-line_numbers_width >= ascii_offset {
             let ascii_col = ((x - line_numbers_width - ascii_offset) / char_width).floor() as isize;
@@ -185,7 +224,7 @@ impl WidgetImpl for HexEditorImpl {
 
         if col >= BYTES_PER_ROW as isize || row < 0 {
             *self.cursor.borrow_mut() = None;
-            return;
+            return Proceed;
         }
 
         if row >= 0 && col >= 0 {
@@ -198,7 +237,8 @@ impl WidgetImpl for HexEditorImpl {
         } else {
             *self.cursor.borrow_mut() = None;
         }
-        */
+
+        self.obj().queue_draw();
 
         Proceed
     }
