@@ -161,6 +161,8 @@ impl WidgetImpl for HexEditorImpl {
             cr.stroke().unwrap();
             //TEMP
 
+            //println!("{}", char_width * 2.0 - 2.0);
+
             if Some(i) == *self.cursor.borrow() {
                 let color = self.cursor_color.borrow();
                 cr.set_source_rgba(color.red(), color.green(), color.blue(), color.alpha());
@@ -197,42 +199,23 @@ impl WidgetImpl for HexEditorImpl {
         let ascent = metrics.ascent() as f64 / pango::SCALE as f64;
         let decent = metrics.descent() as f64 / pango::SCALE as f64;
 
-        /*
-        let font_size = if font_desc.is_size_absolute() {
-            font_desc.size() as f64
-        } else {
-            font_desc.size() as f64 / pango::SCALE as f64
-        };
-
-        let font_weight = match font_desc.weight() {
-            Weight::Bold => FontWeight::Bold,
-            _ => {
-                FontWeight::Normal
-            }
-        };
-        */
-
         let padding = style_context.padding(StateFlags::NORMAL);
 
         let char_width = metrics.approximate_char_width() as f64 / pango::SCALE as f64;
         let row_height = ascent + decent;
-        let ascii_offset = (BYTES_PER_ROW as f64) * (char_width * 2.0) + 10.0;
-        let line_numbers_width = padding.left as f64 + 8.0 * char_width + 15.0;
+        let ascii_offset = (BYTES_PER_ROW as f64) * (char_width * 2.0) + 13.0;
+        let line_numbers_width = padding.left as f64 + 8.0 * char_width + 10.0;
 
 
         let (x, y) = event.position();
 
-        let mut col = ((x - line_numbers_width) / (char_width * 2.0 - 1.0)).floor() as isize;
-        //println!("{} {} {}", col, (x - line_numbers_width), (char_width * 2.0 + 2.0));
+        let mut col = ((x - line_numbers_width) / (char_width * 2.0)).floor() as isize;
+        let row = ((y - padding.top as f64) / row_height).floor() as isize;
 
-        let row = ((y - (padding.top as f64 / 2.0)) / row_height).floor() as isize;
-
-        /*
         if x-line_numbers_width >= ascii_offset {
             let ascii_col = ((x - line_numbers_width - ascii_offset) / char_width).floor() as isize;
             col = ascii_col;
         }
-        */
 
         if col >= BYTES_PER_ROW as isize || row < 0 {
             *self.cursor.borrow_mut() = None;
