@@ -6,7 +6,7 @@ use gtk::glib::Propagation;
 use gtk::glib::Propagation::Proceed;
 use gtk::pango::Weight;
 use gtk::prelude::{StyleContextExt, StyleContextExtManual, WidgetExt, WidgetExtManual};
-use gtk::subclass::prelude::{ObjectImpl, ObjectSubclass, ObjectSubclassExt, ObjectSubclassIsExt, WidgetImpl};
+use gtk::subclass::prelude::{ObjectImpl, ObjectSubclass, ObjectSubclassExt, ObjectSubclassIsExt, WidgetClassSubclassExt, WidgetImpl};
 
 const BYTES_PER_ROW: usize = 16;
 
@@ -35,35 +35,19 @@ impl Default for HexEditorImpl {
 
 #[glib::object_subclass]
 impl ObjectSubclass for HexEditorImpl {
+
     const NAME: &'static str = "HexEditor";
     type ParentType = Widget;
     type Type = HexEditor;
+
+    fn class_init(class: &mut Self::Class) {
+        class.set_css_name("hexeditor");
+    }
 }
 
 impl ObjectImpl for HexEditorImpl {}
 
 impl WidgetImpl for HexEditorImpl {
-
-    fn realize(&self) {
-        let widget = self.obj();
-        let allocation = widget.allocation();
-
-        let mut attr = WindowAttr::default();
-        attr.window_type = WindowType::Child;
-        attr.x = Some(allocation.x());
-        attr.y = Some(allocation.y());
-        attr.width = allocation.width();
-        attr.height = allocation.height();
-
-        let parent_window = widget.parent_window().unwrap();
-        let window = gdk::Window::new(Some(&parent_window), &attr);
-
-        widget.register_window(&window);
-        widget.set_window(window);
-        widget.set_realized(true);
-
-        widget.add_events(EventMask::POINTER_MOTION_MASK);
-    }
 
     fn draw(&self, cr: &Context) -> Propagation {
         let widget = self.obj();
@@ -186,6 +170,27 @@ impl WidgetImpl for HexEditorImpl {
         Proceed
     }
 
+    fn realize(&self) {
+        let widget = self.obj();
+        let allocation = widget.allocation();
+
+        let mut attr = WindowAttr::default();
+        attr.window_type = WindowType::Child;
+        attr.x = Some(allocation.x());
+        attr.y = Some(allocation.y());
+        attr.width = allocation.width();
+        attr.height = allocation.height();
+
+        let parent_window = widget.parent_window().unwrap();
+        let window = gdk::Window::new(Some(&parent_window), &attr);
+
+        widget.register_window(&window);
+        widget.set_window(window);
+        widget.set_realized(true);
+
+        widget.add_events(EventMask::POINTER_MOTION_MASK);
+    }
+
     fn motion_notify_event(&self, event: &EventMotion) -> Propagation {
         let widget = self.obj();
         let style_context = widget.style_context();
@@ -283,6 +288,7 @@ impl HexEditor {
 
     pub fn set_selection(&self, a: usize, b: usize) {
         *self.imp().selection.borrow_mut() = Some((a, b));
+        self.queue_draw();
     }
 
     pub fn get_selection(&self) -> Option<(usize, usize)> {

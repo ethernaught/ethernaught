@@ -59,7 +59,6 @@
 
                 <child>
                     <object class="GtkScrolledWindow" id="hex_scroll_layout">
-                        <property name="name">hex_scroll_layout</property>
                         <property name="visible">True</property>
                         <property name="hexpand">True</property>
                         <property name="vexpand">True</property>
