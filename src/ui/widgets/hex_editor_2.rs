@@ -100,9 +100,8 @@ impl WidgetImpl for HexEditorImpl {
         }
 
         let char_width = metrics.approximate_char_width() as f64 / pango::SCALE as f64;
-        let hex_spacing = 3.0;
         let row_height = ascent + decent;
-        let ascii_offset = (BYTES_PER_ROW as f64) * (char_width * 2.0 + hex_spacing) + 10.0;
+        let ascii_offset = (BYTES_PER_ROW as f64) * (char_width * 2.0) + 10.0;
         let line_numbers_width = padding.left as f64 + 8.0 * char_width + 15.0;
 
         cr.select_font_face(font_desc.family().unwrap().as_str(), FontSlant::Normal, font_weight);
@@ -112,7 +111,7 @@ impl WidgetImpl for HexEditorImpl {
             let row = i / BYTES_PER_ROW;
             let col = i % BYTES_PER_ROW;
 
-            let hex_x = col as f64 * (char_width * 2.0 + hex_spacing) + line_numbers_width;
+            let hex_x = col as f64 * (char_width * 2.0) + line_numbers_width;
             let y = padding.top as f64 + (row as f64 * row_height);
             let ascii_x = ascii_offset + col as f64 * char_width + line_numbers_width;
 
@@ -155,7 +154,7 @@ impl WidgetImpl for HexEditorImpl {
             //TEMP
             let color = self.selection_color.borrow();
             cr.set_source_rgba(color.red(), color.green(), color.blue(), color.alpha());
-            cr.rectangle(hex_x - 3.0, y + 1.0, char_width * 2.0 - 2.0, row_height - 2.0);
+            cr.rectangle(hex_x - 4.0, y + 1.0, char_width * 2.0 - 2.0, row_height - 2.0);
             cr.stroke().unwrap();
 
             cr.rectangle(ascii_x - 1.0, y + 1.0, char_width - 2.0, row_height - 2.0);
@@ -165,7 +164,7 @@ impl WidgetImpl for HexEditorImpl {
             if Some(i) == *self.cursor.borrow() {
                 let color = self.cursor_color.borrow();
                 cr.set_source_rgba(color.red(), color.green(), color.blue(), color.alpha());
-                cr.rectangle(hex_x - 3.0, y + 1.0, char_width * 2.0 - 2.0, row_height - 2.0);
+                cr.rectangle(hex_x - 4.0, y + 1.0, char_width * 2.0 - 2.0, row_height - 2.0);
                 cr.stroke().unwrap();
 
                 cr.rectangle(ascii_x - 1.0, y + 1.0, char_width - 2.0, row_height - 2.0);
@@ -216,15 +215,14 @@ impl WidgetImpl for HexEditorImpl {
         let padding = style_context.padding(StateFlags::NORMAL);
 
         let char_width = metrics.approximate_char_width() as f64 / pango::SCALE as f64;
-        let hex_spacing = 3.0;
         let row_height = ascent + decent;
-        let ascii_offset = (BYTES_PER_ROW as f64) * (char_width * 2.0 + hex_spacing) + 10.0;
+        let ascii_offset = (BYTES_PER_ROW as f64) * (char_width * 2.0) + 10.0;
         let line_numbers_width = padding.left as f64 + 8.0 * char_width + 15.0;
 
 
         let (x, y) = event.position();
 
-        let mut col = ((x - line_numbers_width) / (char_width * 2.0 + 2.0)).floor() as isize;
+        let mut col = ((x - line_numbers_width) / (char_width * 2.0 - 1.0)).floor() as isize;
         //println!("{} {} {}", col, (x - line_numbers_width), (char_width * 2.0 + 2.0));
 
         let row = ((y - (padding.top as f64 / 2.0)) / row_height).floor() as isize;
