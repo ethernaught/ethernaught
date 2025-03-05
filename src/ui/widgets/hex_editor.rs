@@ -1,11 +1,11 @@
 use std::cell::RefCell;
-use gtk::gdk::{EventMask, EventMotion, WindowAttr, WindowType, RGBA};
+use gtk::gdk::{EventMask, EventMotion, WindowAttr, WindowType, WindowWindowClass, RGBA};
 use gtk::{gdk, glib, pango, Buildable, Misc, StateFlags, Widget};
 use gtk::cairo::{Context, FontSlant, FontWeight};
 use gtk::glib::Propagation;
 use gtk::glib::Propagation::Proceed;
 use gtk::pango::Weight;
-use gtk::prelude::{StyleContextExt, StyleContextExtManual, WidgetExt, WidgetExtManual};
+use gtk::prelude::{StyleContextExt, StyleContextExtManual, WidgetExt};
 use gtk::subclass::prelude::{ObjectImpl, ObjectSubclass, ObjectSubclassExt, ObjectSubclassIsExt, WidgetClassSubclassExt, WidgetImpl};
 
 const BYTES_PER_ROW: usize = 16;
@@ -162,12 +162,20 @@ impl WidgetImpl for HexEditorImpl {
         let widget = self.obj();
         let allocation = widget.allocation();
 
-        let mut attr = WindowAttr::default();
-        attr.window_type = WindowType::Child;
-        attr.x = Some(allocation.x());
-        attr.y = Some(allocation.y());
-        attr.width = allocation.width();
-        attr.height = allocation.height();
+        let attr = WindowAttr {
+            title: None,
+            event_mask: EventMask::POINTER_MOTION_MASK,
+            x: Some(allocation.x()),
+            y: Some(allocation.y()),
+            width: allocation.width(),
+            height: allocation.height(),
+            wclass: WindowWindowClass::InputOutput,
+            visual: None,
+            window_type: WindowType::Child,
+            cursor: None,
+            override_redirect: false,
+            type_hint: None,
+        };
 
         let parent_window = widget.parent_window().unwrap();
         let window = gdk::Window::new(Some(&parent_window), &attr);
@@ -175,8 +183,6 @@ impl WidgetImpl for HexEditorImpl {
         widget.register_window(&window);
         widget.set_window(window);
         widget.set_realized(true);
-
-        widget.add_events(EventMask::POINTER_MOTION_MASK);
     }
 
     fn motion_notify_event(&self, event: &EventMotion) -> Propagation {
