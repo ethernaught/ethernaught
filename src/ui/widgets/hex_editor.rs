@@ -23,7 +23,7 @@ impl Default for HexEditorImpl {
 
     fn default() -> Self {
         Self {
-            data: RefCell::new(vec![]),
+            data: RefCell::new(Vec::new()),
             cursor: RefCell::new(None),
             selection: RefCell::new(None),
             line_number_color: RefCell::new(RGBA::new(0.7, 0.7, 0.7, 1.0)),
