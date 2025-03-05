@@ -85,7 +85,7 @@ impl WidgetImpl for HexEditorImpl {
 
         let char_width = metrics.approximate_char_width() as f64 / pango::SCALE as f64;
         let row_height = ascent + decent;
-        let ascii_offset = (BYTES_PER_ROW as f64) * (char_width * 2.0) + 10.0;
+        let ascii_offset = (BYTES_PER_ROW as f64) * (char_width * 2.0) + 9.0;
         let line_numbers_width = padding.left as f64 + 8.0 * char_width + 15.0;
 
         cr.select_font_face(font_desc.family().unwrap().as_str(), FontSlant::Normal, font_weight);
