@@ -152,6 +152,16 @@ impl WidgetImpl for HexEditorImpl {
                 None => {}
             }
 
+            //TEMP
+            let color = self.selection_color.borrow();
+            cr.set_source_rgba(color.red(), color.green(), color.blue(), color.alpha());
+            cr.rectangle(hex_x - 3.0, y + 1.0, char_width * 2.0 - 2.0, row_height - 2.0);
+            cr.stroke().unwrap();
+
+            cr.rectangle(ascii_x - 1.0, y + 1.0, char_width - 2.0, row_height - 2.0);
+            cr.stroke().unwrap();
+            //TEMP
+
             if Some(i) == *self.cursor.borrow() {
                 let color = self.cursor_color.borrow();
                 cr.set_source_rgba(color.red(), color.green(), color.blue(), color.alpha());
@@ -214,13 +224,17 @@ impl WidgetImpl for HexEditorImpl {
 
         let (x, y) = event.position();
 
-        let mut col = ((x - line_numbers_width) / (char_width * 2.0 + hex_spacing)).floor() as isize;
+        let mut col = ((x - line_numbers_width) / (char_width * 2.0 + 2.0)).floor() as isize;
+        //println!("{} {} {}", col, (x - line_numbers_width), (char_width * 2.0 + 2.0));
+
         let row = ((y - (padding.top as f64 / 2.0)) / row_height).floor() as isize;
 
+        /*
         if x-line_numbers_width >= ascii_offset {
             let ascii_col = ((x - line_numbers_width - ascii_offset) / char_width).floor() as isize;
             col = ascii_col;
         }
+        */
 
         if col >= BYTES_PER_ROW as isize || row < 0 {
             *self.cursor.borrow_mut() = None;
