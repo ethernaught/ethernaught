@@ -154,7 +154,7 @@ impl WidgetImpl for HexEditorImpl {
             //TEMP
             let color = self.selection_color.borrow();
             cr.set_source_rgba(color.red(), color.green(), color.blue(), color.alpha());
-            cr.rectangle(hex_x - 4.0, y + 1.0, char_width * 2.0 - 2.0, row_height - 2.0);
+            cr.rectangle(hex_x - 1.0, y + 1.0, char_width * 2.0 - 2.0, row_height - 2.0);
             cr.stroke().unwrap();
 
             cr.rectangle(ascii_x - 1.0, y + 1.0, char_width - 2.0, row_height - 2.0);
@@ -166,7 +166,7 @@ impl WidgetImpl for HexEditorImpl {
             if Some(i) == *self.cursor.borrow() {
                 let color = self.cursor_color.borrow();
                 cr.set_source_rgba(color.red(), color.green(), color.blue(), color.alpha());
-                cr.rectangle(hex_x - 4.0, y + 1.0, char_width * 2.0 - 2.0, row_height - 2.0);
+                cr.rectangle(hex_x - 1.0, y + 1.0, char_width * 2.0 - 2.0, row_height - 2.0);
                 cr.stroke().unwrap();
 
                 cr.rectangle(ascii_x - 1.0, y + 1.0, char_width - 2.0, row_height - 2.0);
@@ -203,8 +203,8 @@ impl WidgetImpl for HexEditorImpl {
 
         let char_width = metrics.approximate_char_width() as f64 / pango::SCALE as f64;
         let row_height = ascent + decent;
-        let ascii_offset = (BYTES_PER_ROW as f64) * (char_width * 2.0) + 13.0;
-        let line_numbers_width = padding.left as f64 + 8.0 * char_width + 10.0;
+        let ascii_offset = (BYTES_PER_ROW as f64) * (char_width * 2.0) + 10.0;
+        let line_numbers_width = padding.left as f64 + 8.0 * char_width + 13.0;
 
 
         let (x, y) = event.position();
