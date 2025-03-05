@@ -174,7 +174,7 @@ impl WidgetImpl for HexEditorImpl {
             window_type: WindowType::Child,
             cursor: None,
             override_redirect: false,
-            type_hint: None,
+            type_hint: None
         };
 
         let parent_window = widget.parent_window().unwrap();
