@@ -16,7 +16,7 @@ use pcap::packet::layers::ethernet_frame::ip::udp::udp_layer::UdpLayer;
 use crate::database::sqlite::Database;
 use crate::layers::inter::layer_ext::LayerExt;
 use crate::ui::handlers::ethernet_utils::ethernet_to_company;
-use crate::ui::widgets::hex_editor_2::HexEditor;
+use crate::ui::widgets::hex_editor::HexEditor;
 
 pub fn create_ethernet_layer_expander(db: &Database, offset: usize, hex_editor: &HexEditor, layer: &EthernetFrame) -> Container {
     let (dropdown, list_box) = create_dropdown("Ethernet II");

@@ -4,7 +4,7 @@ use std::net::IpAddr;
 use std::rc::Rc;
 use gtk::{Builder, Button, Container, DrawingArea, Paned, ScrolledWindow};
 use gtk::ffi::GtkScrolledWindow;
-use gtk::gdk::EventMask;
+use gtk::gdk::{EventMask, RGBA};
 use gtk::glib::{clone, Propagation};
 use gtk::prelude::{BuilderExtManual, ButtonExt, Cast, ContainerExt, PanedExt, WidgetExt, WidgetExtManual};
 use pcap::packet::inter::interfaces::Interfaces;
@@ -28,7 +28,7 @@ use crate::ui::activity::inter::activity::Activity;
 use crate::ui::activity::main_activity::MainActivity;
 use crate::ui::fragment::inter::fragment::Fragment;
 use crate::ui::handlers::expanders::{create_arp_layer_expander, create_dhcp_layer_expander, create_ethernet_layer_expander, create_icmp_layer_expander, create_icmpv6_layer_expander, create_ipv4_layer_expander, create_ipv6_layer_expander, create_tcp_layer_expander, create_udp_layer_expander};
-use crate::ui::widgets::hex_editor_2::HexEditor;
+use crate::ui::widgets::hex_editor::HexEditor;
 
 #[derive(Clone)]
 pub struct SidebarFragment {
@@ -108,56 +108,14 @@ impl Fragment for SidebarFragment {
             .object("hex_scroll_layout")
             .expect("Couldn't find 'hex_scroll_layout' in window.ui");
 
-        /*
-        let hex_content: gtk::Box = builder
-            .object("hex_content")
-            .expect("Couldn't find 'hex_content' in window.ui");*/
-
         let hex_editor = HexEditor::new(self.packet.to_bytes());
         hex_editor.set_hexpand(true);
         hex_editor.set_vexpand(true);
+        hex_editor.set_line_number_color(RGBA::new(0.286, 0.306, 0.341, 1.0));
+        hex_editor.set_cursor_color(RGBA::new(0.608, 0.616, 0.624, 1.0));
+        hex_editor.set_selection_color(RGBA::new(0.349, 0.263, 0.431, 1.0));
         hex_editor.show();
         hex_scroll_layout.add(&hex_editor);
-
-        /*
-        let mut editor = Rc::new(RefCell::new(HexEditor::from_bytes(self.packet.to_bytes())));
-        editor.borrow_mut().set_line_number_color(0.286, 0.306, 0.341);
-        editor.borrow_mut().set_cursor_color(0.608, 0.616, 0.624);
-        editor.borrow_mut().set_selection_color(0.349, 0.263, 0.431);
-        editor.borrow_mut().set_text_color(0.608, 0.616, 0.624);
-
-        let editor_clone = Rc::clone(&editor);
-        editor.borrow().get_drawing_area().connect_motion_notify_event(move |drawing_area, event| {
-            let (x, y) = event.position();
-            editor_clone.borrow_mut().update_cursor(x, y);
-            drawing_area.queue_draw();
-            Propagation::Proceed
-        });
-
-        let editor_clone = Rc::clone(&editor);
-        editor.borrow().get_drawing_area().connect_draw(move |_, cr| {
-            editor_clone.borrow_mut().draw_hex_editor(cr);
-            Propagation::Proceed
-        });
-
-
-        hex_content.add(editor.borrow().get_drawing_area());
-        editor.borrow().get_drawing_area().show();
-        */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
         let db = Database::open("database.db").expect("Couldn't open database.db");
