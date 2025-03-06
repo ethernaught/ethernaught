@@ -153,12 +153,15 @@ hexeditor {
 
 
 
-
+#details_layout {
+    padding: 5px 0;
+}
 
 #dropdown button {
     padding: 10px;
     border: 0;
-    border-radius: 0;
+    margin: 0 5px;
+    border-radius: 5px;
     font-weight: bold;
     color: #9b9d9f;
     background: transparent;
@@ -170,6 +173,22 @@ hexeditor {
 
 #dropdown list {
     padding-left: 32px;
+    background-color: #2b2d30;
+}
+
+#dropdown list row {
+    background-color: #2b2d30;
+    outline: none;
+    border: none;
+    margin: 0 5px;
+    box-shadow: none;
+    border-radius: 5px;
+}
+
+#dropdown list row label {
+    padding: 10px;
+    font-size: 14px;
+    color: #a7a7a7;
 }
 
 #dropdown list row:hover {

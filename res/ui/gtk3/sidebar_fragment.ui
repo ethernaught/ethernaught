@@ -87,7 +87,7 @@
 
                         <child>
                             <object class="GtkBox" id="details_layout">
-                                <property name="name">sidebar_details</property>
+                                <property name="name">details_layout</property>
                                 <property name="visible">True</property>
                                 <property name="hexpand">True</property>
                                 <property name="vexpand">True</property>

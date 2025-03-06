@@ -15,11 +15,11 @@
     background-color: #666666;
 }
 
-list {
+#devices_list {
     background-color: #2b2d30;
 }
 
-list row {
+#devices_list row {
     background-color: #2b2d30;
     outline: none;
     border: none;
@@ -27,12 +27,12 @@ list row {
     border-radius: 5px;
 }
 
-list row label {
+#devices_list row:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+}
+
+#devices_list row label {
     padding: 10px;
     font-size: 14px;
     color: #a7a7a7;
-}
-
-list row:active {
-    background-color: rgba(255, 255, 255, 0.15);
 }

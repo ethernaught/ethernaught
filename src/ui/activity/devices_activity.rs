@@ -53,12 +53,12 @@ impl Activity for DevicesActivity {
             .expect("Couldn't find 'devices_layout' in devices_activity.ui"));
 
 
-        let list_box: ListBox = builder
-            .object("list_box")
-            .expect("Couldn't find 'list_box' in devices_activity.ui");
-        list_box.set_selection_mode(gtk::SelectionMode::Single);
+        let devices_list: ListBox = builder
+            .object("devices_list")
+            .expect("Couldn't find 'devices_list' in devices_activity.ui");
+        devices_list.set_selection_mode(gtk::SelectionMode::Single);
 
-        let device_adapter = DevicesAdapter::new(&list_box);
+        let device_adapter = DevicesAdapter::new(&devices_list);
 
         let devices = Device::list().expect("Failed to get device list");
         devices.iter().for_each(|d| {
@@ -66,7 +66,7 @@ impl Activity for DevicesActivity {
         });
 
         let app = self.app.clone();
-        list_box.connect_row_activated(move |_, row| {
+        devices_list.connect_row_activated(move |_, row| {
             app.start_activity(Box::new(MainActivity::new(app.clone(), &devices[row.index() as usize])));
         });
 

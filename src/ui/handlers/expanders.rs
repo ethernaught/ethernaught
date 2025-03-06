@@ -282,8 +282,8 @@ pub fn create_tcp_layer_expander(layer: &TcpLayer) -> Container {
 
 fn create_dropdown(title: &str) -> (Container, ListBox) {
     let dropdown = gtk::Box::new(Orientation::Vertical, 0);
-    dropdown.show();
     dropdown.set_widget_name("dropdown");
+    dropdown.show();
 
     let hbox = gtk::Box::new(Orientation::Horizontal, 10);
     let icon = Image::from_file("res/images/ic_expand_less.svg");
