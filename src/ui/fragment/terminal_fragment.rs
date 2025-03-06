@@ -27,8 +27,8 @@ impl Fragment for TerminalFragment {
         let builder = Builder::from_file("res/ui/gtk3/terminal_fragment.ui");
 
         self.root = Some(builder
-            .object("terminal_scroll_layout")
-            .expect("Couldn't find 'terminal_scroll_layout' in window.ui"));
+            .object("terminal_layout")
+            .expect("Couldn't find 'terminal_layout' in window.ui"));
 
         &self.root.as_ref().unwrap().upcast_ref()
     }

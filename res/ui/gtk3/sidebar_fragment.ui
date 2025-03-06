@@ -65,6 +65,14 @@
                         <property name="overlay-scrolling">false</property>
                         <property name="hscrollbar-policy">automatic</property>
                         <property name="vscrollbar-policy">automatic</property>
+
+                        <child>
+                            <object class="HexEditor" id="hex_editor">
+                                <property name="visible">True</property>
+                                <property name="hexpand">True</property>
+                                <property name="vexpand">True</property>
+                            </object>
+                        </child>
                     </object>
                 </child>
 

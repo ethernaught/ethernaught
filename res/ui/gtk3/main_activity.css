@@ -83,10 +83,24 @@ list row:active,
 
 
 
-#terminal_scroll_layout {
+#terminal_layout {
     border-top: solid 1px #1e1f22;
 }
 
+#terminal_title label {
+    padding: 0 10px;
+    color: #cbd7dc;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+terminal {
+    padding: 10px;
+    font-family: Monospace;
+    font-size: 16px;
+    color: #9B9D9F;
+    background-color: #1e1f22;
+}
 
 
 

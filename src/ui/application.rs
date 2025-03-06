@@ -10,6 +10,8 @@ use crate::ui::activity::devices_activity::DevicesActivity;
 use crate::ui::activity::inter::activity::Activity;
 use crate::ui::activity::main_activity::MainActivity;
 use crate::ui::titlebar::TitleBar;
+use crate::ui::widgets::hex_editor::HexEditor;
+use crate::ui::widgets::terminal::Terminal;
 use crate::VERSION;
 //use crate::config::VERSION;
 
@@ -31,6 +33,9 @@ impl OApplication {
     pub fn run(&self) {
         let _self = self.clone();
         self.app.connect_activate(move |app| {
+            HexEditor::static_type();
+            Terminal::static_type();
+
             let builder = Builder::from_file("res/ui/gtk3/window.ui");
 
             let provider = CssProvider::new();

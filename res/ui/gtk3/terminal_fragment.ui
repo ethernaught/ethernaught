@@ -2,14 +2,48 @@
 <interface>
     <requires lib="gtk+" version="3.24"/>
 
-    <object class="GtkScrolledWindow" id="terminal_scroll_layout">
-        <property name="name">terminal_scroll_layout</property>
+    <object class="GtkBox" id="terminal_layout">
+        <property name="name">terminal_layout</property>
         <property name="visible">True</property>
         <property name="hexpand">True</property>
         <property name="vexpand">True</property>
-        <property name="overlay-scrolling">false</property>
-        <property name="hscrollbar-policy">automatic</property>
-        <property name="vscrollbar-policy">automatic</property>
+        <property name="orientation">vertical</property>
         <property name="height-request">40</property>
+
+        <child>
+            <object class="GtkBox" id="terminal_title">
+                <property name="name">terminal_title</property>
+                <property name="visible">True</property>
+                <property name="hexpand">True</property>
+                <property name="orientation">horizontal</property>
+                <property name="height-request">40</property>
+
+                <child>
+                    <object class="GtkLabel">
+                        <property name="visible">True</property>
+                        <property name="label">Run</property>
+                    </object>
+                </child>
+            </object>
+        </child>
+
+        <child>
+            <object class="GtkScrolledWindow">
+                <property name="visible">True</property>
+                <property name="hexpand">True</property>
+                <property name="vexpand">True</property>
+                <property name="overlay-scrolling">false</property>
+                <property name="hscrollbar-policy">automatic</property>
+                <property name="vscrollbar-policy">automatic</property>
+
+                <child>
+                    <object class="Terminal" id="terminal">
+                        <property name="visible">True</property>
+                        <property name="hexpand">True</property>
+                        <property name="vexpand">True</property>
+                    </object>
+                </child>
+            </object>
+        </child>
     </object>
 </interface>

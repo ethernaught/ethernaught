@@ -104,11 +104,12 @@ impl Fragment for SidebarFragment {
 
 
 
-        let hex_scroll_layout: ScrolledWindow = builder
-            .object("hex_scroll_layout")
-            .expect("Couldn't find 'hex_scroll_layout' in window.ui");
+        let hex_editor: HexEditor = builder
+            .object("hex_editor")
+            .expect("Couldn't find 'hex_editor' in window.ui");
 
-        let hex_editor = HexEditor::new(self.packet.to_bytes());
+        //let hex_editor = HexEditor::new(self.packet.to_bytes());
+        hex_editor.set_data(self.packet.to_bytes());
         hex_editor.set_hexpand(true);
         hex_editor.set_vexpand(true);
         hex_editor.set_line_number_color(RGBA::new(0.286, 0.306, 0.341, 1.0));
