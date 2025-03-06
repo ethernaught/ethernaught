@@ -49,6 +49,7 @@ window.maximized #titlebar {
     padding: 4px;
     border-radius: 6px;
     border: none;
+    background-color: transparent;
     background-size: auto;
     background-repeat: no-repeat;
     background-position: center;
@@ -255,6 +256,34 @@ menu {
     color: #DB5C5C;
     border: solid 1px #DB5C5C;
 }
+
+#bottombar button {
+    min-height: 0;
+    padding: 0;
+    border-radius: 6px;
+    border: none;
+    background-color: transparent;
+    background-size: auto;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#bottombar button:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+}
+
+#bottombar #warning_button {
+    background-image: url('../../images/ic_status_good.svg');
+}
+
+#bottombar #warning_button.warning {
+    background-image: url('../../images/ic_status_warning.svg');
+}
+
+#bottombar #warning_button.severe {
+    background-image: url('../../images/ic_status_severe.svg');
+}
+
 
 
 

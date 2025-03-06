@@ -55,6 +55,7 @@ list row:active,
     padding: 4px;
     border-radius: 6px;
     border: none;
+    background-color: transparent;
     background-size: auto;
     background-repeat: no-repeat;
     background-position: center;
@@ -117,6 +118,7 @@ terminal {
     padding: 8px;
     border-radius: 6px;
     border: none;
+    background-color: transparent;
     background-size: auto;
     background-repeat: no-repeat;
     background-position: center;

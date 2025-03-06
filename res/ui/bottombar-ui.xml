@@ -11,9 +11,27 @@
         <property name="height-request">30</property>
 
         <child>
+            <object class="GtkButton" id="warning_button">
+                <property name="name">warning_button</property>
+                <property name="tooltip-text">Warnings</property>
+                <property name="visible">True</property>
+                <property name="width-request">22</property>
+                <property name="height-request">22</property>
+            </object>
+        </child>
+
+        <child>
             <object class="GtkBox">
                 <property name="visible">True</property>
                 <property name="hexpand">True</property>
+            </object>
+        </child>
+
+        <child>
+            <object class="GtkLabel" id="status">
+                <property name="name">status</property>
+                <property name="visible">True</property>
+                <property name="label">Packets: 0 • Dropped: 0 (0.0%)</property>
             </object>
         </child>
 
