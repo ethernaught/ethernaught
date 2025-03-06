@@ -9,8 +9,6 @@ use gtk::pango::Weight;
 use gtk::prelude::{StyleContextExt, StyleContextExtManual, WidgetExt};
 use gtk::subclass::prelude::{ObjectImpl, ObjectSubclass, ObjectSubclassExt, ObjectSubclassIsExt, WidgetClassSubclassExt, WidgetImpl};
 
-const BYTES_PER_ROW: usize = 16;
-
 pub struct TerminalImpl {
     cursor: RefCell<Option<usize>>,
     selection: RefCell<Option<(usize, usize)>>,
@@ -106,7 +104,7 @@ impl WidgetImpl for TerminalImpl {
 
         let attr = WindowAttr {
             title: None,
-            event_mask: EventMask::POINTER_MOTION_MASK,
+            event_mask: EventMask::KEY_PRESS_MASK,
             x: Some(allocation.x()),
             y: Some(allocation.y()),
             width: allocation.width(),
@@ -126,6 +124,8 @@ impl WidgetImpl for TerminalImpl {
         widget.set_window(window);
         widget.set_realized(true);
 
+        widget.set_can_focus(true);
+
         let (calculated_width, calculated_height) = widget.calculate_size();
 
         let width = max(calculated_width, allocation.width());
@@ -133,6 +133,16 @@ impl WidgetImpl for TerminalImpl {
 
         widget.set_size_request(width, height);
         self.size_allocate(&Allocation::new(allocation.x(), allocation.y(), width, height));
+
+
+
+
+        widget.connect_key_press_event(move |_, event| {
+            println!("{:?}", event);
+
+            Proceed
+        });
+
     }
 }
 
