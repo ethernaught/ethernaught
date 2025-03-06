@@ -134,7 +134,7 @@ impl WidgetImpl for TerminalImpl {
 
         widget.set_can_focus(true);
 
-        let (calculated_width, calculated_height) = widget.calculate_size();
+        let (calculated_width, calculated_height) = self.calculate_size();
 
         let width = max(calculated_width, allocation.width());
         let height = max(calculated_height, allocation.height());
