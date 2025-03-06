@@ -108,7 +108,6 @@ impl Fragment for SidebarFragment {
             .object("hex_editor")
             .expect("Couldn't find 'hex_editor' in window.ui");
 
-        //let hex_editor = HexEditor::new(self.packet.to_bytes());
         hex_editor.set_data(self.packet.to_bytes());
         hex_editor.set_hexpand(true);
         hex_editor.set_vexpand(true);
@@ -116,7 +115,6 @@ impl Fragment for SidebarFragment {
         hex_editor.set_cursor_color(RGBA::new(0.608, 0.616, 0.624, 1.0));
         hex_editor.set_selection_color(RGBA::new(0.349, 0.263, 0.431, 1.0));
         hex_editor.show();
-        hex_scroll_layout.add(&hex_editor);
 
 
         let db = Database::open("database.db").expect("Couldn't open database.db");
