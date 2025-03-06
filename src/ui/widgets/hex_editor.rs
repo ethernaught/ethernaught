@@ -54,7 +54,7 @@ impl HexEditorImpl {
         let char_width = metrics.approximate_char_width() as f64 / pango::SCALE as f64;
         let row_height = ascent + decent;
         let ascii_offset = (BYTES_PER_ROW as f64) * (char_width * 2.0) + 9.0;
-        let line_numbers_width = padding.left as f64 + 8.0 * char_width + 15.0;
+        let line_numbers_width = padding.left as f64 + 8.0 * char_width;
 
         let width = padding.right as f64 + (char_width * BYTES_PER_ROW as f64) + line_numbers_width + ascii_offset;
         let height = padding.top as f64 + padding.bottom as f64 + ((self.data.borrow().len() / BYTES_PER_ROW) as f64 + 1.0) * row_height;
@@ -116,7 +116,7 @@ impl WidgetImpl for HexEditorImpl {
         let char_width = metrics.approximate_char_width() as f64 / pango::SCALE as f64;
         let row_height = ascent + decent;
         let ascii_offset = (BYTES_PER_ROW as f64) * (char_width * 2.0) + 9.0;
-        let line_numbers_width = padding.left as f64 + 8.0 * char_width + 15.0;
+        let line_numbers_width = padding.left as f64 + 8.0 * char_width;
 
         cr.select_font_face(font_desc.family().unwrap().as_str(), FontSlant::Normal, font_weight);
         cr.set_font_size(font_size);
@@ -241,7 +241,7 @@ impl WidgetImpl for HexEditorImpl {
         let char_width = metrics.approximate_char_width() as f64 / pango::SCALE as f64;
         let row_height = ascent + decent;
         let ascii_offset = (BYTES_PER_ROW as f64) * (char_width * 2.0) + 10.0;
-        let line_numbers_width = padding.left as f64 + 8.0 * char_width + 15.0;
+        let line_numbers_width = padding.left as f64 + 8.0 * char_width;
 
 
         let (x, y) = event.position();
