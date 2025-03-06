@@ -34,6 +34,35 @@ impl Default for HexEditorImpl {
     }
 }
 
+impl HexEditorImpl {
+
+    fn calculate_size(&self) -> (i32, i32) {
+        let widget = self.obj();
+        let style_context = widget.style_context();
+        let pango_context = widget.create_pango_context();
+
+        style_context.set_state(StateFlags::NORMAL);
+
+        let font_desc = style_context.font(StateFlags::NORMAL);
+        let metrics = pango_context.metrics(Some(&font_desc), None);
+
+        let ascent = metrics.ascent() as f64 / pango::SCALE as f64;
+        let decent = metrics.descent() as f64 / pango::SCALE as f64;
+
+        let padding = style_context.padding(StateFlags::NORMAL);
+
+        let char_width = metrics.approximate_char_width() as f64 / pango::SCALE as f64;
+        let row_height = ascent + decent;
+        let ascii_offset = (BYTES_PER_ROW as f64) * (char_width * 2.0) + 9.0;
+        let line_numbers_width = padding.left as f64 + 8.0 * char_width + 15.0;
+
+        let width = padding.right as f64 + (char_width * BYTES_PER_ROW as f64) + line_numbers_width + ascii_offset;
+        let height = padding.top as f64 + padding.bottom as f64 + ((self.data.borrow().len() % BYTES_PER_ROW) as f64 * row_height);
+
+        (width as i32, height as i32)
+    }
+}
+
 #[glib::object_subclass]
 impl ObjectSubclass for HexEditorImpl {
 
@@ -185,7 +214,7 @@ impl WidgetImpl for HexEditorImpl {
         widget.set_window(window);
         widget.set_realized(true);
 
-        let (calculated_width, calculated_height) = widget.calculate_size();
+        let (calculated_width, calculated_height) = self.calculate_size();
 
         let width = max(calculated_width, allocation.width());
         let height = max(calculated_height, allocation.height());
@@ -295,30 +324,5 @@ impl HexEditor {
 
     pub fn get_selection(&self) -> Option<(usize, usize)> {
         self.imp().selection.borrow().clone()
-    }
-
-    fn calculate_size(&self) -> (i32, i32) {
-        let style_context = self.style_context();
-        let pango_context = self.create_pango_context();
-
-        style_context.set_state(StateFlags::NORMAL);
-
-        let font_desc = style_context.font(StateFlags::NORMAL);
-        let metrics = pango_context.metrics(Some(&font_desc), None);
-
-        let ascent = metrics.ascent() as f64 / pango::SCALE as f64;
-        let decent = metrics.descent() as f64 / pango::SCALE as f64;
-
-        let padding = style_context.padding(StateFlags::NORMAL);
-
-        let char_width = metrics.approximate_char_width() as f64 / pango::SCALE as f64;
-        let row_height = ascent + decent;
-        let ascii_offset = (BYTES_PER_ROW as f64) * (char_width * 2.0) + 9.0;
-        let line_numbers_width = padding.left as f64 + 8.0 * char_width + 15.0;
-
-        let width = padding.right as f64 + (char_width * BYTES_PER_ROW as f64) + line_numbers_width + ascii_offset;
-        let height = padding.top as f64 + padding.bottom as f64 + ((self.imp().data.borrow().len() % BYTES_PER_ROW) as f64 * row_height);
-
-        (width as i32, height as i32)
     }
 }
