@@ -28,6 +28,14 @@ impl Default for TerminalImpl {
     }
 }
 
+impl TerminalImpl {
+
+    fn calculate_size(&self) -> (i32, i32) {
+
+        (100 as i32, 100 as i32)
+    }
+}
+
 #[glib::object_subclass]
 impl ObjectSubclass for TerminalImpl {
 
@@ -181,10 +189,5 @@ impl Terminal {
 
     pub fn get_selection(&self) -> Option<(usize, usize)> {
         self.imp().selection.borrow().clone()
-    }
-
-    fn calculate_size(&self) -> (i32, i32) {
-
-        (100 as i32, 100 as i32)
     }
 }
