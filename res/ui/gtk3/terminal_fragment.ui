@@ -21,7 +21,7 @@
                 <child>
                     <object class="GtkLabel">
                         <property name="visible">True</property>
-                        <property name="label">Run</property>
+                        <property name="label">Terminal</property>
                     </object>
                 </child>
             </object>
