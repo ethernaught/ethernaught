@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+    <requires lib="gtk+" version="3.24"/>
+
+    <object class="GtkBox" id="bottombar">
+        <property name="name">bottombar</property>
+        <property name="visible">True</property>
+        <property name="hexpand">True</property>
+        <property name="orientation">horizontal</property>
+        <property name="spacing">30</property>
+        <property name="height-request">28</property>
+
+        <child>
+            <object class="GtkLabel" id="license">
+                <property name="name">license</property>
+                <property name="visible">True</property>
+                <property name="label">DEV-1.0</property>
+            </object>
+        </child>
+    </object>
+</interface>

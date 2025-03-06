@@ -35,24 +35,12 @@ impl TitleBar {
         self.init_navigation_options(&builder);
         self.init_window_options(&builder);
 
-
-
-
-
-
-        //self.init_menu_bar();
-
-        //self.app.set_menubar(Some(&menubar));
-
-
-
         self.root = Some(root.upcast());
 
         self.root.as_ref().unwrap()
     }
 
     fn init_navigation_options(&mut self, builder: &Builder) {
-
         let navigation_menubar: MenuBar = builder
             .object("navigation_menubar")
             .expect("Couldn't find 'navigation_menubar' in titlebar-ui.xml");

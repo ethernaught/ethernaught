@@ -241,7 +241,10 @@ menu {
 
 
 
-
+#bottombar {
+    background-color: #2b2d30;
+    border-top: solid 1px #1e1f22;
+}
 
 
 

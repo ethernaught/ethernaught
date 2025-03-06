@@ -3,12 +3,10 @@ use gtk::{AboutDialog, ApplicationWindow, Builder, Image, Application, TreeViewC
 use gtk::gdk_pixbuf::PixbufLoader;
 use gtk::prelude::*;
 use gtk::gio::SimpleAction;
-use gtk::glib::PropertyGet;
-use gtk::glib::translate::ToGlibPtr;
 use gtk::prelude::{ActionMapExt, GtkWindowExt};
 use crate::ui::activity::devices_activity::DevicesActivity;
 use crate::ui::activity::inter::activity::Activity;
-use crate::ui::activity::main_activity::MainActivity;
+use crate::ui::bottombar::BottomBar;
 use crate::ui::titlebar::TitleBar;
 use crate::ui::widgets::hex_editor::HexEditor;
 use crate::ui::widgets::terminal::Terminal;
@@ -61,11 +59,18 @@ impl OApplication {
             let mut titlebar = TitleBar::new(_self.clone());
             window.set_titlebar(Some(titlebar.on_create()));
 
+            let window_content: gtk::Box = builder
+                .object("window_content")
+                .expect("Failed to get the 'window_content' from window.ui");
+
             let stack = Stack::new();
-            window.add(&stack);
+            window_content.add(&stack);
             stack.show();
 
             _self.start_activity(Box::new(DevicesActivity::new(_self.clone())));
+
+            let mut bottombar = BottomBar::new(_self.clone());
+            window_content.add(bottombar.on_create());
 
             _self.init_actions(&window);
 
@@ -76,7 +81,7 @@ impl OApplication {
     }
 
     pub fn start_activity(&self, mut activity: Box<dyn Activity>) {
-        let stack = self.app.active_window().unwrap().children()[0].clone().downcast::<Stack>().unwrap();
+        let stack = self.app.active_window().unwrap().child().unwrap().downcast_ref::<Container>().unwrap().children()[0].clone().downcast::<Stack>().unwrap();
 
         let name = activity.get_name();
         let title = activity.get_title();
@@ -125,6 +130,10 @@ impl OApplication {
 
     pub fn get_titlebar(&self) -> Option<Widget> {
         self.app.active_window().unwrap().titlebar()
+    }
+
+    pub fn get_bottombar(&self) -> Option<Widget> {
+        None
     }
 
     fn init_actions(&self, window: &ApplicationWindow) {
