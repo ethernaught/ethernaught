@@ -94,7 +94,7 @@ list row:active,
 }
 
 terminal {
-    padding: 10px;
+    padding: 4px;
     font-family: Monospace;
     font-size: 16px;
     color: #a7a7a7;

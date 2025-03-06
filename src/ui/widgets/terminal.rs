@@ -97,7 +97,7 @@ impl WidgetImpl for TerminalImpl {
 
         cr.set_source_rgba(text_color.red(), text_color.green(), text_color.blue(), text_color.alpha());
         let data = "user@linux:~$ echo 'Hello, World!'";
-        cr.move_to(0.0, row_height);
+        cr.move_to(padding.left as f64, row_height);
         cr.show_text(&data);
 
 

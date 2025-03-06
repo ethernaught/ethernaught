@@ -242,11 +242,19 @@ menu {
 
 
 #bottombar {
+    padding: 4px 10px;
+    font-size: 14px;
+    color: #a7a7a7;
     background-color: #2b2d30;
     border-top: solid 1px #1e1f22;
 }
 
-
+#bottombar #license {
+    padding: 0 6px;
+    border-radius: 28px;
+    color: #DB5C5C;
+    border: solid 1px #DB5C5C;
+}
 
 
 

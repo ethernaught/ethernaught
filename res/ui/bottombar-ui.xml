@@ -8,7 +8,14 @@
         <property name="hexpand">True</property>
         <property name="orientation">horizontal</property>
         <property name="spacing">30</property>
-        <property name="height-request">28</property>
+        <property name="height-request">30</property>
+
+        <child>
+            <object class="GtkBox">
+                <property name="visible">True</property>
+                <property name="hexpand">True</property>
+            </object>
+        </child>
 
         <child>
             <object class="GtkLabel" id="license">
