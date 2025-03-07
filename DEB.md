@@ -16,23 +16,26 @@ my-app.deb
 │       └── config.toml
 └── usr/
     └── share/
-        └── icons/
-            └── hicolor/
-                └── 48x48/
-                    └── apps/
-                        └── my-app.png    <-- Application icon
-                └── 16x16/
-                    └── apps/
-                        └── my-app.png    <-- 16x16 icon
-                └── 32x32/
-                    └── apps/
-                        └── my-app.png    <-- 32x32 icon
-                └── 48x48/
-                    └── apps/
-                        └── my-app.png    <-- 48x48 icon
-                └── 64x64/
-                    └── apps/
-                        └── my-app.png    <-- 64x64 icon
+        ├── applications/
+        │   └── my-app.desktop   <-- The .desktop file
+        ├── icons/
+        │   └── hicolor/
+        │       ├── 16x16/
+        │       │   └── apps/
+        │       │       └── my-app.png    <-- 16x16 icon
+        │       ├── 32x32/
+        │       │   └── apps/
+        │       │       └── my-app.png    <-- 32x32 icon
+        │       ├── 48x48/
+        │       │   └── apps/
+        │       │       └── my-app.png    <-- 48x48 icon
+        │       └── 64x64/
+        │           └── apps/
+        │               └── my-app.png    <-- 64x64 icon
+        └── var/
+            └── lib/
+                └── my-app/
+                    └── database.sql   <-- Offline Query DB
 ```
 
 DEBIAN/control
