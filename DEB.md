@@ -36,6 +36,7 @@ my-app.deb
 ```
 
 DEBIAN/control
+-----
 ```
 Package: ethernaut
 Version: 0.1.0
