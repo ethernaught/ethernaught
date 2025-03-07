@@ -28,6 +28,7 @@ fn main() {
     println!("{}", target_double);
 
 
+    //if cfg!(debug_assertions) {
 
     if !is_root() {
         println!("Requesting root access...");
