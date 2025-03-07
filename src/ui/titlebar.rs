@@ -26,11 +26,11 @@ impl TitleBar {
     }
 
     pub fn on_create(&mut self) -> &Container {
-        let builder = Builder::from_file("res/ui/titlebar-ui.xml");
+        let builder = Builder::from_resource("/com/ethernaut/rust/res/ui/titlebar_ui.xml");
 
         let root: gtk::Box = builder
             .object("titlebar")
-            .expect("Couldn't find 'titlebar' in titlebar-ui.xml");
+            .expect("Couldn't find 'titlebar' in titlebar_ui.xml");
 
         self.init_navigation_options(&builder);
         self.init_window_options(&builder);
@@ -43,12 +43,12 @@ impl TitleBar {
     fn init_navigation_options(&mut self, builder: &Builder) {
         let navigation_menubar: MenuBar = builder
             .object("navigation_menubar")
-            .expect("Couldn't find 'navigation_menubar' in titlebar-ui.xml");
+            .expect("Couldn't find 'navigation_menubar' in titlebar_ui.xml");
 
-        let menu_builder = Builder::from_file("res/ui/ethernaut-ui.xml");
+        let menu_builder = Builder::from_resource("/com/ethernaut/rust/res/ui/ethernaut_ui.xml");
         let menu: gio::MenuModel = menu_builder
             .object("main_window_menu")
-            .expect("Couldn't find 'main_window_menu' in ethernaut-ui.xml");
+            .expect("Couldn't find 'main_window_menu' in ethernaut_ui.xml");
 
         navigation_menubar.bind_model(Some(&menu), None, false);
 
@@ -56,7 +56,7 @@ impl TitleBar {
         let navigation_menubar = Rc::new(RefCell::new(navigation_menubar));
         let navigation_buttons = Rc::new(RefCell::new(builder
             .object::<gtk::Box>("navigation_buttons")
-            .expect("Couldn't find 'navigation_buttons' in ethernaut-ui.xml")));
+            .expect("Couldn't find 'navigation_buttons' in ethernaut_ui.xml")));
 
 
         let navigation_menubar_clone = Rc::clone(&navigation_menubar);
@@ -69,7 +69,7 @@ impl TitleBar {
 
         let menu_button: Button = builder
             .object("menu_button")
-            .expect("Couldn't find 'menu_button' in titlebar-ui.xml");
+            .expect("Couldn't find 'menu_button' in titlebar_ui.xml");
 
         let navigation_menubar_clone = Rc::clone(&navigation_menubar);
         let navigation_buttons_clone = Rc::clone(&navigation_buttons);
@@ -83,7 +83,7 @@ impl TitleBar {
         /*
         let back_button: Button = builder
             .object("back_button")
-            .expect("Couldn't find 'back_button' in titlebar-ui.xml");
+            .expect("Couldn't find 'back_button' in titlebar_ui.xml");
 
         let _self = self.clone();
         back_button.connect_clicked(move |_| {
@@ -93,7 +93,7 @@ impl TitleBar {
 
         let next_button: Button = builder
             .object("next_button")
-            .expect("Couldn't find 'next_button' in titlebar-ui.xml");
+            .expect("Couldn't find 'next_button' in titlebar_ui.xml");
 
         let _self = self.clone();
         next_button.connect_clicked(move |_| {
@@ -105,7 +105,7 @@ impl TitleBar {
     fn init_window_options(&self, builder: &Builder) {
         let minimize_button: Button = builder
             .object("minimize_button")
-            .expect("Couldn't find 'minimize_button' in titlebar-ui.xml");
+            .expect("Couldn't find 'minimize_button' in titlebar_ui.xml");
 
         let window = self.app.get_window().unwrap();
         minimize_button.connect_clicked(move |_| {
@@ -114,7 +114,7 @@ impl TitleBar {
 
         let maximize_button: Button = builder
             .object("maximize_button")
-            .expect("Couldn't find 'maximize_button' in titlebar-ui.xml");
+            .expect("Couldn't find 'maximize_button' in titlebar_ui.xml");
 
         let window = self.app.get_window().unwrap();
         maximize_button.connect_clicked(move |_| {
@@ -128,7 +128,7 @@ impl TitleBar {
 
         let close_button: Button = builder
             .object("close_button")
-            .expect("Couldn't find 'close_button' in titlebar-ui.xml");
+            .expect("Couldn't find 'close_button' in titlebar_ui.xml");
 
         let app = self.app.get_application();
         close_button.connect_clicked(move |_| {

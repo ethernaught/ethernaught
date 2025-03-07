@@ -51,7 +51,7 @@ impl SidebarFragment {
 impl Fragment for SidebarFragment {
 
     fn on_create(&mut self) -> &Container {
-        let builder = Builder::from_file("res/ui/gtk3/sidebar_fragment.ui");
+        let builder = Builder::from_resource("/com/ethernaut/rust/res/ui/gtk3/sidebar_fragment.ui");
 
         let sidebar_content: Paned = builder
             .object("sidebar_content")

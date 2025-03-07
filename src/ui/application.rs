@@ -1,6 +1,6 @@
 use std::process::exit;
 use gtk::{AboutDialog, ApplicationWindow, Builder, Image, Application, TreeViewColumn, CellRendererText, ScrolledWindow, Button, ListBoxRow, Label, CssProvider, StyleContext, gdk, Stack, Container, TreeView, Widget, Window, gio, MenuBar, MenuItem, Menu};
-use gtk::gdk_pixbuf::PixbufLoader;
+use gtk::gdk_pixbuf::{Pixbuf, PixbufLoader};
 use gtk::prelude::*;
 use gtk::gio::{resources_register, Resource, SimpleAction};
 use gtk::glib::Bytes;
@@ -40,7 +40,7 @@ impl OApplication {
             let resource = Resource::from_data(&Bytes::from(resource_data)).unwrap();
             resources_register(&resource);
 
-            let builder = Builder::from_resource("/com/ethernaut/rust/res/ui/gtk3/window.ui");//Builder::from_file("res/ui/gtk3/window.ui");
+            let builder = Builder::from_resource("/com/ethernaut/rust/res/ui/gtk3/window.ui");
 
             let provider = CssProvider::new();
             provider.load_from_resource("/com/ethernaut/rust/res/ui/gtk3/window.css");
@@ -61,7 +61,7 @@ impl OApplication {
             //window.set_decorated(false);
             window.set_border_width(1);
 
-            window.set_icon_from_file("res/icons/ic_launcher.svg").expect("Failed to load icon");
+            //window.set_icon_from_file("res/icons/ic_launcher.svg").expect("Failed to load icon");
 
             let mut titlebar = TitleBar::new(_self.clone());
             window.set_titlebar(Some(titlebar.on_create()));
@@ -177,11 +177,7 @@ impl OApplication {
 }
 
 pub fn show_about(window: &ApplicationWindow) {
-    let svg_data = include_bytes!("../../res/icons/ic_launcher.svg");
-    let loader = PixbufLoader::with_type("svg").expect("Failed to create SVG loader");
-    loader.write(svg_data).expect("Failed to load SVG data");
-    loader.close().expect("Failed to close SVG loader");
-    let icon_pixbuf = loader.pixbuf().expect("Failed to get Pixbuf from SVG");
+    let icon_pixbuf = Pixbuf::from_resource("/com/ethernaut/rust/res/icons/ic_launcher.svg").expect("Failed to get Pixbuf from SVG");
 
     let dialog = AboutDialog::builder()
         .transient_for(window)

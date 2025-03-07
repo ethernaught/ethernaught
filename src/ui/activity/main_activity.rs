@@ -113,10 +113,10 @@ impl Activity for MainActivity {
     }
 
     fn on_create(&mut self) -> &Container {
-        let builder = Builder::from_file("res/ui/gtk3/main_activity.ui");
+        let builder = Builder::from_resource("/com/ethernaut/rust/res/ui/gtk3/main_activity.ui");
 
         let provider = CssProvider::new();
-        provider.load_from_path("res/ui/gtk3/main_activity.css").expect("Failed to load CSS file.");
+        provider.load_from_resource("/com/ethernaut/rust/res/ui/gtk3/main_activity.css");
 
         StyleContext::add_provider_for_screen(
             &gdk::Screen::default().expect("Failed to get default screen."),
@@ -206,7 +206,6 @@ impl Activity for MainActivity {
                 app_options.borrow().style_context().add_class("running");
                 stop_button.borrow().show();
 
-                println!("Start button clicked!");
                 main_fragment.borrow().get_packet_adapter().unwrap().clear();
                 packet_service.start();
             });
@@ -220,8 +219,6 @@ impl Activity for MainActivity {
             button.connect_clicked(move |_| {
                 app_options.borrow().style_context().remove_class("running");
                 stop_button.borrow().hide();
-
-                println!("Stop button clicked!");
                 packet_service.stop();
             });
         }

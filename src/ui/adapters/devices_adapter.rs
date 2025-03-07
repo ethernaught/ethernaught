@@ -17,23 +17,23 @@ impl DevicesAdapter {
     }
 
     pub fn add(&self, device: &Device) {
-        let builder = Builder::from_file("res/ui/device_list_item.xml");
+        let builder = Builder::from_resource("/com/ethernaut/rust/res/ui/gtk3/device_list_item.ui");
         let row: ListBoxRow = builder
             .object("row")
-            .expect("Couldn't find 'row' in packet_list_item.xml");
+            .expect("Couldn't find 'row' in packet_list_item.ui");
 
 
 
         let title_label: Label = builder
             .object("title")
-            .expect("Couldn't find 'title' in packet_list_item.xml");
+            .expect("Couldn't find 'title' in packet_list_item.ui");
         title_label.set_label(format!("{}", device.get_name()).as_str());
 
 
 
         let row_root: gtk::Box = builder
             .object("row_root")
-            .expect("Couldn't find 'row_root' in packet_list_item.xml");
+            .expect("Couldn't find 'row_root' in packet_list_item.ui");
 
         let drawing_area = DrawingArea::new();
 

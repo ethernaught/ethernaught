@@ -18,11 +18,11 @@ impl BottomBar {
     }
 
     pub fn on_create(&mut self) -> &Container {
-        let builder = Builder::from_file("res/ui/bottombar-ui.xml");
+        let builder = Builder::from_resource("/com/ethernaut/rust/res/ui/bottombar_ui.xml");
 
         let root: gtk::Box = builder
             .object("bottombar")
-            .expect("Couldn't find 'bottombar' in bottombar-ui.xml");
+            .expect("Couldn't find 'bottombar' in bottombar_ui.xml");
 
         self.root = Some(root.upcast());
         self.root.as_ref().unwrap()

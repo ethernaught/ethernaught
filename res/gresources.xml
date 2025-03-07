@@ -1,8 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gresources>
     <gresource prefix="/com/ethernaut/rust">
+        <file preprocess="xml-stripblanks">res/ui/ethernaut_ui.xml</file>
+        <file preprocess="xml-stripblanks">res/ui/titlebar_ui.xml</file>
+        <file preprocess="xml-stripblanks">res/ui/bottombar_ui.xml</file>
+
+
         <file preprocess="xml-stripblanks">res/ui/gtk3/window.ui</file>
         <file preprocess="xml-stripblanks">res/ui/gtk3/window.css</file>
+
+
+
+
+        <file preprocess="xml-stripblanks">res/ui/gtk3/devices_activity.ui</file>
+        <file preprocess="xml-stripblanks">res/ui/gtk3/devices_activity.css</file>
+
+        <file preprocess="xml-stripblanks">res/ui/gtk3/main_activity.ui</file>
+        <file preprocess="xml-stripblanks">res/ui/gtk3/main_activity.css</file>
+
+
+        <file preprocess="xml-stripblanks">res/ui/gtk3/main_fragment.ui</file>
+        <file preprocess="xml-stripblanks">res/ui/gtk3/sidebar_fragment.ui</file>
+        <file preprocess="xml-stripblanks">res/ui/gtk3/terminal_fragment.ui</file>
+
+
+        <file preprocess="xml-stripblanks">res/ui/gtk3/device_list_item.ui</file>
+
+
+        <file preprocess="xml-stripblanks">res/icons/ic_launcher.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/ic_launcher_small.svg</file>
 
         <file preprocess="xml-stripblanks">res/icons/ic_menu.svg</file>
         <file preprocess="xml-stripblanks">res/icons/ic_back.svg</file>
@@ -20,5 +46,15 @@
         <file preprocess="xml-stripblanks">res/icons/ic_status_good.svg</file>
         <file preprocess="xml-stripblanks">res/icons/ic_status_warning.svg</file>
         <file preprocess="xml-stripblanks">res/icons/ic_status_severe.svg</file>
+
+        <file preprocess="xml-stripblanks">res/icons/ic_wifi.svg</file>
+
+
+
+        <file preprocess="xml-stripblanks">res/icons/ic_plugins.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/ic_terminal.svg</file>
+
+        <file preprocess="xml-stripblanks">res/icons/ic_replay.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/ic_dismiss.svg</file>
     </gresource>
 </gresources>

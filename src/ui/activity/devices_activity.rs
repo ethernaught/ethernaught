@@ -37,10 +37,10 @@ impl Activity for DevicesActivity {
     }
 
     fn on_create(&mut self) -> &Container {
-        let builder = Builder::from_file("res/ui/gtk3/devices_activity.ui");
+        let builder = Builder::from_resource("/com/ethernaut/rust/res/ui/gtk3/devices_activity.ui");
 
         let provider = CssProvider::new();
-        provider.load_from_path("res/ui/gtk3/devices_activity.css").expect("Failed to load CSS file.");
+        provider.load_from_resource("/com/ethernaut/rust/res/ui/gtk3/devices_activity.css");
 
         StyleContext::add_provider_for_screen(
             &gdk::Screen::default().expect("Failed to get default screen."),

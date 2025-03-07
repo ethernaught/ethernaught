@@ -19,7 +19,7 @@ use crate::ui::application::OApplication;
 //SIDEBAR SHOULD BE A FRAGMENT...
 //export GTK_DEBUG=interactive
 
-pub static VERSION: &str = "1.0";
+pub static VERSION: &str = "0.1.0";
 
 //glib-compile-resources res/gresources.xml --target=res/resources.gresources
 
