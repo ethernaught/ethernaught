@@ -2,7 +2,8 @@ use std::process::exit;
 use gtk::{AboutDialog, ApplicationWindow, Builder, Image, Application, TreeViewColumn, CellRendererText, ScrolledWindow, Button, ListBoxRow, Label, CssProvider, StyleContext, gdk, Stack, Container, TreeView, Widget, Window, gio, MenuBar, MenuItem, Menu};
 use gtk::gdk_pixbuf::PixbufLoader;
 use gtk::prelude::*;
-use gtk::gio::SimpleAction;
+use gtk::gio::{resources_register, Resource, SimpleAction};
+use gtk::glib::Bytes;
 use gtk::prelude::{ActionMapExt, GtkWindowExt};
 use crate::ui::activity::devices_activity::DevicesActivity;
 use crate::ui::activity::inter::activity::Activity;
@@ -34,10 +35,16 @@ impl OApplication {
             HexEditor::static_type();
             Terminal::static_type();
 
-            let builder = Builder::from_file("res/ui/gtk3/window.ui");
+            let resource_data = include_bytes!("../../res/resources.gresources");
+
+            let resource = Resource::from_data(&Bytes::from(resource_data)).unwrap();
+            resources_register(&resource);
+
+            let builder = Builder::from_resource("/com/ethernaut/rust/res/ui/gtk3/window.ui");//Builder::from_file("res/ui/gtk3/window.ui");
 
             let provider = CssProvider::new();
-            provider.load_from_path("res/ui/gtk3/window.css").expect("Failed to load CSS file.");
+            provider.load_from_resource("/com/ethernaut/rust/res/ui/gtk3/window.css");
+            //provider.load_from_path("res/ui/gtk3/window.css").expect("Failed to load CSS file.");
 
             StyleContext::add_provider_for_screen(
                 &gdk::Screen::default().expect("Failed to get default screen."),

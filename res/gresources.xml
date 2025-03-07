@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+    <gresource prefix="/com/ethernaut/rust">
+        <file preprocess="xml-stripblanks">res/ui/gtk3/window.ui</file>
+        <file preprocess="xml-stripblanks">res/ui/gtk3/window.css</file>
+    </gresource>
+</gresources>
