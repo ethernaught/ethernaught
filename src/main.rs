@@ -27,21 +27,25 @@ fn main() {
     let target_double = format!("{}-{}", env::consts::ARCH, env::consts::OS);
     println!("{}", target_double);
 
+    if !cfg!(debug_assertions) {
+        if !is_root() {
+            println!("Requesting root access...");
+            println!("{:?}", env::current_exe().unwrap());
+            let display = env::var("DISPLAY").unwrap_or_else(|_| ":0".to_string());
+            let xauthority = env::var("XAUTHORITY").unwrap_or_else(|_| "/run/user/1000/gdm/Xauthority".to_string());
 
-    //if cfg!(debug_assertions) {
+            let status = Command::new("pkexec")
+                .arg("env")
+                .arg(format!("DISPLAY={}", display))
+                .arg(format!("XAUTHORITY={}", xauthority))
+                .arg(env::current_exe().unwrap()) // Relaunch itself with root
+                .status()
+                .expect("Failed to execute pkexec");
 
-    if !is_root() {
-        println!("Requesting root access...");
-        println!("{:?}", env::current_exe().unwrap());
-        /*
-        let status = Command::new("pkexec")
-            .arg(env::current_exe().unwrap()) // Relaunch itself with root
-            .status()
-            .expect("Failed to execute pkexec");
-
-        exit(status.code().unwrap_or(1)); // Exit with the new process status
-        */
+            exit(status.code().unwrap_or(1)); // Exit with the new process status
+        }
     }
+
 
     /*
     let devices = Device::list().expect("Failed to get device list");

@@ -286,7 +286,7 @@ fn create_dropdown(title: &str) -> (Container, ListBox) {
     dropdown.show();
 
     let hbox = gtk::Box::new(Orientation::Horizontal, 10);
-    let icon = Image::from_file("res/icons/ic_expand_less.svg");
+    let icon = Image::from_resource("/com/ethernaut/rust/res/icons/ic_expand_less.svg");
 
     let label = Label::new(Some(title));
     label.set_xalign(0.0);

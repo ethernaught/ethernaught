@@ -160,7 +160,7 @@ window.maximized #titlebar {
 
 #app_options.running #start_button {
     background-color: #57965C;
-    background-image: url('../res/icons/ic_restart.svg');
+    background-image: url('../../icons/ic_restart.svg');
 }
 
 
