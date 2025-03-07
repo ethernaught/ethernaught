@@ -54,7 +54,12 @@
         <file preprocess="xml-stripblanks">res/icons/ic_plugins.svg</file>
         <file preprocess="xml-stripblanks">res/icons/ic_terminal.svg</file>
 
+
+
         <file preprocess="xml-stripblanks">res/icons/ic_replay.svg</file>
         <file preprocess="xml-stripblanks">res/icons/ic_dismiss.svg</file>
+
+        <file preprocess="xml-stripblanks">res/icons/ic_expand_less.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/ic_expand_more.svg</file>
     </gresource>
 </gresources>
