@@ -61,7 +61,7 @@ impl OApplication {
             //window.set_decorated(false);
             window.set_border_width(1);
 
-            window.set_icon_from_file("res/images/ic_launcher.svg").expect("Failed to load icon");
+            window.set_icon_from_file("res/icons/ic_launcher.svg").expect("Failed to load icon");
 
             let mut titlebar = TitleBar::new(_self.clone());
             window.set_titlebar(Some(titlebar.on_create()));
@@ -177,7 +177,7 @@ impl OApplication {
 }
 
 pub fn show_about(window: &ApplicationWindow) {
-    let svg_data = include_bytes!("../../res/images/ic_launcher.svg");
+    let svg_data = include_bytes!("../../res/icons/ic_launcher.svg");
     let loader = PixbufLoader::with_type("svg").expect("Failed to create SVG loader");
     loader.write(svg_data).expect("Failed to load SVG data");
     loader.close().expect("Failed to close SVG loader");

@@ -67,11 +67,11 @@ list row:active,
 }
 
 #side_navbar_layout #terminal_button {
-    background-image: url('../../images/ic_terminal.svg');
+    background-image: url('../../icons/ic_terminal.svg');
 }
 
 #side_navbar_layout #plugins_button {
-    background-image: url('../../images/ic_plugins.svg');
+    background-image: url('../../icons/ic_plugins.svg');
 }
 
 
@@ -125,11 +125,11 @@ terminal {
 }
 
 #sidebar_title #dismiss_button {
-    background-image: url('../../images/ic_dismiss.svg');
+    background-image: url('../../icons/ic_dismiss.svg');
 }
 
 #sidebar_title #replay_button {
-    background-image: url('../../images/ic_replay.svg');
+    background-image: url('../../icons/ic_replay.svg');
 }
 
 #sidebar_title button:hover {

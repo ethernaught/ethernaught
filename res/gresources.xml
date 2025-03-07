@@ -3,5 +3,22 @@
     <gresource prefix="/com/ethernaut/rust">
         <file preprocess="xml-stripblanks">res/ui/gtk3/window.ui</file>
         <file preprocess="xml-stripblanks">res/ui/gtk3/window.css</file>
+
+        <file preprocess="xml-stripblanks">res/icons/ic_menu.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/ic_back.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/ic_next.svg</file>
+
+        <file preprocess="xml-stripblanks">res/icons/ic_start.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/ic_stop.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/ic_restart.svg</file>
+
+        <file preprocess="xml-stripblanks">res/icons/ic_minimize.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/ic_maximize.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/ic_maximize_active.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/ic_close.svg</file>
+
+        <file preprocess="xml-stripblanks">res/icons/ic_status_good.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/ic_status_warning.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/ic_status_severe.svg</file>
     </gresource>
 </gresources>

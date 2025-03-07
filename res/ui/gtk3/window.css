@@ -95,15 +95,15 @@ window.maximized #titlebar {
 }
 
 #navigation_options #menu_button {
-    background-image: url('../../images/ic_menu.svg');
+    background-image: url('../../icons/ic_menu.svg');
 }
 
 #navigation_buttons #back_button {
-    background-image: url('../../images/ic_back.svg');
+    background-image: url('../../icons/ic_back.svg');
 }
 
 #navigation_buttons #next_button {
-    background-image: url('../../images/ic_next.svg');
+    background-image: url('../../icons/ic_next.svg');
 }
 
 
@@ -147,11 +147,11 @@ window.maximized #titlebar {
 }
 
 #app_options #start_button {
-    background-image: url('../../images/ic_start.svg');
+    background-image: url('../../icons/ic_start.svg');
 }
 
 #app_options #stop_button {
-    background-image: url('../../images/ic_stop.svg');
+    background-image: url('../../icons/ic_stop.svg');
 }
 
 #app_options #stop_button {
@@ -160,7 +160,7 @@ window.maximized #titlebar {
 
 #app_options.running #start_button {
     background-color: #57965C;
-    background-image: url('../../images/ic_restart.svg');
+    background-image: url('../res/icons/ic_restart.svg');
 }
 
 
@@ -188,19 +188,19 @@ window.maximized #titlebar {
 }
 
 #window_options #window_minimize {
-    background-image: url('../../images/ic_minimize.svg');
+    background-image: url('../../icons/ic_minimize.svg');
 }
 
 #window_options #window_maximize {
-    background-image: url('../../images/ic_maximize.svg');
+    background-image: url('../../icons/ic_maximize.svg');
 }
 
 window.maximized #window_options #window_maximize {
-    background-image: url('../../images/ic_maximize_active.svg');
+    background-image: url('../../icons/ic_maximize_active.svg');
 }
 
 #window_options #window_close {
-    background-image: url('../../images/ic_close.svg');
+    background-image: url('../../icons/ic_close.svg');
 }
 
 
@@ -273,15 +273,15 @@ menu {
 }
 
 #bottombar #warning_button {
-    background-image: url('../../images/ic_status_good.svg');
+    background-image: url('../../icons/ic_status_good.svg');
 }
 
 #bottombar #warning_button.warning {
-    background-image: url('../../images/ic_status_warning.svg');
+    background-image: url('../../icons/ic_status_warning.svg');
 }
 
 #bottombar #warning_button.severe {
-    background-image: url('../../images/ic_status_severe.svg');
+    background-image: url('../../icons/ic_status_severe.svg');
 }
 
 
