@@ -40,7 +40,7 @@ cp "$BUILD_DIR/$APP_NAME" "$DEB_DIR/usr/local/bin/"
 mkdir -p "$DEB_DIR/usr/share/applications"
 cat > "$DEB_DIR/usr/share/applications/ethernaut.desktop" <<EOF
 [Desktop Entry]
-Name=$APP_NAME
+Name=Ethernaut
 GenericName=Ethernaut
 Comment=Ethernaut - Packet sniffer
 Keywords=packet;sniffer;capture;
@@ -50,9 +50,13 @@ Terminal=false
 Type=Application
 EOF
 
-#mkdir -p "$DEB_DIR/usr/share/$APP_NAME/icons/hicolor"
+# Create icons
+mkdir -p "$DEB_DIR/usr/share/icons/hicolor"
+cp -r res/hicolor/* "$DEB_DIR/usr/share/icons/hicolor/" || true
+
+# Create database file
 mkdir -p "$DEB_DIR/usr/var/lib/$APP_NAME"
-cp "database.db" "$DEB_DIR/usr/var/lib/$APP_NAME/database.db"
+cp database.db "$DEB_DIR/usr/var/lib/$APP_NAME/database.db"
 
 # Build the .deb package
 dpkg-deb --build "$DEB_DIR" "target/${APP_NAME}_${VERSION}_${ARCH}.deb"
