@@ -39,7 +39,6 @@
             <object class="GtkLabel" id="license">
                 <property name="name">license</property>
                 <property name="visible">True</property>
-                <property name="label">DEV-1.0</property>
             </object>
         </child>
     </object>

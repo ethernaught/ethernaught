@@ -11,8 +11,6 @@ use crate::ui::bottombar::BottomBar;
 use crate::ui::titlebar::TitleBar;
 use crate::ui::widgets::hex_editor::HexEditor;
 use crate::ui::widgets::terminal::Terminal;
-use crate::VERSION;
-//use crate::config::VERSION;
 
 #[derive(Clone)]
 pub struct OApplication {
@@ -183,7 +181,7 @@ pub fn show_about(window: &ApplicationWindow) {
         .transient_for(window)
         .modal(true)
         .program_name("Ethernaut")
-        .version(VERSION)
+        .version(env!("CARGO_PKG_VERSION"))
         .authors(vec!["DrBrad"])
         .website_label("https://ethernaut.com")
         .website("https://ethernaut.com")

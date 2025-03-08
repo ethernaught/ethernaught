@@ -20,17 +20,14 @@ use crate::ui::application::OApplication;
 //SIDEBAR SHOULD BE A FRAGMENT...
 //export GTK_DEBUG=interactive
 
-pub static VERSION: &str = "0.1.0";
-
 //glib-compile-resources res/gresources.xml --target=res/resources.gresources
 
 fn main() {
-    let target_double = format!("{}-{}", env::consts::ARCH, env::consts::OS);
-    println!("{}", target_double);
+    //let target_double = format!("{}-{}", env::consts::ARCH, env::consts::OS);
+    //println!("{}", target_double);
 
     if !cfg!(debug_assertions) {
         if !is_root() {
-            println!("Requesting root access...");
             println!("{:?}", env::current_exe().unwrap());
             let display = env::var("DISPLAY").unwrap_or_else(|_| ":0".to_string());
             let xauthority = env::var("XAUTHORITY").unwrap_or_else(|_| "/run/user/1000/gdm/Xauthority".to_string());

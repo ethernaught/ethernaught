@@ -24,6 +24,17 @@ impl BottomBar {
             .object("bottombar")
             .expect("Couldn't find 'bottombar' in bottombar_ui.xml");
 
+        let license: Label = builder
+            .object("license")
+            .expect("Couldn't find 'license' in bottombar_ui.xml");
+
+        if cfg!(debug_assertions) {
+            license.set_label(format!("DEV-{}", env!("CARGO_PKG_VERSION")).as_str());
+
+        } else {
+            license.set_label(format!("PROD-{}", env!("CARGO_PKG_VERSION")).as_str());
+        }
+
         self.root = Some(root.upcast());
         self.root.as_ref().unwrap()
     }
