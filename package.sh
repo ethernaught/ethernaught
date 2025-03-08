@@ -6,7 +6,7 @@ APP_NAME="ethernaut"
 VERSION="0.1.0"
 ARCH="amd64"  # Change if targeting different architectures
 BUILD_DIR="target/release"
-DEB_DIR="deb-pkg"
+DEB_DIR="target/deb-pkg"
 
 # Ensure cargo is installed
 if ! command -v cargo &> /dev/null; then
@@ -16,32 +16,45 @@ fi
 
 # Build Rust project
 echo "Building Rust project..."
+glib-compile-resources res/gresources.xml --target=res/resources.gresources
 cargo build --release
 
 # Remove old package directory if exists
 rm -rf "$DEB_DIR"
-mkdir -p "$DEB_DIR/DEBIAN"
-mkdir -p "$DEB_DIR/usr/local/bin"
-mkdir -p "$DEB_DIR/usr/share/$APP_NAME/assets"
-mkdir -p "$DEB_DIR/etc/$APP_NAME"
-
-# Copy binary
-cp "$BUILD_DIR/$APP_NAME" "$DEB_DIR/usr/local/bin/"
-
-# Copy resources (if any)
-cp -r res/etc/* "$DEB_DIR/etc/$APP_NAME/" || true  # Config files
-cp -r res/assets/* "$DEB_DIR/usr/share/$APP_NAME/assets/" || true  # Assets
 
 # Create control file
+mkdir -p "$DEB_DIR/DEBIAN"
 cat > "$DEB_DIR/DEBIAN/control" <<EOF
 Package: $APP_NAME
 Version: $VERSION
 Architecture: $ARCH
 Maintainer: DrBrad <brad@bradeagle.com>
-Description: Ethernaut - A networking tool
+Description: Ethernaut - Packet sniffer
 EOF
 
-# Build the .deb package
-dpkg-deb --build "$DEB_DIR" "${APP_NAME}_${VERSION}_${ARCH}.deb"
+# Copy binary
+mkdir -p "$DEB_DIR/usr/local/bin"
+cp "$BUILD_DIR/$APP_NAME" "$DEB_DIR/usr/local/bin/"
 
-echo "Deb package created: ${APP_NAME}_${VERSION}_${ARCH}.deb"
+# Create .desktop file
+mkdir -p "$DEB_DIR/usr/share/applications"
+cat > "$DEB_DIR/usr/share/applications/ethernaut.desktop" <<EOF
+[Desktop Entry]
+Name=$APP_NAME
+GenericName=Ethernaut
+Comment=Ethernaut - Packet sniffer
+Keywords=packet;sniffer;capture;
+Exec=ethernaut
+Icon=ethernaut
+Terminal=false
+Type=Application
+EOF
+
+#mkdir -p "$DEB_DIR/usr/share/$APP_NAME/icons/hicolor"
+mkdir -p "$DEB_DIR/usr/var/lib/$APP_NAME"
+cp "database.db" "$DEB_DIR/usr/var/lib/$APP_NAME/database.db"
+
+# Build the .deb package
+dpkg-deb --build "$DEB_DIR" "target/${APP_NAME}_${VERSION}_${ARCH}.deb"
+
+echo "Deb package created: target/${APP_NAME}_${VERSION}_${ARCH}.deb"

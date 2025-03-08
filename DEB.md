@@ -7,14 +7,13 @@ Structure
 my-app.deb
 ├── DEBIAN/
 │   └── control
-├── usr/
-│   └── local/
-│       └── bin/
-│           └── my-app
 ├── etc/
 │   └── my-app/
 │       └── config.toml
 └── usr/
+    ├── local/
+    │   └── bin/
+    │       └── my-app
     └── share/
         ├── applications/
         │   └── my-app.desktop   <-- The .desktop file
@@ -26,12 +25,18 @@ my-app.deb
         │       ├── 32x32/
         │       │   └── apps/
         │       │       └── my-app.png    <-- 32x32 icon
-        │       ├── 48x48/
+        │       ├── 64x64/
         │       │   └── apps/
-        │       │       └── my-app.png    <-- 48x48 icon
-        │       └── 64x64/
+        │       │       └── my-app.png    <-- 64x64 icon
+        │       ├── 128x128/
+        │       │   └── apps/
+        │       │       └── my-app.png    <-- 128x128 icon
+        │       ├── 256x256/
+        │       │   └── apps/
+        │       │       └── my-app.png    <-- 256x256 icon
+        │       └── 512x512/
         │           └── apps/
-        │               └── my-app.png    <-- 64x64 icon
+        │               └── my-app.png    <-- 512x512 icon
         └── var/
             └── lib/
                 └── my-app/

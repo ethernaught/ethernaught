@@ -24,6 +24,7 @@ use pcap::packet::layers::ethernet_frame::ip::udp::udp_layer::UdpLayer;
 use pcap::packet::layers::inter::layer::Layer;
 use pcap::packet::packet::Packet;
 use crate::database::sqlite::Database;
+use crate::get_lib_path;
 use crate::ui::activity::inter::activity::Activity;
 use crate::ui::activity::main_activity::MainActivity;
 use crate::ui::fragment::inter::fragment::Fragment;
@@ -117,7 +118,7 @@ impl Fragment for SidebarFragment {
         hex_editor.show();
 
 
-        let db = Database::open("database.db").expect("Couldn't open database.db");
+        let db = Database::open(get_lib_path("database.db").to_str().unwrap()).expect("Couldn't open database.db");
 
         let details_layout: gtk::Box = builder
             .object("details_layout")

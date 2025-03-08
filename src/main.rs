@@ -8,6 +8,7 @@ use std::sync::mpsc::channel;
 use std::{env, thread};
 use std::collections::HashMap;
 use std::net::Ipv4Addr;
+use std::path::PathBuf;
 use std::process::{exit, Command};
 use std::time::{Duration, SystemTime, UNIX_EPOCH};
 use pcap::devices::Device;
@@ -103,6 +104,14 @@ fn main() {
 
     let app = OApplication::new();
     app.run();
+}
+
+pub fn get_lib_path(file_name: &str) -> PathBuf {
+    if cfg!(debug_assertions) {
+        return PathBuf::from(file_name);
+    }
+
+    PathBuf::from(format!("/usr/var/lib/ethernaut/{}", file_name))
 }
 
 fn is_root() -> bool {
