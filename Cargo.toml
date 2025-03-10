@@ -1,3 +1,5 @@
+cargo-features = ["profile-rustflags"]
+
 [package]
 name = "ethernaut"
 version = "0.1.0"
@@ -6,18 +8,19 @@ edition = "2021"
 [profile.dev]
 opt-level = 0
 debug = true
+rustflags = ["--cfg", "profile=\"debug\""]
 
 [profile.release]
 opt-level = 3
 debug = false
+rustflags = ["--cfg", "profile=\"release\""]
 
 [profile.nightly]
 inherits = "dev"
 opt-level = 0
 debug = true
 split-debuginfo = "off"
-
-
+rustflags = ["--cfg", "profile=\"nightly\""]
 
 [dependencies]
 gtk = "0.18.1"

@@ -18,7 +18,7 @@ fi
 # Build Rust project
 echo "Building Rust project in $BUILD_TYPE mode..."
 glib-compile-resources res/gresources.xml --target=res/resources.gresources
-BUILD_PROFILE="$BUILD_TYPE" cargo build --profile "$BUILD_TYPE"
+cargo build --profile "$BUILD_TYPE"
 
 # Remove old package directory if exists
 rm -rf "$DEB_DIR"
