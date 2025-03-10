@@ -5,7 +5,6 @@ use gtk::prelude::*;
 use gtk::gio::{resources_register, Resource, SimpleAction};
 use gtk::glib::Bytes;
 use gtk::prelude::{ActionMapExt, GtkWindowExt};
-use crate::get_build_version;
 use crate::ui::activity::devices_activity::DevicesActivity;
 use crate::ui::activity::inter::activity::Activity;
 use crate::ui::bottombar::BottomBar;
@@ -188,7 +187,7 @@ pub fn show_about(window: &ApplicationWindow) {
         .transient_for(window)
         .modal(true)
         .program_name("Ethernaut")
-        .version(&get_build_version())
+        .version(format!("{}-{}", env!("PROFILE"), env!("CARGO_PKG_VERSION")).as_str())
         .authors(vec!["DrBrad"])
         .website_label("https://ethernaut.com")
         .website("https://ethernaut.com")
