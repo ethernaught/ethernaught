@@ -49,8 +49,8 @@ impl DevicesAdapter {
             cr.set_source_rgba(0.0, 0.0, 0.0, 0.0);
             cr.paint().unwrap();
 
-            cr.set_source_rgb(0.145, 0.212, 0.153);
-            cr.set_line_width(3.0);
+            cr.set_source_rgb(0.341, 0.588, 0.361); //57965C
+            cr.set_line_width(1.0);
 
             if !values.is_empty() {
                 let width = drawing_area_clone.allocated_width() as f64;
