@@ -22,6 +22,11 @@ use crate::ui::application::OApplication;
 
 //glib-compile-resources res/gresources.xml --target=res/resources.gresources
 
+/*
+rustup install nightly
+rustup override set nightly
+*/
+
 fn main() {
     #[cfg(profile = "debug")]
     println!("BUILD: DEV");
