@@ -1,6 +1,7 @@
 use gtk::{AboutDialog, ApplicationWindow, Builder, Image, Application, TreeViewColumn, CellRendererText, ScrolledWindow, Button, ListBoxRow, Label, CssProvider, StyleContext, gdk, Stack, Container, TreeView, Widget, Window, gio, MenuBar, MenuItem, Menu};
 use gtk::prelude::*;
 use gtk::prelude::{ActionMapExt, GtkWindowExt};
+use crate::get_build_version;
 use crate::ui::application::OApplication;
 
 pub struct BottomBar {
@@ -28,14 +29,7 @@ impl BottomBar {
             .object("license")
             .expect("Couldn't find 'license' in bottombar_ui.xml");
 
-        #[cfg(profile = "debug")]
-        license.set_label(format!("DEV-{}", env!("CARGO_PKG_VERSION")).as_str());
-
-        #[cfg(profile = "nightly")]
-        license.set_label(format!("NIGHTLY-{}", env!("CARGO_PKG_VERSION")).as_str());
-
-        #[cfg(profile = "release")]
-        license.set_label(format!("PROD-{}", env!("CARGO_PKG_VERSION")).as_str());
+        license.set_label(&get_build_version());
 
         self.root = Some(root.upcast());
         self.root.as_ref().unwrap()

@@ -122,6 +122,21 @@ pub fn get_lib_path(file_name: &str) -> PathBuf {
     PathBuf::from(format!("/usr/var/lib/ethernaut/{}", file_name))
 }
 
+#[cfg(profile = "debug")]
+pub fn get_build_version() -> String {
+    format!("DEV-{}", env!("CARGO_PKG_VERSION"))
+}
+
+#[cfg(profile = "nightly")]
+pub fn get_build_version() -> String {
+    format!("NIGHTLY-{}", env!("CARGO_PKG_VERSION"))
+}
+
+#[cfg(profile = "release")]
+pub fn get_build_version() -> String {
+    format!("PROD-{}", env!("CARGO_PKG_VERSION"))
+}
+
 fn is_root() -> bool {
     match env::var("USER") {
         Ok(user) => user == "root",
