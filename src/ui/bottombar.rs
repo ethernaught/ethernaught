@@ -28,12 +28,14 @@ impl BottomBar {
             .object("license")
             .expect("Couldn't find 'license' in bottombar_ui.xml");
 
-        if cfg!(debug_assertions) {
-            license.set_label(format!("DEV-{}", env!("CARGO_PKG_VERSION")).as_str());
+        #[cfg(profile = "debug")]
+        license.set_label(format!("DEV-{}", env!("CARGO_PKG_VERSION")).as_str());
 
-        } else {
-            license.set_label(format!("PROD-{}", env!("CARGO_PKG_VERSION")).as_str());
-        }
+        #[cfg(profile = "nightly")]
+        license.set_label(format!("NIGHTLY-{}", env!("CARGO_PKG_VERSION")).as_str());
+
+        #[cfg(profile = "release")]
+        license.set_label(format!("PROD-{}", env!("CARGO_PKG_VERSION")).as_str());
 
         self.root = Some(root.upcast());
         self.root.as_ref().unwrap()

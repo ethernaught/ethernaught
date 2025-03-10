@@ -59,9 +59,6 @@ impl OApplication {
             //window.set_decorated(false);
             window.set_border_width(1);
 
-            #[cfg(profile = "debug")]
-            window.style_context().add_class("debug");
-
             #[cfg(profile = "nightly")]
             window.style_context().add_class("nightly");
 
