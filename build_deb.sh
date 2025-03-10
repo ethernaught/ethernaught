@@ -5,7 +5,7 @@ set -e  # Exit on error
 APP_NAME="ethernaut"
 VERSION="0.1.0"
 BUILD_TYPE=${1:release}
-ARCH="x86_64"  # Change if targeting different architectures
+ARCH="amd64"
 BUILD_DIR="target/$BUILD_TYPE"
 DEB_DIR="target/deb-pkg"
 
