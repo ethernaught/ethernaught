@@ -59,6 +59,15 @@ impl OApplication {
             //window.set_decorated(false);
             window.set_border_width(1);
 
+            #[cfg(profile = "debug")]
+            window.style_context().add_class("debug");
+
+            #[cfg(profile = "nightly")]
+            window.style_context().add_class("nightly");
+
+            #[cfg(profile = "release")]
+            window.style_context().add_class("release");
+
             //window.set_icon_from_file("res/icons/ic_launcher.svg").expect("Failed to load icon");
 
             let mut titlebar = TitleBar::new(_self.clone());

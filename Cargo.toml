@@ -3,7 +3,21 @@ name = "ethernaut"
 version = "0.1.0"
 edition = "2021"
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[profile.dev]
+opt-level = 0
+debug = true
+
+[profile.release]
+opt-level = 3
+debug = false
+
+[profile.nightly]
+inherits = "dev"
+opt-level = 0
+debug = true
+split-debuginfo = "off"
+
+
 
 [dependencies]
 gtk = "0.18.1"

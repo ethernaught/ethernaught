@@ -23,8 +23,14 @@ use crate::ui::application::OApplication;
 //glib-compile-resources res/gresources.xml --target=res/resources.gresources
 
 fn main() {
-    //let target_double = format!("{}-{}", env::consts::ARCH, env::consts::OS);
-    //println!("{}", target_double);
+    #[cfg(profile = "debug")]
+    println!("BUILD: DEV");
+
+    #[cfg(profile = "nightly")]
+    println!("BUILD: NIGHTLY");
+
+    #[cfg(profile = "release")]
+    println!("BUILD: RELEASE");
 
     if !cfg!(debug_assertions) {
         if !is_root() {

@@ -4,8 +4,9 @@ set -e  # Exit on error
 
 APP_NAME="ethernaut"
 VERSION="0.1.0"
+BUILD_TYPE=${1:release}
 ARCH="amd64"  # Change if targeting different architectures
-BUILD_DIR="target/release"
+BUILD_DIR="target/$BUILD_TYPE"
 DEB_DIR="target/deb-pkg"
 
 # Ensure cargo is installed
@@ -15,9 +16,9 @@ if ! command -v cargo &> /dev/null; then
 fi
 
 # Build Rust project
-echo "Building Rust project..."
+echo "Building Rust project in $BUILD_TYPE mode..."
 glib-compile-resources res/gresources.xml --target=res/resources.gresources
-cargo build --release
+BUILD_PROFILE="$BUILD_TYPE" cargo build --profile "$BUILD_TYPE"
 
 # Remove old package directory if exists
 rm -rf "$DEB_DIR"

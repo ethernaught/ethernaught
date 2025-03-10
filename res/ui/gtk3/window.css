@@ -258,6 +258,16 @@ menu {
     border: solid 1px #DB5C5C;
 }
 
+window.nightly #bottombar #license {
+    color: #59436e;
+    border: solid 1px #59436e;
+}
+
+window.release #license {
+    color: #57965C;
+    border: solid 1px #57965C;
+}
+
 #bottombar button {
     min-height: 0;
     padding: 0;
