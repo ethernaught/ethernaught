@@ -263,7 +263,7 @@ window.nightly #bottombar #license {
     border: solid 1px #784da1;
 }
 
-window.release #license {
+window.release #bottombar #license {
     color: #57965C;
     border: solid 1px #57965C;
 }
