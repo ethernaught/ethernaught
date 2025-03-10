@@ -7,16 +7,16 @@
 
 
         <file preprocess="xml-stripblanks">res/ui/gtk3/window.ui</file>
-        <file preprocess="xml-stripblanks">res/ui/gtk3/window.css</file>
+        <file>res/ui/gtk3/window.css</file>
 
 
 
 
         <file preprocess="xml-stripblanks">res/ui/gtk3/devices_activity.ui</file>
-        <file preprocess="xml-stripblanks">res/ui/gtk3/devices_activity.css</file>
+        <file>res/ui/gtk3/devices_activity.css</file>
 
         <file preprocess="xml-stripblanks">res/ui/gtk3/main_activity.ui</file>
-        <file preprocess="xml-stripblanks">res/ui/gtk3/main_activity.css</file>
+        <file>res/ui/gtk3/main_activity.css</file>
 
 
         <file preprocess="xml-stripblanks">res/ui/gtk3/main_fragment.ui</file>
