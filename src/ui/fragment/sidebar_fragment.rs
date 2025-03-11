@@ -7,7 +7,7 @@ use gtk::ffi::GtkScrolledWindow;
 use gtk::gdk::{EventMask, RGBA};
 use gtk::glib::{clone, Propagation};
 use gtk::prelude::{BuilderExtManual, ButtonExt, Cast, ContainerExt, PanedExt, WidgetExt, WidgetExtManual};
-use pcap::packet::inter::interfaces::Interfaces;
+use pcap::packet::inter::data_link_types::DataLinkTypes;
 use pcap::packet::layers::ethernet_frame::arp::arp_extension::ArpExtension;
 use pcap::packet::layers::ethernet_frame::ethernet_frame::EthernetFrame;
 use pcap::packet::layers::ethernet_frame::inter::ethernet_types::EthernetTypes;
@@ -125,8 +125,8 @@ impl Fragment for SidebarFragment {
             .expect("Couldn't find 'details_layout' in window.ui");
 
 
-        match self.packet.get_interface() {
-            Interfaces::Ethernet => {
+        match self.packet.get_data_link_type() {
+            DataLinkTypes::Ethernet => {
                 let ethernet_frame = self.packet.get_frame().as_any().downcast_ref::<EthernetFrame>().unwrap();
                 details_layout.add(&create_ethernet_layer_expander(&db, 0, &hex_editor, &ethernet_frame));
 
@@ -226,11 +226,8 @@ impl Fragment for SidebarFragment {
                 }
 
             }
-            Interfaces::WiFi => {
+            _ => {
                 //"[WiFi] TODO".to_string()
-            }
-            Interfaces::Bluetooth => {
-                //"[Bluetooth] TODO".to_string()
             }
         };
 

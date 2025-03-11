@@ -5,7 +5,6 @@ use gtk::prelude::*;
 use gtk::{gdk, glib, Adjustment, Application, ApplicationWindow, Builder, Button, CellRendererPixbuf, CellRendererText, Container, CssProvider, Image, Label, ListBox, ListBoxRow, ListStore, Paned, ScrolledWindow, Stack, StyleContext, TextTag, TextView, TreePath, TreeView, TreeViewColumn, Widget};
 use gtk::glib::Propagation::Proceed;
 use gtk::glib::Type;
-use pcap::packet::inter::interfaces::Interfaces;
 use crate::ui::activity::inter::activity::Activity;
 use crate::ui::activity::main_activity::MainActivity;
 use crate::ui::adapters::packet_adapter::PacketAdapter;

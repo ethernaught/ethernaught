@@ -1,7 +1,7 @@
 use std::sync::{Arc, Mutex};
 use gtk::{Builder, Label, ListBox, ListBoxRow, ListStore};
 use gtk::prelude::{BuilderExtManual, ContainerExt, GtkListStoreExt, GtkListStoreExtManual, LabelExt, StyleContextExt, ToValue, WidgetExt};
-use pcap::packet::inter::interfaces::Interfaces;
+use pcap::packet::inter::data_link_types::DataLinkTypes;
 use pcap::packet::layers::ethernet_frame::ethernet_frame::EthernetFrame;
 use pcap::packet::layers::ethernet_frame::inter::ethernet_types::EthernetTypes;
 use pcap::packet::layers::ethernet_frame::ip::inter::ip_protocols::IpProtocols;
@@ -27,8 +27,8 @@ impl PacketAdapter {
     }
 
     pub fn add(&mut self, packet: Packet) {
-        let (source, destination, protocol) = match packet.get_interface() {
-            Interfaces::Ethernet => {
+        let (source, destination, protocol) = match packet.get_data_link_type() {
+            DataLinkTypes::Ethernet => {
                 let ethernet_frame = packet.get_frame().as_any().downcast_ref::<EthernetFrame>().unwrap();
 
                 match ethernet_frame.get_type() {
@@ -84,12 +84,8 @@ impl PacketAdapter {
                     }
                 }
             }
-            Interfaces::WiFi => {
+            _ => {
                 //"[WiFi] TODO".to_string()
-                todo!()
-            }
-            Interfaces::Bluetooth => {
-                //"[Bluetooth] TODO".to_string()
                 todo!()
             }
         };

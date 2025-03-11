@@ -20,7 +20,7 @@ impl CaptureService {
 
     pub fn new(device: &Device) -> Self {
         let cap = match Capture::from_device(&device) {
-            Ok(cap) => {
+            Ok(mut cap) => {
                 cap.set_immediate_mode(true);
                 cap.open().expect("Failed to start capture");
                 Some(cap)

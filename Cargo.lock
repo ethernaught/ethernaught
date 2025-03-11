@@ -442,9 +442,6 @@ dependencies = [
 [[package]]
 name = "pcap"
 version = "0.1.0"
-dependencies = [
- "libc",
-]
 
 [[package]]
 name = "pin-project-lite"
