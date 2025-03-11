@@ -7,7 +7,7 @@
             <attribute name="label" translatable="true">_File</attribute>
             <section>
                 <item>
-                    <attribute name="action">win.open-pcap</attribute>
+                    <attribute name="action">win.open</attribute>
                     <attribute name="label" translatable="yes">_Open</attribute>
                     <attribute name="accel">&lt;control&gt;O</attribute>
                 </item>

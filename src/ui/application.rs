@@ -1,5 +1,6 @@
+use std::path::PathBuf;
 use std::process::exit;
-use gtk::{AboutDialog, ApplicationWindow, Builder, Image, Application, TreeViewColumn, CellRendererText, ScrolledWindow, Button, ListBoxRow, Label, CssProvider, StyleContext, gdk, Stack, Container, TreeView, Widget, Window, gio, MenuBar, MenuItem, Menu};
+use gtk::{AboutDialog, ApplicationWindow, Builder, Image, Application, TreeViewColumn, CellRendererText, ScrolledWindow, Button, ListBoxRow, Label, CssProvider, StyleContext, gdk, Stack, Container, TreeView, Widget, Window, gio, MenuBar, MenuItem, Menu, FileChooserDialog, ResponseType, FileChooserAction};
 use gtk::gdk_pixbuf::{Pixbuf, PixbufLoader};
 use gtk::prelude::*;
 use gtk::gio::{resources_register, Resource, SimpleAction};
@@ -148,6 +149,15 @@ impl OApplication {
     }
 
     fn init_actions(&self, window: &ApplicationWindow) {
+        let action = SimpleAction::new("open", None);
+        let window_clone = window.clone();
+        action.connect_activate(move |_, _| {
+            if let Some(file_path) = open_file_selector(window_clone.upcast_ref()) {
+                println!("{}", file_path.to_str().unwrap());
+            }
+        });
+        window.add_action(&action);
+
         let action = SimpleAction::new("quit", None);
         let app = self.app.clone();
         action.connect_activate(move |_, _| {
@@ -158,7 +168,7 @@ impl OApplication {
         let action = SimpleAction::new("show-about-dialog", None);
         let window_clone = window.clone();
         action.connect_activate(move |_, _| {
-            show_about(&window_clone);
+            open_about_dialog(window_clone.upcast_ref());
         });
         window.add_action(&action);
     }
@@ -180,7 +190,27 @@ impl OApplication {
     }
 }
 
-pub fn show_about(window: &ApplicationWindow) {
+pub fn open_file_selector(parent: &Window) -> Option<PathBuf> {
+    let dialog = FileChooserDialog::new(
+        Some("Open File"),
+        Some(parent),
+        FileChooserAction::Open
+    );
+
+    dialog.add_button("Cancel", ResponseType::Cancel);
+    dialog.add_button("Open", ResponseType::Accept);
+
+    if dialog.run() == ResponseType::Accept {
+        dialog.close();
+        return dialog.filename();
+    }
+
+    dialog.close();
+
+    None
+}
+
+pub fn open_about_dialog(window: &Window) {
     let icon_pixbuf = Pixbuf::from_resource("/com/ethernaut/rust/res/icons/ic_launcher.svg").expect("Failed to get Pixbuf from SVG");
 
     let dialog = AboutDialog::builder()
