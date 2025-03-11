@@ -6,6 +6,10 @@ window {
     border-bottom: solid 1px #5a5d63;
 }
 
+button {
+    border: none;
+}
+
 window.maximized {
     border-left: none;
     border-right: none;
