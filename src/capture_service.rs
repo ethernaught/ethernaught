@@ -13,12 +13,12 @@ pub struct CaptureService {
     cap: Option<Capture>,
     device: Device,
     running: Arc<AtomicBool>,
-    tx: Option<Sender<Packet>>
+    tx: Sender<Packet>
 }
 
 impl CaptureService {
 
-    pub fn new(device: &Device) -> Self {
+    pub fn new(device: &Device, tx: Sender<Packet>) -> Self {
         let cap = match Capture::from_device(&device) {
             Ok(mut cap) => {
                 cap.set_immediate_mode(true);
@@ -35,7 +35,7 @@ impl CaptureService {
             cap,
             device: device.clone(),
             running: Arc::new(AtomicBool::new(false)),
-            tx: None
+            tx
         }
     }
 
@@ -46,10 +46,6 @@ impl CaptureService {
             }
             _ => unimplemented!()
         }
-    }
-
-    pub fn set_tx(&mut self, tx: Sender<Packet>) {
-        self.tx = Some(tx);
     }
 
     pub fn start(&self) {
@@ -71,7 +67,7 @@ impl CaptureService {
                         match cap.next_packet() {
                             Ok(packet) => {
                                 //packet.get_frame_time()-now);
-                                _self.tx.as_ref().unwrap().send(packet).expect("Failed to send packet");
+                                _self.tx.send(packet).expect("Failed to send packet");
                             }
                             _ => {
                                 break;

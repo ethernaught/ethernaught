@@ -4,7 +4,7 @@ use std::rc::Rc;
 use std::sync::mpsc::channel;
 use std::time::Duration;
 use gtk::prelude::*;
-use gtk::{gdk, glib, Adjustment, Application, ApplicationWindow, Builder, Button, CellRendererPixbuf, CellRendererText, Container, CssProvider, Image, Label, ListBox, ListBoxRow, ListStore, Paned, ScrolledWindow, Stack, StyleContext, TextTag, TextView, TreePath, TreeView, TreeViewColumn, Widget};
+use gtk::{glib, Builder, Button, CellRendererText, Container, Label, ListStore, ScrolledWindow, TreeView, TreeViewColumn};
 use gtk::glib::ControlFlow::Continue;
 use gtk::glib::Propagation::Proceed;
 use gtk::glib::Type;
@@ -90,6 +90,18 @@ impl Fragment for MainFragment {
             .object("content_layout")
             .expect("Couldn't find 'content_layout' in window.ui"));
 
+
+
+        let device = bundle.unwrap().downcast_ref::<Device>().unwrap().clone();
+
+        let (tx, rx) = channel();
+        let capture_service = CaptureService::new(&device, tx.clone());
+
+        self.capture_service = Some(capture_service);
+
+
+
+
         let model = ListStore::new(&[Type::U32, Type::STRING, Type::STRING, Type::STRING, Type::STRING, Type::STRING, Type::STRING]);
         self.packet_adapter = Some(PacketAdapter::new(&model));
 
@@ -123,7 +135,7 @@ impl Fragment for MainFragment {
 
                     let packet = _self.packet_adapter.as_ref().unwrap().get_packet_by_index(id as usize);
 
-                    let mut sidebar_fragment = SidebarFragment::new(_self.activity.dyn_clone(), packet);
+                    let mut sidebar_fragment = SidebarFragment::new(_self.activity.dyn_clone(), tx.clone(), packet);
                     main_activity.open_sidebar(sidebar_fragment.dyn_clone());
                 }
             }
@@ -163,27 +175,14 @@ impl Fragment for MainFragment {
         main_activity.open_sidebar(sidebar_fragment.dyn_clone());
         */
 
-        println!("{:?}", bundle);
-
-        let device = bundle.unwrap().downcast_ref::<Device>().unwrap().clone();
-
-        let mut capture_service = CaptureService::new(&device);
 
 
 
         let app = self.activity.get_application();
 
-        let (tx, rx) = channel();
-        capture_service.set_tx(tx);
-
-        self.capture_service = Some(capture_service);
-
 
 
         let titlebar = app.get_titlebar().unwrap();
-        //let menu_buttons =self.app.get_child_by_name(&titlebar, "navigation_buttons").unwrap();
-        //menu_buttons.show();
-
 
         app.get_child_by_name(&titlebar, "network_type_label").unwrap().downcast_ref::<Label>().unwrap().set_label(&device.get_name());
 
@@ -222,14 +221,6 @@ impl Fragment for MainFragment {
             });
         }
 
-
-
-
-
-
-
-
-
         let mut packet_adapter = self.packet_adapter.clone().unwrap();
 
         glib::timeout_add_local(Duration::from_millis(10), move || {
@@ -245,16 +236,6 @@ impl Fragment for MainFragment {
             }
             Continue
         });
-
-
-
-
-
-
-
-
-
-
 
         &self.root.as_ref().unwrap().upcast_ref()
     }

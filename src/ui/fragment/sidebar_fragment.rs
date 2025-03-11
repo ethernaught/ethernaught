@@ -2,6 +2,7 @@ use std::any::Any;
 use std::cell::RefCell;
 use std::net::IpAddr;
 use std::rc::Rc;
+use std::sync::mpsc::Sender;
 use gtk::{Builder, Button, Container, DrawingArea, Paned, ScrolledWindow};
 use gtk::ffi::GtkScrolledWindow;
 use gtk::gdk::{EventMask, RGBA};
@@ -23,6 +24,7 @@ use pcap::packet::layers::ethernet_frame::ip::udp::inter::udp_types::UdpTypes;
 use pcap::packet::layers::ethernet_frame::ip::udp::udp_layer::UdpLayer;
 use pcap::packet::layers::inter::layer::Layer;
 use pcap::packet::packet::Packet;
+use crate::capture_service::CaptureService;
 use crate::database::sqlite::Database;
 use crate::get_lib_path;
 use crate::ui::activity::inter::activity::Activity;
@@ -35,15 +37,17 @@ use crate::ui::widgets::hex_editor::HexEditor;
 pub struct SidebarFragment {
     activity: Box<dyn Activity>,
     root: Option<Container>,
+    tx: Sender<Packet>,
     packet: Packet
 }
 
 impl SidebarFragment {
 
-    pub fn new(activity: Box<dyn Activity>, packet: Packet) -> Self {
+    pub fn new(activity: Box<dyn Activity>, tx: Sender<Packet>, packet: Packet) -> Self {
         Self {
             activity,
             root: None,
+            tx,
             packet
         }
     }
@@ -98,11 +102,8 @@ impl Fragment for SidebarFragment {
 
         let _self = self.clone();
         replay_button.connect_clicked(move |_| {
-            //let main_activity = _self.activity.as_any().downcast_ref::<MainActivity>().unwrap();
-            //main_activity.get_capture_service().send(_self.packet.clone());
+            _self.tx.send(_self.packet.clone()).unwrap();
         });
-
-
 
 
         let hex_editor: HexEditor = builder
