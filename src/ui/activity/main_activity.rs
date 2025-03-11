@@ -20,6 +20,7 @@ use crate::ui::handlers::bundle::Bundle;
 pub struct MainActivity {
     app: OApplication,
     footer_selected: Rc<RefCell<String>>,
+    capture_service: Option<CaptureService>,
     root: Option<Container>
 }
 
@@ -29,8 +30,13 @@ impl MainActivity {
         Self {
             app,
             root: None,
-            footer_selected: Rc::new(RefCell::new(String::new()))
+            footer_selected: Rc::new(RefCell::new(String::new())),
+            capture_service: None
         }
+    }
+
+    pub fn get_capture_service(&self) -> Option<&CaptureService> {
+        self.capture_service.as_ref()
     }
 
     pub fn open_footerbar(&self, title: &str, mut fragment: Box<dyn Fragment>) {
@@ -129,11 +135,8 @@ impl Activity for MainActivity {
             .object("window_content_pane")
             .expect("Couldn't find 'window_content_pane' in main_activity.ui");
 
-        let mut main_fragment = MainFragment::new(self.dyn_clone());
-        let content = main_fragment.on_create(bundle);
-        window_content_pane.add(content);
-        window_content_pane.set_child_shrink(content, false);
-        window_content_pane.set_child_resize(content, true);
+
+        //if bundle.as_ref().unwrap().contains_key("device") {
 
 
 
@@ -164,6 +167,86 @@ impl Activity for MainActivity {
             _self.open_footerbar("terminal_button", TerminalFragment::new(_self.dyn_clone()).dyn_clone());
         });
 
+
+
+
+        let device = bundle.unwrap().get::<Device>("device").unwrap().clone();
+
+        let mut capture_service = CaptureService::new(&device);
+
+        let (tx, rx) = channel();
+        capture_service.set_tx(tx);
+
+        self.capture_service = Some(capture_service);
+
+
+
+        let mut main_fragment = MainFragment::new(self.dyn_clone());
+        let content = main_fragment.on_create(None);
+        window_content_pane.add(content);
+        window_content_pane.set_child_shrink(content, false);
+        window_content_pane.set_child_resize(content, true);
+
+
+
+
+        let main_fragment = Rc::new(RefCell::new(main_fragment));
+
+        let titlebar = self.app.get_titlebar().unwrap();
+        //let menu_buttons =self.app.get_child_by_name(&titlebar, "navigation_buttons").unwrap();
+        //menu_buttons.show();
+
+
+        self.app.get_child_by_name(&titlebar, "network_type_label").unwrap().downcast_ref::<Label>().unwrap().set_label(&device.get_name());
+
+        let app_options = Rc::new(RefCell::new(self.app.get_child_by_name(&titlebar, "app_options").unwrap()));
+        app_options.borrow().show();
+        let stop_button = Rc::new(RefCell::new(self.app.get_child_by_name(&app_options.borrow(), "stop_button").unwrap()));
+        let start_button = self.app.get_child_by_name(&app_options.borrow(), "start_button").unwrap();
+
+        if let Some(start_button) = start_button.downcast_ref::<Button>() {
+            let app_options = Rc::clone(&app_options);
+            let stop_button = Rc::clone(&stop_button);
+            let main_fragment = Rc::clone(&main_fragment);
+            let packet_service = self.capture_service.clone().unwrap();
+
+            start_button.connect_clicked(move |_| {
+                app_options.borrow().style_context().add_class("running");
+                stop_button.borrow().show();
+
+                main_fragment.borrow().get_packet_adapter().unwrap().clear();
+                packet_service.start();
+            });
+        }
+
+        if let Some(button) = stop_button.borrow().downcast_ref::<Button>() {
+            let app_options = Rc::clone(&app_options);
+            let stop_button = Rc::clone(&stop_button);
+            let packet_service = self.capture_service.clone().unwrap();
+
+            button.connect_clicked(move |_| {
+                app_options.borrow().style_context().remove_class("running");
+                stop_button.borrow().hide();
+                packet_service.stop();
+            });
+        }
+
+        let _self = self.clone();
+        let main_fragment = Rc::clone(&main_fragment);
+
+        glib::timeout_add_local(Duration::from_millis(10), move || {
+            loop {
+                match rx.try_recv() {
+                    Ok(packet) => {
+                        main_fragment.borrow().get_packet_adapter().unwrap().add(packet);
+                    }
+                    _ => {
+                        break;
+                    }
+                }
+            }
+            Continue
+        });
 
 
 

@@ -21,8 +21,7 @@ use crate::ui::handlers::bundle::Bundle;
 pub struct MainFragment {
     activity: Box<dyn Activity>,
     root: Option<Container>,
-    packet_adapter: Option<PacketAdapter>,
-    capture_service: Option<CaptureService>
+    packet_adapter: Option<PacketAdapter>
 }
 
 impl MainFragment {
@@ -31,8 +30,7 @@ impl MainFragment {
         Self {
             activity,
             root: None,
-            packet_adapter: None,
-            capture_service: None
+            packet_adapter: None
         }
     }
 
@@ -91,18 +89,6 @@ impl Fragment for MainFragment {
             .object("content_layout")
             .expect("Couldn't find 'content_layout' in window.ui"));
 
-
-
-        let device = bundle.unwrap().get::<Device>("device").unwrap().clone();
-
-        let (tx, rx) = channel();
-        let capture_service = CaptureService::new(&device, tx.clone());
-
-        self.capture_service = Some(capture_service);
-
-
-
-
         let model = ListStore::new(&[Type::U32, Type::STRING, Type::STRING, Type::STRING, Type::STRING, Type::STRING, Type::STRING]);
         self.packet_adapter = Some(PacketAdapter::new(&model));
 
@@ -136,7 +122,7 @@ impl Fragment for MainFragment {
 
                     let packet = _self.packet_adapter.as_ref().unwrap().get_packet_by_index(id as usize);
 
-                    let mut sidebar_fragment = SidebarFragment::new(_self.activity.dyn_clone(), tx.clone(), packet);
+                    let mut sidebar_fragment = SidebarFragment::new(_self.activity.dyn_clone(), packet);
                     main_activity.open_sidebar(sidebar_fragment.dyn_clone());
                 }
             }
@@ -164,7 +150,6 @@ impl Fragment for MainFragment {
             }
         });
 
-
         //TEMPORARY
 
         /*
@@ -176,67 +161,6 @@ impl Fragment for MainFragment {
         main_activity.open_sidebar(sidebar_fragment.dyn_clone());
         */
 
-
-
-
-        let app = self.activity.get_application();
-
-
-
-        let titlebar = app.get_titlebar().unwrap();
-
-        app.get_child_by_name(&titlebar, "network_type_label").unwrap().downcast_ref::<Label>().unwrap().set_label(&device.get_name());
-
-
-
-        let app_options = Rc::new(RefCell::new(app.get_child_by_name(&titlebar, "app_options").unwrap()));
-        app_options.borrow().show();
-        let stop_button = Rc::new(RefCell::new(app.get_child_by_name(&app_options.borrow(), "stop_button").unwrap()));
-        let start_button = app.get_child_by_name(&app_options.borrow(), "start_button").unwrap();
-
-        if let Some(start_button) = start_button.downcast_ref::<Button>() {
-            let app_options = Rc::clone(&app_options);
-            let stop_button = Rc::clone(&stop_button);
-            //let main_fragment = Rc::clone(&main_fragment);
-            let mut packet_adapter = self.packet_adapter.clone().unwrap();
-            let capture_service = self.capture_service.clone().unwrap();
-
-            start_button.connect_clicked(move |_| {
-                app_options.borrow().style_context().add_class("running");
-                stop_button.borrow().show();
-
-                packet_adapter.clear();
-                capture_service.start();
-            });
-        }
-
-        if let Some(button) = stop_button.borrow().downcast_ref::<Button>() {
-            let app_options = Rc::clone(&app_options);
-            let stop_button = Rc::clone(&stop_button);
-            let capture_service = self.capture_service.clone().unwrap();
-
-            button.connect_clicked(move |_| {
-                app_options.borrow().style_context().remove_class("running");
-                stop_button.borrow().hide();
-                capture_service.stop();
-            });
-        }
-
-        let mut packet_adapter = self.packet_adapter.clone().unwrap();
-
-        glib::timeout_add_local(Duration::from_millis(10), move || {
-            loop {
-                match rx.try_recv() {
-                    Ok(packet) => {
-                        packet_adapter.add(packet);
-                    }
-                    _ => {
-                        break;
-                    }
-                }
-            }
-            Continue
-        });
 
         &self.root.as_ref().unwrap().upcast_ref()
     }

@@ -8,17 +8,17 @@ use pcap::capture::Capture;
 use pcap::devices::Device;
 use pcap::packet::packet::Packet;
 
-#[derive(Clone)]
+#[derive(Debug, Clone)]
 pub struct CaptureService {
     cap: Option<Capture>,
     device: Device,
     running: Arc<AtomicBool>,
-    tx: Sender<Packet>
+    tx: Option<Sender<Packet>>
 }
 
 impl CaptureService {
 
-    pub fn new(device: &Device, tx: Sender<Packet>) -> Self {
+    pub fn new(device: &Device) -> Self {
         let cap = match Capture::from_device(&device) {
             Ok(mut cap) => {
                 cap.set_immediate_mode(true);
@@ -35,17 +35,22 @@ impl CaptureService {
             cap,
             device: device.clone(),
             running: Arc::new(AtomicBool::new(false)),
-            tx
+            tx: None
         }
     }
 
     pub fn send(&self, packet: Packet) {
         match self.cap.as_ref() {
             Some(cap) => {
-                cap.send_packet(packet);
+                cap.send_packet(packet.clone()).expect("Failed to send packet");
+                self.tx.as_ref().unwrap().send(packet).expect("Failed to send packet");
             }
             _ => unimplemented!()
         }
+    }
+
+    pub fn set_tx(&mut self, tx: Sender<Packet>) {
+        self.tx = Some(tx);
     }
 
     pub fn start(&self) {
@@ -67,7 +72,7 @@ impl CaptureService {
                         match cap.next_packet() {
                             Ok(packet) => {
                                 //packet.get_frame_time()-now);
-                                _self.tx.send(packet).expect("Failed to send packet");
+                                _self.tx.as_ref().unwrap().send(packet).expect("Failed to send packet");
                             }
                             _ => {
                                 break;

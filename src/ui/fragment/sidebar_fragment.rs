@@ -7,7 +7,7 @@ use gtk::{Builder, Button, Container, DrawingArea, Paned, ScrolledWindow};
 use gtk::ffi::GtkScrolledWindow;
 use gtk::gdk::{EventMask, RGBA};
 use gtk::glib::{clone, Propagation};
-use gtk::prelude::{BuilderExtManual, ButtonExt, Cast, ContainerExt, PanedExt, WidgetExt, WidgetExtManual};
+use gtk::prelude::{BuilderExtManual, ButtonExt, Cast, ContainerExt, PanedExt, SocketExtManual, WidgetExt, WidgetExtManual};
 use pcap::packet::inter::data_link_types::DataLinkTypes;
 use pcap::packet::layers::ethernet_frame::arp::arp_extension::ArpExtension;
 use pcap::packet::layers::ethernet_frame::ethernet_frame::EthernetFrame;
@@ -38,17 +38,15 @@ use crate::ui::widgets::hex_editor::HexEditor;
 pub struct SidebarFragment {
     activity: Box<dyn Activity>,
     root: Option<Container>,
-    tx: Sender<Packet>,
     packet: Packet
 }
 
 impl SidebarFragment {
 
-    pub fn new(activity: Box<dyn Activity>, tx: Sender<Packet>, packet: Packet) -> Self {
+    pub fn new(activity: Box<dyn Activity>, packet: Packet) -> Self {
         Self {
             activity,
             root: None,
-            tx,
             packet
         }
     }
@@ -103,7 +101,11 @@ impl Fragment for SidebarFragment {
 
         let _self = self.clone();
         replay_button.connect_clicked(move |_| {
-            _self.tx.send(_self.packet.clone()).unwrap();
+            let main_activity = _self.activity.as_any().downcast_ref::<MainActivity>().unwrap();
+
+            if let Some(capture_service) = main_activity.get_capture_service() {
+                capture_service.send(_self.packet.clone());
+            }
         });
 
 
