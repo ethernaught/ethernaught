@@ -3,8 +3,8 @@ use gtk::{Builder, Label, ListBox, ListBoxRow, ListStore};
 use gtk::prelude::{BuilderExtManual, ContainerExt, GtkListStoreExt, GtkListStoreExtManual, LabelExt, StyleContextExt, ToValue, WidgetExt};
 use pcap::packet::inter::interfaces::Interfaces;
 use pcap::packet::layers::ethernet_frame::ethernet_frame::EthernetFrame;
-use pcap::packet::layers::ethernet_frame::inter::types::Types;
-use pcap::packet::layers::ethernet_frame::ip::inter::protocols::Protocols;
+use pcap::packet::layers::ethernet_frame::inter::ethernet_types::EthernetTypes;
+use pcap::packet::layers::ethernet_frame::ip::inter::ip_protocols::IpProtocols;
 use pcap::packet::layers::ethernet_frame::ip::ipv4_layer::Ipv4Layer;
 use pcap::packet::layers::ethernet_frame::ip::ipv6_layer::Ipv6Layer;
 use pcap::packet::layers::ethernet_frame::ip::udp::inter::udp_payloads::UdpPayloads;
@@ -32,11 +32,11 @@ impl PacketAdapter {
                 let ethernet_frame = packet.get_frame().as_any().downcast_ref::<EthernetFrame>().unwrap();
 
                 match ethernet_frame.get_type() {
-                    Types::IPv4 => {
+                    EthernetTypes::IPv4 => {
                         let ipv4_layer = ethernet_frame.get_data().unwrap().as_any().downcast_ref::<Ipv4Layer>().unwrap();
 
                         match ipv4_layer.get_protocol() {
-                            Protocols::Udp => {
+                            IpProtocols::Udp => {
                                 let udp_layer = ipv4_layer.get_data().unwrap().as_any().downcast_ref::<UdpLayer>().unwrap();
 
                                 match udp_layer.get_payload() {
@@ -53,11 +53,11 @@ impl PacketAdapter {
                             }
                         }
                     }
-                    Types::IPv6 => {
+                    EthernetTypes::IPv6 => {
                         let ipv6_layer = ethernet_frame.get_data().unwrap().as_any().downcast_ref::<Ipv6Layer>().unwrap();
 
                         match ipv6_layer.get_next_header() {
-                            Protocols::Udp => {
+                            IpProtocols::Udp => {
                                 let udp_layer = ipv6_layer.get_data().unwrap().as_any().downcast_ref::<UdpLayer>().unwrap();
 
                                 match udp_layer.get_payload() {
@@ -74,7 +74,7 @@ impl PacketAdapter {
                             }
                         }
                     }
-                    Types::Broadcast => {
+                    EthernetTypes::Broadcast => {
                         //source_label.set_label(&ethernet_layer.get_source().to_string());
                         //destination_label.set_label(&ethernet_layer.get_destination().to_string());
                         (ethernet_frame.get_source_mac().to_string(), ethernet_frame.get_destination_mac().to_string(), ethernet_frame.get_type().to_string())

@@ -10,10 +10,10 @@ use gtk::prelude::{BuilderExtManual, ButtonExt, Cast, ContainerExt, PanedExt, Wi
 use pcap::packet::inter::interfaces::Interfaces;
 use pcap::packet::layers::ethernet_frame::arp::arp_extension::ArpExtension;
 use pcap::packet::layers::ethernet_frame::ethernet_frame::EthernetFrame;
-use pcap::packet::layers::ethernet_frame::inter::types::Types;
+use pcap::packet::layers::ethernet_frame::inter::ethernet_types::EthernetTypes;
 use pcap::packet::layers::ethernet_frame::ip::icmp::icmp_layer::IcmpLayer;
 use pcap::packet::layers::ethernet_frame::ip::icmpv6::icmpv6_layer::Icmpv6Layer;
-use pcap::packet::layers::ethernet_frame::ip::inter::protocols::Protocols;
+use pcap::packet::layers::ethernet_frame::ip::inter::ip_protocols::IpProtocols;
 use pcap::packet::layers::ethernet_frame::ip::ipv4_layer::Ipv4Layer;
 use pcap::packet::layers::ethernet_frame::ip::ipv6_layer::Ipv6Layer;
 use pcap::packet::layers::ethernet_frame::ip::tcp::tcp_layer::TcpLayer;
@@ -131,22 +131,22 @@ impl Fragment for SidebarFragment {
                 details_layout.add(&create_ethernet_layer_expander(&db, 0, &hex_editor, &ethernet_frame));
 
                 match ethernet_frame.get_type() {
-                    Types::IPv4 => {
+                    EthernetTypes::IPv4 => {
                         let ipv4_layer = ethernet_frame.get_data().unwrap().as_any().downcast_ref::<Ipv4Layer>().unwrap();
                         details_layout.add(&create_ipv4_layer_expander(ethernet_frame.len()-ipv4_layer.len(), &hex_editor, &ipv4_layer));
 
                         match ipv4_layer.get_protocol() {
-                            Protocols::HopByHop => {}
-                            Protocols::Icmp => {
+                            IpProtocols::HopByHop => {}
+                            IpProtocols::Icmp => {
                                 let icmp_layer = ipv4_layer.get_data().unwrap().as_any().downcast_ref::<IcmpLayer>().unwrap();
                                 details_layout.add(&create_icmp_layer_expander(&icmp_layer));
                             }
-                            Protocols::Igmp => {}
-                            Protocols::Tcp => {
+                            IpProtocols::Igmp => {}
+                            IpProtocols::Tcp => {
                                 let tcp_layer = ipv4_layer.get_data().unwrap().as_any().downcast_ref::<TcpLayer>().unwrap();
                                 details_layout.add(&create_tcp_layer_expander(&tcp_layer));
                             }
-                            Protocols::Udp => {
+                            IpProtocols::Udp => {
                                 let udp_layer = ipv4_layer.get_data().unwrap().as_any().downcast_ref::<UdpLayer>().unwrap();
                                 details_layout.add(&create_udp_layer_expander(&udp_layer, IpAddr::V4(ipv4_layer.get_source_address()), IpAddr::V4(ipv4_layer.get_destination_address())));
 
@@ -167,30 +167,30 @@ impl Fragment for SidebarFragment {
                                     _ => {}
                                 }
                             }
-                            Protocols::Ipv6 => {}
-                            Protocols::Gre => {}
-                            Protocols::Icmpv6 => {}
-                            Protocols::Ospf => {}
-                            Protocols::Sps => {}
+                            IpProtocols::Ipv6 => {}
+                            IpProtocols::Gre => {}
+                            IpProtocols::Icmpv6 => {}
+                            IpProtocols::Ospf => {}
+                            IpProtocols::Sps => {}
                         }
                     }
-                    Types::Arp => {
+                    EthernetTypes::Arp => {
                         let arp_layer = ethernet_frame.get_data().unwrap().as_any().downcast_ref::<ArpExtension>().unwrap();
                         details_layout.add(&create_arp_layer_expander(&arp_layer));
                     }
-                    Types::IPv6 => {
+                    EthernetTypes::IPv6 => {
                         let ipv6_layer = ethernet_frame.get_data().unwrap().as_any().downcast_ref::<Ipv6Layer>().unwrap();
                         details_layout.add(&create_ipv6_layer_expander(ethernet_frame.len()-ipv6_layer.len(), &hex_editor, &ipv6_layer));
 
                         match ipv6_layer.get_next_header() {
-                            Protocols::HopByHop => {}
-                            Protocols::Icmp => {}
-                            Protocols::Igmp => {}
-                            Protocols::Tcp => {
+                            IpProtocols::HopByHop => {}
+                            IpProtocols::Icmp => {}
+                            IpProtocols::Igmp => {}
+                            IpProtocols::Tcp => {
                                 let tcp_layer = ipv6_layer.get_data().unwrap().as_any().downcast_ref::<TcpLayer>().unwrap();
                                 details_layout.add(&create_tcp_layer_expander(&tcp_layer));
                             }
-                            Protocols::Udp => {
+                            IpProtocols::Udp => {
                                 let udp_layer = ipv6_layer.get_data().unwrap().as_any().downcast_ref::<UdpLayer>().unwrap();
                                 details_layout.add(&create_udp_layer_expander(&udp_layer, IpAddr::V6(ipv6_layer.get_source_address()), IpAddr::V6(ipv6_layer.get_destination_address())));
 
@@ -211,17 +211,17 @@ impl Fragment for SidebarFragment {
                                     _ => {}
                                 }
                             }
-                            Protocols::Ipv6 => {}
-                            Protocols::Gre => {}
-                            Protocols::Icmpv6 => {
+                            IpProtocols::Ipv6 => {}
+                            IpProtocols::Gre => {}
+                            IpProtocols::Icmpv6 => {
                                 let icmpv6_layer = ipv6_layer.get_data().unwrap().as_any().downcast_ref::<Icmpv6Layer>().unwrap();
                                 details_layout.add(&create_icmpv6_layer_expander(&icmpv6_layer));
                             }
-                            Protocols::Ospf => {}
-                            Protocols::Sps => {}
+                            IpProtocols::Ospf => {}
+                            IpProtocols::Sps => {}
                         }
                     }
-                    Types::Broadcast => {
+                    EthernetTypes::Broadcast => {
                     }
                 }
 
