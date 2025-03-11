@@ -44,11 +44,13 @@ cat > "$DEB_DIR/usr/share/applications/ethernaut.desktop" <<EOF
 Name=Ethernaut
 GenericName=Ethernaut
 Comment=Ethernaut - Packet sniffer
-Keywords=packet;sniffer;capture;
+Keywords=packet;sniffer;capture;network;ethernet
 Exec=ethernaut
 Icon=ethernaut
+MimeType=application/vnd.tcpdump.pcap;application/x-pcapng;application/x-snoop;application/x-iptrace;application/x-lanalyzer;application/x-nettl;application/x-radcom;application/x-etherpeek;application/x-visualnetworks;application/x-netinstobserver;application/x-5view;application/x-tektronix-rf5;application/x-micropross-mplog;application/x-apple-packetlogger;application/x-endace-erf;application/ipfix;application/x-ixia-vwr;
 Terminal=false
 Type=Application
+Categories=Network;Monitor;Qt;
 EOF
 
 # Create icons
