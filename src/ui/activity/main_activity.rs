@@ -18,23 +18,17 @@ use crate::ui::fragment::terminal_fragment::TerminalFragment;
 pub struct MainActivity {
     app: OApplication,
     footer_selected: Rc<RefCell<String>>,
-    root: Option<Container>,
-    capture_service: CaptureService
+    root: Option<Container>
 }
 
 impl MainActivity {
 
-    pub fn new(app: OApplication, device: &Device) -> Self {
+    pub fn new(app: OApplication) -> Self {
         Self {
             app,
             root: None,
-            footer_selected: Rc::new(RefCell::new(String::new())),
-            capture_service: CaptureService::new(device)
+            footer_selected: Rc::new(RefCell::new(String::new()))
         }
-    }
-
-    pub fn get_capture_service(&self) -> &CaptureService {
-        &self.capture_service
     }
 
     pub fn open_footerbar(&self, title: &str, mut fragment: Box<dyn Fragment>) {
@@ -53,7 +47,7 @@ impl MainActivity {
             self.app.get_child_by_name(self.root.as_ref().unwrap().upcast_ref(), title).unwrap().style_context().add_class("selected");
 
             self.footer_selected.replace(title.to_string());
-            let content = fragment.on_create();
+            let content = fragment.on_create(None);
             pane.add(content);
             pane.set_child_shrink(content, false);
         }
@@ -84,7 +78,7 @@ impl MainActivity {
                 None => {}
             }
 
-            let content = fragment.on_create();
+            let content = fragment.on_create(None);
             pane.add(content);
             pane.set_child_shrink(content, false);
         }
@@ -112,7 +106,7 @@ impl Activity for MainActivity {
         "MainActivity".to_string()
     }
 
-    fn on_create(&mut self) -> &Container {
+    fn on_create(&mut self, bundle: Option<&dyn Any>) -> &Container {
         let builder = Builder::from_resource("/com/ethernaut/rust/res/ui/gtk3/main_activity.ui");
 
         let provider = CssProvider::new();
@@ -134,7 +128,7 @@ impl Activity for MainActivity {
             .expect("Couldn't find 'window_content_pane' in main_activity.ui");
 
         let mut main_fragment = MainFragment::new(self.dyn_clone());
-        let content = main_fragment.on_create();
+        let content = main_fragment.on_create(bundle);
         window_content_pane.add(content);
         window_content_pane.set_child_shrink(content, false);
         window_content_pane.set_child_resize(content, true);
@@ -173,79 +167,6 @@ impl Activity for MainActivity {
 
 
 
-
-
-        let main_fragment = Rc::new(RefCell::new(main_fragment));
-
-
-        let (tx, rx) = channel();
-        self.capture_service.set_tx(tx);
-
-
-        let titlebar = self.app.get_titlebar().unwrap();
-        //let menu_buttons =self.app.get_child_by_name(&titlebar, "navigation_buttons").unwrap();
-        //menu_buttons.show();
-
-
-        self.app.get_child_by_name(&titlebar, "network_type_label").unwrap().downcast_ref::<Label>().unwrap().set_label(&self.capture_service.get_device().get_name());
-
-
-
-        let app_options = Rc::new(RefCell::new(self.app.get_child_by_name(&titlebar, "app_options").unwrap()));
-        app_options.borrow().show();
-        let stop_button = Rc::new(RefCell::new(self.app.get_child_by_name(&app_options.borrow(), "stop_button").unwrap()));
-        let start_button = self.app.get_child_by_name(&app_options.borrow(), "start_button").unwrap();
-
-        if let Some(start_button) = start_button.downcast_ref::<Button>() {
-            let app_options = Rc::clone(&app_options);
-            let stop_button = Rc::clone(&stop_button);
-            let main_fragment = Rc::clone(&main_fragment);;
-
-            let packet_service = self.capture_service.clone();
-            start_button.connect_clicked(move |_| {
-                app_options.borrow().style_context().add_class("running");
-                stop_button.borrow().show();
-
-                main_fragment.borrow().get_packet_adapter().unwrap().clear();
-                packet_service.start();
-            });
-        }
-
-        if let Some(button) = stop_button.borrow().downcast_ref::<Button>() {
-            let app_options = Rc::clone(&app_options);
-            let stop_button = Rc::clone(&stop_button);
-
-            let packet_service = self.capture_service.clone();
-            button.connect_clicked(move |_| {
-                app_options.borrow().style_context().remove_class("running");
-                stop_button.borrow().hide();
-                packet_service.stop();
-            });
-        }
-
-
-
-
-
-
-
-
-
-        let _self = self.clone();
-        let main_fragment = Rc::clone(&main_fragment);
-        glib::timeout_add_local(Duration::from_millis(10), move || {
-            loop {
-                match rx.try_recv() {
-                    Ok(packet) => {
-                        main_fragment.borrow().get_packet_adapter().unwrap().add(packet);
-                    }
-                    _ => {
-                        break;
-                    }
-                }
-            }
-            Continue
-        });
 
         &self.root.as_ref().unwrap().upcast_ref()
     }

@@ -1,10 +1,15 @@
 use std::any::Any;
 use std::cell::RefCell;
 use std::rc::Rc;
+use std::sync::mpsc::channel;
+use std::time::Duration;
 use gtk::prelude::*;
 use gtk::{gdk, glib, Adjustment, Application, ApplicationWindow, Builder, Button, CellRendererPixbuf, CellRendererText, Container, CssProvider, Image, Label, ListBox, ListBoxRow, ListStore, Paned, ScrolledWindow, Stack, StyleContext, TextTag, TextView, TreePath, TreeView, TreeViewColumn, Widget};
+use gtk::glib::ControlFlow::Continue;
 use gtk::glib::Propagation::Proceed;
 use gtk::glib::Type;
+use pcap::devices::Device;
+use crate::capture_service::CaptureService;
 use crate::ui::activity::inter::activity::Activity;
 use crate::ui::activity::main_activity::MainActivity;
 use crate::ui::adapters::packet_adapter::PacketAdapter;
@@ -15,7 +20,8 @@ use crate::ui::fragment::sidebar_fragment::SidebarFragment;
 pub struct MainFragment {
     activity: Box<dyn Activity>,
     root: Option<Container>,
-    packet_adapter: Option<PacketAdapter>
+    packet_adapter: Option<PacketAdapter>,
+    capture_service: Option<CaptureService>
 }
 
 impl MainFragment {
@@ -24,7 +30,8 @@ impl MainFragment {
         Self {
             activity,
             root: None,
-            packet_adapter: None
+            packet_adapter: None,
+            capture_service: None
         }
     }
 
@@ -76,7 +83,7 @@ impl MainFragment {
 
 impl Fragment for MainFragment {
 
-    fn on_create(&mut self) -> &Container {
+    fn on_create(&mut self, bundle: Option<&dyn Any>) -> &Container {
         let builder = Builder::from_resource("/com/ethernaut/rust/res/ui/gtk3/main_fragment.ui");
 
         self.root = Some(builder
@@ -155,6 +162,96 @@ impl Fragment for MainFragment {
         let mut sidebar_fragment = SidebarFragment::new(self.activity.dyn_clone(), packet);
         main_activity.open_sidebar(sidebar_fragment.dyn_clone());
         */
+
+        println!("{:?}", bundle);
+
+        let device = bundle.unwrap().downcast_ref::<Device>().unwrap().clone();
+
+        let mut capture_service = CaptureService::new(&device);
+
+
+
+        let app = self.activity.get_application();
+
+        let (tx, rx) = channel();
+        capture_service.set_tx(tx);
+
+        self.capture_service = Some(capture_service);
+
+
+
+        let titlebar = app.get_titlebar().unwrap();
+        //let menu_buttons =self.app.get_child_by_name(&titlebar, "navigation_buttons").unwrap();
+        //menu_buttons.show();
+
+
+        app.get_child_by_name(&titlebar, "network_type_label").unwrap().downcast_ref::<Label>().unwrap().set_label(&device.get_name());
+
+
+
+        let app_options = Rc::new(RefCell::new(app.get_child_by_name(&titlebar, "app_options").unwrap()));
+        app_options.borrow().show();
+        let stop_button = Rc::new(RefCell::new(app.get_child_by_name(&app_options.borrow(), "stop_button").unwrap()));
+        let start_button = app.get_child_by_name(&app_options.borrow(), "start_button").unwrap();
+
+        if let Some(start_button) = start_button.downcast_ref::<Button>() {
+            let app_options = Rc::clone(&app_options);
+            let stop_button = Rc::clone(&stop_button);
+            //let main_fragment = Rc::clone(&main_fragment);
+            let mut packet_adapter = self.packet_adapter.clone().unwrap();
+            let capture_service = self.capture_service.clone().unwrap();
+
+            start_button.connect_clicked(move |_| {
+                app_options.borrow().style_context().add_class("running");
+                stop_button.borrow().show();
+
+                packet_adapter.clear();
+                capture_service.start();
+            });
+        }
+
+        if let Some(button) = stop_button.borrow().downcast_ref::<Button>() {
+            let app_options = Rc::clone(&app_options);
+            let stop_button = Rc::clone(&stop_button);
+            let capture_service = self.capture_service.clone().unwrap();
+
+            button.connect_clicked(move |_| {
+                app_options.borrow().style_context().remove_class("running");
+                stop_button.borrow().hide();
+                capture_service.stop();
+            });
+        }
+
+
+
+
+
+
+
+
+
+        let mut packet_adapter = self.packet_adapter.clone().unwrap();
+
+        glib::timeout_add_local(Duration::from_millis(10), move || {
+            loop {
+                match rx.try_recv() {
+                    Ok(packet) => {
+                        packet_adapter.add(packet);
+                    }
+                    _ => {
+                        break;
+                    }
+                }
+            }
+            Continue
+        });
+
+
+
+
+
+
+
 
 
 

@@ -36,7 +36,7 @@ impl Activity for DevicesActivity {
         "DevicesActivity".to_string()
     }
 
-    fn on_create(&mut self) -> &Container {
+    fn on_create(&mut self, bundle: Option<&dyn Any>) -> &Container {
         let builder = Builder::from_resource("/com/ethernaut/rust/res/ui/gtk3/devices_activity.ui");
 
         let provider = CssProvider::new();
@@ -67,7 +67,7 @@ impl Activity for DevicesActivity {
 
         let app = self.app.clone();
         devices_list.connect_row_activated(move |_, row| {
-            app.start_activity(Box::new(MainActivity::new(app.clone(), &devices[row.index() as usize])));
+            app.start_activity(Box::new(MainActivity::new(app.clone())), Some(&devices[row.index() as usize]));
         });
 
         self.devices_adapter = Some(device_adapter);

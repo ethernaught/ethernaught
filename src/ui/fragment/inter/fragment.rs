@@ -4,7 +4,7 @@ use crate::ui::activity::inter::activity::Activity;
 
 pub trait Fragment {
 
-    fn on_create(&mut self) -> &Container;
+    fn on_create(&mut self, bundle: Option<&dyn Any>) -> &Container;
 
     fn on_resume(&self);
 

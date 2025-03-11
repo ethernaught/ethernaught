@@ -1,3 +1,4 @@
+use std::any::Any;
 use std::path::PathBuf;
 use std::process::exit;
 use gtk::{AboutDialog, ApplicationWindow, Builder, Image, Application, TreeViewColumn, CellRendererText, ScrolledWindow, Button, ListBoxRow, Label, CssProvider, StyleContext, gdk, Stack, Container, TreeView, Widget, Window, gio, MenuBar, MenuItem, Menu, FileChooserDialog, ResponseType, FileChooserAction};
@@ -82,7 +83,7 @@ impl OApplication {
                     window_content.add(&stack);
                     stack.show();
 
-                    _self.start_activity(Box::new(DevicesActivity::new(_self.clone())));
+                    _self.start_activity(Box::new(DevicesActivity::new(_self.clone())), None);
 
                     let mut bottombar = BottomBar::new(_self.clone());
                     window_content.add(bottombar.on_create());
@@ -144,7 +145,7 @@ impl OApplication {
             window_content.add(&stack);
             stack.show();
 
-            _self.start_activity(Box::new(DevicesActivity::new(_self.clone())));
+            _self.start_activity(Box::new(DevicesActivity::new(_self.clone())), None);
 
             let mut bottombar = BottomBar::new(_self.clone());
             window_content.add(bottombar.on_create());
@@ -157,12 +158,12 @@ impl OApplication {
         self.app.run();
     }
 
-    pub fn start_activity(&self, mut activity: Box<dyn Activity>) {
+    pub fn start_activity(&self, mut activity: Box<dyn Activity>, bundle: Option<&dyn Any>) {
         let stack = self.app.active_window().unwrap().child().unwrap().downcast_ref::<Container>().unwrap().children()[0].clone().downcast::<Stack>().unwrap();
 
         let name = activity.get_name();
         let title = activity.get_title();
-        let root = activity.on_create();
+        let root = activity.on_create(bundle);
         stack.add_titled(root, &name, &title);
         stack.set_visible_child_name(&activity.get_name());
     }

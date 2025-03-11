@@ -8,7 +8,7 @@ pub trait Activity {
 
     fn get_title(&self) -> String;
 
-    fn on_create(&mut self) -> &Container;
+    fn on_create(&mut self, bundle: Option<&dyn Any>) -> &Container;
 
     fn on_resume(&self);
 

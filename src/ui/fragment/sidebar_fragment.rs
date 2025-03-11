@@ -51,7 +51,7 @@ impl SidebarFragment {
 
 impl Fragment for SidebarFragment {
 
-    fn on_create(&mut self) -> &Container {
+    fn on_create(&mut self, bundle: Option<&dyn Any>) -> &Container {
         let builder = Builder::from_resource("/com/ethernaut/rust/res/ui/gtk3/sidebar_fragment.ui");
 
         let sidebar_content: Paned = builder
@@ -98,8 +98,8 @@ impl Fragment for SidebarFragment {
 
         let _self = self.clone();
         replay_button.connect_clicked(move |_| {
-            let main_activity = _self.activity.as_any().downcast_ref::<MainActivity>().unwrap();
-            main_activity.get_capture_service().send(_self.packet.clone());
+            //let main_activity = _self.activity.as_any().downcast_ref::<MainActivity>().unwrap();
+            //main_activity.get_capture_service().send(_self.packet.clone());
         });
 
 

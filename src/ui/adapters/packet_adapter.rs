@@ -26,7 +26,7 @@ impl PacketAdapter {
         }
     }
 
-    pub fn add(&mut self, packet: Packet) {
+    pub fn add(&self, packet: Packet) {
         let (source, destination, protocol) = match packet.get_data_link_type() {
             DataLinkTypes::Ethernet => {
                 let ethernet_frame = packet.get_frame().as_any().downcast_ref::<EthernetFrame>().unwrap();
@@ -111,7 +111,7 @@ impl PacketAdapter {
         self.packets.lock().unwrap().get(index).unwrap().clone()
     }
 
-    pub fn clear(&mut self) {
+    pub fn clear(&self) {
         self.model.clear();
         self.packets.lock().unwrap().clear();
     }
