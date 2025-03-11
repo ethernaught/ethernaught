@@ -7,6 +7,7 @@ use crate::ui::application::OApplication;
 use crate::ui::activity::inter::activity::Activity;
 use crate::ui::activity::main_activity::MainActivity;
 use crate::ui::adapters::devices_adapter::DevicesAdapter;
+use crate::ui::handlers::bundle::Bundle;
 
 #[derive(Clone)]
 pub struct DevicesActivity {
@@ -36,7 +37,7 @@ impl Activity for DevicesActivity {
         "DevicesActivity".to_string()
     }
 
-    fn on_create(&mut self, bundle: Option<&dyn Any>) -> &Container {
+    fn on_create(&mut self, bundle: Option<Bundle>) -> &Container {
         let builder = Builder::from_resource("/com/ethernaut/rust/res/ui/gtk3/devices_activity.ui");
 
         let provider = CssProvider::new();
@@ -67,7 +68,9 @@ impl Activity for DevicesActivity {
 
         let app = self.app.clone();
         devices_list.connect_row_activated(move |_, row| {
-            app.start_activity(Box::new(MainActivity::new(app.clone())), Some(&devices[row.index() as usize]));
+            let mut bundle = Bundle::new();
+            bundle.put("device", devices[row.index() as usize].clone());
+            app.start_activity(Box::new(MainActivity::new(app.clone())), Some(bundle));
         });
 
         self.devices_adapter = Some(device_adapter);

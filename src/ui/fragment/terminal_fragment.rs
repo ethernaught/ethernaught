@@ -4,6 +4,7 @@ use gtk::prelude::{BuilderExtManual, ButtonExt, Cast, ContainerExt, PanedExt, Wi
 use pcap::packet::packet::Packet;
 use crate::ui::activity::inter::activity::Activity;
 use crate::ui::fragment::inter::fragment::Fragment;
+use crate::ui::handlers::bundle::Bundle;
 
 #[derive(Clone)]
 pub struct TerminalFragment {
@@ -23,7 +24,7 @@ impl TerminalFragment {
 
 impl Fragment for TerminalFragment {
 
-    fn on_create(&mut self, bundle: Option<&dyn Any>) -> &Container {
+    fn on_create(&mut self, bundle: Option<Bundle>) -> &Container {
         let builder = Builder::from_resource("/com/ethernaut/rust/res/ui/gtk3/terminal_fragment.ui");
 
         self.root = Some(builder

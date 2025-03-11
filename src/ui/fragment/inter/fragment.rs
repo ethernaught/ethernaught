@@ -1,10 +1,11 @@
 use std::any::Any;
 use gtk::Container;
 use crate::ui::activity::inter::activity::Activity;
+use crate::ui::handlers::bundle::Bundle;
 
 pub trait Fragment {
 
-    fn on_create(&mut self, bundle: Option<&dyn Any>) -> &Container;
+    fn on_create(&mut self, bundle: Option<Bundle>) -> &Container;
 
     fn on_resume(&self);
 

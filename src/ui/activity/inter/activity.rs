@@ -1,6 +1,7 @@
 use std::any::Any;
 use gtk::Container;
 use crate::ui::application::OApplication;
+use crate::ui::handlers::bundle::Bundle;
 
 pub trait Activity {
 
@@ -8,7 +9,7 @@ pub trait Activity {
 
     fn get_title(&self) -> String;
 
-    fn on_create(&mut self, bundle: Option<&dyn Any>) -> &Container;
+    fn on_create(&mut self, bundle: Option<Bundle>) -> &Container;
 
     fn on_resume(&self);
 

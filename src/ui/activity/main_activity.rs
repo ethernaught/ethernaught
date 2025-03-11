@@ -1,5 +1,6 @@
 use std::any::Any;
 use std::cell::{Cell, RefCell};
+use std::collections::HashMap;
 use std::rc::Rc;
 use std::sync::mpsc::channel;
 use std::time::Duration;
@@ -13,6 +14,7 @@ use crate::ui::activity::inter::activity::Activity;
 use crate::ui::fragment::inter::fragment::Fragment;
 use crate::ui::fragment::main_fragment::MainFragment;
 use crate::ui::fragment::terminal_fragment::TerminalFragment;
+use crate::ui::handlers::bundle::Bundle;
 
 #[derive(Clone)]
 pub struct MainActivity {
@@ -106,7 +108,7 @@ impl Activity for MainActivity {
         "MainActivity".to_string()
     }
 
-    fn on_create(&mut self, bundle: Option<&dyn Any>) -> &Container {
+    fn on_create(&mut self, bundle: Option<Bundle>) -> &Container {
         let builder = Builder::from_resource("/com/ethernaut/rust/res/ui/gtk3/main_activity.ui");
 
         let provider = CssProvider::new();
@@ -132,8 +134,6 @@ impl Activity for MainActivity {
         window_content_pane.add(content);
         window_content_pane.set_child_shrink(content, false);
         window_content_pane.set_child_resize(content, true);
-
-
 
 
 

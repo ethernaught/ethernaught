@@ -10,6 +10,7 @@ use gtk::prelude::{ActionMapExt, GtkWindowExt};
 use crate::ui::activity::devices_activity::DevicesActivity;
 use crate::ui::activity::inter::activity::Activity;
 use crate::ui::bottombar::BottomBar;
+use crate::ui::handlers::bundle::Bundle;
 use crate::ui::titlebar::TitleBar;
 use crate::ui::widgets::hex_editor::HexEditor;
 use crate::ui::widgets::terminal::Terminal;
@@ -158,7 +159,7 @@ impl OApplication {
         self.app.run();
     }
 
-    pub fn start_activity(&self, mut activity: Box<dyn Activity>, bundle: Option<&dyn Any>) {
+    pub fn start_activity(&self, mut activity: Box<dyn Activity>, bundle: Option<Bundle>) {
         let stack = self.app.active_window().unwrap().child().unwrap().downcast_ref::<Container>().unwrap().children()[0].clone().downcast::<Stack>().unwrap();
 
         let name = activity.get_name();

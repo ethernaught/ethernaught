@@ -30,6 +30,7 @@ use crate::get_lib_path;
 use crate::ui::activity::inter::activity::Activity;
 use crate::ui::activity::main_activity::MainActivity;
 use crate::ui::fragment::inter::fragment::Fragment;
+use crate::ui::handlers::bundle::Bundle;
 use crate::ui::handlers::expanders::{create_arp_layer_expander, create_dhcp_layer_expander, create_ethernet_layer_expander, create_icmp_layer_expander, create_icmpv6_layer_expander, create_ipv4_layer_expander, create_ipv6_layer_expander, create_tcp_layer_expander, create_udp_layer_expander};
 use crate::ui::widgets::hex_editor::HexEditor;
 
@@ -55,7 +56,7 @@ impl SidebarFragment {
 
 impl Fragment for SidebarFragment {
 
-    fn on_create(&mut self, bundle: Option<&dyn Any>) -> &Container {
+    fn on_create(&mut self, bundle: Option<Bundle>) -> &Container {
         let builder = Builder::from_resource("/com/ethernaut/rust/res/ui/gtk3/sidebar_fragment.ui");
 
         let sidebar_content: Paned = builder

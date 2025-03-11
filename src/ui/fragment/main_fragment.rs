@@ -15,6 +15,7 @@ use crate::ui::activity::main_activity::MainActivity;
 use crate::ui::adapters::packet_adapter::PacketAdapter;
 use crate::ui::fragment::inter::fragment::Fragment;
 use crate::ui::fragment::sidebar_fragment::SidebarFragment;
+use crate::ui::handlers::bundle::Bundle;
 
 #[derive(Clone)]
 pub struct MainFragment {
@@ -83,7 +84,7 @@ impl MainFragment {
 
 impl Fragment for MainFragment {
 
-    fn on_create(&mut self, bundle: Option<&dyn Any>) -> &Container {
+    fn on_create(&mut self, bundle: Option<Bundle>) -> &Container {
         let builder = Builder::from_resource("/com/ethernaut/rust/res/ui/gtk3/main_fragment.ui");
 
         self.root = Some(builder
@@ -92,7 +93,7 @@ impl Fragment for MainFragment {
 
 
 
-        let device = bundle.unwrap().downcast_ref::<Device>().unwrap().clone();
+        let device = bundle.unwrap().get::<Device>("device").unwrap().clone();
 
         let (tx, rx) = channel();
         let capture_service = CaptureService::new(&device, tx.clone());
