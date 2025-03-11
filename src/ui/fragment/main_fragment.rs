@@ -6,7 +6,6 @@ use gtk::{gdk, glib, Adjustment, Application, ApplicationWindow, Builder, Button
 use gtk::glib::Propagation::Proceed;
 use gtk::glib::Type;
 use pcap::packet::inter::interfaces::Interfaces;
-use pcap::packet::packet::decode_packet;
 use crate::ui::activity::inter::activity::Activity;
 use crate::ui::activity::main_activity::MainActivity;
 use crate::ui::adapters::packet_adapter::PacketAdapter;
