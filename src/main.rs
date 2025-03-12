@@ -30,25 +30,27 @@ rustup override set nightly
 //REMEMBER TO REMOVE LOOPER TIMEOUT WHEN MAIN-ACTIVITY IS KILLED...
 
 fn main() {
-    /*
     if !cfg!(debug_assertions) {
         if !is_root() {
             println!("{:?}", env::current_exe().unwrap());
             let display = env::var("DISPLAY").unwrap_or_else(|_| ":0".to_string());
             let xauthority = env::var("XAUTHORITY").unwrap_or_else(|_| "/run/user/1000/gdm/Xauthority".to_string());
 
-            let status = Command::new("pkexec")
-                .arg("env")
+            let args: Vec<String> = env::args().skip(1).collect();
+
+            let mut command = Command::new("pkexec");
+            command.arg("env")
                 .arg(format!("DISPLAY={}", display))
                 .arg(format!("XAUTHORITY={}", xauthority))
-                .arg(env::current_exe().unwrap()) // Relaunch itself with root
-                .status()
-                .expect("Failed to execute pkexec");
+                .arg(env::current_exe().unwrap());
 
-            exit(status.code().unwrap_or(1)); // Exit with the new process status
+            for arg in args {
+                command.arg(arg);
+            }
+
+            exit(command.status().expect("Failed to execute pkexec").code().unwrap_or(1)); // Exit with the new process status
         }
     }
-    */
 
 
     /*
