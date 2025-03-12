@@ -33,7 +33,7 @@ tooltip {
 
 
 #titlebar {
-    min-height: 32px;
+    min-height: 40px;
     border-radius: 0;
     border-top: solid 1px #5a5d63;
     border-left: solid 1px #5a5d63;
@@ -128,23 +128,7 @@ window.maximized #titlebar {
     padding: 4px;
     margin: 4px;
     border-radius: 6px;
-    background-color: #59436e;
-}
-
-#titlebar.ethernet #network_type_icon {
-    background-color: #5e5030;
-}
-
-#titlebar.wifi #network_type_icon {
-    background-color: #5e3058;
-}
-
-#titlebar.vpn #network_type_icon {
-    background-color: #376141;
-}
-
-#titlebar.bluetooth #network_type_icon {
-    background-color: #394366;
+    background-color: rgba(255, 255, 255, 0.15);
 }
 
 #network_type_label {

@@ -6,7 +6,7 @@ use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::mpsc::channel;
 use std::time::Duration;
 use gtk::prelude::*;
-use gtk::{gdk, glib, Builder, Button, Container, CssProvider, Label, Paned, StyleContext};
+use gtk::{gdk, glib, Builder, Button, Container, CssProvider, Image, Label, Paned, StyleContext};
 use gtk::glib::ControlFlow::{Break, Continue};
 use pcap::devices::Device;
 use crate::capture_service::CaptureService;
@@ -186,8 +186,15 @@ impl Activity for MainActivity {
                         let main_fragment = Rc::new(RefCell::new(main_fragment));
 
                         let titlebar = self.app.get_titlebar().unwrap();
+                        titlebar.style_context().add_class("ethernet");
 
-                        self.app.get_child_by_name(&titlebar, "network_type_label").unwrap().downcast_ref::<Label>().unwrap().set_label(&device.get_name());
+                        let icon = self.app.get_child_by_name(&titlebar, "network_type_icon").unwrap().downcast_ref::<Image>().unwrap().clone();
+                        icon.set_resource(Some("/com/ethernaut/rust/res/icons/ic_ethernet.svg"));
+                        icon.show();
+
+                        let network_type_label = self.app.get_child_by_name(&titlebar, "network_type_label").unwrap().downcast_ref::<Label>().unwrap().clone();
+                        network_type_label.set_label(&device.get_name());
+                        network_type_label.show();
 
                         let app_options = Rc::new(RefCell::new(self.app.get_child_by_name(&titlebar, "app_options").unwrap()));
                         app_options.borrow().show();
@@ -265,6 +272,11 @@ impl Activity for MainActivity {
 
     fn on_resume(&self) {
         let titlebar = self.app.get_titlebar().unwrap();
+        titlebar.style_context().add_class("ethernet");
+
+        self.app.get_child_by_name(&titlebar, "network_type_icon").unwrap().downcast_ref::<Image>().unwrap().show();
+        self.app.get_child_by_name(&titlebar, "network_type_label").unwrap().downcast_ref::<Label>().unwrap().show();
+
         let app_options = self.app.get_child_by_name(&titlebar, "app_options").unwrap();
         app_options.show();
     }
@@ -274,10 +286,14 @@ impl Activity for MainActivity {
             capture_service.stop();
 
             let titlebar = self.app.get_titlebar().unwrap();
+            titlebar.style_context().remove_class("ethernet");
+
+            self.app.get_child_by_name(&titlebar, "network_type_icon").unwrap().downcast_ref::<Image>().unwrap().hide();
+            self.app.get_child_by_name(&titlebar, "network_type_label").unwrap().downcast_ref::<Label>().unwrap().hide();
+
             let app_options = self.app.get_child_by_name(&titlebar, "app_options").unwrap();
             app_options.style_context().remove_class("running");
-            let stop_button = self.app.get_child_by_name(&app_options, "stop_button").unwrap();
-            stop_button.hide();
+            self.app.get_child_by_name(&app_options, "stop_button").unwrap().hide();
             app_options.hide();
         }
     }

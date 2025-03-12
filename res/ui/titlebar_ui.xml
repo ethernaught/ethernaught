@@ -8,7 +8,6 @@
         <property name="hexpand">True</property>
         <property name="orientation">horizontal</property>
         <property name="spacing">30</property>
-        <property name="height-request">40</property>
 
         <child>
             <object class="GtkBox" id="navigation_options">
@@ -67,18 +66,17 @@
                         <child>
                             <object class="GtkImage" id="network_type_icon">
                                 <property name="name">network_type_icon</property>
-                                <property name="visible">True</property>
+                                <property name="visible">False</property>
                                 <property name="width-request">24</property>
                                 <property name="height-request">24</property>
                                 <property name="icon-name">network-type</property>
-                                <property name="resource">/com/ethernaut/rust/res/icons/ic_wifi.svg</property>
                             </object>
                         </child>
 
                         <child>
                             <object class="GtkLabel" id="network_type_label">
                                 <property name="name">network_type_label</property>
-                                <property name="visible">True</property>
+                                <property name="visible">False</property>
                             </object>
                         </child>
                     </object>
