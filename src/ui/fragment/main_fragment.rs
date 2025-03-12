@@ -5,6 +5,7 @@ use gtk::prelude::*;
 use gtk::{Builder, CellRendererText, Container, ListStore, ScrolledWindow, TreeView, TreeViewColumn};
 use gtk::glib::Propagation::Proceed;
 use gtk::glib::Type;
+use pcap::pcap::pcap::Pcap;
 use crate::ui::activity::inter::activity::Activity;
 use crate::ui::activity::main_activity::MainActivity;
 use crate::ui::adapters::packet_adapter::PacketAdapter;
@@ -85,7 +86,23 @@ impl Fragment for MainFragment {
             .expect("Couldn't find 'content_layout' in window.ui"));
 
         let model = ListStore::new(&[Type::U32, Type::STRING, Type::STRING, Type::STRING, Type::STRING, Type::STRING, Type::STRING]);
-        self.packet_adapter = Some(PacketAdapter::new(&model));
+
+        match bundle {
+            Some(bundle) => {
+                match bundle.get::<String>("type").unwrap().as_str() {
+                    "file" => {
+                        let pcap = Pcap::from_file(bundle.get::<String>("file").unwrap().as_str()).expect("Couldn't parse pcap");
+                        self.packet_adapter = Some(PacketAdapter::from_packets(&model, pcap.get_packets()));
+                    }
+                    _ => {
+                        self.packet_adapter = Some(PacketAdapter::new(&model));
+                    }
+                }
+            }
+            None => {
+                self.packet_adapter = Some(PacketAdapter::new(&model));
+            }
+        }
 
         let tree_view: TreeView = builder
             .object("tree_view")

@@ -4,11 +4,12 @@ use std::process::exit;
 use gtk::{AboutDialog, ApplicationWindow, Builder, Image, Application, TreeViewColumn, CellRendererText, ScrolledWindow, Button, ListBoxRow, Label, CssProvider, StyleContext, gdk, Stack, Container, TreeView, Widget, Window, gio, MenuBar, MenuItem, Menu, FileChooserDialog, ResponseType, FileChooserAction};
 use gtk::gdk_pixbuf::{Pixbuf, PixbufLoader};
 use gtk::prelude::*;
-use gtk::gio::{resources_register, Resource, SimpleAction};
+use gtk::gio::{resources_register, ApplicationFlags, Resource, SimpleAction};
 use gtk::glib::Bytes;
 use gtk::prelude::{ActionMapExt, GtkWindowExt};
 use crate::ui::activity::devices_activity::DevicesActivity;
 use crate::ui::activity::inter::activity::Activity;
+use crate::ui::activity::main_activity::MainActivity;
 use crate::ui::bottombar::BottomBar;
 use crate::ui::handlers::bundle::Bundle;
 use crate::ui::titlebar::TitleBar;
@@ -23,7 +24,7 @@ pub struct OApplication {
 impl OApplication {
 
     pub fn new() -> Self {
-        let app = Application::new(Some("com.ethernaut.rust"), Default::default());
+        let app = Application::new(Some("com.ethernaut.rust"), ApplicationFlags::HANDLES_OPEN);
 
         Self {
             app
@@ -32,131 +33,83 @@ impl OApplication {
 
     pub fn run(&self) {
         let _self = self.clone();
+        self.app.connect_activate(move |app| {
+            _self.on_create(app);
+            _self.start_activity(Box::new(DevicesActivity::new(_self.clone())), None);
+        });
+
+        let _self = self.clone();
         self.app.connect_open(move |app, files, _hint| {
             for file in files {
                 if let Some(path) = file.path() {
-                    println!("{}", path.to_str().unwrap());
-                    HexEditor::static_type();
-                    Terminal::static_type();
+                    _self.on_create(app);
+                    let mut bundle = Bundle::new();
+                    bundle.put("type", String::from("file"));
+                    bundle.put("file", path.to_str().unwrap().to_string());
 
-                    let resource_data = include_bytes!("../../res/resources.gresources");
-
-                    let resource = Resource::from_data(&Bytes::from(resource_data)).unwrap();
-                    resources_register(&resource);
-
-                    let builder = Builder::from_resource("/com/ethernaut/rust/res/ui/gtk3/window.ui");
-
-                    let provider = CssProvider::new();
-                    provider.load_from_resource("/com/ethernaut/rust/res/ui/gtk3/window.css");
-                    //provider.load_from_path("res/ui/gtk3/window.css").expect("Failed to load CSS file.");
-
-                    StyleContext::add_provider_for_screen(
-                        &gdk::Screen::default().expect("Failed to get default screen."),
-                        &provider,
-                        gtk::STYLE_PROVIDER_PRIORITY_APPLICATION,
-                    );
-
-                    let window: ApplicationWindow = builder
-                        .object("MainWindow")
-                        .expect("Failed to get the 'MainWindow' from window.ui");
-
-                    window.set_application(Some(app));
-                    window.connect_destroy(|_| exit(0));
-                    //window.set_decorated(false);
-                    window.set_border_width(1);
-
-                    #[cfg(profile = "nightly")]
-                    window.style_context().add_class("nightly");
-
-                    #[cfg(profile = "release")]
-                    window.style_context().add_class("release");
-
-                    //window.set_icon_from_file("res/icons/ic_launcher.svg").expect("Failed to load icon");
-
-                    let mut titlebar = TitleBar::new(_self.clone());
-                    window.set_titlebar(Some(titlebar.on_create()));
-
-                    let window_content: gtk::Box = builder
-                        .object("window_content")
-                        .expect("Failed to get the 'window_content' from window.ui");
-
-                    let stack = Stack::new();
-                    window_content.add(&stack);
-                    stack.show();
-
-                    _self.start_activity(Box::new(DevicesActivity::new(_self.clone())), None);
-
-                    let mut bottombar = BottomBar::new(_self.clone());
-                    window_content.add(bottombar.on_create());
-
-                    _self.init_actions(&window);
-
-                    window.show();
+                    _self.start_activity(Box::new(MainActivity::new(_self.clone())), Some(bundle));
                 }
             }
         });
 
-        let _self = self.clone();
-        self.app.connect_activate(move |app| {
-            HexEditor::static_type();
-            Terminal::static_type();
-
-            let resource_data = include_bytes!("../../res/resources.gresources");
-
-            let resource = Resource::from_data(&Bytes::from(resource_data)).unwrap();
-            resources_register(&resource);
-
-            let builder = Builder::from_resource("/com/ethernaut/rust/res/ui/gtk3/window.ui");
-
-            let provider = CssProvider::new();
-            provider.load_from_resource("/com/ethernaut/rust/res/ui/gtk3/window.css");
-            //provider.load_from_path("res/ui/gtk3/window.css").expect("Failed to load CSS file.");
-
-            StyleContext::add_provider_for_screen(
-                &gdk::Screen::default().expect("Failed to get default screen."),
-                &provider,
-                gtk::STYLE_PROVIDER_PRIORITY_APPLICATION,
-            );
-
-            let window: ApplicationWindow = builder
-                .object("MainWindow")
-                .expect("Failed to get the 'MainWindow' from window.ui");
-
-            window.set_application(Some(app));
-            window.connect_destroy(|_| exit(0));
-            //window.set_decorated(false);
-            window.set_border_width(1);
-
-            #[cfg(profile = "nightly")]
-            window.style_context().add_class("nightly");
-
-            #[cfg(profile = "release")]
-            window.style_context().add_class("release");
-
-            //window.set_icon_from_file("res/icons/ic_launcher.svg").expect("Failed to load icon");
-
-            let mut titlebar = TitleBar::new(_self.clone());
-            window.set_titlebar(Some(titlebar.on_create()));
-
-            let window_content: gtk::Box = builder
-                .object("window_content")
-                .expect("Failed to get the 'window_content' from window.ui");
-
-            let stack = Stack::new();
-            window_content.add(&stack);
-            stack.show();
-
-            _self.start_activity(Box::new(DevicesActivity::new(_self.clone())), None);
-
-            let mut bottombar = BottomBar::new(_self.clone());
-            window_content.add(bottombar.on_create());
-
-            _self.init_actions(&window);
-
-            window.show();
-        });
-
         self.app.run();
+    }
+
+    fn on_create(&self, app: &Application) {
+        HexEditor::static_type();
+        Terminal::static_type();
+
+        let resource_data = include_bytes!("../../res/resources.gresources");
+
+        let resource = Resource::from_data(&Bytes::from(resource_data)).unwrap();
+        resources_register(&resource);
+
+        let builder = Builder::from_resource("/com/ethernaut/rust/res/ui/gtk3/window.ui");
+
+        let provider = CssProvider::new();
+        provider.load_from_resource("/com/ethernaut/rust/res/ui/gtk3/window.css");
+        //provider.load_from_path("res/ui/gtk3/window.css").expect("Failed to load CSS file.");
+
+        StyleContext::add_provider_for_screen(
+            &gdk::Screen::default().expect("Failed to get default screen."),
+            &provider,
+            gtk::STYLE_PROVIDER_PRIORITY_APPLICATION,
+        );
+
+        let window: ApplicationWindow = builder
+            .object("MainWindow")
+            .expect("Failed to get the 'MainWindow' from window.ui");
+
+        window.set_application(Some(app));
+        window.connect_destroy(|_| exit(0));
+        //window.set_decorated(false);
+        window.set_border_width(1);
+
+        #[cfg(profile = "nightly")]
+        window.style_context().add_class("nightly");
+
+        #[cfg(profile = "release")]
+        window.style_context().add_class("release");
+
+        //window.set_icon_from_file("res/icons/ic_launcher.svg").expect("Failed to load icon");
+
+        let mut titlebar = TitleBar::new(self.clone());
+        window.set_titlebar(Some(titlebar.on_create()));
+
+        let window_content: gtk::Box = builder
+            .object("window_content")
+            .expect("Failed to get the 'window_content' from window.ui");
+
+        let stack = Stack::new();
+        window_content.add(&stack);
+        stack.show();
+
+        let mut bottombar = BottomBar::new(self.clone());
+        window_content.add(bottombar.on_create());
+
+        self.init_actions(&window);
+
+        window.show();
     }
 
     pub fn start_activity(&self, mut activity: Box<dyn Activity>, bundle: Option<Bundle>) {

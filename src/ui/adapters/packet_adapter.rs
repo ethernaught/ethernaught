@@ -26,7 +26,26 @@ impl PacketAdapter {
         }
     }
 
+    pub fn from_packets(model: &ListStore, packets: Vec<Packet>) -> Self {
+        let mut i = 0;
+        for packet in &packets {
+            i += 1;
+            Self::add_model(model, packet, i);
+        }
+
+        Self {
+            model: model.clone(),
+            packets: Arc::new(Mutex::new(packets))
+        }
+    }
+
     pub fn add(&self, packet: Packet) {
+        let packet_count = 1 + self.packets.lock().as_ref().unwrap().len() as u32;
+        Self::add_model(&self.model, &packet, packet_count);
+        self.packets.lock().as_mut().unwrap().push(packet);
+    }
+
+    fn add_model(model: &ListStore, packet: &Packet, packet_count: u32) {
         let (source, destination, protocol) = match packet.get_data_link_type() {
             DataLinkTypes::Ethernet => {
                 let ethernet_frame = packet.get_frame().as_any().downcast_ref::<EthernetFrame>().unwrap();
@@ -90,11 +109,10 @@ impl PacketAdapter {
             }
         };
 
-        let packet_count = 1 + self.packets.lock().as_ref().unwrap().len() as u32;
         let frame_time = packet.get_frame_time().to_string();
         let packet_length = packet.len().to_string();
 
-        self.model.insert_with_values(None, &[
+        model.insert_with_values(None, &[
             (0, &packet_count),
             (1, &frame_time),
             (2, &source),
@@ -103,8 +121,6 @@ impl PacketAdapter {
             (5, &packet_length),
             //(6, &"TODO".to_string()),
         ]);
-
-        self.packets.lock().as_mut().unwrap().push(packet);
     }
 
     pub fn get_packet_by_index(&self, index: usize) -> Packet {

@@ -28,6 +28,7 @@ rustup override set nightly
 */
 
 fn main() {
+    /*
     if !cfg!(debug_assertions) {
         if !is_root() {
             println!("{:?}", env::current_exe().unwrap());
@@ -45,6 +46,7 @@ fn main() {
             exit(status.code().unwrap_or(1)); // Exit with the new process status
         }
     }
+    */
 
 
     /*
