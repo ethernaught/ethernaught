@@ -65,7 +65,7 @@ impl TitleBar {
 
         navigation_menubar.borrow().connect_deactivate(move |_| {
             navigation_menubar_clone.borrow().hide();
-            navigation_buttons_clone.borrow().show_all();
+            navigation_buttons_clone.borrow().show();
         });
 
         let menu_button: Button = builder
