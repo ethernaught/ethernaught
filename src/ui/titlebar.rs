@@ -90,16 +90,14 @@ impl TitleBar {
             app.on_back_pressed();
         });
 
-        /*
         let next_button: Button = builder
             .object("next_button")
             .expect("Couldn't find 'next_button' in titlebar_ui.xml");
 
-        let _self = self.clone();
+        let app = self.app.clone();
         next_button.connect_clicked(move |_| {
-            _self.on_next_pressed();
+            app.on_next_pressed();
         });
-        */
     }
 
     fn init_window_options(&self, builder: &Builder) {

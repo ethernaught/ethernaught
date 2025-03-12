@@ -27,6 +27,8 @@ rustup install nightly
 rustup override set nightly
 */
 
+//REMEMBER TO REMOVE LOOPER TIMEOUT WHEN MAIN-ACTIVITY IS KILLED...
+
 fn main() {
     /*
     if !cfg!(debug_assertions) {

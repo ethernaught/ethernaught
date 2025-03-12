@@ -106,8 +106,16 @@ window.maximized #titlebar {
     background-image: url('../../icons/ic_back.svg');
 }
 
+#navigation_buttons #back_button.active {
+    background-image: url('../../icons/ic_back_active.svg');
+}
+
 #navigation_buttons #next_button {
     background-image: url('../../icons/ic_next.svg');
+}
+
+#navigation_buttons #next_button.active {
+    background-image: url('../../icons/ic_next_active.svg');
 }
 
 

@@ -32,7 +32,9 @@
 
         <file preprocess="xml-stripblanks">res/icons/ic_menu.svg</file>
         <file preprocess="xml-stripblanks">res/icons/ic_back.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/ic_back_active.svg</file>
         <file preprocess="xml-stripblanks">res/icons/ic_next.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/ic_next_active.svg</file>
 
         <file preprocess="xml-stripblanks">res/icons/ic_start.svg</file>
         <file preprocess="xml-stripblanks">res/icons/ic_stop.svg</file>

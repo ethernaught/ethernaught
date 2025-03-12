@@ -21,7 +21,6 @@ use crate::ui::widgets::terminal::Terminal;
 #[derive(Clone)]
 pub struct OApplication {
     app: Application
-    //stack: Rc<RefCell<Vec<Box<dyn Activity>>>>
 }
 
 impl OApplication {
@@ -31,7 +30,6 @@ impl OApplication {
 
         Self {
             app
-            //stack: Rc::new(RefCell::new(Vec::new()))
         }
     }
 
@@ -119,17 +117,29 @@ impl OApplication {
     pub fn start_activity(&self, mut activity: Box<dyn Activity>, bundle: Option<Bundle>) {
         let stack = self.app.active_window().unwrap().child().unwrap().downcast_ref::<Container>().unwrap().children()[0].clone().downcast::<Stack>().unwrap();
 
+        //CLEAN STACK UP
+        let children = stack.children();
+        if let Some(current) = stack.visible_child() {
+            if let Some(pos) = children.iter().position(|child| child == &current) {
+                let back_button = self.get_child_by_name(self.app.active_window().unwrap().titlebar().unwrap().upcast_ref(), "back_button").unwrap();
+                back_button.style_context().add_class("active");
+
+                let next_button = self.get_child_by_name(self.app.active_window().unwrap().titlebar().unwrap().upcast_ref(), "next_button").unwrap();
+                next_button.style_context().remove_class("active");
+
+                for i in (pos + 1..children.len()).rev() {
+                    stack.remove(&children[i]);
+                }
+            }
+        }
+
         let name = activity.get_name();
         let title = activity.get_title();
         let root = activity.on_create(bundle);
         stack.add_titled(root, &name, &title);
-
-        let name = activity.get_name();
-        //self.stack.borrow_mut().push(activity);
-        stack.set_visible_child_name(&name);
+        stack.set_visible_child_name(&activity.get_name());
     }
 
-    //WE NEED TO POSSIBLY UPDATE BUTTONS AFTER PRESSED...
     pub fn on_back_pressed(&self) {
         let stack = self.app.active_window().unwrap().child().unwrap().downcast_ref::<Container>().unwrap().children()[0].clone().downcast::<Stack>().unwrap();
 
@@ -138,26 +148,35 @@ impl OApplication {
             if let Some(pos) = children.iter().position(|child| child == &current) {
                 if pos > 0 {
                     stack.set_visible_child(&children[pos - 1]);
+
+                    let next_button = self.get_child_by_name(self.app.active_window().unwrap().titlebar().unwrap().upcast_ref(), "next_button").unwrap();
+                    next_button.style_context().add_class("active");
+
+                    let back_button = self.get_child_by_name(self.app.active_window().unwrap().titlebar().unwrap().upcast_ref(), "back_button").unwrap();
+                    back_button.style_context().remove_class("active");
                 }
             }
         }
     }
 
-    /*
-    //WE NEED TO ADJUST STACK AFTER - IE REMOVING SOME AND UPDATE BUTTONS...
     pub fn on_next_pressed(&self) {
-        let stack = self.app.active_window().unwrap().children()[0].clone().downcast::<Stack>().unwrap();
+        let stack = self.app.active_window().unwrap().child().unwrap().downcast_ref::<Container>().unwrap().children()[0].clone().downcast::<Stack>().unwrap();
 
         let children = stack.children();
         if let Some(current) = stack.visible_child() {
             if let Some(pos) = children.iter().position(|child| child == &current) {
-                if pos + 1 < children.len() {
+                if pos < children.len() - 1 {
                     stack.set_visible_child(&children[pos + 1]);
+
+                    let back_button = self.get_child_by_name(self.app.active_window().unwrap().titlebar().unwrap().upcast_ref(), "back_button").unwrap();
+                    back_button.style_context().add_class("active");
+
+                    let next_button = self.get_child_by_name(self.app.active_window().unwrap().titlebar().unwrap().upcast_ref(), "next_button").unwrap();
+                    next_button.style_context().remove_class("active");
                 }
             }
         }
     }
-    */
 
     pub fn get_application(&self) -> Application {
         self.app.clone()
