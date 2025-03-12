@@ -134,23 +134,43 @@ impl OApplication {
     pub fn start_activity(&self, mut activity: Box<dyn Activity>, bundle: Option<Bundle>) {
         let stack = self.app.active_window().unwrap().child().unwrap().downcast_ref::<Container>().unwrap().children()[0].clone().downcast::<Stack>().unwrap();
 
-        //CLEAN STACK UP
-        let children = stack.children();
-        if let Some(current) = stack.visible_child() {
-            if let Some(pos) = children.iter().position(|child| child == &current) {
+        match stack.child_by_name(activity.get_name().as_ref()) {
+            Some(child) => {
+                let pos = stack.child_position(&child) as usize;
+
                 let back_button = self.get_child_by_name(self.app.active_window().unwrap().titlebar().unwrap().upcast_ref(), "back_button").unwrap();
                 back_button.style_context().add_class("active");
 
                 let next_button = self.get_child_by_name(self.app.active_window().unwrap().titlebar().unwrap().upcast_ref(), "next_button").unwrap();
                 next_button.style_context().remove_class("active");
 
-                for i in (pos + 1..children.len()).rev() {
+                let children = stack.children();
+                for i in (pos..children.len()).rev() {
                     self.stack.borrow().get(i).unwrap().on_destroy();
                     stack.remove(&children[i]);
                     self.stack.borrow_mut().remove(i);
                 }
             }
+            None => {
+                let children = stack.children();
+                if let Some(current) = stack.visible_child() {
+                    if let Some(pos) = children.iter().position(|child| child == &current) {
+                        let back_button = self.get_child_by_name(self.app.active_window().unwrap().titlebar().unwrap().upcast_ref(), "back_button").unwrap();
+                        back_button.style_context().add_class("active");
+
+                        let next_button = self.get_child_by_name(self.app.active_window().unwrap().titlebar().unwrap().upcast_ref(), "next_button").unwrap();
+                        next_button.style_context().remove_class("active");
+
+                        for i in (pos + 1..children.len()).rev() {
+                            self.stack.borrow().get(i).unwrap().on_destroy();
+                            stack.remove(&children[i]);
+                            self.stack.borrow_mut().remove(i);
+                        }
+                    }
+                }
+            }
         }
+
 
         let name = activity.get_name();
         let title = activity.get_title();
@@ -223,10 +243,14 @@ impl OApplication {
 
     fn init_actions(&self, window: &ApplicationWindow) {
         let action = SimpleAction::new("open", None);
-        let window_clone = window.clone();
+        let _self = self.clone();
         action.connect_activate(move |_, _| {
-            if let Some(file_path) = open_file_selector(window_clone.upcast_ref()) {
-                println!("{}", file_path.to_str().unwrap());
+            if let Some(path) = open_file_selector(_self.app.active_window().unwrap().upcast_ref()) {
+                let mut bundle = Bundle::new();
+                bundle.put("type", String::from("file"));
+                bundle.put("file", path.to_str().unwrap().to_string());
+
+                _self.start_activity(Box::new(MainActivity::new(_self.clone())), Some(bundle));
             }
         });
         window.add_action(&action);

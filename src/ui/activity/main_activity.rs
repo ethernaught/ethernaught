@@ -270,14 +270,16 @@ impl Activity for MainActivity {
     }
 
     fn on_pause(&self) {
-        self.capture_service.as_ref().expect("Failed to get capture service").stop();
+        if let Some(capture_service) = self.capture_service.as_ref() {
+            capture_service.stop();
 
-        let titlebar = self.app.get_titlebar().unwrap();
-        let app_options = self.app.get_child_by_name(&titlebar, "app_options").unwrap();
-        app_options.style_context().remove_class("running");
-        let stop_button = self.app.get_child_by_name(&app_options, "stop_button").unwrap();
-        stop_button.hide();
-        app_options.hide();
+            let titlebar = self.app.get_titlebar().unwrap();
+            let app_options = self.app.get_child_by_name(&titlebar, "app_options").unwrap();
+            app_options.style_context().remove_class("running");
+            let stop_button = self.app.get_child_by_name(&app_options, "stop_button").unwrap();
+            stop_button.hide();
+            app_options.hide();
+        }
     }
 
     fn on_destroy(&self) {
