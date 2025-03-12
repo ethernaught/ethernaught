@@ -1,10 +1,9 @@
-use std::any::Any;
 use std::cell::RefCell;
 use std::path::PathBuf;
 use std::process::exit;
 use std::rc::Rc;
 use gtk::{AboutDialog, ApplicationWindow, Builder, Image, Application, TreeViewColumn, CellRendererText, ScrolledWindow, Button, ListBoxRow, Label, CssProvider, StyleContext, gdk, Stack, Container, TreeView, Widget, Window, gio, MenuBar, MenuItem, Menu, FileChooserDialog, ResponseType, FileChooserAction};
-use gtk::gdk_pixbuf::{Pixbuf, PixbufLoader};
+use gtk::gdk_pixbuf::Pixbuf;
 use gtk::prelude::*;
 use gtk::gio::{resources_register, ApplicationFlags, Resource, SimpleAction};
 use gtk::glib::Bytes;
@@ -21,7 +20,8 @@ use crate::ui::widgets::terminal::Terminal;
 
 #[derive(Clone)]
 pub struct OApplication {
-    app: Application
+    app: Application,
+    stack: Rc<RefCell<Vec<Box<dyn Activity>>>>
 }
 
 impl OApplication {
@@ -30,7 +30,8 @@ impl OApplication {
         let app = Application::new(Some("com.ethernaut.rust"), ApplicationFlags::HANDLES_OPEN);
 
         Self {
-            app
+            app,
+            stack: Rc::new(RefCell::new(Vec::new()))
         }
     }
 
@@ -144,7 +145,9 @@ impl OApplication {
                 next_button.style_context().remove_class("active");
 
                 for i in (pos + 1..children.len()).rev() {
+                    self.stack.borrow().get(i).unwrap().on_destroy();
                     stack.remove(&children[i]);
+                    self.stack.borrow_mut().remove(i);
                 }
             }
         }
@@ -153,7 +156,11 @@ impl OApplication {
         let title = activity.get_title();
         let root = activity.on_create(bundle);
         stack.add_titled(root, &name, &title);
-        stack.set_visible_child_name(&activity.get_name());
+
+        let name = activity.get_name();
+        self.stack.borrow_mut().push(activity);
+
+        stack.set_visible_child_name(&name);
     }
 
     pub fn on_back_pressed(&self) {
@@ -163,6 +170,8 @@ impl OApplication {
         if let Some(current) = stack.visible_child() {
             if let Some(pos) = children.iter().position(|child| child == &current) {
                 if pos > 0 {
+                    self.stack.borrow().get(pos).unwrap().on_pause();
+                    self.stack.borrow().get(pos - 1).unwrap().on_resume();
                     stack.set_visible_child(&children[pos - 1]);
 
                     let next_button = self.get_child_by_name(self.app.active_window().unwrap().titlebar().unwrap().upcast_ref(), "next_button").unwrap();
@@ -182,6 +191,8 @@ impl OApplication {
         if let Some(current) = stack.visible_child() {
             if let Some(pos) = children.iter().position(|child| child == &current) {
                 if pos < children.len() - 1 {
+                    self.stack.borrow().get(pos).unwrap().on_pause();
+                    self.stack.borrow().get(pos + 1).unwrap().on_resume();
                     stack.set_visible_child(&children[pos + 1]);
 
                     let back_button = self.get_child_by_name(self.app.active_window().unwrap().titlebar().unwrap().upcast_ref(), "back_button").unwrap();

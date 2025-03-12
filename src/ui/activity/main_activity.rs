@@ -1,6 +1,8 @@
 use std::any::Any;
 use std::cell::RefCell;
 use std::rc::Rc;
+use std::sync::Arc;
+use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::mpsc::channel;
 use std::time::Duration;
 use gtk::prelude::*;
@@ -20,6 +22,7 @@ pub struct MainActivity {
     app: OApplication,
     footer_selected: Rc<RefCell<String>>,
     capture_service: Option<CaptureService>,
+    running: Arc<AtomicBool>,
     root: Option<Container>
 }
 
@@ -30,6 +33,7 @@ impl MainActivity {
             app,
             root: None,
             footer_selected: Rc::new(RefCell::new(String::new())),
+            running: Arc::new(AtomicBool::new(false)),
             capture_service: None
         }
     }
@@ -182,14 +186,12 @@ impl Activity for MainActivity {
                         let main_fragment = Rc::new(RefCell::new(main_fragment));
 
                         let titlebar = self.app.get_titlebar().unwrap();
-                        //let menu_buttons =self.app.get_child_by_name(&titlebar, "navigation_buttons").unwrap();
-                        //menu_buttons.show();
-
 
                         self.app.get_child_by_name(&titlebar, "network_type_label").unwrap().downcast_ref::<Label>().unwrap().set_label(&device.get_name());
 
                         let app_options = Rc::new(RefCell::new(self.app.get_child_by_name(&titlebar, "app_options").unwrap()));
                         app_options.borrow().show();
+
                         let stop_button = Rc::new(RefCell::new(self.app.get_child_by_name(&app_options.borrow(), "stop_button").unwrap()));
                         let start_button = self.app.get_child_by_name(&app_options.borrow(), "start_button").unwrap();
 
@@ -197,33 +199,35 @@ impl Activity for MainActivity {
                             let app_options = Rc::clone(&app_options);
                             let stop_button = Rc::clone(&stop_button);
                             let main_fragment = Rc::clone(&main_fragment);
-                            let packet_service = self.capture_service.clone().unwrap();
+                            let capture_service = self.capture_service.clone().unwrap();
 
                             start_button.connect_clicked(move |_| {
                                 app_options.borrow().style_context().add_class("running");
                                 stop_button.borrow().show();
 
                                 main_fragment.borrow().get_packet_adapter().unwrap().clear();
-                                packet_service.start();
+                                capture_service.start();
                             });
                         }
 
                         if let Some(button) = stop_button.borrow().downcast_ref::<Button>() {
                             let app_options = Rc::clone(&app_options);
                             let stop_button = Rc::clone(&stop_button);
-                            let packet_service = self.capture_service.clone().unwrap();
+                            let capture_service = self.capture_service.clone().unwrap();
 
                             button.connect_clicked(move |_| {
                                 app_options.borrow().style_context().remove_class("running");
                                 stop_button.borrow().hide();
-                                packet_service.stop();
+                                capture_service.stop();
                             });
                         }
 
                         let main_fragment = Rc::clone(&main_fragment);
+                        self.running.store(true, Ordering::Relaxed);
+                        let running = Arc::clone(&self.running);
 
                         glib::timeout_add_local(Duration::from_millis(10), move || {
-                            loop {
+                            while running.load(Ordering::Relaxed) {
                                 match rx.try_recv() {
                                     Ok(packet) => {
                                         main_fragment.borrow().get_packet_adapter().unwrap().add(packet);
@@ -255,15 +259,24 @@ impl Activity for MainActivity {
     }
 
     fn on_resume(&self) {
-        todo!()
+        let titlebar = self.app.get_titlebar().unwrap();
+        let app_options = self.app.get_child_by_name(&titlebar, "app_options").unwrap();
+        app_options.show();
     }
 
     fn on_pause(&self) {
-        todo!()
+        self.capture_service.as_ref().expect("Failed to get capture service").stop();
+
+        let titlebar = self.app.get_titlebar().unwrap();
+        let app_options = self.app.get_child_by_name(&titlebar, "app_options").unwrap();
+        app_options.style_context().remove_class("running");
+        let stop_button = self.app.get_child_by_name(&app_options, "stop_button").unwrap();
+        stop_button.hide();
+        app_options.hide();
     }
 
     fn on_destroy(&self) {
-        todo!()
+        self.running.store(false, Ordering::Relaxed);
     }
 
     fn get_application(&self) -> &OApplication {

@@ -80,15 +80,12 @@ impl Activity for DevicesActivity {
     }
 
     fn on_resume(&self) {
-        todo!()
     }
 
     fn on_pause(&self) {
-        todo!()
     }
 
     fn on_destroy(&self) {
-        todo!()
     }
 
     fn get_application(&self) -> &OApplication {
