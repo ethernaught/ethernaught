@@ -1,6 +1,8 @@
 use std::any::Any;
+use std::cell::RefCell;
 use std::path::PathBuf;
 use std::process::exit;
+use std::rc::Rc;
 use gtk::{AboutDialog, ApplicationWindow, Builder, Image, Application, TreeViewColumn, CellRendererText, ScrolledWindow, Button, ListBoxRow, Label, CssProvider, StyleContext, gdk, Stack, Container, TreeView, Widget, Window, gio, MenuBar, MenuItem, Menu, FileChooserDialog, ResponseType, FileChooserAction};
 use gtk::gdk_pixbuf::{Pixbuf, PixbufLoader};
 use gtk::prelude::*;
@@ -19,6 +21,7 @@ use crate::ui::widgets::terminal::Terminal;
 #[derive(Clone)]
 pub struct OApplication {
     app: Application
+    //stack: Rc<RefCell<Vec<Box<dyn Activity>>>>
 }
 
 impl OApplication {
@@ -28,6 +31,7 @@ impl OApplication {
 
         Self {
             app
+            //stack: Rc::new(RefCell::new(Vec::new()))
         }
     }
 
@@ -119,13 +123,15 @@ impl OApplication {
         let title = activity.get_title();
         let root = activity.on_create(bundle);
         stack.add_titled(root, &name, &title);
-        stack.set_visible_child_name(&activity.get_name());
+
+        let name = activity.get_name();
+        //self.stack.borrow_mut().push(activity);
+        stack.set_visible_child_name(&name);
     }
 
-    /*
     //WE NEED TO POSSIBLY UPDATE BUTTONS AFTER PRESSED...
     pub fn on_back_pressed(&self) {
-        let stack = self.app.active_window().unwrap().children()[0].clone().downcast::<Stack>().unwrap();
+        let stack = self.app.active_window().unwrap().child().unwrap().downcast_ref::<Container>().unwrap().children()[0].clone().downcast::<Stack>().unwrap();
 
         let children = stack.children();
         if let Some(current) = stack.visible_child() {
@@ -137,6 +143,7 @@ impl OApplication {
         }
     }
 
+    /*
     //WE NEED TO ADJUST STACK AFTER - IE REMOVING SOME AND UPDATE BUTTONS...
     pub fn on_next_pressed(&self) {
         let stack = self.app.active_window().unwrap().children()[0].clone().downcast::<Stack>().unwrap();

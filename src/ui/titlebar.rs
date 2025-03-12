@@ -11,6 +11,7 @@ use gtk::prelude::{ActionMapExt, GtkWindowExt};
 use crate::ui::activity::inter::activity::Activity;
 use crate::ui::application::OApplication;
 
+#[derive(Clone)]
 pub struct TitleBar {
     app: OApplication,
     root: Option<Container>
@@ -80,17 +81,16 @@ impl TitleBar {
             navigation_menubar_clone.borrow().select_first(true);
         });
 
-        /*
         let back_button: Button = builder
             .object("back_button")
             .expect("Couldn't find 'back_button' in titlebar_ui.xml");
 
-        let _self = self.clone();
+        let app = self.app.clone();
         back_button.connect_clicked(move |_| {
-            _self.on_back_pressed();
+            app.on_back_pressed();
         });
 
-
+        /*
         let next_button: Button = builder
             .object("next_button")
             .expect("Couldn't find 'next_button' in titlebar_ui.xml");

@@ -3,6 +3,7 @@ use gtk::prelude::*;
 use gtk::prelude::{ActionMapExt, GtkWindowExt};
 use crate::ui::application::OApplication;
 
+#[derive(Clone)]
 pub struct BottomBar {
     app: OApplication,
     root: Option<Container>

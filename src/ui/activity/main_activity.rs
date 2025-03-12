@@ -1,6 +1,5 @@
 use std::any::Any;
-use std::cell::{Cell, RefCell};
-use std::collections::HashMap;
+use std::cell::RefCell;
 use std::rc::Rc;
 use std::sync::mpsc::channel;
 use std::time::Duration;
@@ -221,7 +220,6 @@ impl Activity for MainActivity {
                             });
                         }
 
-                        let _self = self.clone();
                         let main_fragment = Rc::clone(&main_fragment);
 
                         glib::timeout_add_local(Duration::from_millis(10), move || {
