@@ -7,7 +7,7 @@ use std::sync::mpsc::channel;
 use std::time::Duration;
 use gtk::prelude::*;
 use gtk::{gdk, glib, Builder, Button, Container, CssProvider, Label, Paned, StyleContext};
-use gtk::glib::ControlFlow::Continue;
+use gtk::glib::ControlFlow::{Break, Continue};
 use pcap::devices::Device;
 use crate::capture_service::CaptureService;
 use crate::ui::application::OApplication;
@@ -237,6 +237,11 @@ impl Activity for MainActivity {
                                     }
                                 }
                             }
+
+                            if !running.load(Ordering::Relaxed) {
+                                return Break;
+                            }
+
                             Continue
                         });
                     }
