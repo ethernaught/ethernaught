@@ -69,6 +69,7 @@ impl Activity for DevicesActivity {
         let app = self.app.clone();
         devices_list.connect_row_activated(move |_, row| {
             let mut bundle = Bundle::new();
+            bundle.put("type", String::from("device"));
             bundle.put("device", devices[row.index() as usize].clone());
             app.start_activity(Box::new(MainActivity::new(app.clone())), Some(bundle));
         });

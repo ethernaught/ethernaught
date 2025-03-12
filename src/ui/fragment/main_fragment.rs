@@ -1,15 +1,10 @@
 use std::any::Any;
 use std::cell::RefCell;
 use std::rc::Rc;
-use std::sync::mpsc::channel;
-use std::time::Duration;
 use gtk::prelude::*;
-use gtk::{glib, Builder, Button, CellRendererText, Container, Label, ListStore, ScrolledWindow, TreeView, TreeViewColumn};
-use gtk::glib::ControlFlow::Continue;
+use gtk::{Builder, CellRendererText, Container, ListStore, ScrolledWindow, TreeView, TreeViewColumn};
 use gtk::glib::Propagation::Proceed;
 use gtk::glib::Type;
-use pcap::devices::Device;
-use crate::capture_service::CaptureService;
 use crate::ui::activity::inter::activity::Activity;
 use crate::ui::activity::main_activity::MainActivity;
 use crate::ui::adapters::packet_adapter::PacketAdapter;
