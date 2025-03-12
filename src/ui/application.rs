@@ -8,6 +8,7 @@ use gtk::gdk_pixbuf::{Pixbuf, PixbufLoader};
 use gtk::prelude::*;
 use gtk::gio::{resources_register, ApplicationFlags, Resource, SimpleAction};
 use gtk::glib::Bytes;
+use gtk::glib::Propagation::Proceed;
 use gtk::prelude::{ActionMapExt, GtkWindowExt};
 use crate::ui::activity::devices_activity::DevicesActivity;
 use crate::ui::activity::inter::activity::Activity;
@@ -110,6 +111,21 @@ impl OApplication {
         window_content.add(bottombar.on_create());
 
         self.init_actions(&window);
+
+        let _self = self.clone();
+        window.connect_button_press_event(move |_, event| {
+            match event.button() {
+                8 => {
+                    _self.on_back_pressed();
+                }
+                9 => {
+                    _self.on_next_pressed();
+                }
+                _ => {}
+            }
+
+            Proceed
+        });
 
         window.show();
     }
