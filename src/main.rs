@@ -27,7 +27,7 @@ rustup install nightly
 rustup override set nightly
 */
 
-//REMEMBER TO REMOVE LOOPER TIMEOUT WHEN MAIN-ACTIVITY IS KILLED...
+//Somehow kill fragment data as well...
 
 fn main() {
     if !cfg!(debug_assertions) {
