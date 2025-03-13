@@ -1,5 +1,6 @@
 use std::any::Any;
 use std::cell::RefCell;
+use std::path::PathBuf;
 use std::rc::Rc;
 use std::sync::Arc;
 use std::sync::atomic::{AtomicBool, Ordering};
@@ -9,6 +10,8 @@ use gtk::prelude::*;
 use gtk::{gdk, glib, Builder, Button, Container, CssProvider, Image, Label, Paned, StyleContext};
 use gtk::glib::ControlFlow::{Break, Continue};
 use pcap::devices::Device;
+use pcap::packet::inter::data_link_types::DataLinkTypes;
+use pcap::pcap::pcap::Pcap;
 use crate::capture_service::CaptureService;
 use crate::ui::application::OApplication;
 use crate::ui::activity::inter::activity::Activity;
@@ -22,6 +25,7 @@ pub struct MainActivity {
     app: OApplication,
     footer_selected: Rc<RefCell<String>>,
     capture_service: Option<CaptureService>,
+    data_link_type: DataLinkTypes,
     running: Arc<AtomicBool>,
     root: Option<Container>
 }
@@ -31,10 +35,11 @@ impl MainActivity {
     pub fn new(app: OApplication) -> Self {
         Self {
             app,
-            root: None,
             footer_selected: Rc::new(RefCell::new(String::new())),
             running: Arc::new(AtomicBool::new(false)),
-            capture_service: None
+            capture_service: None,
+            data_link_type: DataLinkTypes::Null,
+            root: None
         }
     }
 
@@ -173,7 +178,33 @@ impl Activity for MainActivity {
                         capture_service.set_tx(tx);
 
                         self.capture_service = Some(capture_service);
+                        self.data_link_type = device.get_data_link_type();
 
+                        let titlebar = self.app.get_titlebar().unwrap();
+
+                        let icon = self.app.get_child_by_name(&titlebar, "network_type_icon").unwrap().downcast_ref::<Image>().unwrap().clone();
+
+                        match self.data_link_type {
+                            DataLinkTypes::Ethernet | DataLinkTypes::Loopback => {
+                                titlebar.style_context().add_class("ethernet");
+                                icon.set_resource(Some("/com/ethernaut/rust/res/icons/ic_ethernet.svg"));
+                            }
+                            DataLinkTypes::Raw | DataLinkTypes::Tun | DataLinkTypes::Ipv4 | DataLinkTypes::Ipv6 => {
+                                titlebar.style_context().add_class("vpn");
+                                icon.set_resource(Some("/com/ethernaut/rust/res/icons/ic_vpn.svg"));
+                            }
+                            DataLinkTypes::BluetoothHciH4 => {
+                                titlebar.style_context().add_class("bluetooth");
+                                icon.set_resource(Some("/com/ethernaut/rust/res/icons/ic_bluetooth.svg"));
+                            }
+                            _ => {}
+                        }
+
+                        icon.show();
+
+                        let network_type_label = self.app.get_child_by_name(&titlebar, "network_type_label").unwrap().downcast_ref::<Label>().unwrap().clone();
+                        network_type_label.set_label(&device.get_name());
+                        network_type_label.show();
 
 
                         let mut main_fragment = MainFragment::new(self.dyn_clone());
@@ -182,19 +213,7 @@ impl Activity for MainActivity {
                         window_content_pane.set_child_shrink(content, false);
                         window_content_pane.set_child_resize(content, true);
 
-
                         let main_fragment = Rc::new(RefCell::new(main_fragment));
-
-                        let titlebar = self.app.get_titlebar().unwrap();
-                        titlebar.style_context().add_class("ethernet");
-
-                        let icon = self.app.get_child_by_name(&titlebar, "network_type_icon").unwrap().downcast_ref::<Image>().unwrap().clone();
-                        icon.set_resource(Some("/com/ethernaut/rust/res/icons/ic_ethernet.svg"));
-                        icon.show();
-
-                        let network_type_label = self.app.get_child_by_name(&titlebar, "network_type_label").unwrap().downcast_ref::<Label>().unwrap().clone();
-                        network_type_label.set_label(&device.get_name());
-                        network_type_label.show();
 
                         let app_options = Rc::new(RefCell::new(self.app.get_child_by_name(&titlebar, "app_options").unwrap()));
                         app_options.borrow().show();
@@ -253,15 +272,48 @@ impl Activity for MainActivity {
                         });
                     }
                     "file" => {
+                        let pcap = Pcap::from_file(bundle.get::<PathBuf>("file").unwrap().to_str().unwrap()).expect("Couldn't parse pcap");
+
+                        self.data_link_type = pcap.get_data_link_type();
+
+                        let titlebar = self.app.get_titlebar().unwrap();
+
+                        let icon = self.app.get_child_by_name(&titlebar, "network_type_icon").unwrap().downcast_ref::<Image>().unwrap().clone();
+
+                        match self.data_link_type {
+                            DataLinkTypes::Ethernet | DataLinkTypes::Loopback => {
+                                titlebar.style_context().add_class("ethernet");
+                                icon.set_resource(Some("/com/ethernaut/rust/res/icons/ic_ethernet.svg"));
+                            }
+                            DataLinkTypes::Raw | DataLinkTypes::Tun | DataLinkTypes::Ipv4 | DataLinkTypes::Ipv6 => {
+                                titlebar.style_context().add_class("vpn");
+                                icon.set_resource(Some("/com/ethernaut/rust/res/icons/ic_vpn.svg"));
+                            }
+                            DataLinkTypes::BluetoothHciH4 => {
+                                titlebar.style_context().add_class("bluetooth");
+                                icon.set_resource(Some("/com/ethernaut/rust/res/icons/ic_bluetooth.svg"));
+                            }
+                            _ => {}
+                        }
+
+                        icon.show();
+
+                        let network_type_label = self.app.get_child_by_name(&titlebar, "network_type_label").unwrap().downcast_ref::<Label>().unwrap().clone();
+                        network_type_label.set_label(bundle.get::<PathBuf>("file").unwrap().file_name().unwrap().to_str().unwrap());
+                        network_type_label.show();
+
+
+                        let mut bundle = Bundle::new();
+                        bundle.put("type", String::from("pcap"));
+                        bundle.put("pcap", pcap);
+
                         let mut main_fragment = MainFragment::new(self.dyn_clone());
                         let content = main_fragment.on_create(Some(bundle));
                         window_content_pane.add(content);
                         window_content_pane.set_child_shrink(content, false);
                         window_content_pane.set_child_resize(content, true);
                     }
-                    _ => {
-
-                    }
+                    _ => {}
                 }
             }
             None => {}
@@ -272,24 +324,51 @@ impl Activity for MainActivity {
 
     fn on_resume(&self) {
         let titlebar = self.app.get_titlebar().unwrap();
-        titlebar.style_context().add_class("ethernet");
+
+        match self.data_link_type {
+            DataLinkTypes::Ethernet | DataLinkTypes::Loopback => {
+                titlebar.style_context().add_class("ethernet");
+            }
+            DataLinkTypes::Raw | DataLinkTypes::Tun | DataLinkTypes::Ipv4 | DataLinkTypes::Ipv6 => {
+                titlebar.style_context().add_class("vpn");
+            }
+            DataLinkTypes::BluetoothHciH4 => {
+                titlebar.style_context().add_class("bluetooth");
+            }
+            _ => {}
+        }
 
         self.app.get_child_by_name(&titlebar, "network_type_icon").unwrap().downcast_ref::<Image>().unwrap().show();
         self.app.get_child_by_name(&titlebar, "network_type_label").unwrap().downcast_ref::<Label>().unwrap().show();
 
-        let app_options = self.app.get_child_by_name(&titlebar, "app_options").unwrap();
-        app_options.show();
+        //ONLY IF DEVICE TYPE...
+        if let Some(_) = self.capture_service.as_ref() {
+            let app_options = self.app.get_child_by_name(&titlebar, "app_options").unwrap();
+            app_options.show();
+        }
     }
 
     fn on_pause(&self) {
+        let titlebar = self.app.get_titlebar().unwrap();
+
+        match self.data_link_type {
+            DataLinkTypes::Ethernet | DataLinkTypes::Loopback => {
+                titlebar.style_context().remove_class("ethernet");
+            }
+            DataLinkTypes::Raw | DataLinkTypes::Tun | DataLinkTypes::Ipv4 | DataLinkTypes::Ipv6 => {
+                titlebar.style_context().remove_class("vpn");
+            }
+            DataLinkTypes::BluetoothHciH4 => {
+                titlebar.style_context().remove_class("bluetooth");
+            }
+            _ => {}
+        }
+
+        self.app.get_child_by_name(&titlebar, "network_type_icon").unwrap().downcast_ref::<Image>().unwrap().hide();
+        self.app.get_child_by_name(&titlebar, "network_type_label").unwrap().downcast_ref::<Label>().unwrap().hide();
+
         if let Some(capture_service) = self.capture_service.as_ref() {
             capture_service.stop();
-
-            let titlebar = self.app.get_titlebar().unwrap();
-            titlebar.style_context().remove_class("ethernet");
-
-            self.app.get_child_by_name(&titlebar, "network_type_icon").unwrap().downcast_ref::<Image>().unwrap().hide();
-            self.app.get_child_by_name(&titlebar, "network_type_label").unwrap().downcast_ref::<Label>().unwrap().hide();
 
             let app_options = self.app.get_child_by_name(&titlebar, "app_options").unwrap();
             app_options.style_context().remove_class("running");

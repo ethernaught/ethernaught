@@ -49,7 +49,7 @@ impl OApplication {
                     _self.on_create(app);
                     let mut bundle = Bundle::new();
                     bundle.put("type", String::from("file"));
-                    bundle.put("file", path.to_str().unwrap().to_string());
+                    bundle.put("file", path);
 
                     _self.start_activity(Box::new(MainActivity::new(_self.clone())), Some(bundle));
                 }
@@ -248,7 +248,7 @@ impl OApplication {
             if let Some(path) = open_file_selector(_self.app.active_window().unwrap().upcast_ref()) {
                 let mut bundle = Bundle::new();
                 bundle.put("type", String::from("file"));
-                bundle.put("file", path.to_str().unwrap().to_string());
+                bundle.put("file", path);
 
                 _self.start_activity(Box::new(MainActivity::new(_self.clone())), Some(bundle));
             }

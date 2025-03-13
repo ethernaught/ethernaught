@@ -11,7 +11,6 @@ use pcap::packet::packet::Packet;
 #[derive(Debug, Clone)]
 pub struct CaptureService {
     cap: Option<Capture>,
-    device: Device,
     running: Arc<AtomicBool>,
     tx: Option<Sender<Packet>>
 }
@@ -33,7 +32,6 @@ impl CaptureService {
 
         Self {
             cap,
-            device: device.clone(),
             running: Arc::new(AtomicBool::new(false)),
             tx: None
         }
@@ -91,10 +89,6 @@ impl CaptureService {
 
     pub fn is_running(&self) -> bool {
         self.running.load(Ordering::Relaxed)
-    }
-
-    pub fn get_device(&self) -> &Device {
-        &self.device
     }
 }
 

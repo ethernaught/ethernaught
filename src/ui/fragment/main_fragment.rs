@@ -90,9 +90,8 @@ impl Fragment for MainFragment {
         match bundle {
             Some(bundle) => {
                 match bundle.get::<String>("type").unwrap().as_str() {
-                    "file" => {
-                        let pcap = Pcap::from_file(bundle.get::<String>("file").unwrap().as_str()).expect("Couldn't parse pcap");
-                        self.packet_adapter = Some(PacketAdapter::from_packets(&model, pcap.get_packets()));
+                    "pcap" => {
+                        self.packet_adapter = Some(PacketAdapter::from_packets(&model, bundle.get::<Pcap>("pcap").unwrap().get_packets()));
                     }
                     _ => {
                         self.packet_adapter = Some(PacketAdapter::new(&model));
