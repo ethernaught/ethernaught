@@ -146,6 +146,7 @@ impl OApplication {
 
                 let children = stack.children();
                 for i in (pos..children.len()).rev() {
+                    self.stack.borrow().get(i).unwrap().on_pause();
                     self.stack.borrow().get(i).unwrap().on_destroy();
                     stack.remove(&children[i]);
                     self.stack.borrow_mut().remove(i);
@@ -162,6 +163,7 @@ impl OApplication {
                         next_button.style_context().remove_class("active");
 
                         for i in (pos + 1..children.len()).rev() {
+                            self.stack.borrow().get(i).unwrap().on_pause();
                             self.stack.borrow().get(i).unwrap().on_destroy();
                             stack.remove(&children[i]);
                             self.stack.borrow_mut().remove(i);
