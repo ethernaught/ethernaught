@@ -130,7 +130,7 @@ impl Fragment for SidebarFragment {
 
 
         match self.packet.get_data_link_type() {
-            DataLinkTypes::Ethernet => {
+            DataLinkTypes::Ethernet | DataLinkTypes::Loopback => {
                 let ethernet_frame = self.packet.get_frame().as_any().downcast_ref::<EthernetFrame>().unwrap();
                 details_layout.add(&create_ethernet_layer_expander(&db, 0, &hex_editor, &ethernet_frame));
 

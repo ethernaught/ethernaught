@@ -47,7 +47,7 @@ impl PacketAdapter {
 
     fn add_model(model: &ListStore, packet: &Packet, packet_count: u32) {
         let (source, destination, protocol) = match packet.get_data_link_type() {
-            DataLinkTypes::Ethernet => {
+            DataLinkTypes::Ethernet | DataLinkTypes::Loopback => {
                 let ethernet_frame = packet.get_frame().as_any().downcast_ref::<EthernetFrame>().unwrap();
 
                 match ethernet_frame.get_type() {
