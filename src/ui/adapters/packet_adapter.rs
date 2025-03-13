@@ -28,10 +28,10 @@ impl PacketAdapter {
 
     pub fn from_packets(model: &ListStore, packets: Vec<Packet>) -> Self {
         let mut i = 0;
-        for packet in &packets {
+        packets.iter().for_each(|p| {
             i += 1;
-            Self::add_model(model, packet, i);
-        }
+            Self::add_model(model, p, i);
+        });
 
         Self {
             model: model.clone(),

@@ -168,7 +168,7 @@ hexeditor {
 }
 
 #dropdown button:hover {
-    background-color: #59436e;
+    background-color: rgba(255, 255, 255, 0.15);
 }
 
 #dropdown list {
@@ -192,7 +192,7 @@ hexeditor {
 }
 
 #dropdown list row:hover {
-    background-color: #59436e;
+    background-color: rgba(255, 255, 255, 0.15);
 }
 
 #dropdown list #key {

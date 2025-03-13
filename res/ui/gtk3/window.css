@@ -68,6 +68,10 @@ window.maximized #titlebar {
     background: linear-gradient(90deg, #2b2d30 0%, #5e5030 20%, #2b2d30 40%);
 }
 
+#titlebar.lan {
+    background: linear-gradient(90deg, #2b2d30 0%, #5e3030 20%, #2b2d30 40%);
+}
+
 #titlebar.wifi {
     background: linear-gradient(90deg, #2b2d30 0%, #5e3058 20%, #2b2d30 40%);
 }

@@ -185,9 +185,13 @@ impl Activity for MainActivity {
                         let icon = self.app.get_child_by_name(&titlebar, "network_type_icon").unwrap().downcast_ref::<Image>().unwrap().clone();
 
                         match self.data_link_type {
-                            DataLinkTypes::Ethernet | DataLinkTypes::Loopback => {
+                            DataLinkTypes::Ethernet => {
                                 titlebar.style_context().add_class("ethernet");
                                 icon.set_resource(Some("/com/ethernaut/rust/res/icons/ic_ethernet.svg"));
+                            }
+                            DataLinkTypes::Loopback => {
+                                titlebar.style_context().add_class("lan");
+                                icon.set_resource(Some("/com/ethernaut/rust/res/icons/ic_lan.svg"));
                             }
                             DataLinkTypes::Raw | DataLinkTypes::Tun | DataLinkTypes::Ipv4 | DataLinkTypes::Ipv6 => {
                                 titlebar.style_context().add_class("vpn");
@@ -281,9 +285,13 @@ impl Activity for MainActivity {
                         let icon = self.app.get_child_by_name(&titlebar, "network_type_icon").unwrap().downcast_ref::<Image>().unwrap().clone();
 
                         match self.data_link_type {
-                            DataLinkTypes::Ethernet | DataLinkTypes::Loopback => {
+                            DataLinkTypes::Ethernet => {
                                 titlebar.style_context().add_class("ethernet");
                                 icon.set_resource(Some("/com/ethernaut/rust/res/icons/ic_ethernet.svg"));
+                            }
+                            DataLinkTypes::Loopback => {
+                                titlebar.style_context().add_class("lan");
+                                icon.set_resource(Some("/com/ethernaut/rust/res/icons/ic_lan.svg"));
                             }
                             DataLinkTypes::Raw | DataLinkTypes::Tun | DataLinkTypes::Ipv4 | DataLinkTypes::Ipv6 => {
                                 titlebar.style_context().add_class("vpn");
@@ -326,8 +334,11 @@ impl Activity for MainActivity {
         let titlebar = self.app.get_titlebar().unwrap();
 
         match self.data_link_type {
-            DataLinkTypes::Ethernet | DataLinkTypes::Loopback => {
+            DataLinkTypes::Ethernet => {
                 titlebar.style_context().add_class("ethernet");
+            }
+            DataLinkTypes::Loopback => {
+                titlebar.style_context().add_class("lan");
             }
             DataLinkTypes::Raw | DataLinkTypes::Tun | DataLinkTypes::Ipv4 | DataLinkTypes::Ipv6 => {
                 titlebar.style_context().add_class("vpn");
@@ -352,8 +363,11 @@ impl Activity for MainActivity {
         let titlebar = self.app.get_titlebar().unwrap();
 
         match self.data_link_type {
-            DataLinkTypes::Ethernet | DataLinkTypes::Loopback => {
+            DataLinkTypes::Ethernet => {
                 titlebar.style_context().remove_class("ethernet");
+            }
+            DataLinkTypes::Loopback => {
+                titlebar.style_context().remove_class("lan");
             }
             DataLinkTypes::Raw | DataLinkTypes::Tun | DataLinkTypes::Ipv4 | DataLinkTypes::Ipv6 => {
                 titlebar.style_context().remove_class("vpn");

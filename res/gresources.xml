@@ -50,6 +50,7 @@
         <file preprocess="xml-stripblanks">res/icons/ic_status_severe.svg</file>
 
         <file preprocess="xml-stripblanks">res/icons/ic_ethernet.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/ic_lan.svg</file>
         <file preprocess="xml-stripblanks">res/icons/ic_wifi.svg</file>
         <file preprocess="xml-stripblanks">res/icons/ic_vpn.svg</file>
         <file preprocess="xml-stripblanks">res/icons/ic_bluetooth.svg</file>
