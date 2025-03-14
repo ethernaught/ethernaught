@@ -48,7 +48,7 @@ fn main() {
                 command.arg(arg);
             }
 
-            exit(command.status().expect("Failed to execute pkexec").code().unwrap_or(1)); // Exit with the new process status
+            exit(command.status().expect("Failed to execute pkexec").code().unwrap_or(1));
         }
     }
 
