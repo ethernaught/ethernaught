@@ -18,7 +18,17 @@ impl DevicesAdapter {
         }
     }
 
-    pub fn add(&self, device: &Device) {
+    pub fn from_devices(list_box: &ListBox, devices: Vec<Device>) -> Self {
+        devices.iter().for_each(|d| {
+            Self::add(list_box, d);
+        });
+
+        Self {
+            list_box: list_box.clone()
+        }
+    }
+
+    pub fn add(list_box: &ListBox, device: &Device) {
         let builder = Builder::from_resource("/com/ethernaut/rust/res/ui/gtk3/device_list_item.ui");
         let row: ListBoxRow = builder
             .object("row")
@@ -77,7 +87,7 @@ impl DevicesAdapter {
             row.style_context().add_class("down");
         }
 
-        self.list_box.add(&row);
+        list_box.add(&row);
     }
 
     pub fn add_any(&self) {

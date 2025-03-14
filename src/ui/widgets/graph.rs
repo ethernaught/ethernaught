@@ -144,6 +144,12 @@ impl Graph {
 
     pub fn set_points(&self, points: Vec<u32>) {
         *self.imp().points.borrow_mut() = points;
+        self.queue_draw();
+    }
+
+    pub fn add_point(&self, point: u32) {
+        self.imp().points.borrow_mut().push(point);
+        self.queue_draw();
     }
 
     pub fn get_points(&self) -> Vec<u32> {

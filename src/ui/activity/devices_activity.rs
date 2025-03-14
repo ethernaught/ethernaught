@@ -1,13 +1,21 @@
 use std::any::Any;
-use gtk::{gdk, Builder, Container, CssProvider, ListBox, Paned, Stack, StyleContext};
+use std::collections::HashMap;
+use std::sync::atomic::Ordering;
+use std::sync::mpsc::channel;
+use std::thread;
+use std::time::Duration;
+use gtk::{gdk, glib, Builder, Container, CssProvider, ListBox, ListBoxRow, Paned, Stack, StyleContext};
 use gtk::glib::Cast;
-use gtk::prelude::{BuilderExtManual, CssProviderExt, ListBoxExt, ListBoxRowExt, StackExt};
+use gtk::glib::ControlFlow::{Break, Continue};
+use gtk::prelude::{BuilderExtManual, ContainerExt, CssProviderExt, ListBoxExt, ListBoxRowExt, StackExt};
+use pcap::capture::Capture;
 use pcap::devices::Device;
 use crate::ui::application::OApplication;
 use crate::ui::activity::inter::activity::Activity;
 use crate::ui::activity::main_activity::MainActivity;
 use crate::ui::adapters::devices_adapter::DevicesAdapter;
 use crate::ui::handlers::bundle::Bundle;
+use crate::ui::widgets::graph::Graph;
 
 #[derive(Clone)]
 pub struct DevicesActivity {
@@ -59,13 +67,9 @@ impl Activity for DevicesActivity {
             .expect("Couldn't find 'devices_list' in devices_activity.ui");
         devices_list.set_selection_mode(gtk::SelectionMode::Single);
 
-        let device_adapter = DevicesAdapter::new(&devices_list);
 
         let devices = Device::list().expect("Failed to get device list");
-        devices.iter().for_each(|d| {
-            device_adapter.add(d);
-        });
-
+        let device_adapter = DevicesAdapter::from_devices(&devices_list, devices.clone());
         device_adapter.add_any();
 
         let app = self.app.clone();
@@ -84,6 +88,76 @@ impl Activity for DevicesActivity {
         });
 
         self.devices_adapter = Some(device_adapter);
+
+
+
+        let (tx, rx) = channel();
+
+        thread::spawn(move || {
+            let mut cap = Capture::any().expect("Failed to open device");
+            cap.set_immediate_mode(true);
+            cap.open().expect("Failed to start capture");
+
+            loop {
+                match cap.next_packet() {
+                    Ok((address, packet)) => {
+                        tx.send((address.sll_ifindex, packet.len())).unwrap();
+                    }
+                    _ => {
+                        break;
+                    }
+                }
+            }
+        });
+
+        let app = self.app.clone();
+        glib::timeout_add_local(Duration::from_millis(1000), move || {
+            let mut buf = HashMap::new();
+
+            loop {
+                match rx.try_recv() {
+                    Ok((index, len)) => {
+                        *buf.entry(index).or_insert(0) += len;
+                    }
+                    _ => {
+                        break;
+                    }
+                }
+            }
+
+            println!("{:?}", buf);
+            let row = devices_list.row_at_index(2).unwrap();
+
+            let index = 3;
+
+
+            row.children().get(0).unwrap().downcast_ref::<gtk::Box>().unwrap().children().get(1).unwrap()
+                .downcast_ref::<Graph>().unwrap().add_point(buf.get(&index).unwrap().clone() as u32);
+
+            //println!("{:?}", row.children().get(0).unwrap().downcast_ref::<gtk::Box>().unwrap().children().get(1).unwrap());
+
+            //let row_root = app.get_child_by_name::<gtk::Box>(row.upcast_ref(), "row_root").unwrap();
+
+            //let graph = app.get_child_by_name::<Graph>(row_root.upcast_ref(), "graph").unwrap();
+            //graph.add_point(buf.get(&index).unwrap().clone() as u32);
+
+
+            /*
+            devices.iter().for_each(|d| {
+                if buf.contains_key(&d.get_index()) {
+
+                }
+            });*/
+
+            Continue
+        });
+
+
+
+
+
+
+
 
         &self.root.as_ref().unwrap().upcast_ref()
     }
