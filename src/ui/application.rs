@@ -15,6 +15,7 @@ use crate::ui::activity::main_activity::MainActivity;
 use crate::ui::bottombar::BottomBar;
 use crate::ui::handlers::bundle::Bundle;
 use crate::ui::titlebar::TitleBar;
+use crate::ui::widgets::graph::Graph;
 use crate::ui::widgets::hex_editor::HexEditor;
 use crate::ui::widgets::terminal::Terminal;
 
@@ -60,6 +61,7 @@ impl OApplication {
     }
 
     fn on_create(&self, app: &Application) {
+        Graph::static_type();
         HexEditor::static_type();
         Terminal::static_type();
 

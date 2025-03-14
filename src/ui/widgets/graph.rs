@@ -17,7 +17,7 @@ impl GraphImpl {
 
     fn calculate_size(&self) -> (i32, i32) {
 
-        (100 as i32, 100 as i32)
+        (100 as i32, 20 as i32)
     }
 }
 
@@ -56,10 +56,10 @@ impl WidgetImpl for GraphImpl {
 
         cr.set_source_rgba(color.red(), color.green(), color.blue(), color.alpha());
 
-        let min = *self.points.borrow().iter().min().unwrap();
-        let max = *self.points.borrow().iter().max().unwrap();
+        //let min = *self.points.borrow().iter().min().unwrap();
+        //let max = *self.points.borrow().iter().max().unwrap();
 
-        println!("A {:?}  {}  {}", allocation, min, max);
+        //println!("A {:?}  {}  {}", allocation, min, max);
 
 
 

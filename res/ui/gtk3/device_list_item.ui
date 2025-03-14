@@ -10,19 +10,18 @@
                 <property name="visible">True</property>
                 <property name="hexpand">True</property>
                 <property name="orientation">horizontal</property>
-                <property name="spacing">0</property>
+                <property name="spacing">5</property>
 
                 <child>
                     <object class="GtkBox">
                         <property name="visible">True</property>
-                        <property name="hexpand">True</property>
+                        <property name="vexpand">True</property>
                         <property name="orientation">vertical</property>
                         <property name="spacing">5</property>
 
                         <child>
                             <object class="GtkBox">
                                 <property name="visible">True</property>
-                                <property name="hexpand">True</property>
                                 <property name="orientation">horizontal</property>
                                 <property name="spacing">5</property>
 
@@ -55,6 +54,14 @@
                                 <property name="xalign">0.0</property>
                             </object>
                         </child>
+                    </object>
+                </child>
+
+                <child>
+                    <object class="Graph" id="graph">
+                        <property name="visible">True</property>
+                        <property name="hexpand">True</property>
+                        <property name="vexpand">True</property>
                     </object>
                 </child>
             </object>
