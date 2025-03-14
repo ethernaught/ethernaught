@@ -172,7 +172,7 @@ impl Activity for MainActivity {
                     "device" => {
                         let device = bundle.get::<Device>("device").unwrap().clone();
 
-                        let mut capture_service = CaptureService::new(&device);
+                        let mut capture_service = CaptureService::from_device(&device);
 
                         let (tx, rx) = channel();
                         capture_service.set_tx(tx);

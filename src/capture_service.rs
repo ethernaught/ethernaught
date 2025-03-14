@@ -17,7 +17,7 @@ pub struct CaptureService {
 
 impl CaptureService {
 
-    pub fn new(device: &Device) -> Self {
+    pub fn from_device(device: &Device) -> Self {
         let cap = match Capture::from_device(&device) {
             Ok(mut cap) => {
                 cap.set_immediate_mode(true);
