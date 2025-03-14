@@ -61,8 +61,8 @@ impl WidgetImpl for GraphImpl {
 
         let points = self.points.borrow();
         if points.is_empty() {
-            cr.move_to(0.0, height / 2.0);
-            cr.line_to(width, height / 2.0);
+            cr.move_to(0.0, height);
+            cr.line_to(width, height);
             cr.stroke().unwrap();
 
             return Proceed;
@@ -83,8 +83,8 @@ impl WidgetImpl for GraphImpl {
         }
 
         if points.len() as f64 <= width / distance {
-            cr.line_to(points.len() as f64 * distance, height / 2.0);
-            cr.line_to(width, height / 2.0);
+            cr.line_to(points.len() as f64 * distance, height);
+            cr.line_to(width, height);
         }
 
         cr.stroke().unwrap();
@@ -148,6 +148,10 @@ impl Graph {
     }
 
     pub fn add_point(&self, point: u32) {
+        if self.imp().points.borrow().len() > 1000 {
+            self.imp().points.borrow_mut().remove(0);
+        }
+
         self.imp().points.borrow_mut().push(point);
         self.queue_draw();
     }

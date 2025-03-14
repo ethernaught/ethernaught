@@ -28,6 +28,7 @@ rustup override set nightly
 */
 
 //Somehow kill fragment data as well...
+//DEVICE ADAPTER IS REQUIRING A CLONE OF DEVICES - TRY NOT TO REQUIRE THIS...
 
 fn main() {
     if !cfg!(debug_assertions) {

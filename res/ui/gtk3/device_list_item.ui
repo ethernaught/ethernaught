@@ -18,6 +18,7 @@
                         <property name="vexpand">True</property>
                         <property name="orientation">vertical</property>
                         <property name="spacing">5</property>
+                        <property name="width-request">200</property>
 
                         <child>
                             <object class="GtkBox">
