@@ -140,10 +140,10 @@ impl OApplication {
             Some(child) => {
                 let pos = stack.child_position(&child) as usize;
 
-                let back_button = self.get_child_by_name(self.app.active_window().unwrap().titlebar().unwrap().upcast_ref(), "back_button").unwrap();
+                let back_button = self.get_child_by_name::<Widget>(self.app.active_window().unwrap().titlebar().unwrap().upcast_ref(), "back_button").unwrap();
                 back_button.style_context().add_class("active");
 
-                let next_button = self.get_child_by_name(self.app.active_window().unwrap().titlebar().unwrap().upcast_ref(), "next_button").unwrap();
+                let next_button = self.get_child_by_name::<Widget>(self.app.active_window().unwrap().titlebar().unwrap().upcast_ref(), "next_button").unwrap();
                 next_button.style_context().remove_class("active");
 
                 let children = stack.children();
@@ -158,10 +158,10 @@ impl OApplication {
                 let children = stack.children();
                 if let Some(current) = stack.visible_child() {
                     if let Some(pos) = children.iter().position(|child| child == &current) {
-                        let back_button = self.get_child_by_name(self.app.active_window().unwrap().titlebar().unwrap().upcast_ref(), "back_button").unwrap();
+                        let back_button = self.get_child_by_name::<Widget>(self.app.active_window().unwrap().titlebar().unwrap().upcast_ref(), "back_button").unwrap();
                         back_button.style_context().add_class("active");
 
-                        let next_button = self.get_child_by_name(self.app.active_window().unwrap().titlebar().unwrap().upcast_ref(), "next_button").unwrap();
+                        let next_button = self.get_child_by_name::<Widget>(self.app.active_window().unwrap().titlebar().unwrap().upcast_ref(), "next_button").unwrap();
                         next_button.style_context().remove_class("active");
 
                         for i in (pos + 1..children.len()).rev() {
@@ -198,10 +198,10 @@ impl OApplication {
                     self.stack.borrow().get(pos - 1).unwrap().on_resume();
                     stack.set_visible_child(&children[pos - 1]);
 
-                    let next_button = self.get_child_by_name(self.app.active_window().unwrap().titlebar().unwrap().upcast_ref(), "next_button").unwrap();
+                    let next_button = self.get_child_by_name::<Widget>(self.app.active_window().unwrap().titlebar().unwrap().upcast_ref(), "next_button").unwrap();
                     next_button.style_context().add_class("active");
 
-                    let back_button = self.get_child_by_name(self.app.active_window().unwrap().titlebar().unwrap().upcast_ref(), "back_button").unwrap();
+                    let back_button = self.get_child_by_name::<Widget>(self.app.active_window().unwrap().titlebar().unwrap().upcast_ref(), "back_button").unwrap();
                     back_button.style_context().remove_class("active");
                 }
             }
@@ -219,10 +219,10 @@ impl OApplication {
                     self.stack.borrow().get(pos + 1).unwrap().on_resume();
                     stack.set_visible_child(&children[pos + 1]);
 
-                    let back_button = self.get_child_by_name(self.app.active_window().unwrap().titlebar().unwrap().upcast_ref(), "back_button").unwrap();
+                    let back_button = self.get_child_by_name::<Widget>(self.app.active_window().unwrap().titlebar().unwrap().upcast_ref(), "back_button").unwrap();
                     back_button.style_context().add_class("active");
 
-                    let next_button = self.get_child_by_name(self.app.active_window().unwrap().titlebar().unwrap().upcast_ref(), "next_button").unwrap();
+                    let next_button = self.get_child_by_name::<Widget>(self.app.active_window().unwrap().titlebar().unwrap().upcast_ref(), "next_button").unwrap();
                     next_button.style_context().remove_class("active");
                 }
             }
@@ -274,14 +274,17 @@ impl OApplication {
         window.add_action(&action);
     }
 
-    pub fn get_child_by_name(&self, widget: &Widget, name: &str) -> Option<Widget> {
+    pub fn get_child_by_name<T>(&self, widget: &Widget, name: &str) -> Option<T>
+    where
+        T: IsA<Widget> + 'static
+    {
         if widget.widget_name().as_str() == name {
-            return Some(widget.clone());
+            return widget.downcast_ref::<T>().map(|w| w.clone());
         }
 
         if let Some(container) = widget.dynamic_cast_ref::<Container>() {
             for child in container.children() {
-                if let Some(found) = self.get_child_by_name(&child, name) {
+                if let Some(found) = self.get_child_by_name::<T>(&child, name) {
                     return Some(found);
                 }
             }
