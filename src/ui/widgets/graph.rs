@@ -55,10 +55,16 @@ impl WidgetImpl for GraphImpl {
         let width = allocation.width() as f64;
         let height = allocation.height() as f64;
 
+        cr.set_line_width(1.0);
+
         cr.set_source_rgba(color.red(), color.green(), color.blue(), color.alpha());
 
         let points = self.points.borrow();
         if points.is_empty() {
+            cr.move_to(0.0, height / 2.0);
+            cr.line_to(width, height / 2.0);
+            cr.stroke().unwrap();
+
             return Proceed;
         }
 

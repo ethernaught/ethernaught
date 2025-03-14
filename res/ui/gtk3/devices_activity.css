@@ -69,3 +69,7 @@
 #devices_list row graph {
     color: #57965C;
 }
+
+#devices_list row.down graph {
+    color: #DB5C5C;
+}
