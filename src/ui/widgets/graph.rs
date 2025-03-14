@@ -72,7 +72,7 @@ impl WidgetImpl for GraphImpl {
         let max = *points.iter().max_by(|a, b| a.partial_cmp(b).unwrap()).unwrap() as f64;
 
         let range = if max > min { max - min } else { 1.0 };
-        let distance = width / (points.len() as f64 - 1.0);
+        let distance = 4.0;//width / (points.len() as f64 - 1.0);
 
         cr.move_to(0.0, height - ((points[0] as f64 - min) / range) * height);
 
@@ -80,6 +80,11 @@ impl WidgetImpl for GraphImpl {
             let x = i as f64 * distance;
             let y = height - ((point as f64 - min) / range) * height;
             cr.line_to(x, y);
+        }
+
+        if points.len() as f64 <= width / distance {
+            cr.line_to(points.len() as f64 * distance, height / 2.0);
+            cr.line_to(width, height / 2.0);
         }
 
         cr.stroke().unwrap();
