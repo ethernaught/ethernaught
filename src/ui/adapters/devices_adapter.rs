@@ -3,6 +3,7 @@ use gtk::glib::{Cast, Propagation};
 use gtk::prelude::{BinExt, BuilderExtManual, ContainerExt, GLAreaExt, ImageExt, LabelExt, ListBoxExt, ListBoxRowExt, StyleContextExt, WidgetExt};
 use pcap::devices::Device;
 use pcap::packet::inter::data_link_types::DataLinkTypes;
+use crate::ui::widgets::graph::Graph;
 
 #[derive(Clone)]
 pub struct DevicesAdapter {
@@ -60,6 +61,17 @@ impl DevicesAdapter {
             .expect("Couldn't find 'description' in device_list_item.ui");
         description_label.set_label(format!("{:?}", device.get_flags()).as_str());
 
+        let graph: Graph = builder
+            .object("graph")
+            .expect("Couldn't find 'graph' in device_list_item.ui");
+
+        let values = vec![65, 53, 93, 7, 90,
+            29, 97, 15, 36, 20,
+            11, 23, 23, 28, 83,
+            90, 31, 18, 89, 1,
+            71, 76, 83, 82, 57,
+            21, 84, 6, 9, 1];
+        graph.set_points(values);
 
         /*
         let row_root: gtk::Box = builder

@@ -16,7 +16,6 @@ pub struct GraphImpl {
 impl GraphImpl {
 
     fn calculate_size(&self) -> (i32, i32) {
-
         (100 as i32, 20 as i32)
     }
 }
@@ -53,15 +52,31 @@ impl WidgetImpl for GraphImpl {
 
 
         let allocation = self.obj().allocation();
+        let width = allocation.width() as f64;
+        let height = allocation.height() as f64;
 
         cr.set_source_rgba(color.red(), color.green(), color.blue(), color.alpha());
 
-        //let min = *self.points.borrow().iter().min().unwrap();
-        //let max = *self.points.borrow().iter().max().unwrap();
+        let points = self.points.borrow();
+        if points.is_empty() {
+            return Proceed;
+        }
 
-        //println!("A {:?}  {}  {}", allocation, min, max);
+        let min = *points.iter().min_by(|a, b| a.partial_cmp(b).unwrap()).unwrap() as f64;
+        let max = *points.iter().max_by(|a, b| a.partial_cmp(b).unwrap()).unwrap() as f64;
 
+        let range = if max > min { max - min } else { 1.0 };
+        let distance = width / (points.len() as f64 - 1.0);
 
+        cr.move_to(0.0, height - ((points[0] as f64 - min) / range) * height);
+
+        for (i, &point) in points.iter().enumerate() {
+            let x = i as f64 * distance;
+            let y = height - ((point as f64 - min) / range) * height;
+            cr.line_to(x, y);
+        }
+
+        cr.stroke().unwrap();
 
         Proceed
     }
