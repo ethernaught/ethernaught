@@ -37,6 +37,11 @@
     border-radius: 6px;
 }
 
+
+#devices_list row.any #icon {
+    background-color: #305755;
+}
+
 #devices_list row.ethernet #icon {
     background-color: #5e5030;
 }

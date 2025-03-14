@@ -64,6 +64,10 @@ window.maximized #titlebar {
 }
 
 
+#titlebar.any {
+    background: linear-gradient(90deg, #2b2d30 0%, #305755 20%, #2b2d30 40%);
+}
+
 #titlebar.ethernet {
     background: linear-gradient(90deg, #2b2d30 0%, #5e5030 20%, #2b2d30 40%);
 }

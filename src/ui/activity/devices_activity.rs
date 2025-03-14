@@ -61,6 +61,8 @@ impl Activity for DevicesActivity {
 
         let device_adapter = DevicesAdapter::new(&devices_list);
 
+        device_adapter.add_any();
+
         let devices = Device::list().expect("Failed to get device list");
         devices.iter().for_each(|d| {
             device_adapter.add(d);
@@ -68,9 +70,16 @@ impl Activity for DevicesActivity {
 
         let app = self.app.clone();
         devices_list.connect_row_activated(move |_, row| {
+            if row.index() < devices.len() as i32 {
+                let mut bundle = Bundle::new();
+                bundle.put("type", String::from("device"));
+                bundle.put("device", devices[row.index() as usize].clone());
+                app.start_activity(Box::new(MainActivity::new(app.clone())), Some(bundle));
+                return;
+            }
+
             let mut bundle = Bundle::new();
             bundle.put("type", String::from("device"));
-            bundle.put("device", devices[row.index() as usize].clone());
             app.start_activity(Box::new(MainActivity::new(app.clone())), Some(bundle));
         });
 

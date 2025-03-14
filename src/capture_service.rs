@@ -17,6 +17,26 @@ pub struct CaptureService {
 
 impl CaptureService {
 
+    pub fn any() -> Self {
+        let cap = match Capture::any() {
+            Ok(mut cap) => {
+                cap.set_immediate_mode(true);
+                cap.open().expect("Failed to start capture");
+                Some(cap)
+            }
+            Err(error) => {
+                println!("Failed to open capture: {}", error);
+                None
+            }
+        };
+
+        Self {
+            cap,
+            running: Arc::new(AtomicBool::new(false)),
+            tx: None
+        }
+    }
+
     pub fn from_device(device: &Device) -> Self {
         let cap = match Capture::from_device(&device) {
             Ok(mut cap) => {

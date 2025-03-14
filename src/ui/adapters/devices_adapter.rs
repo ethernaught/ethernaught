@@ -79,4 +79,31 @@ impl DevicesAdapter {
 
         self.list_box.add(&row);
     }
+
+    pub fn add_any(&self) {
+        let builder = Builder::from_resource("/com/ethernaut/rust/res/ui/gtk3/device_list_item.ui");
+        let row: ListBoxRow = builder
+            .object("row")
+            .expect("Couldn't find 'row' in device_list_item.ui");
+
+        let icon: Image = builder
+            .object("icon")
+            .expect("Couldn't find 'icon' in device_list_item.ui");
+
+        row.style_context().add_class("any");
+        icon.set_resource(Some("/com/ethernaut/rust/res/icons/ic_any.svg"));
+
+
+        let title_label: Label = builder
+            .object("title")
+            .expect("Couldn't find 'title' in device_list_item.ui");
+        title_label.set_label("Any");
+
+        let description_label: Label = builder
+            .object("description")
+            .expect("Couldn't find 'description' in device_list_item.ui");
+        description_label.set_label("[Promiscuous]");
+
+        self.list_box.add(&row);
+    }
 }

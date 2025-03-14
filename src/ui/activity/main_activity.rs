@@ -170,21 +170,34 @@ impl Activity for MainActivity {
             Some(bundle) => {
                 match bundle.get::<String>("type").unwrap().as_str() {
                     "device" => {
-                        let device = bundle.get::<Device>("device").unwrap().clone();
+                        let titlebar = self.app.get_titlebar().unwrap();
+                        let network_type_label = self.app.get_child_by_name::<Label>(&titlebar, "network_type_label").unwrap();
 
-                        let mut capture_service = CaptureService::from_device(&device);
+                        if let Some(device) = bundle.get::<Device>("device") {
+                            self.data_link_type = device.get_data_link_type();
+
+                            self.capture_service = Some(CaptureService::from_device(&device));
+                            network_type_label.set_label(&device.get_name());
+
+                        } else {
+                            self.data_link_type = DataLinkTypes::Null;
+
+                            self.capture_service = Some(CaptureService::any());
+                            network_type_label.set_label("Any");
+                        }
 
                         let (tx, rx) = channel();
-                        capture_service.set_tx(tx);
+                        self.capture_service.as_mut().unwrap().set_tx(tx);
 
-                        self.capture_service = Some(capture_service);
-                        self.data_link_type = device.get_data_link_type();
-
-                        let titlebar = self.app.get_titlebar().unwrap();
+                        network_type_label.show();
 
                         let icon = self.app.get_child_by_name::<Image>(&titlebar, "network_type_icon").unwrap();
 
                         match self.data_link_type {
+                            DataLinkTypes::Null => {
+                                titlebar.style_context().add_class("any");
+                                icon.set_resource(Some("/com/ethernaut/rust/res/icons/ic_any.svg"));
+                            }
                             DataLinkTypes::Ethernet => {
                                 titlebar.style_context().add_class("ethernet");
                                 icon.set_resource(Some("/com/ethernaut/rust/res/icons/ic_ethernet.svg"));
@@ -205,10 +218,6 @@ impl Activity for MainActivity {
                         }
 
                         icon.show();
-
-                        let network_type_label = self.app.get_child_by_name::<Label>(&titlebar, "network_type_label").unwrap();
-                        network_type_label.set_label(&device.get_name());
-                        network_type_label.show();
 
 
                         let mut main_fragment = MainFragment::new(self.dyn_clone());
@@ -334,6 +343,9 @@ impl Activity for MainActivity {
         let titlebar = self.app.get_titlebar().unwrap();
 
         match self.data_link_type {
+            DataLinkTypes::Null => {
+                titlebar.style_context().add_class("any");
+            }
             DataLinkTypes::Ethernet => {
                 titlebar.style_context().add_class("ethernet");
             }
@@ -362,6 +374,9 @@ impl Activity for MainActivity {
         let titlebar = self.app.get_titlebar().unwrap();
 
         match self.data_link_type {
+            DataLinkTypes::Null => {
+                titlebar.style_context().remove_class("any");
+            }
             DataLinkTypes::Ethernet => {
                 titlebar.style_context().remove_class("ethernet");
             }
