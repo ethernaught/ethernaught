@@ -58,7 +58,7 @@ impl DevicesAdapter {
         let description_label: Label = builder
             .object("description")
             .expect("Couldn't find 'description' in device_list_item.ui");
-        description_label.set_label(format!("{}", device.get_flags()).as_str());
+        description_label.set_label(format!("{:?}", device.get_flags()).as_str());
 
 
         /*
