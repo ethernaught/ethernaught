@@ -61,12 +61,12 @@ impl Activity for DevicesActivity {
 
         let device_adapter = DevicesAdapter::new(&devices_list);
 
-        device_adapter.add_any();
-
         let devices = Device::list().expect("Failed to get device list");
         devices.iter().for_each(|d| {
             device_adapter.add(d);
         });
+
+        device_adapter.add_any();
 
         let app = self.app.clone();
         devices_list.connect_row_activated(move |_, row| {
