@@ -153,7 +153,8 @@ impl Graph {
         let distance = 4;
 
         if self.imp().points.borrow().len() > width as usize / distance as usize {
-            self.imp().points.borrow_mut().remove(0);
+            let size_to_remove = self.imp().points.borrow_mut().len() - width as usize / distance as usize;
+            self.imp().points.borrow_mut().drain(0..size_to_remove);
         }
 
         self.imp().points.borrow_mut().push(point);
