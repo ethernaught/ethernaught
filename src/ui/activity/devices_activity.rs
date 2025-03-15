@@ -2,14 +2,15 @@ use std::any::Any;
 use std::cell::RefCell;
 use std::collections::HashMap;
 use std::rc::Rc;
+use std::sync::{Arc, Mutex};
 use std::sync::atomic::Ordering;
 use std::sync::mpsc::channel;
 use std::thread;
 use std::time::{Duration, SystemTime, UNIX_EPOCH};
 use gtk::{gdk, glib, Builder, Container, CssProvider, ListBox, ListBoxRow, Paned, Stack, StyleContext};
-use gtk::glib::Cast;
+use gtk::glib::{Cast, PropertyGet, Receiver, Sender};
 use gtk::glib::ControlFlow::{Break, Continue};
-use gtk::prelude::{BuilderExtManual, ContainerExt, CssProviderExt, ListBoxExt, ListBoxRowExt, StackExt};
+use gtk::prelude::{BuilderExtManual, ContainerExt, CssProviderExt, GridExt, ListBoxExt, ListBoxRowExt, StackExt};
 use pcap::capture::Capture;
 use pcap::devices::Device;
 use pcap::interface_flags::InterfaceFlags;
@@ -76,8 +77,9 @@ impl Activity for DevicesActivity {
         let devices = Device::list().expect("Failed to get device list");
         let device_adapter = DevicesAdapter::from_devices(&devices_list, devices.clone());
         device_adapter.add_any();
-        let devices = Rc::new(RefCell::new(devices));
+        //let devices = Rc::new(RefCell::new(devices));
 
+        /*
         let context = self.context.clone();
         let devices_clone = Rc::clone(&devices);
         devices_list.connect_row_activated(move |_, row| {
@@ -92,14 +94,15 @@ impl Activity for DevicesActivity {
             let mut bundle = Bundle::new();
             bundle.put("type", String::from("device"));
             context.start_activity(Box::new(MainActivity::new(context.clone())), Some(bundle));
-        });
+        });*/
 
         self.devices_adapter = Some(device_adapter);
 
 
 
 
-        let handler = self.context.get_handler().clone();
+
+        let tx = self.context.get_handler().get_sender();
         thread::spawn(move || {
             let mut cap = Capture::any().expect("Failed to open device");
             cap.set_immediate_mode(true);
@@ -128,83 +131,43 @@ impl Activity for DevicesActivity {
                 if now-time >= 1000 {
                     time = now;
 
-                    let index_bytes = index_bytes.clone();
-                    handler.post_runnable(Box::new(move || {
-                        println!("HELLO WORLD:  {:?}", index_bytes);
+                    let mut bundle = Bundle::new();
+                    bundle.put("index_bytes", index_bytes.clone());
 
-                    }));
+                    tx.send((String::from("device_activity"), Some(bundle))).unwrap();
+
+                    index_bytes.clear();
                 }
             }
         });
 
+        let mut index_map = Vec::new();
+        devices.iter().for_each(|device| {
+            index_map.push(device.get_index());
+        });
 
+        self.context.get_handler().post_runnable("device_activity", move |bundle| {
+            match bundle {
+                Some(bundle) => {
+                    match bundle.get::<HashMap<i32, usize>>("index_bytes") {
+                        Some(index_bytes) => {
+                            let mut i = 0;
+                            index_map.iter().for_each(|index| {
+                                if index_bytes.contains_key(index) {
+                                    let row = devices_list.row_at_index(i).unwrap();
+                                    row.children().get(0).unwrap().downcast_ref::<gtk::Box>().unwrap().children().get(1).unwrap()
+                                        .downcast_ref::<Graph>().unwrap().add_point(index_bytes.get(index).unwrap().clone() as u32);
+                                }
+                                i += 1;
+                            });
 
-
-        /*
-        //let app = self.app.clone();
-        glib::timeout_add_local(Duration::from_millis(1000), move || {
-            let mut buf = HashMap::new();
-            devices.borrow().iter().for_each(|d| {
-                if d.get_flags().contains(&InterfaceFlags::Running) {
-                    buf.insert(d.get_index(), 0);
-                }
-            });
-
-            let any = devices.borrow().len() as i32;
-            buf.insert(any, 0);
-
-
-            loop {
-                match rx.try_recv() {
-                    Ok((index, len)) => {
-                        *buf.get_mut(&index).unwrap() += len;
-                        *buf.get_mut(&any).unwrap() += len;
-                        //.*buf.entry(index).or_insert(0) += len;
-                    }
-                    _ => {
-                        break;
+                        }
+                        None => {}
                     }
                 }
+                None => {}
             }
-
-            //println!("{:?}", row.children().get(0).unwrap().downcast_ref::<gtk::Box>().unwrap().children().get(1).unwrap());
-
-            //let row_root = app.get_child_by_name::<gtk::Box>(row.upcast_ref(), "row_root").unwrap();
-
-            //let graph = app.get_child_by_name::<Graph>(row_root.upcast_ref(), "graph").unwrap();
-            //graph.add_point(buf.get(&index).unwrap().clone() as u32);
-
-
-            let mut i = 0;
-            devices.borrow().iter().for_each(|d| {
-                if d.get_flags().contains(&InterfaceFlags::Running) {
-                    let row = devices_list.row_at_index(i).unwrap();
-                    row.children().get(0).unwrap().downcast_ref::<gtk::Box>().unwrap().children().get(1).unwrap()
-                        .downcast_ref::<Graph>().unwrap().add_point(buf.get(&d.get_index()).unwrap().clone() as u32);
-                }
-
-                /.*
-                if buf.contains_key(&d.get_index()) {
-                    let row = devices_list.row_at_index(i).unwrap();
-                    row.children().get(0).unwrap().downcast_ref::<gtk::Box>().unwrap().children().get(1).unwrap()
-                        .downcast_ref::<Graph>().unwrap().add_point(buf.get(&d.get_index()).unwrap().clone() as u32);
-                }*./
-                i += 1;
-            });
-
-            let row = devices_list.row_at_index(any).unwrap();
-            row.children().get(0).unwrap().downcast_ref::<gtk::Box>().unwrap().children().get(1).unwrap()
-                .downcast_ref::<Graph>().unwrap().add_point(buf.get(&any).unwrap().clone() as u32);
-
-            Continue
-        });*/
-
-
-
-
-
-
-
+        });
 
         &self.root.as_ref().unwrap().upcast_ref()
     }

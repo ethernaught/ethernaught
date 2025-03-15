@@ -3,7 +3,7 @@ use std::collections::HashMap;
 
 #[derive(Debug, Default)]
 pub struct Bundle {
-    data: HashMap<String, Box<dyn Any>>,
+    data: HashMap<String, Box<dyn Any + Send>>,
 }
 impl Bundle {
 
@@ -13,11 +13,11 @@ impl Bundle {
         }
     }
 
-    pub fn put<T: Any>(&mut self, key: &str, value: T) {
+    pub fn put<T: Any + Send>(&mut self, key: &str, value: T) {
         self.data.insert(key.to_string(), Box::new(value));
     }
 
-    pub fn get<T: Any>(&self, key: &str) -> Option<&T> {
+    pub fn get<T: Any + Send>(&self, key: &str) -> Option<&T> {
         self.data.get(key)?.downcast_ref::<T>()
     }
 
