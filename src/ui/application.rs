@@ -2,6 +2,7 @@ use std::cell::RefCell;
 use std::path::PathBuf;
 use std::process::exit;
 use std::rc::Rc;
+use std::time::Duration;
 use gtk::{AboutDialog, ApplicationWindow, Builder, Image, Application, TreeViewColumn, CellRendererText, ScrolledWindow, Button, ListBoxRow, Label, CssProvider, StyleContext, gdk, Stack, Container, TreeView, Widget, Window, gio, MenuBar, MenuItem, Menu, FileChooserDialog, ResponseType, FileChooserAction};
 use gtk::gdk_pixbuf::Pixbuf;
 use gtk::prelude::*;
@@ -291,6 +292,10 @@ impl OApplication {
         }
 
         None
+    }
+
+    pub fn register_timeout(&self, name: &str, func: u32, timeout: Duration) {
+        //register timeouts so that we can use them later for call backs...
     }
 }
 
