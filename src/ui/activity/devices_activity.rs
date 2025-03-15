@@ -140,8 +140,6 @@ impl Activity for DevicesActivity {
                 }
             }
 
-            println!("{:?}", buf);
-
             //println!("{:?}", row.children().get(0).unwrap().downcast_ref::<gtk::Box>().unwrap().children().get(1).unwrap());
 
             //let row_root = app.get_child_by_name::<gtk::Box>(row.upcast_ref(), "row_root").unwrap();

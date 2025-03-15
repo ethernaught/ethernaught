@@ -148,7 +148,11 @@ impl Graph {
     }
 
     pub fn add_point(&self, point: u32) {
-        if self.imp().points.borrow().len() > 1000 {
+        let allocation = self.allocation();
+        let width = allocation.width();
+        let distance = 4;
+
+        if self.imp().points.borrow().len() > width as usize / distance as usize {
             self.imp().points.borrow_mut().remove(0);
         }
 
