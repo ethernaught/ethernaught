@@ -60,7 +60,7 @@ impl CaptureService {
     pub fn send(&self, packet: Packet) {
         match self.cap.as_ref() {
             Some(cap) => {
-                cap.send_packet(packet.clone()).expect("Failed to send packet");
+                cap.send(packet.clone()).expect("Failed to send packet");
                 self.tx.as_ref().unwrap().send(packet).expect("Failed to send packet");
             }
             _ => unimplemented!()
@@ -87,7 +87,7 @@ impl CaptureService {
             match _self.cap.as_mut() {
                 Some(cap) => {
                     while _self.running.load(Ordering::Relaxed) {
-                        match cap.next_packet() {
+                        match cap.recv() {
                             Ok((_, packet)) => {
                                 //packet.get_frame_time()-now);
                                 _self.tx.as_ref().unwrap().send(packet).expect("Failed to send packet");

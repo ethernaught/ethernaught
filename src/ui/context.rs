@@ -1,18 +1,17 @@
 use std::cell::RefCell;
 use std::rc::Rc;
-use std::sync::{Arc, Mutex};
 use gtk::glib::{Cast, IsA};
 use gtk::prelude::{BinExt, ContainerExt, GtkApplicationExt, GtkWindowExt, StackExt, StyleContextExt, WidgetExt};
 use gtk::{Application, Container, Stack, Widget, Window};
 use crate::ui::activity::inter::activity::Activity;
 use crate::ui::handlers::bundle::Bundle;
-use crate::ui::handlers::runnable::Runnable;
+use crate::ui::handlers::handler::Handler;
 
 #[derive(Clone)]
 pub struct Context {
     app: Application,
-    stack: Rc<RefCell<Vec<Box<dyn Activity>>>>,
-    runnables: Arc<Mutex<Vec<Runnable>>>
+    handler: Handler,
+    stack: Rc<RefCell<Vec<Box<dyn Activity>>>>
 }
 
 impl Context {
@@ -20,8 +19,8 @@ impl Context {
     pub fn new(app: Application) -> Self {
         Self {
             app,
-            stack: Rc::new(RefCell::new(Vec::new())),
-            runnables: Arc::new(Mutex::new(Vec::new()))
+            handler: Handler::new(),
+            stack: Rc::new(RefCell::new(Vec::new()))
         }
     }
 
@@ -39,11 +38,6 @@ impl Context {
 
     pub fn get_bottombar(&self) -> Option<Widget> {
         None
-    }
-
-    pub fn post_runnable(&self, post: Runnable) {
-        self.runnables.lock().unwrap().push(post);
-        //register timeouts so that we can use them later for call backs...
     }
 
     pub fn start_activity(&self, mut activity: Box<dyn Activity>, bundle: Option<Bundle>) {
@@ -159,5 +153,9 @@ impl Context {
         }
 
         None
+    }
+
+    pub fn get_handler(&self) -> &Handler {
+        &self.handler
     }
 }

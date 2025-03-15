@@ -19,7 +19,7 @@ use crate::ui::activity::main_activity::MainActivity;
 use crate::ui::bottombar::BottomBar;
 use crate::ui::context::Context;
 use crate::ui::handlers::bundle::Bundle;
-use crate::ui::handlers::runnable::Runnable;
+use crate::ui::handlers::handler::Runnable;
 use crate::ui::titlebar::TitleBar;
 use crate::ui::widgets::graph::Graph;
 use crate::ui::widgets::hex_editor::HexEditor;
@@ -133,19 +133,6 @@ impl OApplication {
 
             Proceed
         });
-
-
-        /*
-        let runnables = self.runnables.clone();
-        glib::timeout_add_local(Duration::from_millis(10), move || {
-            for post in runnables.lock().unwrap().drain(..) {
-                post();
-            }
-            //CHECK POSTS...
-
-            Continue
-        });
-        */
 
         window.show();
     }

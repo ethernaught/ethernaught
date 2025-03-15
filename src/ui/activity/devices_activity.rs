@@ -5,7 +5,7 @@ use std::rc::Rc;
 use std::sync::atomic::Ordering;
 use std::sync::mpsc::channel;
 use std::thread;
-use std::time::Duration;
+use std::time::{Duration, SystemTime, UNIX_EPOCH};
 use gtk::{gdk, glib, Builder, Container, CssProvider, ListBox, ListBoxRow, Paned, Stack, StyleContext};
 use gtk::glib::Cast;
 use gtk::glib::ControlFlow::{Break, Continue};
@@ -19,7 +19,7 @@ use crate::ui::activity::main_activity::MainActivity;
 use crate::ui::adapters::devices_adapter::DevicesAdapter;
 use crate::ui::context::Context;
 use crate::ui::handlers::bundle::Bundle;
-use crate::ui::handlers::runnable::Runnable;
+use crate::ui::handlers::handler::Runnable;
 use crate::ui::widgets::graph::Graph;
 
 #[derive(Clone)]
@@ -98,36 +98,41 @@ impl Activity for DevicesActivity {
 
 
 
-        let (tx, rx) = channel();
 
-        let context = self.context.clone();
-        //let _self = self.clone();
+        let handler = self.context.get_handler().clone();
         thread::spawn(move || {
             let mut cap = Capture::any().expect("Failed to open device");
             cap.set_immediate_mode(true);
             cap.open().expect("Failed to start capture");
 
+            let mut index_bytes = HashMap::new();
+
+            let mut time = SystemTime::now()
+                .duration_since(UNIX_EPOCH)
+                .expect("Time went backwards")
+                .as_millis();
+
             loop {
-                match cap.next_packet() {
+                match cap.try_recv() {
                     Ok((address, packet)) => {
-
-                        let address_index = address.sll_ifindex;
-                        /*
-                        _self.post_runnable(Box::new(|| {
-                            println!("Received packet from");
-                            //println!("HELLO WORLD   {}", address_index);
-
-
-
-
-
-                        }));*/
-
-                        tx.send((address.sll_ifindex, packet.len())).unwrap();
+                        *index_bytes.entry(address.sll_ifindex).or_insert(0) += packet.len();
                     }
-                    _ => {
-                        break;
-                    }
+                    _ => {}
+                }
+
+                let now = SystemTime::now()
+                    .duration_since(UNIX_EPOCH)
+                    .expect("Time went backwards")
+                    .as_millis();
+
+                if now-time >= 1000 {
+                    time = now;
+
+                    let index_bytes = index_bytes.clone();
+                    handler.post_runnable(Box::new(move || {
+                        println!("HELLO WORLD:  {:?}", index_bytes);
+
+                    }));
                 }
             }
         });
@@ -135,6 +140,7 @@ impl Activity for DevicesActivity {
 
 
 
+        /*
         //let app = self.app.clone();
         glib::timeout_add_local(Duration::from_millis(1000), move || {
             let mut buf = HashMap::new();
@@ -147,12 +153,13 @@ impl Activity for DevicesActivity {
             let any = devices.borrow().len() as i32;
             buf.insert(any, 0);
 
+
             loop {
                 match rx.try_recv() {
                     Ok((index, len)) => {
                         *buf.get_mut(&index).unwrap() += len;
                         *buf.get_mut(&any).unwrap() += len;
-                        //*buf.entry(index).or_insert(0) += len;
+                        //.*buf.entry(index).or_insert(0) += len;
                     }
                     _ => {
                         break;
@@ -176,12 +183,12 @@ impl Activity for DevicesActivity {
                         .downcast_ref::<Graph>().unwrap().add_point(buf.get(&d.get_index()).unwrap().clone() as u32);
                 }
 
-                /*
+                /.*
                 if buf.contains_key(&d.get_index()) {
                     let row = devices_list.row_at_index(i).unwrap();
                     row.children().get(0).unwrap().downcast_ref::<gtk::Box>().unwrap().children().get(1).unwrap()
                         .downcast_ref::<Graph>().unwrap().add_point(buf.get(&d.get_index()).unwrap().clone() as u32);
-                }*/
+                }*./
                 i += 1;
             });
 
@@ -190,7 +197,7 @@ impl Activity for DevicesActivity {
                 .downcast_ref::<Graph>().unwrap().add_point(buf.get(&any).unwrap().clone() as u32);
 
             Continue
-        });
+        });*/
 
 
 
