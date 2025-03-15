@@ -77,16 +77,18 @@ impl Activity for DevicesActivity {
         let devices = Device::list().expect("Failed to get device list");
         let device_adapter = DevicesAdapter::from_devices(&devices_list, devices.clone());
         device_adapter.add_any();
-        //let devices = Rc::new(RefCell::new(devices));
 
-        /*
+        let mut index_map = Vec::new();
+        devices.iter().for_each(|device| {
+            index_map.push(device.get_index());
+        });
+
         let context = self.context.clone();
-        let devices_clone = Rc::clone(&devices);
         devices_list.connect_row_activated(move |_, row| {
-            if row.index() < devices_clone.borrow().len() as i32 {
+            if row.index() < devices.len() as i32 {
                 let mut bundle = Bundle::new();
                 bundle.put("type", String::from("device"));
-                bundle.put("device", devices_clone.borrow()[row.index() as usize].clone());
+                bundle.put("device", devices[row.index() as usize].clone());
                 context.start_activity(Box::new(MainActivity::new(context.clone())), Some(bundle));
                 return;
             }
@@ -94,7 +96,7 @@ impl Activity for DevicesActivity {
             let mut bundle = Bundle::new();
             bundle.put("type", String::from("device"));
             context.start_activity(Box::new(MainActivity::new(context.clone())), Some(bundle));
-        });*/
+        });
 
         self.devices_adapter = Some(device_adapter);
 
@@ -138,12 +140,8 @@ impl Activity for DevicesActivity {
 
                     index_bytes.clear();
                 }
+                thread::sleep(Duration::from_millis(1));
             }
-        });
-
-        let mut index_map = Vec::new();
-        devices.iter().for_each(|device| {
-            index_map.push(device.get_index());
         });
 
         self.context.get_handler().post_runnable("device_activity", move |bundle| {
