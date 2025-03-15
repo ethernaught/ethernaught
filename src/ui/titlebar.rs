@@ -10,18 +10,19 @@ use gtk::glib::{clone, Propagation, PropertyGet};
 use gtk::prelude::{ActionMapExt, GtkWindowExt};
 use crate::ui::activity::inter::activity::Activity;
 use crate::ui::application::OApplication;
+use crate::ui::context::Context;
 
 #[derive(Clone)]
 pub struct TitleBar {
-    app: OApplication,
+    context: Context,
     root: Option<Container>
 }
 
 impl TitleBar {
 
-    pub fn new(app: OApplication) -> Self {
+    pub fn new(context: Context) -> Self {
         Self {
-            app,
+            context,
             root: None
         }
     }
@@ -85,18 +86,18 @@ impl TitleBar {
             .object("back_button")
             .expect("Couldn't find 'back_button' in titlebar_ui.xml");
 
-        let app = self.app.clone();
+        //let app = self.context.clone();
         back_button.connect_clicked(move |_| {
-            app.on_back_pressed();
+            //app.on_back_pressed();
         });
 
         let next_button: Button = builder
             .object("next_button")
             .expect("Couldn't find 'next_button' in titlebar_ui.xml");
 
-        let app = self.app.clone();
+        //let app = self.context.clone();
         next_button.connect_clicked(move |_| {
-            app.on_next_pressed();
+            //app.on_next_pressed();
         });
     }
 
@@ -105,7 +106,7 @@ impl TitleBar {
             .object("minimize_button")
             .expect("Couldn't find 'minimize_button' in titlebar_ui.xml");
 
-        let window = self.app.get_window().unwrap();
+        let window = self.context.get_window().unwrap();
         minimize_button.connect_clicked(move |_| {
             window.iconify();
         });
@@ -114,7 +115,7 @@ impl TitleBar {
             .object("maximize_button")
             .expect("Couldn't find 'maximize_button' in titlebar_ui.xml");
 
-        let window = self.app.get_window().unwrap();
+        let window = self.context.get_window().unwrap();
         maximize_button.connect_clicked(move |_| {
             if window.is_maximized() {
                 window.unmaximize();
@@ -128,9 +129,9 @@ impl TitleBar {
             .object("close_button")
             .expect("Couldn't find 'close_button' in titlebar_ui.xml");
 
-        let app = self.app.get_application();
+        let context = self.context.get_application();
         close_button.connect_clicked(move |_| {
-            app.quit();
+            context.quit();
         });
     }
 }

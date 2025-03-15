@@ -15,6 +15,7 @@ use pcap::pcap::pcap::Pcap;
 use crate::capture_service::CaptureService;
 use crate::ui::application::OApplication;
 use crate::ui::activity::inter::activity::Activity;
+use crate::ui::context::Context;
 use crate::ui::fragment::inter::fragment::Fragment;
 use crate::ui::fragment::main_fragment::MainFragment;
 use crate::ui::fragment::terminal_fragment::TerminalFragment;
@@ -22,7 +23,7 @@ use crate::ui::handlers::bundle::Bundle;
 
 #[derive(Clone)]
 pub struct MainActivity {
-    app: OApplication,
+    context: Context,
     footer_selected: Rc<RefCell<String>>,
     capture_service: Option<CaptureService>,
     data_link_type: DataLinkTypes,
@@ -32,9 +33,9 @@ pub struct MainActivity {
 
 impl MainActivity {
 
-    pub fn new(app: OApplication) -> Self {
+    pub fn new(context: Context) -> Self {
         Self {
-            app,
+            context,
             footer_selected: Rc::new(RefCell::new(String::new())),
             running: Arc::new(AtomicBool::new(false)),
             capture_service: None,
@@ -48,7 +49,7 @@ impl MainActivity {
     }
 
     pub fn open_footerbar(&self, title: &str, mut fragment: Box<dyn Fragment>) {
-        if let Some(pane) = self.app.get_child_by_name::<Paned>(self.root.as_ref().unwrap().upcast_ref(), "window_pane") {
+        if let Some(pane) = self.context.get_child_by_name::<Paned>(self.root.as_ref().unwrap().upcast_ref(), "window_pane") {
             match pane.child2() {
                 Some(child) => {
                     pane.remove(&child);
@@ -57,10 +58,10 @@ impl MainActivity {
             }
 
             if self.footer_selected.borrow().as_str() != "" {
-                self.app.get_child_by_name::<Widget>(self.root.as_ref().unwrap().upcast_ref(), self.footer_selected.borrow().as_str()).unwrap().style_context().remove_class("selected");
+                self.context.get_child_by_name::<Widget>(self.root.as_ref().unwrap().upcast_ref(), self.footer_selected.borrow().as_str()).unwrap().style_context().remove_class("selected");
             }
 
-            self.app.get_child_by_name::<Widget>(self.root.as_ref().unwrap().upcast_ref(), title).unwrap().style_context().add_class("selected");
+            self.context.get_child_by_name::<Widget>(self.root.as_ref().unwrap().upcast_ref(), title).unwrap().style_context().add_class("selected");
 
             self.footer_selected.replace(title.to_string());
             let content = fragment.on_create(None);
@@ -70,11 +71,11 @@ impl MainActivity {
     }
 
     pub fn close_footerbar(&self) {
-        if let Some(pane) = self.app.get_child_by_name::<Paned>(self.root.as_ref().unwrap().upcast_ref(), "window_pane") {
+        if let Some(pane) = self.context.get_child_by_name::<Paned>(self.root.as_ref().unwrap().upcast_ref(), "window_pane") {
             match pane.child2() {
                 Some(child) => {
                     if self.footer_selected.borrow().as_str() != "" {
-                        self.app.get_child_by_name::<Widget>(self.root.as_ref().unwrap().upcast_ref(), self.footer_selected.borrow().as_str()).unwrap().style_context().remove_class("selected");
+                        self.context.get_child_by_name::<Widget>(self.root.as_ref().unwrap().upcast_ref(), self.footer_selected.borrow().as_str()).unwrap().style_context().remove_class("selected");
                     }
 
                     self.footer_selected.replace(String::new());
@@ -86,7 +87,7 @@ impl MainActivity {
     }
 
     pub fn open_sidebar(&self, mut fragment: Box<dyn Fragment>) {
-        if let Some(pane) = self.app.get_child_by_name::<Paned>(self.root.as_ref().unwrap().upcast_ref(), "window_content_pane") {
+        if let Some(pane) = self.context.get_child_by_name::<Paned>(self.root.as_ref().unwrap().upcast_ref(), "window_content_pane") {
             match pane.child2() {
                 Some(child) => {
                     pane.remove(&child);
@@ -101,7 +102,7 @@ impl MainActivity {
     }
 
     pub fn close_sidebar(&self) {
-        if let Some(pane) = self.app.get_child_by_name::<Paned>(self.root.as_ref().unwrap().upcast_ref(), "window_content_pane") {
+        if let Some(pane) = self.context.get_child_by_name::<Paned>(self.root.as_ref().unwrap().upcast_ref(), "window_content_pane") {
             match pane.child2() {
                 Some(child) => {
                     pane.remove(&child);
@@ -170,8 +171,8 @@ impl Activity for MainActivity {
             Some(bundle) => {
                 match bundle.get::<String>("type").unwrap().as_str() {
                     "device" => {
-                        let titlebar = self.app.get_titlebar().unwrap();
-                        let network_type_label = self.app.get_child_by_name::<Label>(&titlebar, "network_type_label").unwrap();
+                        let titlebar = self.context.get_titlebar().unwrap();
+                        let network_type_label = self.context.get_child_by_name::<Label>(&titlebar, "network_type_label").unwrap();
 
                         if let Some(device) = bundle.get::<Device>("device") {
                             self.data_link_type = device.get_data_link_type();
@@ -191,7 +192,7 @@ impl Activity for MainActivity {
 
                         network_type_label.show();
 
-                        let icon = self.app.get_child_by_name::<Image>(&titlebar, "network_type_icon").unwrap();
+                        let icon = self.context.get_child_by_name::<Image>(&titlebar, "network_type_icon").unwrap();
 
                         match self.data_link_type {
                             DataLinkTypes::Null => {
@@ -228,11 +229,11 @@ impl Activity for MainActivity {
 
                         let main_fragment = Rc::new(RefCell::new(main_fragment));
 
-                        let app_options = Rc::new(RefCell::new(self.app.get_child_by_name::<Widget>(&titlebar, "app_options").unwrap()));
+                        let app_options = Rc::new(RefCell::new(self.context.get_child_by_name::<Widget>(&titlebar, "app_options").unwrap()));
                         app_options.borrow().show();
 
-                        let stop_button = Rc::new(RefCell::new(self.app.get_child_by_name::<Widget>(&app_options.borrow(), "stop_button").unwrap()));
-                        let start_button = self.app.get_child_by_name::<Widget>(&app_options.borrow(), "start_button").unwrap();
+                        let stop_button = Rc::new(RefCell::new(self.context.get_child_by_name::<Widget>(&app_options.borrow(), "stop_button").unwrap()));
+                        let start_button = self.context.get_child_by_name::<Widget>(&app_options.borrow(), "start_button").unwrap();
 
                         if let Some(start_button) = start_button.downcast_ref::<Button>() {
                             let app_options = Rc::clone(&app_options);
@@ -289,9 +290,9 @@ impl Activity for MainActivity {
 
                         self.data_link_type = pcap.get_data_link_type();
 
-                        let titlebar = self.app.get_titlebar().unwrap();
+                        let titlebar = self.context.get_titlebar().unwrap();
 
-                        let icon = self.app.get_child_by_name::<Image>(&titlebar, "network_type_icon").unwrap();
+                        let icon = self.context.get_child_by_name::<Image>(&titlebar, "network_type_icon").unwrap();
 
                         match self.data_link_type {
                             DataLinkTypes::Ethernet => {
@@ -315,7 +316,7 @@ impl Activity for MainActivity {
 
                         icon.show();
 
-                        let network_type_label = self.app.get_child_by_name::<Label>(&titlebar, "network_type_label").unwrap();
+                        let network_type_label = self.context.get_child_by_name::<Label>(&titlebar, "network_type_label").unwrap();
                         network_type_label.set_label(bundle.get::<PathBuf>("file").unwrap().file_name().unwrap().to_str().unwrap());
                         network_type_label.show();
 
@@ -340,7 +341,7 @@ impl Activity for MainActivity {
     }
 
     fn on_resume(&self) {
-        let titlebar = self.app.get_titlebar().unwrap();
+        let titlebar = self.context.get_titlebar().unwrap();
 
         match self.data_link_type {
             DataLinkTypes::Null => {
@@ -361,17 +362,17 @@ impl Activity for MainActivity {
             _ => {}
         }
 
-        self.app.get_child_by_name::<Image>(&titlebar, "network_type_icon").unwrap().show();
-        self.app.get_child_by_name::<Label>(&titlebar, "network_type_label").unwrap().show();
+        self.context.get_child_by_name::<Image>(&titlebar, "network_type_icon").unwrap().show();
+        self.context.get_child_by_name::<Label>(&titlebar, "network_type_label").unwrap().show();
 
         //ONLY IF DEVICE TYPE...
         if let Some(_) = self.capture_service.as_ref() {
-            self.app.get_child_by_name::<Widget>(&titlebar, "app_options").unwrap().show();
+            self.context.get_child_by_name::<Widget>(&titlebar, "app_options").unwrap().show();
         }
     }
 
     fn on_pause(&self) {
-        let titlebar = self.app.get_titlebar().unwrap();
+        let titlebar = self.context.get_titlebar().unwrap();
 
         match self.data_link_type {
             DataLinkTypes::Null => {
@@ -392,24 +393,20 @@ impl Activity for MainActivity {
             _ => {}
         }
 
-        self.app.get_child_by_name::<Image>(&titlebar, "network_type_icon").unwrap().hide();
-        self.app.get_child_by_name::<Label>(&titlebar, "network_type_label").unwrap().hide();
+        self.context.get_child_by_name::<Image>(&titlebar, "network_type_icon").unwrap().hide();
+        self.context.get_child_by_name::<Label>(&titlebar, "network_type_label").unwrap().hide();
 
         if let Some(capture_service) = self.capture_service.as_ref() {
             capture_service.stop();
 
-            let app_options = self.app.get_child_by_name::<Widget>(&titlebar, "app_options").unwrap();
+            let app_options = self.context.get_child_by_name::<Widget>(&titlebar, "app_options").unwrap();
             app_options.style_context().remove_class("running");
-            self.app.get_child_by_name::<Widget>(&app_options, "stop_button").unwrap().hide();
+            self.context.get_child_by_name::<Widget>(&app_options, "stop_button").unwrap().hide();
         }
     }
 
     fn on_destroy(&self) {
         self.running.store(false, Ordering::Relaxed);
-    }
-
-    fn get_application(&self) -> &OApplication {
-        &self.app
     }
 
     fn as_any(&self) -> &dyn Any {

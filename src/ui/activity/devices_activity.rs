@@ -17,21 +17,23 @@ use crate::ui::application::OApplication;
 use crate::ui::activity::inter::activity::Activity;
 use crate::ui::activity::main_activity::MainActivity;
 use crate::ui::adapters::devices_adapter::DevicesAdapter;
+use crate::ui::context::Context;
 use crate::ui::handlers::bundle::Bundle;
+use crate::ui::handlers::runnable::Runnable;
 use crate::ui::widgets::graph::Graph;
 
 #[derive(Clone)]
 pub struct DevicesActivity {
-    app: OApplication,
+    context: Context,
     root: Option<Container>,
     devices_adapter: Option<DevicesAdapter>
 }
 
 impl DevicesActivity {
 
-    pub fn new(app: OApplication) -> Self {
+    pub fn new(context: Context) -> Self {
         Self {
-            app,
+            context,
             root: None,
             devices_adapter: None
         }
@@ -76,20 +78,20 @@ impl Activity for DevicesActivity {
         device_adapter.add_any();
         let devices = Rc::new(RefCell::new(devices));
 
-        let app = self.app.clone();
+        let context = self.context.clone();
         let devices_clone = Rc::clone(&devices);
         devices_list.connect_row_activated(move |_, row| {
             if row.index() < devices_clone.borrow().len() as i32 {
                 let mut bundle = Bundle::new();
                 bundle.put("type", String::from("device"));
                 bundle.put("device", devices_clone.borrow()[row.index() as usize].clone());
-                app.start_activity(Box::new(MainActivity::new(app.clone())), Some(bundle));
+                context.start_activity(Box::new(MainActivity::new(context.clone())), Some(bundle));
                 return;
             }
 
             let mut bundle = Bundle::new();
             bundle.put("type", String::from("device"));
-            app.start_activity(Box::new(MainActivity::new(app.clone())), Some(bundle));
+            context.start_activity(Box::new(MainActivity::new(context.clone())), Some(bundle));
         });
 
         self.devices_adapter = Some(device_adapter);
@@ -98,6 +100,8 @@ impl Activity for DevicesActivity {
 
         let (tx, rx) = channel();
 
+        let context = self.context.clone();
+        //let _self = self.clone();
         thread::spawn(move || {
             let mut cap = Capture::any().expect("Failed to open device");
             cap.set_immediate_mode(true);
@@ -106,6 +110,19 @@ impl Activity for DevicesActivity {
             loop {
                 match cap.next_packet() {
                     Ok((address, packet)) => {
+
+                        let address_index = address.sll_ifindex;
+                        /*
+                        _self.post_runnable(Box::new(|| {
+                            println!("Received packet from");
+                            //println!("HELLO WORLD   {}", address_index);
+
+
+
+
+
+                        }));*/
+
                         tx.send((address.sll_ifindex, packet.len())).unwrap();
                     }
                     _ => {
@@ -115,7 +132,10 @@ impl Activity for DevicesActivity {
             }
         });
 
-        let app = self.app.clone();
+
+
+
+        //let app = self.app.clone();
         glib::timeout_add_local(Duration::from_millis(1000), move || {
             let mut buf = HashMap::new();
             devices.borrow().iter().for_each(|d| {
@@ -189,10 +209,6 @@ impl Activity for DevicesActivity {
     }
 
     fn on_destroy(&self) {
-    }
-
-    fn get_application(&self) -> &OApplication {
-        &self.app
     }
 
     fn as_any(&self) -> &dyn Any {
