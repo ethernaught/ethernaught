@@ -28,9 +28,9 @@ impl Handler {
         glib::timeout_add_local(Duration::from_millis(10), move || {
             loop {
                 match rx.try_recv() {
-                    Ok((name, bundle)) => {
+                    Ok((name, obj)) => {
                         if runnables.borrow().contains_key(&name) {
-                            runnables.borrow().get(&name).unwrap()(bundle);
+                            runnables.borrow().get(&name).unwrap()(obj);
                         }
                     }
                     Err(_) => {

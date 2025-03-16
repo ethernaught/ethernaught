@@ -1,0 +1,42 @@
+use pcap::packet::packet::Packet;
+use crate::ui::handlers::events::inter::event::Event;
+
+pub struct CaptureEvent {
+    prevent_default: bool,
+    if_index: i32,
+    packet: Packet
+}
+
+impl CaptureEvent {
+
+    pub fn new(if_index: i32, packet: Packet) -> Self {
+        Self {
+            prevent_default: false,
+            if_index,
+            packet
+        }
+    }
+
+    pub fn get_if_index(&self) -> i32 {
+        self.if_index
+    }
+
+    pub fn get_packet(&self) -> &Packet {
+        &self.packet
+    }
+}
+
+impl Event for CaptureEvent {
+
+    fn get_name(&self) -> String {
+        String::from("capture_event")
+    }
+
+    fn is_prevent_default(&self) -> bool {
+        todo!()
+    }
+
+    fn prevent_default(&mut self) {
+        todo!()
+    }
+}

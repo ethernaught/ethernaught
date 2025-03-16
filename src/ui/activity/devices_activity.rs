@@ -21,6 +21,8 @@ use crate::ui::activity::main_activity::MainActivity;
 use crate::ui::adapters::devices_adapter::DevicesAdapter;
 use crate::ui::context::Context;
 use crate::ui::handlers::bundle::Bundle;
+use crate::ui::handlers::events::capture_event::CaptureEvent;
+use crate::ui::handlers::events::transmitted_event::TransmittedEvent;
 use crate::ui::widgets::graph::Graph;
 
 #[derive(Clone)]
@@ -77,12 +79,12 @@ impl Activity for DevicesActivity {
         let devices = Device::list().expect("Failed to get device list");
         let device_adapter = DevicesAdapter::from_devices(&devices_list, devices.clone());
 
-        let mut index_map = Vec::new();
-        index_map.push(-1);
+        let mut if_map = Vec::new();
+        if_map.push(-1);
 
         devices.iter().for_each(|device| {
             if device.get_flags().contains(&InterfaceFlags::Running) {
-                index_map.push(device.get_index());
+                if_map.push(device.get_index());
             }
         });
 
@@ -114,7 +116,7 @@ impl Activity for DevicesActivity {
             cap.set_immediate_mode(true);
             cap.open().expect("Failed to start capture");
 
-            let mut index_bytes = HashMap::new();
+            let mut if_bytes = HashMap::new();
 
             let mut time = SystemTime::now()
                 .duration_since(UNIX_EPOCH)
@@ -124,10 +126,12 @@ impl Activity for DevicesActivity {
             loop {
                 match cap.try_recv() {
                     Ok((address, packet)) => {
-                        *index_bytes.entry(-1).or_insert(0) += packet.len();
-                        *index_bytes.entry(address.sll_ifindex).or_insert(0) += packet.len();
+                        *if_bytes.entry(-1).or_insert(0) += packet.len();
+                        *if_bytes.entry(address.sll_ifindex).or_insert(0) += packet.len();
 
-                        tx.send((format!("capture_{}", address.sll_ifindex), Some(Box::new(packet)))).unwrap();
+                        let event = CaptureEvent::new(address.sll_ifindex, packet);
+
+                        //tx.send((format!("capture_{}", address.sll_ifindex), Some(Box::new(packet)))).unwrap();
                     }
                     _ => {}
                 }
@@ -140,12 +144,17 @@ impl Activity for DevicesActivity {
                 if now-time >= 1000 {
                     time = now;
 
+                    let event = TransmittedEvent::new(if_bytes.clone());
+
+                    /*
                     let mut bundle = Bundle::new();
-                    bundle.put("index_bytes", index_bytes.clone());
+                    bundle.put("if_bytes", if_bytes.clone());
+
 
                     tx.send((String::from("device_activity"), Some(Box::new(bundle)))).unwrap();
+                    */
 
-                    index_bytes.clear();
+                    if_bytes.clear();
                 }
 
                 Task::delay_for(Duration::from_millis(1)).await;
@@ -156,14 +165,14 @@ impl Activity for DevicesActivity {
             match bundle {
                 Some(bundle) => {
                     let bundle = bundle.downcast::<Bundle>().unwrap();
-                    match bundle.get::<HashMap<i32, usize>>("index_bytes") {
-                        Some(index_bytes) => {
+                    match bundle.get::<HashMap<i32, usize>>("if_bytes") {
+                        Some(if_bytes) => {
                             let mut i = 0;
-                            index_map.iter().for_each(|index| {
+                            if_map.iter().for_each(|index| {
                                 let row = devices_list.row_at_index(i).unwrap();
-                                if index_bytes.contains_key(index) {
+                                if if_bytes.contains_key(index) {
                                     row.children().get(0).unwrap().downcast_ref::<gtk::Box>().unwrap().children().get(1).unwrap()
-                                        .downcast_ref::<Graph>().unwrap().add_point(index_bytes.get(index).unwrap().clone() as u32);
+                                        .downcast_ref::<Graph>().unwrap().add_point(if_bytes.get(index).unwrap().clone() as u32);
 
                                 } else {
                                     row.children().get(0).unwrap().downcast_ref::<gtk::Box>().unwrap().children().get(1).unwrap()
