@@ -183,16 +183,20 @@ impl Activity for MainActivity {
                         let titlebar = self.context.get_titlebar().unwrap();
                         let network_type_label = self.context.get_child_by_name::<Label>(&titlebar, "network_type_label").unwrap();
 
-                        if let Some(device) = bundle.get::<Device>("device") {
+                        let if_index = if let Some(device) = bundle.get::<Device>("device") {
                             self.data_link_type = device.get_data_link_type();
                             //self.capture_service = Some(CaptureService::from_device(&self.context, &device));
                             network_type_label.set_label(&device.get_name());
+
+                            device.get_index()
 
                         } else {
                             self.data_link_type = DataLinkTypes::Null;
                             //self.capture_service = Some(CaptureService::any(&self.context));
                             network_type_label.set_label("Any");
-                        }
+
+                            -1
+                        };
 
                         //let (tx, rx) = channel();
                         //self.capture_service.as_mut().unwrap().set_tx(tx);
@@ -269,8 +273,10 @@ impl Activity for MainActivity {
                                 let main_fragment = Rc::clone(&main_fragment);
                                 handler.register_listener("capture_event", move |event| {
                                     let event = event.as_any().downcast_ref::<CaptureEvent>().unwrap();
-                                    main_fragment.borrow().get_packet_adapter().unwrap().add(event.get_packet().clone());
-                                    //main_fragment.borrow().get_packet_adapter().unwrap().add(*packet.unwrap().downcast::<Packet>().unwrap());
+
+                                    if if_index == -1 || event.get_if_index() == if_index {
+                                        main_fragment.borrow().get_packet_adapter().unwrap().add(event.get_packet().clone());
+                                    }
                                 });
                             });
                         }
