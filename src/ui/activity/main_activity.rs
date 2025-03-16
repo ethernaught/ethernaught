@@ -1,18 +1,22 @@
 use std::any::Any;
 use std::cell::RefCell;
+use std::collections::HashMap;
 use std::path::PathBuf;
 use std::rc::Rc;
 use std::sync::Arc;
 use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::mpsc::channel;
-use std::time::Duration;
+use std::time::{Duration, SystemTime, UNIX_EPOCH};
 use gtk::prelude::*;
 use gtk::{gdk, glib, Builder, Button, Container, CssProvider, Image, Label, Paned, StyleContext, Widget};
 use gtk::glib::ControlFlow::{Break, Continue};
+use pcap::capture::Capture;
 use pcap::devices::Device;
 use pcap::packet::inter::data_link_types::DataLinkTypes;
+use pcap::packet::packet::Packet;
 use pcap::pcap::pcap::Pcap;
 use crate::capture_service::CaptureService;
+use crate::qsync::task::Task;
 use crate::ui::application::OApplication;
 use crate::ui::activity::inter::activity::Activity;
 use crate::ui::context::Context;
@@ -20,13 +24,14 @@ use crate::ui::fragment::inter::fragment::Fragment;
 use crate::ui::fragment::main_fragment::MainFragment;
 use crate::ui::fragment::terminal_fragment::TerminalFragment;
 use crate::ui::handlers::bundle::Bundle;
+use crate::ui::widgets::graph::Graph;
 
 #[derive(Clone)]
 pub struct MainActivity {
     context: Context,
     footer_selected: Rc<RefCell<String>>,
-    //capture_service: Option<CaptureService>,
     data_link_type: DataLinkTypes,
+    capture_service: Option<CaptureService>,
     running: Arc<AtomicBool>,
     root: Option<Container>
 }
@@ -37,18 +42,16 @@ impl MainActivity {
         Self {
             context,
             footer_selected: Rc::new(RefCell::new(String::new())),
-            //capture_service: None,
-            running: Arc::new(AtomicBool::new(false)),
             data_link_type: DataLinkTypes::Null,
+            capture_service: None,
+            running: Arc::new(AtomicBool::new(false)),
             root: None
         }
     }
 
-    /*
     pub fn get_capture_service(&self) -> Option<&CaptureService> {
         self.capture_service.as_ref()
     }
-    */
 
     pub fn open_footerbar(&self, title: &str, mut fragment: Box<dyn Fragment>) {
         if let Some(pane) = self.context.get_child_by_name::<Paned>(self.root.as_ref().unwrap().upcast_ref(), "window_pane") {
@@ -176,20 +179,16 @@ impl Activity for MainActivity {
                         let titlebar = self.context.get_titlebar().unwrap();
                         let network_type_label = self.context.get_child_by_name::<Label>(&titlebar, "network_type_label").unwrap();
 
-                        /*
                         if let Some(device) = bundle.get::<Device>("device") {
                             self.data_link_type = device.get_data_link_type();
-
-                            self.capture_service = Some(CaptureService::from_device(&device));
+                            self.capture_service = Some(CaptureService::from_device(&self.context, &device));
                             network_type_label.set_label(&device.get_name());
 
                         } else {
                             self.data_link_type = DataLinkTypes::Null;
-
-                            self.capture_service = Some(CaptureService::any());
+                            self.capture_service = Some(CaptureService::any(&self.context));
                             network_type_label.set_label("Any");
                         }
-                        */
 
                         //let (tx, rx) = channel();
                         //self.capture_service.as_mut().unwrap().set_tx(tx);
@@ -239,7 +238,6 @@ impl Activity for MainActivity {
                         let stop_button = Rc::new(RefCell::new(self.context.get_child_by_name::<Widget>(&app_options.borrow(), "stop_button").unwrap()));
                         let start_button = self.context.get_child_by_name::<Widget>(&app_options.borrow(), "start_button").unwrap();
 
-                        /*
                         if let Some(start_button) = start_button.downcast_ref::<Button>() {
                             let app_options = Rc::clone(&app_options);
                             let stop_button = Rc::clone(&stop_button);
@@ -266,41 +264,39 @@ impl Activity for MainActivity {
                                 capture_service.stop();
                             });
                         }
-                        */
 
-                        //let main_fragment = Rc::clone(&main_fragment);
-                        //self.running.store(true, Ordering::Relaxed);
-                        //let running = Arc::clone(&self.running);
-
-
-
+                        let main_fragment = Rc::clone(&main_fragment);
 
 
                         /*
-                        glib::timeout_add_local(Duration::from_millis(10), move || {
+                        self.running.store(true, Ordering::Relaxed);
+                        let running = Arc::clone(&self.running);
+                        let cap = self.cap.as_ref().unwrap().clone();
+                        let tx = self.context.get_handler().get_sender();
+
+                        self.context.get_task().spawn(async move {
+                            let now = SystemTime::now()
+                                .duration_since(UNIX_EPOCH)
+                                .expect("Time went backwards")
+                                .as_millis() as f64;
+
                             while running.load(Ordering::Relaxed) {
-                                match rx.try_recv() {
-                                    Ok(packet) => {
-                                        main_fragment.borrow().get_packet_adapter().unwrap().add(packet);
+                                match cap.try_recv() {
+                                    Ok((_, packet)) => {
+                                        //packet.get_frame_time()-now);
+                                        tx.send((String::from("main_activity"), Some(Box::new(packet)))).expect("Failed to send packet");
                                     }
-                                    _ => {
-                                        break;
-                                    }
+                                    _ => {}
                                 }
-                            }
 
-                            if !running.load(Ordering::Relaxed) {
-                                return Break;
+                                Task::delay_for(Duration::from_millis(1)).await;
                             }
+                        });*/
 
-                            Continue
+
+                        self.context.get_handler().post_runnable("main_activity", move |packet| {
+                            main_fragment.borrow().get_packet_adapter().unwrap().add(*packet.unwrap().downcast::<Packet>().unwrap());
                         });
-                        */
-
-
-
-
-
 
                     }
                     "file" => {

@@ -19,7 +19,6 @@ use crate::ui::activity::main_activity::MainActivity;
 use crate::ui::bottombar::BottomBar;
 use crate::ui::context::Context;
 use crate::ui::handlers::bundle::Bundle;
-use crate::ui::handlers::handler::Runnable;
 use crate::ui::titlebar::TitleBar;
 use crate::ui::widgets::graph::Graph;
 use crate::ui::widgets::hex_editor::HexEditor;

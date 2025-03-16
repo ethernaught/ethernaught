@@ -21,7 +21,6 @@ use crate::ui::activity::main_activity::MainActivity;
 use crate::ui::adapters::devices_adapter::DevicesAdapter;
 use crate::ui::context::Context;
 use crate::ui::handlers::bundle::Bundle;
-use crate::ui::handlers::handler::Runnable;
 use crate::ui::widgets::graph::Graph;
 
 #[derive(Clone)]
@@ -142,7 +141,7 @@ impl Activity for DevicesActivity {
                     let mut bundle = Bundle::new();
                     bundle.put("index_bytes", index_bytes.clone());
 
-                    tx.send((String::from("device_activity"), Some(bundle))).unwrap();
+                    tx.send((String::from("device_activity"), Some(Box::new(bundle)))).unwrap();
 
                     index_bytes.clear();
                 }
@@ -154,6 +153,7 @@ impl Activity for DevicesActivity {
         self.context.get_handler().post_runnable("device_activity", move |bundle| {
             match bundle {
                 Some(bundle) => {
+                    let bundle = bundle.downcast::<Bundle>().unwrap();
                     match bundle.get::<HashMap<i32, usize>>("index_bytes") {
                         Some(index_bytes) => {
                             let mut i = 0;
@@ -170,7 +170,6 @@ impl Activity for DevicesActivity {
 
                                 i += 1;
                             });
-
                         }
                         None => {}
                     }
