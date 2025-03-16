@@ -24,7 +24,6 @@ use pcap::packet::layers::ethernet_frame::ip::udp::inter::udp_types::UdpTypes;
 use pcap::packet::layers::ethernet_frame::ip::udp::udp_layer::UdpLayer;
 use pcap::packet::layers::inter::layer::Layer;
 use pcap::packet::packet::Packet;
-use crate::capture_service::CaptureService;
 use crate::database::sqlite::Database;
 use crate::get_lib_path;
 use crate::ui::activity::inter::activity::Activity;
@@ -101,11 +100,13 @@ impl Fragment for SidebarFragment {
 
         let _self = self.clone();
         replay_button.connect_clicked(move |_| {
+            /*
             let main_activity = _self.activity.as_any().downcast_ref::<MainActivity>().unwrap();
 
             if let Some(capture_service) = main_activity.get_capture_service() {
                 capture_service.send(_self.packet.clone());
             }
+            */
         });
 
 

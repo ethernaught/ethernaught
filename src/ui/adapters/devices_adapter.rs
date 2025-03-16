@@ -1,3 +1,5 @@
+use std::cell::RefCell;
+use std::rc::Rc;
 use gtk::{Builder, Image, Label, ListBox, ListBoxRow};
 use gtk::prelude::{BuilderExtManual, ContainerExt, ImageExt, LabelExt, StyleContextExt, WidgetExt};
 use pcap::devices::Device;
@@ -7,24 +9,35 @@ use crate::ui::widgets::graph::Graph;
 
 #[derive(Clone)]
 pub struct DevicesAdapter {
-    list_box: ListBox
+    pub(crate) list_box: ListBox,
+    pub(crate) if_map: Rc<RefCell<Vec<i32>>>
 }
 
 impl DevicesAdapter {
 
     pub fn new(list_box: &ListBox) -> Self {
         Self {
-            list_box: list_box.clone()
+            list_box: list_box.clone(),
+            if_map: Rc::new(RefCell::new(Vec::new()))
         }
     }
 
     pub fn from_devices(list_box: &ListBox, devices: Vec<Device>) -> Self {
-        devices.iter().for_each(|d| {
-            Self::add(list_box, d);
+        let mut if_map = Vec::new();
+        if_map.push(-1);
+
+        Self::add_any(list_box);
+        devices.iter().for_each(|device| {
+            if device.get_flags().contains(&InterfaceFlags::Running) {
+                if_map.push(device.get_index());
+            }
+
+            Self::add(list_box, device);
         });
 
         Self {
-            list_box: list_box.clone()
+            list_box: list_box.clone(),
+            if_map: Rc::new(RefCell::new(if_map))
         }
     }
 
@@ -75,7 +88,7 @@ impl DevicesAdapter {
         list_box.add(&row);
     }
 
-    pub fn add_any(&self) {
+    pub fn add_any(list_box: &ListBox) {
         let builder = Builder::from_resource("/com/ethernaut/rust/res/ui/gtk3/device_list_item.ui");
         let row: ListBoxRow = builder
             .object("row")
@@ -99,6 +112,6 @@ impl DevicesAdapter {
             .expect("Couldn't find 'description' in device_list_item.ui");
         description_label.set_label("[Promiscuous]");
 
-        self.list_box.add(&row);
+        list_box.add(&row);
     }
 }

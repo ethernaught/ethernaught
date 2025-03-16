@@ -2,18 +2,22 @@ use std::cell::RefCell;
 use std::path::PathBuf;
 use std::process::exit;
 use std::rc::Rc;
+use std::sync::atomic::Ordering;
+use std::sync::{Arc, Mutex};
 use std::time::Duration;
-use gtk::{AboutDialog, ApplicationWindow, Builder, Image, Application, TreeViewColumn, CellRendererText, ScrolledWindow, Button, ListBoxRow, Label, CssProvider, StyleContext, gdk, Stack, Container, TreeView, Widget, Window, gio, MenuBar, MenuItem, Menu, FileChooserDialog, ResponseType, FileChooserAction};
+use gtk::{AboutDialog, ApplicationWindow, Builder, Image, Application, TreeViewColumn, CellRendererText, ScrolledWindow, Button, ListBoxRow, Label, CssProvider, StyleContext, gdk, Stack, Container, TreeView, Widget, Window, gio, MenuBar, MenuItem, Menu, FileChooserDialog, ResponseType, FileChooserAction, glib};
 use gtk::gdk_pixbuf::Pixbuf;
 use gtk::prelude::*;
 use gtk::gio::{resources_register, ApplicationFlags, Resource, SimpleAction};
 use gtk::glib::Bytes;
+use gtk::glib::ControlFlow::{Break, Continue};
 use gtk::glib::Propagation::Proceed;
 use gtk::prelude::{ActionMapExt, GtkWindowExt};
 use crate::ui::activity::devices_activity::DevicesActivity;
 use crate::ui::activity::inter::activity::Activity;
 use crate::ui::activity::main_activity::MainActivity;
 use crate::ui::bottombar::BottomBar;
+use crate::ui::context::Context;
 use crate::ui::handlers::bundle::Bundle;
 use crate::ui::titlebar::TitleBar;
 use crate::ui::widgets::graph::Graph;
@@ -22,8 +26,7 @@ use crate::ui::widgets::terminal::Terminal;
 
 #[derive(Clone)]
 pub struct OApplication {
-    app: Application,
-    stack: Rc<RefCell<Vec<Box<dyn Activity>>>>
+    context: Context
 }
 
 impl OApplication {
@@ -32,20 +35,19 @@ impl OApplication {
         let app = Application::new(Some("com.ethernaut.rust"), ApplicationFlags::HANDLES_OPEN);
 
         Self {
-            app,
-            stack: Rc::new(RefCell::new(Vec::new()))
+            context: Context::new(app)
         }
     }
 
     pub fn run(&self) {
         let _self = self.clone();
-        self.app.connect_activate(move |app| {
+        self.context.get_application().connect_activate(move |app| {
             _self.on_create(app);
-            _self.start_activity(Box::new(DevicesActivity::new(_self.clone())), None);
+            _self.context.start_activity(Box::new(DevicesActivity::new(_self.context.clone())), None);
         });
 
         let _self = self.clone();
-        self.app.connect_open(move |app, files, _hint| {
+        self.context.get_application().connect_open(move |app, files, _hint| {
             for file in files {
                 if let Some(path) = file.path() {
                     _self.on_create(app);
@@ -53,12 +55,12 @@ impl OApplication {
                     bundle.put("type", String::from("file"));
                     bundle.put("file", path);
 
-                    _self.start_activity(Box::new(MainActivity::new(_self.clone())), Some(bundle));
+                    _self.context.start_activity(Box::new(MainActivity::new(_self.context.clone())), Some(bundle));
                 }
             }
         });
 
-        self.app.run();
+        self.context.get_application().run();
     }
 
     fn on_create(&self, app: &Application) {
@@ -100,7 +102,7 @@ impl OApplication {
 
         //window.set_icon_from_file("res/icons/ic_launcher.svg").expect("Failed to load icon");
 
-        let mut titlebar = TitleBar::new(self.clone());
+        let mut titlebar = TitleBar::new(self.context.clone());
         window.set_titlebar(Some(titlebar.on_create()));
 
         let window_content: gtk::Box = builder
@@ -116,14 +118,14 @@ impl OApplication {
 
         self.init_actions(&window);
 
-        let _self = self.clone();
+        let context = self.context.clone();
         window.connect_button_press_event(move |_, event| {
             match event.button() {
                 8 => {
-                    _self.on_back_pressed();
+                    context.on_back_pressed();
                 }
                 9 => {
-                    _self.on_next_pressed();
+                    context.on_next_pressed();
                 }
                 _ => {}
             }
@@ -134,134 +136,22 @@ impl OApplication {
         window.show();
     }
 
-    pub fn start_activity(&self, mut activity: Box<dyn Activity>, bundle: Option<Bundle>) {
-        let stack = self.app.active_window().unwrap().child().unwrap().downcast_ref::<Container>().unwrap().children()[0].clone().downcast::<Stack>().unwrap();
-
-        match stack.child_by_name(activity.get_name().as_ref()) {
-            Some(child) => {
-                let pos = stack.child_position(&child) as usize;
-
-                let back_button = self.get_child_by_name::<Widget>(self.app.active_window().unwrap().titlebar().unwrap().upcast_ref(), "back_button").unwrap();
-                back_button.style_context().add_class("active");
-
-                let next_button = self.get_child_by_name::<Widget>(self.app.active_window().unwrap().titlebar().unwrap().upcast_ref(), "next_button").unwrap();
-                next_button.style_context().remove_class("active");
-
-                let children = stack.children();
-                for i in (pos..children.len()).rev() {
-                    self.stack.borrow().get(i).unwrap().on_pause();
-                    self.stack.borrow().get(i).unwrap().on_destroy();
-                    stack.remove(&children[i]);
-                    self.stack.borrow_mut().remove(i);
-                }
-            }
-            None => {
-                let children = stack.children();
-                if let Some(current) = stack.visible_child() {
-                    if let Some(pos) = children.iter().position(|child| child == &current) {
-                        let back_button = self.get_child_by_name::<Widget>(self.app.active_window().unwrap().titlebar().unwrap().upcast_ref(), "back_button").unwrap();
-                        back_button.style_context().add_class("active");
-
-                        let next_button = self.get_child_by_name::<Widget>(self.app.active_window().unwrap().titlebar().unwrap().upcast_ref(), "next_button").unwrap();
-                        next_button.style_context().remove_class("active");
-
-                        for i in (pos + 1..children.len()).rev() {
-                            self.stack.borrow().get(i).unwrap().on_pause();
-                            self.stack.borrow().get(i).unwrap().on_destroy();
-                            stack.remove(&children[i]);
-                            self.stack.borrow_mut().remove(i);
-                        }
-                    }
-                }
-            }
-        }
-
-
-        let name = activity.get_name();
-        let title = activity.get_title();
-        let root = activity.on_create(bundle);
-        stack.add_titled(root, &name, &title);
-
-        let name = activity.get_name();
-        self.stack.borrow_mut().push(activity);
-
-        stack.set_visible_child_name(&name);
-    }
-
-    pub fn on_back_pressed(&self) {
-        let stack = self.app.active_window().unwrap().child().unwrap().downcast_ref::<Container>().unwrap().children()[0].clone().downcast::<Stack>().unwrap();
-
-        let children = stack.children();
-        if let Some(current) = stack.visible_child() {
-            if let Some(pos) = children.iter().position(|child| child == &current) {
-                if pos > 0 {
-                    self.stack.borrow().get(pos).unwrap().on_pause();
-                    self.stack.borrow().get(pos - 1).unwrap().on_resume();
-                    stack.set_visible_child(&children[pos - 1]);
-
-                    let next_button = self.get_child_by_name::<Widget>(self.app.active_window().unwrap().titlebar().unwrap().upcast_ref(), "next_button").unwrap();
-                    next_button.style_context().add_class("active");
-
-                    let back_button = self.get_child_by_name::<Widget>(self.app.active_window().unwrap().titlebar().unwrap().upcast_ref(), "back_button").unwrap();
-                    back_button.style_context().remove_class("active");
-                }
-            }
-        }
-    }
-
-    pub fn on_next_pressed(&self) {
-        let stack = self.app.active_window().unwrap().child().unwrap().downcast_ref::<Container>().unwrap().children()[0].clone().downcast::<Stack>().unwrap();
-
-        let children = stack.children();
-        if let Some(current) = stack.visible_child() {
-            if let Some(pos) = children.iter().position(|child| child == &current) {
-                if pos < children.len() - 1 {
-                    self.stack.borrow().get(pos).unwrap().on_pause();
-                    self.stack.borrow().get(pos + 1).unwrap().on_resume();
-                    stack.set_visible_child(&children[pos + 1]);
-
-                    let back_button = self.get_child_by_name::<Widget>(self.app.active_window().unwrap().titlebar().unwrap().upcast_ref(), "back_button").unwrap();
-                    back_button.style_context().add_class("active");
-
-                    let next_button = self.get_child_by_name::<Widget>(self.app.active_window().unwrap().titlebar().unwrap().upcast_ref(), "next_button").unwrap();
-                    next_button.style_context().remove_class("active");
-                }
-            }
-        }
-    }
-
-    pub fn get_application(&self) -> Application {
-        self.app.clone()
-    }
-
-    pub fn get_window(&self) -> Option<Window> {
-        self.app.active_window()
-    }
-
-    pub fn get_titlebar(&self) -> Option<Widget> {
-        self.app.active_window().unwrap().titlebar()
-    }
-
-    pub fn get_bottombar(&self) -> Option<Widget> {
-        None
-    }
-
     fn init_actions(&self, window: &ApplicationWindow) {
         let action = SimpleAction::new("open", None);
-        let _self = self.clone();
+        let context = self.context.clone();
         action.connect_activate(move |_, _| {
-            if let Some(path) = open_file_selector(_self.app.active_window().unwrap().upcast_ref()) {
+            if let Some(path) = open_file_selector(context.get_window().unwrap().upcast_ref()) {
                 let mut bundle = Bundle::new();
                 bundle.put("type", String::from("file"));
                 bundle.put("file", path);
 
-                _self.start_activity(Box::new(MainActivity::new(_self.clone())), Some(bundle));
+                context.start_activity(Box::new(MainActivity::new(context.clone())), Some(bundle));
             }
         });
         window.add_action(&action);
 
         let action = SimpleAction::new("quit", None);
-        let app = self.app.clone();
+        let app = self.context.get_application();
         action.connect_activate(move |_, _| {
             app.quit();
         });
@@ -273,29 +163,6 @@ impl OApplication {
             open_about_dialog(window_clone.upcast_ref());
         });
         window.add_action(&action);
-    }
-
-    pub fn get_child_by_name<T>(&self, widget: &Widget, name: &str) -> Option<T>
-    where
-        T: IsA<Widget> + 'static
-    {
-        if widget.widget_name().as_str() == name {
-            return widget.downcast_ref::<T>().map(|w| w.clone());
-        }
-
-        if let Some(container) = widget.dynamic_cast_ref::<Container>() {
-            for child in container.children() {
-                if let Some(found) = self.get_child_by_name::<T>(&child, name) {
-                    return Some(found);
-                }
-            }
-        }
-
-        None
-    }
-
-    pub fn register_timeout(&self, name: &str, func: u32, timeout: Duration) {
-        //register timeouts so that we can use them later for call backs...
     }
 }
 

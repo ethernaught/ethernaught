@@ -1,7 +1,7 @@
-mod capture_service;
 mod ui;
 mod layers;
 mod database;
+mod qsync;
 
 use std::sync::{Arc, Mutex};
 use std::sync::mpsc::channel;
@@ -27,8 +27,8 @@ rustup install nightly
 rustup override set nightly
 */
 
-//Somehow kill fragment data as well...
-//DEVICE ADAPTER IS REQUIRING A CLONE OF DEVICES - TRY NOT TO REQUIRE THIS...
+//re-implement sidebar replay...
+//save fragments so we can clear adapter
 
 fn main() {
     if !cfg!(debug_assertions) {

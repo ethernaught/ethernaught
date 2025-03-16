@@ -17,8 +17,6 @@ pub trait Activity {
 
     fn on_destroy(&self);
 
-    fn get_application(&self) -> &OApplication;
-
     fn as_any(&self) -> &dyn Any;
 
     fn as_any_mut(&mut self) -> &mut dyn Any;
