@@ -153,20 +153,22 @@ impl OApplication {
         });
         window.add_action(&action);
 
-        let action = SimpleAction::new("quit", None);
-        action.connect_activate({
-            let context = self.context.get_application();
-            move |_, _| {
-                context.quit();
-            }
-        });
-        window.add_action(&action);
-
         let action = SimpleAction::new("packet-playground", None);
         action.connect_activate({
             move |_, _| {
                 let mut window = PacketPlaygroundWindow::new();
                 window.on_create();
+            }
+        });
+        window.add_action(&action);
+
+        let action = SimpleAction::new("website", None);
+        action.connect_activate({
+            let window = window.clone();
+            move |_, _| {
+                if let Err(err) = show_uri_on_window(Some(&window), "https://ethernaut.com", gtk::current_event_time()) {
+                    eprintln!("Failed to open link: {}", err);
+                }
             }
         });
         window.add_action(&action);
