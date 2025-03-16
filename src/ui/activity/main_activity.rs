@@ -25,7 +25,7 @@ use crate::ui::handlers::bundle::Bundle;
 pub struct MainActivity {
     context: Context,
     footer_selected: Rc<RefCell<String>>,
-    capture_service: Option<CaptureService>,
+    //capture_service: Option<CaptureService>,
     data_link_type: DataLinkTypes,
     running: Arc<AtomicBool>,
     root: Option<Container>
@@ -37,16 +37,18 @@ impl MainActivity {
         Self {
             context,
             footer_selected: Rc::new(RefCell::new(String::new())),
+            //capture_service: None,
             running: Arc::new(AtomicBool::new(false)),
-            capture_service: None,
             data_link_type: DataLinkTypes::Null,
             root: None
         }
     }
 
+    /*
     pub fn get_capture_service(&self) -> Option<&CaptureService> {
         self.capture_service.as_ref()
     }
+    */
 
     pub fn open_footerbar(&self, title: &str, mut fragment: Box<dyn Fragment>) {
         if let Some(pane) = self.context.get_child_by_name::<Paned>(self.root.as_ref().unwrap().upcast_ref(), "window_pane") {
@@ -174,6 +176,7 @@ impl Activity for MainActivity {
                         let titlebar = self.context.get_titlebar().unwrap();
                         let network_type_label = self.context.get_child_by_name::<Label>(&titlebar, "network_type_label").unwrap();
 
+                        /*
                         if let Some(device) = bundle.get::<Device>("device") {
                             self.data_link_type = device.get_data_link_type();
 
@@ -186,9 +189,10 @@ impl Activity for MainActivity {
                             self.capture_service = Some(CaptureService::any());
                             network_type_label.set_label("Any");
                         }
+                        */
 
-                        let (tx, rx) = channel();
-                        self.capture_service.as_mut().unwrap().set_tx(tx);
+                        //let (tx, rx) = channel();
+                        //self.capture_service.as_mut().unwrap().set_tx(tx);
 
                         network_type_label.show();
 
@@ -235,6 +239,7 @@ impl Activity for MainActivity {
                         let stop_button = Rc::new(RefCell::new(self.context.get_child_by_name::<Widget>(&app_options.borrow(), "stop_button").unwrap()));
                         let start_button = self.context.get_child_by_name::<Widget>(&app_options.borrow(), "start_button").unwrap();
 
+                        /*
                         if let Some(start_button) = start_button.downcast_ref::<Button>() {
                             let app_options = Rc::clone(&app_options);
                             let stop_button = Rc::clone(&stop_button);
@@ -261,11 +266,17 @@ impl Activity for MainActivity {
                                 capture_service.stop();
                             });
                         }
+                        */
 
-                        let main_fragment = Rc::clone(&main_fragment);
-                        self.running.store(true, Ordering::Relaxed);
-                        let running = Arc::clone(&self.running);
+                        //let main_fragment = Rc::clone(&main_fragment);
+                        //self.running.store(true, Ordering::Relaxed);
+                        //let running = Arc::clone(&self.running);
 
+
+
+
+
+                        /*
                         glib::timeout_add_local(Duration::from_millis(10), move || {
                             while running.load(Ordering::Relaxed) {
                                 match rx.try_recv() {
@@ -284,6 +295,13 @@ impl Activity for MainActivity {
 
                             Continue
                         });
+                        */
+
+
+
+
+
+
                     }
                     "file" => {
                         let pcap = Pcap::from_file(bundle.get::<PathBuf>("file").unwrap().to_str().unwrap()).expect("Couldn't parse pcap");
@@ -365,10 +383,12 @@ impl Activity for MainActivity {
         self.context.get_child_by_name::<Image>(&titlebar, "network_type_icon").unwrap().show();
         self.context.get_child_by_name::<Label>(&titlebar, "network_type_label").unwrap().show();
 
+        /*
         //ONLY IF DEVICE TYPE...
         if let Some(_) = self.capture_service.as_ref() {
             self.context.get_child_by_name::<Widget>(&titlebar, "app_options").unwrap().show();
         }
+        */
     }
 
     fn on_pause(&self) {
@@ -396,6 +416,7 @@ impl Activity for MainActivity {
         self.context.get_child_by_name::<Image>(&titlebar, "network_type_icon").unwrap().hide();
         self.context.get_child_by_name::<Label>(&titlebar, "network_type_label").unwrap().hide();
 
+        /*
         if let Some(capture_service) = self.capture_service.as_ref() {
             capture_service.stop();
 
@@ -403,6 +424,7 @@ impl Activity for MainActivity {
             app_options.style_context().remove_class("running");
             self.context.get_child_by_name::<Widget>(&app_options, "stop_button").unwrap().hide();
         }
+        */
     }
 
     fn on_destroy(&self) {

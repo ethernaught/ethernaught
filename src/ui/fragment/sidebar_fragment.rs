@@ -101,11 +101,13 @@ impl Fragment for SidebarFragment {
 
         let _self = self.clone();
         replay_button.connect_clicked(move |_| {
+            /*
             let main_activity = _self.activity.as_any().downcast_ref::<MainActivity>().unwrap();
 
             if let Some(capture_service) = main_activity.get_capture_service() {
                 capture_service.send(_self.packet.clone());
             }
+            */
         });
 
 

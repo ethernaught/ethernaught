@@ -14,6 +14,7 @@ use gtk::prelude::{BuilderExtManual, ContainerExt, CssProviderExt, GridExt, List
 use pcap::capture::Capture;
 use pcap::devices::Device;
 use pcap::interface_flags::InterfaceFlags;
+use crate::qsync::task::Task;
 use crate::ui::application::OApplication;
 use crate::ui::activity::inter::activity::Activity;
 use crate::ui::activity::main_activity::MainActivity;
@@ -76,16 +77,19 @@ impl Activity for DevicesActivity {
 
         let devices = Device::list().expect("Failed to get device list");
         let device_adapter = DevicesAdapter::from_devices(&devices_list, devices.clone());
-        device_adapter.add_any();
 
         let mut index_map = Vec::new();
+        index_map.push(-1);
+
         devices.iter().for_each(|device| {
-            index_map.push(device.get_index());
+            if device.get_flags().contains(&InterfaceFlags::Running) {
+                index_map.push(device.get_index());
+            }
         });
 
         let context = self.context.clone();
         devices_list.connect_row_activated(move |_, row| {
-            if row.index() < devices.len() as i32 {
+            if row.index() < 0 {
                 let mut bundle = Bundle::new();
                 bundle.put("type", String::from("device"));
                 bundle.put("device", devices[row.index() as usize].clone());
@@ -105,7 +109,8 @@ impl Activity for DevicesActivity {
 
 
         let tx = self.context.get_handler().get_sender();
-        thread::spawn(move || {
+
+        self.context.get_task().spawn(async move {
             let mut cap = Capture::any().expect("Failed to open device");
             cap.set_immediate_mode(true);
             cap.open().expect("Failed to start capture");
@@ -120,6 +125,7 @@ impl Activity for DevicesActivity {
             loop {
                 match cap.try_recv() {
                     Ok((address, packet)) => {
+                        *index_bytes.entry(-1).or_insert(0) += packet.len();
                         *index_bytes.entry(address.sll_ifindex).or_insert(0) += packet.len();
                     }
                     _ => {}
@@ -140,7 +146,8 @@ impl Activity for DevicesActivity {
 
                     index_bytes.clear();
                 }
-                thread::sleep(Duration::from_millis(1));
+
+                Task::delay_for(Duration::from_millis(1)).await;
             }
         });
 
@@ -151,11 +158,16 @@ impl Activity for DevicesActivity {
                         Some(index_bytes) => {
                             let mut i = 0;
                             index_map.iter().for_each(|index| {
+                                let row = devices_list.row_at_index(i).unwrap();
                                 if index_bytes.contains_key(index) {
-                                    let row = devices_list.row_at_index(i).unwrap();
                                     row.children().get(0).unwrap().downcast_ref::<gtk::Box>().unwrap().children().get(1).unwrap()
                                         .downcast_ref::<Graph>().unwrap().add_point(index_bytes.get(index).unwrap().clone() as u32);
+
+                                } else {
+                                    row.children().get(0).unwrap().downcast_ref::<gtk::Box>().unwrap().children().get(1).unwrap()
+                                        .downcast_ref::<Graph>().unwrap().add_point(0);
                                 }
+
                                 i += 1;
                             });
 

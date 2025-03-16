@@ -3,6 +3,7 @@ use std::rc::Rc;
 use gtk::glib::{Cast, IsA};
 use gtk::prelude::{BinExt, ContainerExt, GtkApplicationExt, GtkWindowExt, StackExt, StyleContextExt, WidgetExt};
 use gtk::{Application, Container, Stack, Widget, Window};
+use crate::qsync::task::Task;
 use crate::ui::activity::inter::activity::Activity;
 use crate::ui::handlers::bundle::Bundle;
 use crate::ui::handlers::handler::Handler;
@@ -11,6 +12,7 @@ use crate::ui::handlers::handler::Handler;
 pub struct Context {
     app: Application,
     handler: Handler,
+    task: Task,
     stack: Rc<RefCell<Vec<Box<dyn Activity>>>>
 }
 
@@ -20,6 +22,7 @@ impl Context {
         Self {
             app,
             handler: Handler::new(),
+            task: Task::new(),
             stack: Rc::new(RefCell::new(Vec::new()))
         }
     }
@@ -153,6 +156,10 @@ impl Context {
         }
 
         None
+    }
+
+    pub fn get_task(&self) -> &Task {
+        &self.task
     }
 
     pub fn get_handler(&self) -> &Handler {

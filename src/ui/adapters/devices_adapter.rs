@@ -19,6 +19,7 @@ impl DevicesAdapter {
     }
 
     pub fn from_devices(list_box: &ListBox, devices: Vec<Device>) -> Self {
+        Self::add_any(list_box);
         devices.iter().for_each(|d| {
             Self::add(list_box, d);
         });
@@ -75,7 +76,7 @@ impl DevicesAdapter {
         list_box.add(&row);
     }
 
-    pub fn add_any(&self) {
+    pub fn add_any(list_box: &ListBox) {
         let builder = Builder::from_resource("/com/ethernaut/rust/res/ui/gtk3/device_list_item.ui");
         let row: ListBoxRow = builder
             .object("row")
@@ -99,6 +100,6 @@ impl DevicesAdapter {
             .expect("Couldn't find 'description' in device_list_item.ui");
         description_label.set_label("[Promiscuous]");
 
-        self.list_box.add(&row);
+        list_box.add(&row);
     }
 }
