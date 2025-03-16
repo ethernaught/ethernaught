@@ -80,15 +80,6 @@ impl Activity for DevicesActivity {
         let devices = Device::list().expect("Failed to get device list");
         let device_adapter = DevicesAdapter::from_devices(&devices_list, devices.clone());
 
-        let mut if_map = Vec::new();
-        if_map.push(-1);
-
-        devices.iter().for_each(|device| {
-            if device.get_flags().contains(&InterfaceFlags::Running) {
-                if_map.push(device.get_index());
-            }
-        });
-
         let context = self.context.clone();
         devices_list.connect_row_activated(move |_, row| {
             if row.index() > 0 {
@@ -103,8 +94,6 @@ impl Activity for DevicesActivity {
             bundle.put("type", String::from("device"));
             context.start_activity(Box::new(MainActivity::new(context.clone())), Some(bundle));
         });
-
-        self.devices_adapter = Some(device_adapter);
 
 
 
@@ -141,7 +130,7 @@ impl Activity for DevicesActivity {
                     .expect("Time went backwards")
                     .as_millis();
 
-                if now-time >= 1000 {
+                if now-time >= 250 {
                     time = now;
 
                     let event = TransmittedEvent::new(if_bytes.clone());
@@ -154,11 +143,12 @@ impl Activity for DevicesActivity {
             }
         });
 
+        let device_adapter_clone = device_adapter.clone();
         self.context.get_handler().register_listener("transmitted_event", move |event| {
             let event = event.as_any().downcast_ref::<TransmittedEvent>().unwrap();
 
             let mut i = 0;
-            if_map.iter().for_each(|index| {
+            device_adapter_clone.if_map.borrow().iter().for_each(|index| {
                 let row = devices_list.row_at_index(i).unwrap();
 
                 if event.if_bytes.contains_key(index) {
@@ -174,13 +164,45 @@ impl Activity for DevicesActivity {
             });
         });
 
+        self.devices_adapter = Some(device_adapter);
+
         &self.root.as_ref().unwrap().upcast_ref()
     }
 
     fn on_resume(&self) {
+        let devices_adapter = self.devices_adapter.as_ref().unwrap().clone();
+
+        self.context.get_handler().register_listener("transmitted_event", move |event| {
+            let event = event.as_any().downcast_ref::<TransmittedEvent>().unwrap();
+
+            let mut i = 0;
+            devices_adapter.if_map.borrow().iter().for_each(|index| {
+                let row = devices_adapter.list_box.row_at_index(i).unwrap();
+
+                if event.if_bytes.contains_key(index) {
+                    row.children().get(0).unwrap().downcast_ref::<gtk::Box>().unwrap().children().get(1).unwrap()
+                        .downcast_ref::<Graph>().unwrap().add_point(event.if_bytes.get(index).unwrap().clone() as u32);
+
+                } else {
+                    row.children().get(0).unwrap().downcast_ref::<gtk::Box>().unwrap().children().get(1).unwrap()
+                        .downcast_ref::<Graph>().unwrap().add_point(0);
+                }
+
+                i += 1;
+            });
+        });
     }
 
     fn on_pause(&self) {
+        let children = self.devices_adapter.as_ref().unwrap().list_box.children();
+
+        for row in children {
+            let row = row.downcast::<ListBoxRow>().unwrap();
+            row.children().get(0).unwrap().downcast_ref::<gtk::Box>().unwrap().children().get(1).unwrap()
+                .downcast_ref::<Graph>().unwrap().clear_points();
+        }
+
+        self.context.get_handler().remove_listener("transmitted_event");
     }
 
     fn on_destroy(&self) {

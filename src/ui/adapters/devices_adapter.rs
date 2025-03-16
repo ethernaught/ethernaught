@@ -1,3 +1,5 @@
+use std::cell::RefCell;
+use std::rc::Rc;
 use gtk::{Builder, Image, Label, ListBox, ListBoxRow};
 use gtk::prelude::{BuilderExtManual, ContainerExt, ImageExt, LabelExt, StyleContextExt, WidgetExt};
 use pcap::devices::Device;
@@ -7,25 +9,35 @@ use crate::ui::widgets::graph::Graph;
 
 #[derive(Clone)]
 pub struct DevicesAdapter {
-    list_box: ListBox
+    pub(crate) list_box: ListBox,
+    pub(crate) if_map: Rc<RefCell<Vec<i32>>>
 }
 
 impl DevicesAdapter {
 
     pub fn new(list_box: &ListBox) -> Self {
         Self {
-            list_box: list_box.clone()
+            list_box: list_box.clone(),
+            if_map: Rc::new(RefCell::new(Vec::new()))
         }
     }
 
     pub fn from_devices(list_box: &ListBox, devices: Vec<Device>) -> Self {
+        let mut if_map = Vec::new();
+        if_map.push(-1);
+
         Self::add_any(list_box);
-        devices.iter().for_each(|d| {
-            Self::add(list_box, d);
+        devices.iter().for_each(|device| {
+            if device.get_flags().contains(&InterfaceFlags::Running) {
+                if_map.push(device.get_index());
+            }
+
+            Self::add(list_box, device);
         });
 
         Self {
-            list_box: list_box.clone()
+            list_box: list_box.clone(),
+            if_map: Rc::new(RefCell::new(if_map))
         }
     }
 

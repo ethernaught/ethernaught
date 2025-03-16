@@ -49,6 +49,7 @@ impl Context {
         match stack.child_by_name(activity.get_name().as_ref()) {
             Some(child) => {
                 let pos = stack.child_position(&child) as usize;
+                self.stack.borrow().get(pos-1).unwrap().on_pause();
 
                 let back_button = self.get_child_by_name::<Widget>(self.get_application().active_window().unwrap().titlebar().unwrap().upcast_ref(), "back_button").unwrap();
                 back_button.style_context().add_class("active");
@@ -68,6 +69,8 @@ impl Context {
                 let children = stack.children();
                 if let Some(current) = stack.visible_child() {
                     if let Some(pos) = children.iter().position(|child| child == &current) {
+                        self.stack.borrow().get(pos).unwrap().on_pause();
+
                         let back_button = self.get_child_by_name::<Widget>(self.get_application().active_window().unwrap().titlebar().unwrap().upcast_ref(), "back_button").unwrap();
                         back_button.style_context().add_class("active");
 
@@ -84,7 +87,6 @@ impl Context {
                 }
             }
         }
-
 
         let name = activity.get_name();
         let title = activity.get_title();

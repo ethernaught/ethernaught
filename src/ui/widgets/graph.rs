@@ -164,4 +164,8 @@ impl Graph {
     pub fn get_points(&self) -> Vec<u32> {
         self.imp().points.borrow().clone()
     }
+
+    pub fn clear_points(&self) {
+        self.imp().points.borrow_mut().clear();
+    }
 }
