@@ -273,7 +273,6 @@ impl Activity for MainActivity {
                                 });
                             });
                         }
-
                     }
                     "file" => {
                         let pcap = Pcap::from_file(bundle.get::<PathBuf>("file").unwrap().to_str().unwrap()).expect("Couldn't parse pcap");

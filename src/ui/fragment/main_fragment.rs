@@ -4,7 +4,8 @@ use std::rc::Rc;
 use gtk::prelude::*;
 use gtk::{Builder, CellRendererText, Container, ListStore, ScrolledWindow, TreeView, TreeViewColumn};
 use gtk::glib::Propagation::Proceed;
-use gtk::glib::Type;
+use gtk::glib::{idle_add, idle_add_local, MainContext, Type};
+use gtk::glib::ControlFlow::Continue;
 use pcap::pcap::pcap::Pcap;
 use crate::ui::activity::inter::activity::Activity;
 use crate::ui::activity::main_activity::MainActivity;
@@ -146,31 +147,44 @@ impl Fragment for MainFragment {
             .object("list_scroll_layout")
             .expect("Couldn't find 'list_scroll_layout' in window.ui");
 
-        let adj_ref = Rc::new(RefCell::new(list_scroll_layout.vadjustment()));
-        let adj_ref_clone = adj_ref.clone();
 
-        let is_scrolled_to_bottom = move || {
-            let adj = adj_ref.borrow();
-            (adj.upper() - adj.value() - adj.page_size()).abs() < 100.0
-        };
+        let vadj = Rc::new(list_scroll_layout.vadjustment());
+        let needs_scroll = Rc::new(RefCell::new(false));
+        let user_scrolled_up = Rc::new(RefCell::new(false));
 
-        model.connect_row_inserted(move |_, _, _| {
-            if is_scrolled_to_bottom() {
-                let adj = adj_ref_clone.borrow();
-                adj.set_value(adj.upper() - adj.page_size());
+        {
+            let vadj = vadj.clone();
+            let user_scrolled_up = user_scrolled_up.clone();
+            vadj.connect_value_changed(move |adj| {
+                let is_at_bottom = (adj.upper() - adj.value() - adj.page_size()).abs() < 100.0;
+                *user_scrolled_up.borrow_mut() = !is_at_bottom;
+            });
+        }
+
+        model.connect_row_inserted({
+            let vadj = vadj.clone();
+            let needs_scroll = needs_scroll.clone();
+            let user_scrolled_up = user_scrolled_up.clone();
+
+            move |_, _, _| {
+                if !*user_scrolled_up.borrow() {
+                    *needs_scroll.borrow_mut() = true;
+                }
+
+                let vadj = vadj.clone();
+                let needs_scroll = needs_scroll.clone();
+                let user_scrolled_up = user_scrolled_up.clone();
+
+                idle_add_local(move || {
+                    if *needs_scroll.borrow() && !*user_scrolled_up.borrow() {
+                        *needs_scroll.borrow_mut() = false;
+                        vadj.set_value(vadj.upper() - vadj.page_size());
+                    }
+                    Continue
+                });
             }
         });
 
-        //TEMPORARY
-
-        /*
-        let hex_data: Vec<u8> = vec![0xe6, 0x38, 0x83, 0x2e, 0xf3, 0x2, 0xf0, 0x77, 0xc3, 0xbe, 0xd0, 0x70, 0x8, 0x0, 0x45, 0x0, 0x0, 0x48, 0x10, 0x1c, 0x0, 0x0, 0x40, 0x11, 0x3d, 0xf8, 0xa, 0x1, 0xc, 0x8f, 0xa, 0x1, 0xc, 0x1, 0x81, 0xf9, 0x0, 0x35, 0x0, 0x34, 0x2c, 0xd7, 0x39, 0xe9, 0x1, 0x0, 0x0, 0x1, 0x0, 0x0, 0x0, 0x0, 0x0, 0x1, 0x3, 0x73, 0x73, 0x6c, 0x7, 0x67, 0x73, 0x74, 0x61, 0x74, 0x69, 0x63, 0x3, 0x63, 0x6f, 0x6d, 0x0, 0x0, 0x41, 0x0, 0x1, 0x0, 0x0, 0x29, 0x5, 0xc0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0];
-
-        let packet = decode_packet(Interfaces::Ethernet, &hex_data);
-        let main_activity = self.activity.as_any().downcast_ref::<MainActivity>().unwrap();
-        let mut sidebar_fragment = SidebarFragment::new(self.activity.dyn_clone(), packet);
-        main_activity.open_sidebar(sidebar_fragment.dyn_clone());
-        */
 
 
         &self.root.as_ref().unwrap().upcast_ref()
