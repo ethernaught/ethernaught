@@ -1,23 +1,12 @@
 use std::any::Any;
 use std::cell::RefCell;
-use std::collections::HashMap;
 use std::path::PathBuf;
 use std::rc::Rc;
-use std::sync::Arc;
-use std::sync::atomic::{AtomicBool, Ordering};
-use std::sync::mpsc::channel;
-use std::time::{Duration, SystemTime, UNIX_EPOCH};
 use gtk::prelude::*;
-use gtk::{gdk, glib, Builder, Button, Container, CssProvider, Image, Label, Paned, StyleContext, Widget};
-use gtk::glib::ControlFlow::{Break, Continue};
-use pcap::capture::Capture;
+use gtk::{gdk, Builder, Button, Container, CssProvider, Image, Label, Paned, StyleContext, Widget};
 use pcap::devices::Device;
 use pcap::packet::inter::data_link_types::DataLinkTypes;
-use pcap::packet::packet::Packet;
 use pcap::pcap::pcap::Pcap;
-use crate::capture_service::CaptureService;
-use crate::qsync::task::Task;
-use crate::ui::application::OApplication;
 use crate::ui::activity::inter::activity::Activity;
 use crate::ui::context::Context;
 use crate::ui::fragment::inter::fragment::Fragment;
@@ -25,8 +14,6 @@ use crate::ui::fragment::main_fragment::MainFragment;
 use crate::ui::fragment::terminal_fragment::TerminalFragment;
 use crate::ui::handlers::bundle::Bundle;
 use crate::ui::handlers::events::capture_event::CaptureEvent;
-use crate::ui::handlers::events::transmitted_event::TransmittedEvent;
-use crate::ui::widgets::graph::Graph;
 
 #[derive(Clone)]
 pub struct MainActivity {

@@ -24,7 +24,6 @@ use pcap::packet::layers::ethernet_frame::ip::udp::inter::udp_types::UdpTypes;
 use pcap::packet::layers::ethernet_frame::ip::udp::udp_layer::UdpLayer;
 use pcap::packet::layers::inter::layer::Layer;
 use pcap::packet::packet::Packet;
-use crate::capture_service::CaptureService;
 use crate::database::sqlite::Database;
 use crate::get_lib_path;
 use crate::ui::activity::inter::activity::Activity;
