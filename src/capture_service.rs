@@ -94,7 +94,7 @@ impl CaptureService {
                 match cap.try_recv() {
                     Ok((_, packet)) => {
                         //packet.get_frame_time()-now);
-                        tx.send((String::from("main_activity"), Some(Box::new(packet)))).expect("Failed to send packet");
+                        //tx.send((String::from("main_activity"), Some(Box::new(packet)))).expect("Failed to send packet");
                     }
                     _ => {}
                 }

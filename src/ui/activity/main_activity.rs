@@ -24,6 +24,8 @@ use crate::ui::fragment::inter::fragment::Fragment;
 use crate::ui::fragment::main_fragment::MainFragment;
 use crate::ui::fragment::terminal_fragment::TerminalFragment;
 use crate::ui::handlers::bundle::Bundle;
+use crate::ui::handlers::events::capture_event::CaptureEvent;
+use crate::ui::handlers::events::transmitted_event::TransmittedEvent;
 use crate::ui::widgets::graph::Graph;
 
 #[derive(Clone)]
@@ -181,18 +183,16 @@ impl Activity for MainActivity {
                         let titlebar = self.context.get_titlebar().unwrap();
                         let network_type_label = self.context.get_child_by_name::<Label>(&titlebar, "network_type_label").unwrap();
 
-                        let capture_name = if let Some(device) = bundle.get::<Device>("device") {
+                        if let Some(device) = bundle.get::<Device>("device") {
                             self.data_link_type = device.get_data_link_type();
                             //self.capture_service = Some(CaptureService::from_device(&self.context, &device));
                             network_type_label.set_label(&device.get_name());
-                            format!("capture_{}", device.get_index())
 
                         } else {
                             self.data_link_type = DataLinkTypes::Null;
                             //self.capture_service = Some(CaptureService::any(&self.context));
                             network_type_label.set_label("Any");
-                            String::from("capture_-1")
-                        };
+                        }
 
                         //let (tx, rx) = channel();
                         //self.capture_service.as_mut().unwrap().set_tx(tx);
@@ -246,13 +246,12 @@ impl Activity for MainActivity {
                         {
                             let app_options = Rc::clone(&app_options);
                             let handler = self.context.get_handler().clone();
-                            let capture_name = capture_name.clone();
 
                             stop_button.connect_clicked(move |button| {
                                 app_options.borrow().style_context().remove_class("running");
                                 button.hide();
 
-                                handler.remove_runnable(&capture_name);
+                                handler.remove_listener("capture_event");
                             });
                         }
 
@@ -267,11 +266,11 @@ impl Activity for MainActivity {
 
                                 main_fragment.borrow().get_packet_adapter().unwrap().clear();
 
-                                println!("STARTING CAPTURE ON {}", capture_name);
-
                                 let main_fragment = Rc::clone(&main_fragment);
-                                handler.post_runnable(&capture_name, move |packet| {
-                                    main_fragment.borrow().get_packet_adapter().unwrap().add(*packet.unwrap().downcast::<Packet>().unwrap());
+                                handler.register_listener("capture_event", move |event| {
+                                    let event = event.as_any().downcast_ref::<CaptureEvent>().unwrap();
+                                    main_fragment.borrow().get_packet_adapter().unwrap().add(event.get_packet().clone());
+                                    //main_fragment.borrow().get_packet_adapter().unwrap().add(*packet.unwrap().downcast::<Packet>().unwrap());
                                 });
                             });
                         }

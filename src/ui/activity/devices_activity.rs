@@ -22,6 +22,7 @@ use crate::ui::adapters::devices_adapter::DevicesAdapter;
 use crate::ui::context::Context;
 use crate::ui::handlers::bundle::Bundle;
 use crate::ui::handlers::events::capture_event::CaptureEvent;
+use crate::ui::handlers::events::inter::event::Event;
 use crate::ui::handlers::events::transmitted_event::TransmittedEvent;
 use crate::ui::widgets::graph::Graph;
 
@@ -130,8 +131,7 @@ impl Activity for DevicesActivity {
                         *if_bytes.entry(address.sll_ifindex).or_insert(0) += packet.len();
 
                         let event = CaptureEvent::new(address.sll_ifindex, packet);
-
-                        //tx.send((format!("capture_{}", address.sll_ifindex), Some(Box::new(packet)))).unwrap();
+                        tx.send(Box::new(event)).unwrap();
                     }
                     _ => {}
                 }
@@ -145,14 +145,7 @@ impl Activity for DevicesActivity {
                     time = now;
 
                     let event = TransmittedEvent::new(if_bytes.clone());
-
-                    /*
-                    let mut bundle = Bundle::new();
-                    bundle.put("if_bytes", if_bytes.clone());
-
-
-                    tx.send((String::from("device_activity"), Some(Box::new(bundle)))).unwrap();
-                    */
+                    tx.send(Box::new(event)).unwrap();
 
                     if_bytes.clear();
                 }
@@ -161,32 +154,24 @@ impl Activity for DevicesActivity {
             }
         });
 
-        self.context.get_handler().post_runnable("device_activity", move |bundle| {
-            match bundle {
-                Some(bundle) => {
-                    let bundle = bundle.downcast::<Bundle>().unwrap();
-                    match bundle.get::<HashMap<i32, usize>>("if_bytes") {
-                        Some(if_bytes) => {
-                            let mut i = 0;
-                            if_map.iter().for_each(|index| {
-                                let row = devices_list.row_at_index(i).unwrap();
-                                if if_bytes.contains_key(index) {
-                                    row.children().get(0).unwrap().downcast_ref::<gtk::Box>().unwrap().children().get(1).unwrap()
-                                        .downcast_ref::<Graph>().unwrap().add_point(if_bytes.get(index).unwrap().clone() as u32);
+        self.context.get_handler().register_listener("transmitted_event", move |event| {
+            let event = event.as_any().downcast_ref::<TransmittedEvent>().unwrap();
 
-                                } else {
-                                    row.children().get(0).unwrap().downcast_ref::<gtk::Box>().unwrap().children().get(1).unwrap()
-                                        .downcast_ref::<Graph>().unwrap().add_point(0);
-                                }
+            let mut i = 0;
+            if_map.iter().for_each(|index| {
+                let row = devices_list.row_at_index(i).unwrap();
 
-                                i += 1;
-                            });
-                        }
-                        None => {}
-                    }
+                if event.if_bytes.contains_key(index) {
+                    row.children().get(0).unwrap().downcast_ref::<gtk::Box>().unwrap().children().get(1).unwrap()
+                        .downcast_ref::<Graph>().unwrap().add_point(event.if_bytes.get(index).unwrap().clone() as u32);
+
+                } else {
+                    row.children().get(0).unwrap().downcast_ref::<gtk::Box>().unwrap().children().get(1).unwrap()
+                        .downcast_ref::<Graph>().unwrap().add_point(0);
                 }
-                None => {}
-            }
+
+                i += 1;
+            });
         });
 
         &self.root.as_ref().unwrap().upcast_ref()

@@ -7,11 +7,12 @@ use std::sync::mpsc::channel;
 use std::time::Duration;
 use gtk::glib;
 use gtk::glib::ControlFlow::Continue;
+use crate::ui::handlers::events::inter::event::Event;
 
 #[derive(Clone)]
 pub struct Handler {
-    tx: Sender<(String, Option<Box<dyn Any + Send>>)>,
-    runnables: Rc<RefCell<HashMap<String, Box<dyn Fn(Option<Box<dyn Any + Send>>)>>>>
+    tx: Sender<Box<dyn Event>>,
+    event_listeners: Rc<RefCell<HashMap<String, Box<dyn Fn(Box<dyn Event>)>>>>
 }
 
 impl Handler {
@@ -21,16 +22,16 @@ impl Handler {
 
         let _self = Self {
             tx,
-            runnables: Rc::new(RefCell::new(HashMap::new()))
+            event_listeners: Rc::new(RefCell::new(HashMap::new()))
         };
 
-        let runnables = _self.runnables.clone();
+        let event_listeners = _self.event_listeners.clone();
         glib::timeout_add_local(Duration::from_millis(10), move || {
             loop {
                 match rx.try_recv() {
-                    Ok((name, obj)) => {
-                        if runnables.borrow().contains_key(&name) {
-                            runnables.borrow().get(&name).unwrap()(obj);
+                    Ok(event) => {
+                        if event_listeners.borrow().contains_key(&event.get_name()) {
+                            event_listeners.borrow().get(&event.get_name()).unwrap()(event);
                         }
                     }
                     Err(_) => {
@@ -45,18 +46,18 @@ impl Handler {
         _self
     }
 
-    pub fn get_sender(&self) -> Sender<(String, Option<Box<dyn Any + Send>>)> {
+    pub fn get_sender(&self) -> Sender<Box<dyn Event>> {
         self.tx.clone()
     }
 
-    pub fn post_runnable<F>(&self, name: &str, post: F)
+    pub fn register_listener<F>(&self, name: &str, post: F)
     where
-        F: Fn(Option<Box<dyn Any + Send>>) + 'static
+        F: Fn(Box<dyn Event>) + 'static
     {
-        self.runnables.borrow_mut().insert(name.to_string(), Box::new(post));
+        self.event_listeners.borrow_mut().insert(name.to_string(), Box::new(post));
     }
 
-    pub fn remove_runnable(&self, name: &str) {
-        self.runnables.borrow_mut().remove(name);
+    pub fn remove_listener(&self, name: &str) {
+        self.event_listeners.borrow_mut().remove(name);
     }
 }

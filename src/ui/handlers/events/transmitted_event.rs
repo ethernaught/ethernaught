@@ -1,9 +1,11 @@
+use std::any::Any;
 use std::collections::HashMap;
 use crate::ui::handlers::events::inter::event::Event;
 
+#[derive(Clone)]
 pub struct TransmittedEvent {
     prevent_default: bool,
-    if_bytes: HashMap<i32, usize>
+    pub(crate) if_bytes: HashMap<i32, usize>
 }
 
 impl TransmittedEvent {
@@ -19,7 +21,7 @@ impl TransmittedEvent {
 impl Event for TransmittedEvent {
 
     fn get_name(&self) -> String {
-        String::from("capture_event")
+        String::from("transmitted_event")
     }
 
     fn is_prevent_default(&self) -> bool {
@@ -28,5 +30,25 @@ impl Event for TransmittedEvent {
 
     fn prevent_default(&mut self) {
         todo!()
+    }
+
+    fn upcast(&self) -> &dyn Event {
+        self
+    }
+
+    fn upcast_mut(&mut self) -> &mut dyn Event {
+        self
+    }
+
+    fn dyn_clone(&self) -> Box<dyn Event> {
+        Box::new(self.clone())
+    }
+
+    fn as_any(&self) -> &dyn Any {
+        self
+    }
+
+    fn as_any_mut(&mut self) -> &mut dyn Any {
+        self
     }
 }

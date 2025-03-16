@@ -1,6 +1,8 @@
+use std::any::Any;
 use pcap::packet::packet::Packet;
 use crate::ui::handlers::events::inter::event::Event;
 
+#[derive(Clone)]
 pub struct CaptureEvent {
     prevent_default: bool,
     if_index: i32,
@@ -38,5 +40,25 @@ impl Event for CaptureEvent {
 
     fn prevent_default(&mut self) {
         todo!()
+    }
+
+    fn upcast(&self) -> &dyn Event {
+        self
+    }
+
+    fn upcast_mut(&mut self) -> &mut dyn Event {
+        self
+    }
+
+    fn dyn_clone(&self) -> Box<dyn Event> {
+        Box::new(self.clone())
+    }
+
+    fn as_any(&self) -> &dyn Any {
+        self
+    }
+
+    fn as_any_mut(&mut self) -> &mut dyn Any {
+        self
     }
 }
