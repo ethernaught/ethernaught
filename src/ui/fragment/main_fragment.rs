@@ -175,13 +175,10 @@ impl Fragment for MainFragment {
                 let needs_scroll = needs_scroll.clone();
                 let user_scrolled_up = user_scrolled_up.clone();
 
-                idle_add_local(move || {
-                    if *needs_scroll.borrow() && !*user_scrolled_up.borrow() {
-                        *needs_scroll.borrow_mut() = false;
-                        vadj.set_value(vadj.upper() - vadj.page_size());
-                    }
-                    Continue
-                });
+                if *needs_scroll.borrow() && !*user_scrolled_up.borrow() {
+                    *needs_scroll.borrow_mut() = false;
+                    vadj.set_value(vadj.upper() - vadj.page_size());
+                }
             }
         });
 
