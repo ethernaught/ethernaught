@@ -23,6 +23,7 @@ use crate::ui::titlebar::TitleBar;
 use crate::ui::widgets::graph::Graph;
 use crate::ui::widgets::hex_editor::HexEditor;
 use crate::ui::widgets::terminal::Terminal;
+use crate::ui::windows::packet_playground_window::PacketPlaygroundWindow;
 
 #[derive(Clone)]
 pub struct OApplication {
@@ -152,13 +153,20 @@ impl OApplication {
         });
         window.add_action(&action);
 
-        let action = SimpleAction::new("website", None);
+        let action = SimpleAction::new("quit", None);
         action.connect_activate({
-            let window = window.clone();
+            let context = self.context.get_application();
             move |_, _| {
-                if let Err(err) = show_uri_on_window(Some(&window), "https://ethernaut.com", gtk::current_event_time()) {
-                    eprintln!("Failed to open link: {}", err);
-                }
+                context.quit();
+            }
+        });
+        window.add_action(&action);
+
+        let action = SimpleAction::new("packet-playground", None);
+        action.connect_activate({
+            move |_, _| {
+                let mut window = PacketPlaygroundWindow::new();
+                window.on_create();
             }
         });
         window.add_action(&action);
