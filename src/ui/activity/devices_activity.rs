@@ -88,10 +88,10 @@ impl Activity for DevicesActivity {
 
         let context = self.context.clone();
         devices_list.connect_row_activated(move |_, row| {
-            if row.index() < 0 {
+            if row.index() > 0 {
                 let mut bundle = Bundle::new();
                 bundle.put("type", String::from("device"));
-                bundle.put("device", devices[row.index() as usize].clone());
+                bundle.put("device", devices[row.index() as usize - 1].clone());
                 context.start_activity(Box::new(MainActivity::new(context.clone())), Some(bundle));
                 return;
             }
@@ -126,6 +126,8 @@ impl Activity for DevicesActivity {
                     Ok((address, packet)) => {
                         *index_bytes.entry(-1).or_insert(0) += packet.len();
                         *index_bytes.entry(address.sll_ifindex).or_insert(0) += packet.len();
+
+                        tx.send((format!("capture_{}", address.sll_ifindex), Some(Box::new(packet)))).unwrap();
                     }
                     _ => {}
                 }

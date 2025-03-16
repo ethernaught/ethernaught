@@ -29,7 +29,9 @@ impl Handler {
             loop {
                 match rx.try_recv() {
                     Ok((name, bundle)) => {
-                        runnables.borrow().get(&name).unwrap()(bundle);
+                        if runnables.borrow().contains_key(&name) {
+                            runnables.borrow().get(&name).unwrap()(bundle);
+                        }
                     }
                     Err(_) => {
                         break;
@@ -52,5 +54,9 @@ impl Handler {
         F: Fn(Option<Box<dyn Any + Send>>) + 'static
     {
         self.runnables.borrow_mut().insert(name.to_string(), Box::new(post));
+    }
+
+    pub fn remove_runnable(&self, name: &str) {
+        self.runnables.borrow_mut().remove(name);
     }
 }
