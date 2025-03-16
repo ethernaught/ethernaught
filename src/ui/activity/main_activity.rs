@@ -33,6 +33,7 @@ pub struct MainActivity {
     context: Context,
     footer_selected: Rc<RefCell<String>>,
     data_link_type: DataLinkTypes,
+    _type: Option<String>,
     //capture_service: Option<CaptureService>,
     //running: Arc<AtomicBool>,
     root: Option<Container>
@@ -45,6 +46,7 @@ impl MainActivity {
             context,
             footer_selected: Rc::new(RefCell::new(String::new())),
             data_link_type: DataLinkTypes::Null,
+            _type: None,
             //capture_service: None,
             //running: Arc::new(AtomicBool::new(false)),
             root: None
@@ -178,6 +180,8 @@ impl Activity for MainActivity {
 
         match bundle {
             Some(bundle) => {
+                self._type = Some(bundle.get::<String>("type").unwrap().to_string());
+
                 match bundle.get::<String>("type").unwrap().as_str() {
                     "device" => {
                         let titlebar = self.context.get_titlebar().unwrap();
@@ -362,12 +366,11 @@ impl Activity for MainActivity {
         self.context.get_child_by_name::<Image>(&titlebar, "network_type_icon").unwrap().show();
         self.context.get_child_by_name::<Label>(&titlebar, "network_type_label").unwrap().show();
 
-        /*
-        //ONLY IF DEVICE TYPE...
-        if let Some(_) = self.capture_service.as_ref() {
-            self.context.get_child_by_name::<Widget>(&titlebar, "app_options").unwrap().show();
+        if let Some(_type) = self._type.as_ref() {
+            if _type == "device" {
+                self.context.get_child_by_name::<Widget>(&titlebar, "app_options").unwrap().show();
+            }
         }
-        */
     }
 
     fn on_pause(&self) {
@@ -395,19 +398,18 @@ impl Activity for MainActivity {
         self.context.get_child_by_name::<Image>(&titlebar, "network_type_icon").unwrap().hide();
         self.context.get_child_by_name::<Label>(&titlebar, "network_type_label").unwrap().hide();
 
-        /*
-        if let Some(capture_service) = self.capture_service.as_ref() {
-            capture_service.stop();
+        if let Some(_type) = self._type.as_ref() {
+            if _type == "device" {
+                self.context.get_handler().remove_listener("capture_event");
 
-            let app_options = self.context.get_child_by_name::<Widget>(&titlebar, "app_options").unwrap();
-            app_options.style_context().remove_class("running");
-            self.context.get_child_by_name::<Widget>(&app_options, "stop_button").unwrap().hide();
+                let app_options = self.context.get_child_by_name::<Widget>(&titlebar, "app_options").unwrap();
+                app_options.style_context().remove_class("running");
+                self.context.get_child_by_name::<Widget>(&app_options, "stop_button").unwrap().hide();
+            }
         }
-        */
     }
 
     fn on_destroy(&self) {
-        //self.running.store(false, Ordering::Relaxed);
     }
 
     fn as_any(&self) -> &dyn Any {

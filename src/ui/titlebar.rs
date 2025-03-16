@@ -86,18 +86,18 @@ impl TitleBar {
             .object("back_button")
             .expect("Couldn't find 'back_button' in titlebar_ui.xml");
 
-        //let app = self.context.clone();
+        let context = self.context.clone();
         back_button.connect_clicked(move |_| {
-            //app.on_back_pressed();
+            context.on_back_pressed();
         });
 
         let next_button: Button = builder
             .object("next_button")
             .expect("Couldn't find 'next_button' in titlebar_ui.xml");
 
-        //let app = self.context.clone();
+        let context = self.context.clone();
         next_button.connect_clicked(move |_| {
-            //app.on_next_pressed();
+            context.on_next_pressed();
         });
     }
 
