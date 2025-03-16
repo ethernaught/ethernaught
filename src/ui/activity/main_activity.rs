@@ -6,11 +6,13 @@ use gtk::prelude::*;
 use gtk::{gdk, Builder, Button, Container, CssProvider, Image, Label, Paned, StyleContext, Widget};
 use pcap::devices::Device;
 use pcap::packet::inter::data_link_types::DataLinkTypes;
+use pcap::packet::packet::Packet;
 use pcap::pcap::pcap::Pcap;
 use crate::ui::activity::inter::activity::Activity;
 use crate::ui::context::Context;
 use crate::ui::fragment::inter::fragment::Fragment;
 use crate::ui::fragment::main_fragment::MainFragment;
+use crate::ui::fragment::sidebar_fragment::SidebarFragment;
 use crate::ui::fragment::terminal_fragment::TerminalFragment;
 use crate::ui::handlers::bundle::Bundle;
 use crate::ui::handlers::events::capture_event::CaptureEvent;
@@ -324,6 +326,19 @@ impl Activity for MainActivity {
             }
             None => {}
         }
+
+
+
+        //TEMPORARY
+        let hex_data: Vec<u8> = vec![0xe6, 0x38, 0x83, 0x2e, 0xf3, 0x2, 0xf0, 0x77, 0xc3, 0xbe, 0xd0, 0x70, 0x8, 0x0, 0x45, 0x0, 0x0, 0x48, 0x10, 0x1c, 0x0, 0x0, 0x40, 0x11, 0x3d, 0xf8, 0xa, 0x1, 0xc, 0x8f, 0xa, 0x1, 0xc, 0x1, 0x81, 0xf9, 0x0, 0x35, 0x0, 0x34, 0x2c, 0xd7, 0x39, 0xe9, 0x1, 0x0, 0x0, 0x1, 0x0, 0x0, 0x0, 0x0, 0x0, 0x1, 0x3, 0x73, 0x73, 0x6c, 0x7, 0x67, 0x73, 0x74, 0x61, 0x74, 0x69, 0x63, 0x3, 0x63, 0x6f, 0x6d, 0x0, 0x0, 0x41, 0x0, 0x1, 0x0, 0x0, 0x29, 0x5, 0xc0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0];
+
+        let packet = Packet::new(DataLinkTypes::Ethernet, 0, &hex_data);
+        let main_activity = self.as_any().downcast_ref::<MainActivity>().unwrap();
+        let mut sidebar_fragment = SidebarFragment::new(self.dyn_clone(), packet);
+        main_activity.open_sidebar(sidebar_fragment.dyn_clone());
+
+
+
 
         &self.root.as_ref().unwrap().upcast_ref()
     }
