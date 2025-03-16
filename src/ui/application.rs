@@ -5,7 +5,7 @@ use std::rc::Rc;
 use std::sync::atomic::Ordering;
 use std::sync::{Arc, Mutex};
 use std::time::Duration;
-use gtk::{AboutDialog, ApplicationWindow, Builder, Image, Application, TreeViewColumn, CellRendererText, ScrolledWindow, Button, ListBoxRow, Label, CssProvider, StyleContext, gdk, Stack, Container, TreeView, Widget, Window, gio, MenuBar, MenuItem, Menu, FileChooserDialog, ResponseType, FileChooserAction, glib};
+use gtk::{AboutDialog, ApplicationWindow, Builder, Image, Application, TreeViewColumn, CellRendererText, ScrolledWindow, Button, ListBoxRow, Label, CssProvider, StyleContext, gdk, Stack, Container, TreeView, Widget, Window, gio, MenuBar, MenuItem, Menu, FileChooserDialog, ResponseType, FileChooserAction, glib, show_uri_on_window};
 use gtk::gdk_pixbuf::Pixbuf;
 use gtk::prelude::*;
 use gtk::gio::{resources_register, ApplicationFlags, Resource, SimpleAction};
@@ -138,29 +138,46 @@ impl OApplication {
 
     fn init_actions(&self, window: &ApplicationWindow) {
         let action = SimpleAction::new("open", None);
-        let context = self.context.clone();
-        action.connect_activate(move |_, _| {
-            if let Some(path) = open_file_selector(context.get_window().unwrap().upcast_ref()) {
-                let mut bundle = Bundle::new();
-                bundle.put("type", String::from("file"));
-                bundle.put("file", path);
+        action.connect_activate({
+            let context = self.context.clone();
+            move |_, _| {
+                if let Some(path) = open_file_selector(context.get_window().unwrap().upcast_ref()) {
+                    let mut bundle = Bundle::new();
+                    bundle.put("type", String::from("file"));
+                    bundle.put("file", path);
 
-                context.start_activity(Box::new(MainActivity::new(context.clone())), Some(bundle));
+                    context.start_activity(Box::new(MainActivity::new(context.clone())), Some(bundle));
+                }
+            }
+        });
+        window.add_action(&action);
+
+        let action = SimpleAction::new("website", None);
+        action.connect_activate({
+            let window = window.clone();
+            move |_, _| {
+                if let Err(err) = show_uri_on_window(Some(&window), "https://ethernaut.com", gtk::current_event_time()) {
+                    eprintln!("Failed to open link: {}", err);
+                }
             }
         });
         window.add_action(&action);
 
         let action = SimpleAction::new("quit", None);
-        let app = self.context.get_application();
-        action.connect_activate(move |_, _| {
-            app.quit();
+        action.connect_activate({
+            let context = self.context.get_application();
+            move |_, _| {
+                context.quit();
+            }
         });
         window.add_action(&action);
 
         let action = SimpleAction::new("show-about-dialog", None);
-        let window_clone = window.clone();
-        action.connect_activate(move |_, _| {
-            open_about_dialog(window_clone.upcast_ref());
+        action.connect_activate({
+            let window = window.clone();
+            move |_, _| {
+                open_about_dialog(window.upcast_ref());
+            }
         });
         window.add_action(&action);
     }
