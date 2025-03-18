@@ -121,7 +121,6 @@ impl Fragment for SidebarFragment {
         hex_editor.set_line_number_color(RGBA::new(0.286, 0.306, 0.341, 1.0));
         hex_editor.set_cursor_color(RGBA::new(0.608, 0.616, 0.624, 1.0));
         hex_editor.set_selection_color(RGBA::new(0.349, 0.263, 0.431, 1.0));
-        hex_editor.show();
 
 
         let db = Database::open(get_lib_path("database.db").to_str().unwrap()).expect("Couldn't open database.db");

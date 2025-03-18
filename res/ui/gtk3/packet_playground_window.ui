@@ -10,11 +10,29 @@
         <property name="role">tr-main</property>
 
         <child>
-            <object class="GtkBox" id="window_content">
+            <object class="GtkPaned" id="window_content">
+                <property name="name">window_content</property>
                 <property name="visible">True</property>
-                <property name="hexpand">True</property>
-                <property name="vexpand">True</property>
-                <property name="orientation">vertical</property>
+                <property name="orientation">horizontal</property>
+                <property name="position">600</property>
+
+                <child>
+                    <object class="HexEditor" id="hex_editor">
+                        <property name="visible">True</property>
+                        <property name="hexpand">True</property>
+                        <property name="vexpand">True</property>
+                    </object>
+                </child>
+
+                <child>
+                    <object class="GtkBox" id="z_layout">
+                        <property name="name">z_layout</property>
+                        <property name="visible">True</property>
+                        <property name="hexpand">True</property>
+                        <property name="vexpand">True</property>
+                        <property name="orientation">vertical</property>
+                    </object>
+                </child>
             </object>
         </child>
     </object>
