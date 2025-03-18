@@ -203,7 +203,7 @@ impl Activity for MainActivity {
                                 titlebar.style_context().add_class("any");
                                 icon.set_resource(Some("/com/ethernaut/rust/res/icons/ic_any.svg"));
                             }
-                            DataLinkTypes::Ethernet => {
+                            DataLinkTypes::Ethernet | DataLinkTypes::Sll2 => {
                                 titlebar.style_context().add_class("ethernet");
                                 icon.set_resource(Some("/com/ethernaut/rust/res/icons/ic_ethernet.svg"));
                             }
@@ -223,7 +223,6 @@ impl Activity for MainActivity {
                         }
 
                         icon.show();
-
 
                         let mut main_fragment = MainFragment::new(self.dyn_clone());
                         let content = main_fragment.on_create(None);
@@ -284,7 +283,7 @@ impl Activity for MainActivity {
                         let icon = self.context.get_child_by_name::<Image>(&titlebar, "network_type_icon").unwrap();
 
                         match self.data_link_type {
-                            DataLinkTypes::Ethernet => {
+                            DataLinkTypes::Ethernet | DataLinkTypes::Sll2 => {
                                 titlebar.style_context().add_class("ethernet");
                                 icon.set_resource(Some("/com/ethernaut/rust/res/icons/ic_ethernet.svg"));
                             }
@@ -351,7 +350,7 @@ impl Activity for MainActivity {
             DataLinkTypes::Null => {
                 titlebar.style_context().add_class("any");
             }
-            DataLinkTypes::Ethernet => {
+            DataLinkTypes::Ethernet | DataLinkTypes::Sll2 => {
                 titlebar.style_context().add_class("ethernet");
             }
             DataLinkTypes::Loopback => {
@@ -383,7 +382,7 @@ impl Activity for MainActivity {
             DataLinkTypes::Null => {
                 titlebar.style_context().remove_class("any");
             }
-            DataLinkTypes::Ethernet => {
+            DataLinkTypes::Ethernet | DataLinkTypes::Sll2 => {
                 titlebar.style_context().remove_class("ethernet");
             }
             DataLinkTypes::Loopback => {

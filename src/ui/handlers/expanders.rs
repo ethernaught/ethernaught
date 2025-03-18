@@ -13,6 +13,7 @@ use pcap::packet::layers::ethernet_frame::ip::ipv6_layer::Ipv6Layer;
 use pcap::packet::layers::ethernet_frame::ip::tcp::tcp_layer::TcpLayer;
 use pcap::packet::layers::ethernet_frame::ip::udp::dhcp::dhcp_layer::DhcpLayer;
 use pcap::packet::layers::ethernet_frame::ip::udp::udp_layer::UdpLayer;
+use pcap::packet::layers::sll2_frame::sll2_frame::Sll2Frame;
 use crate::database::sqlite::Database;
 use crate::layers::inter::layer_ext::LayerExt;
 use crate::ui::handlers::ethernet_utils::ethernet_to_company;
@@ -58,6 +59,33 @@ pub fn create_ethernet_layer_expander(db: &Database, offset: usize, hex_editor: 
 
         hex_editor.set_selection(offset+x, w);
     });
+
+    dropdown.add(&list_box);
+    dropdown.upcast()
+}
+
+pub fn create_sll2_layer_expander(offset: usize, hex_editor: &HexEditor, layer: &Sll2Frame) -> Container {
+    let (dropdown, list_box) = create_dropdown("Linux cooked capture v2");
+
+    list_box.add(&create_row("Protocol:", format!("{} (0x{:04X})", layer.get_protocol().to_string(), layer.get_protocol().get_code())));
+    list_box.add(&create_row("Interface Index:", layer.get_if_index().to_string()));
+    list_box.add(&create_row("Link-Layer Address Type:", format!("{} ({})", layer.get_data_link_type().to_string(), layer.get_data_link_type().get_code())));
+    list_box.add(&create_row("Packet Type:", format!("{} ({})", layer.get_packet_type().to_string(), layer.get_packet_type().get_code())));
+    list_box.add(&create_row("Link-Layer Address Length:", layer.get_address_length().to_string()));
+
+    let address = layer.get_address().iter()
+        .take(layer.get_address_length() as usize)
+        .map(|b| format!("{:02X}", b))
+        .collect::<Vec<String>>()
+        .join(":");
+    list_box.add(&create_row("Source:", address));
+
+    let unused = layer.get_address().iter()
+        .skip(layer.get_address_length() as usize)
+        .map(|b| format!("{:02X}", b))
+        .collect::<Vec<String>>()
+        .concat();
+    list_box.add(&create_row("Unused:", unused));
 
     dropdown.add(&list_box);
     dropdown.upcast()

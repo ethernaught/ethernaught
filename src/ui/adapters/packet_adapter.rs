@@ -9,6 +9,7 @@ use pcap::packet::layers::ethernet_frame::ip::ipv4_layer::Ipv4Layer;
 use pcap::packet::layers::ethernet_frame::ip::ipv6_layer::Ipv6Layer;
 use pcap::packet::layers::ethernet_frame::ip::udp::inter::udp_payloads::UdpPayloads;
 use pcap::packet::layers::ethernet_frame::ip::udp::udp_layer::UdpLayer;
+use pcap::packet::layers::sll2_frame::sll2_frame::Sll2Frame;
 use pcap::packet::packet::Packet;
 
 #[derive(Clone)]
@@ -100,6 +101,57 @@ impl PacketAdapter {
                     }
                     _ => {
                         (ethernet_frame.get_source_mac().to_string(), ethernet_frame.get_destination_mac().to_string(), ethernet_frame.get_type().to_string())
+                    }
+                }
+            }
+            DataLinkTypes::Sll2 => {
+                let sll2_frame = packet.get_frame().as_any().downcast_ref::<Sll2Frame>().unwrap();
+
+                match sll2_frame.get_protocol() {
+                    EthernetTypes::IPv4 => {
+                        let ipv4_layer = sll2_frame.get_data().unwrap().as_any().downcast_ref::<Ipv4Layer>().unwrap();
+
+                        match ipv4_layer.get_protocol() {
+                            IpProtocols::Udp => {
+                                let udp_layer = ipv4_layer.get_data().unwrap().as_any().downcast_ref::<UdpLayer>().unwrap();
+
+                                match udp_layer.get_payload() {
+                                    UdpPayloads::Known(_type, _) => {
+                                        (ipv4_layer.get_source_address().to_string(), ipv4_layer.get_destination_address().to_string(), udp_layer.get_type().to_string())
+                                    }
+                                    _ => {
+                                        (ipv4_layer.get_source_address().to_string(), ipv4_layer.get_destination_address().to_string(), ipv4_layer.get_protocol().to_string())
+                                    }
+                                }
+                            }
+                            _ => {
+                                (ipv4_layer.get_source_address().to_string(), ipv4_layer.get_destination_address().to_string(), ipv4_layer.get_protocol().to_string())
+                            }
+                        }
+                    }
+                    EthernetTypes::IPv6 => {
+                        let ipv6_layer = sll2_frame.get_data().unwrap().as_any().downcast_ref::<Ipv6Layer>().unwrap();
+
+                        match ipv6_layer.get_next_header() {
+                            IpProtocols::Udp => {
+                                let udp_layer = ipv6_layer.get_data().unwrap().as_any().downcast_ref::<UdpLayer>().unwrap();
+
+                                match udp_layer.get_payload() {
+                                    UdpPayloads::Known(_type, _) => {
+                                        (ipv6_layer.get_source_address().to_string(), ipv6_layer.get_destination_address().to_string(), udp_layer.get_type().to_string())
+                                    }
+                                    _ => {
+                                        (ipv6_layer.get_source_address().to_string(), ipv6_layer.get_destination_address().to_string(), ipv6_layer.get_next_header().to_string())
+                                    }
+                                }
+                            }
+                            _ => {
+                                (ipv6_layer.get_source_address().to_string(), ipv6_layer.get_destination_address().to_string(), ipv6_layer.get_next_header().to_string())
+                            }
+                        }
+                    }
+                    _ => {
+                        unimplemented!()
                     }
                 }
             }

@@ -23,6 +23,7 @@ use pcap::packet::layers::ethernet_frame::ip::udp::inter::udp_payloads::UdpPaylo
 use pcap::packet::layers::ethernet_frame::ip::udp::inter::udp_types::UdpTypes;
 use pcap::packet::layers::ethernet_frame::ip::udp::udp_layer::UdpLayer;
 use pcap::packet::layers::inter::layer::Layer;
+use pcap::packet::layers::sll2_frame::sll2_frame::Sll2Frame;
 use pcap::packet::packet::Packet;
 use crate::database::sqlite::Database;
 use crate::get_lib_path;
@@ -30,7 +31,7 @@ use crate::ui::activity::inter::activity::Activity;
 use crate::ui::activity::main_activity::MainActivity;
 use crate::ui::fragment::inter::fragment::Fragment;
 use crate::ui::handlers::bundle::Bundle;
-use crate::ui::handlers::expanders::{create_arp_layer_expander, create_dhcp_layer_expander, create_ethernet_layer_expander, create_icmp_layer_expander, create_icmpv6_layer_expander, create_ipv4_layer_expander, create_ipv6_layer_expander, create_tcp_layer_expander, create_udp_layer_expander};
+use crate::ui::handlers::expanders::{create_arp_layer_expander, create_dhcp_layer_expander, create_ethernet_layer_expander, create_icmp_layer_expander, create_icmpv6_layer_expander, create_ipv4_layer_expander, create_ipv6_layer_expander, create_sll2_layer_expander, create_tcp_layer_expander, create_udp_layer_expander};
 use crate::ui::widgets::hex_editor::HexEditor;
 
 #[derive(Clone)]
@@ -230,6 +231,100 @@ impl Fragment for SidebarFragment {
                     }
                 }
 
+            }
+            DataLinkTypes::Sll2 => {
+                let sll2_frame = self.packet.get_frame().as_any().downcast_ref::<Sll2Frame>().unwrap();
+                details_layout.add(&create_sll2_layer_expander(0, &hex_editor, &sll2_frame));
+
+                match sll2_frame.get_protocol() {
+                    EthernetTypes::IPv4 => {
+                        let ipv4_layer = sll2_frame.get_data().unwrap().as_any().downcast_ref::<Ipv4Layer>().unwrap();
+                        details_layout.add(&create_ipv4_layer_expander(sll2_frame.len()-ipv4_layer.len(), &hex_editor, &ipv4_layer));
+
+                        match ipv4_layer.get_protocol() {
+                            IpProtocols::HopByHop => {}
+                            IpProtocols::Icmp => {
+                                let icmp_layer = ipv4_layer.get_data().unwrap().as_any().downcast_ref::<IcmpLayer>().unwrap();
+                                details_layout.add(&create_icmp_layer_expander(&icmp_layer));
+                            }
+                            IpProtocols::Igmp => {}
+                            IpProtocols::Tcp => {
+                                let tcp_layer = ipv4_layer.get_data().unwrap().as_any().downcast_ref::<TcpLayer>().unwrap();
+                                details_layout.add(&create_tcp_layer_expander(&tcp_layer));
+                            }
+                            IpProtocols::Udp => {
+                                let udp_layer = ipv4_layer.get_data().unwrap().as_any().downcast_ref::<UdpLayer>().unwrap();
+                                details_layout.add(&create_udp_layer_expander(&udp_layer, IpAddr::V4(ipv4_layer.get_source_address()), IpAddr::V4(ipv4_layer.get_destination_address())));
+
+                                match udp_layer.get_payload() {
+                                    UdpPayloads::Known(_type, payload) => {
+                                        match _type {
+                                            UdpTypes::Dhcp => {
+                                                let dhcp_layer = payload.as_any().downcast_ref::<DhcpLayer>().unwrap();
+                                                details_layout.add(&create_dhcp_layer_expander(&dhcp_layer));
+                                            }
+                                            UdpTypes::Dns => {}
+                                            UdpTypes::Quick => {}
+                                            UdpTypes::uTp => {}
+                                            UdpTypes::BitTorrent => {}
+                                            _ => {}
+                                        }
+                                    }
+                                    _ => {}
+                                }
+                            }
+                            IpProtocols::Ipv6 => {}
+                            IpProtocols::Gre => {}
+                            IpProtocols::Icmpv6 => {}
+                            IpProtocols::Ospf => {}
+                            IpProtocols::Sps => {}
+                        }
+                    }
+                    EthernetTypes::IPv6 => {
+                        let ipv6_layer = sll2_frame.get_data().unwrap().as_any().downcast_ref::<Ipv6Layer>().unwrap();
+                        details_layout.add(&create_ipv6_layer_expander(sll2_frame.len()-ipv6_layer.len(), &hex_editor, &ipv6_layer));
+
+                        match ipv6_layer.get_next_header() {
+                            IpProtocols::HopByHop => {}
+                            IpProtocols::Icmp => {}
+                            IpProtocols::Igmp => {}
+                            IpProtocols::Tcp => {
+                                let tcp_layer = ipv6_layer.get_data().unwrap().as_any().downcast_ref::<TcpLayer>().unwrap();
+                                details_layout.add(&create_tcp_layer_expander(&tcp_layer));
+                            }
+                            IpProtocols::Udp => {
+                                let udp_layer = ipv6_layer.get_data().unwrap().as_any().downcast_ref::<UdpLayer>().unwrap();
+                                details_layout.add(&create_udp_layer_expander(&udp_layer, IpAddr::V6(ipv6_layer.get_source_address()), IpAddr::V6(ipv6_layer.get_destination_address())));
+
+                                match udp_layer.get_payload() {
+                                    UdpPayloads::Known(_type, payload) => {
+                                        match _type {
+                                            UdpTypes::Dhcp => {
+                                                let dhcp_layer = payload.as_any().downcast_ref::<DhcpLayer>().unwrap();
+                                                details_layout.add(&create_dhcp_layer_expander(&dhcp_layer));
+                                            }
+                                            UdpTypes::Dns => {}
+                                            UdpTypes::Quick => {}
+                                            UdpTypes::uTp => {}
+                                            UdpTypes::BitTorrent => {}
+                                            _ => {}
+                                        }
+                                    }
+                                    _ => {}
+                                }
+                            }
+                            IpProtocols::Ipv6 => {}
+                            IpProtocols::Gre => {}
+                            IpProtocols::Icmpv6 => {
+                                let icmpv6_layer = ipv6_layer.get_data().unwrap().as_any().downcast_ref::<Icmpv6Layer>().unwrap();
+                                details_layout.add(&create_icmpv6_layer_expander(&icmpv6_layer));
+                            }
+                            IpProtocols::Ospf => {}
+                            IpProtocols::Sps => {}
+                        }
+                    }
+                    _ => {}
+                }
             }
             _ => {
                 //"[WiFi] TODO".to_string()
