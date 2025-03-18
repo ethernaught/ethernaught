@@ -1,6 +1,7 @@
 @define-color primary #59436e;
 @define-color background #2b2d30;
 @define-color background_secondary #1e1f22;
+@define-color background_shimmer #393b40;
 
 @define-color text_primary #cbd7dc;
 @define-color text_secondary #a7a7a7;
@@ -9,7 +10,7 @@
 @define-color ripple rgba(255, 255, 255, 0.15);
 
 @define-color border #5a5d63;
-@define-color border_dark #393b40;
+@define-color border_light #4e5157;
 
 @define-color purple #784da1;
 @define-color green #57965C;
@@ -21,6 +22,10 @@
 @define-color device_wifi #5e3058;
 @define-color device_vpn #376141;
 @define-color device_bluetooth #394366;
+
+* {
+    box-shadow: none;
+}
 
 window {
     background-color: @background;
@@ -58,7 +63,6 @@ button {
 button:focus, button:checked {
     outline: none;
     border: none;
-    box-shadow: none;
 }
 
 
@@ -241,9 +245,6 @@ window.maximized #window_options #window_maximize {
 
 
 
-menubar * {
-    box-shadow: none;
-}
 
 menuitem {
     border: none;

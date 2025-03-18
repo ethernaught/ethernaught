@@ -16,7 +16,6 @@ entry {
 
 entry:focus {
     outline: none;
-    box-shadow: none;
 }
 
 #tree_view {
@@ -29,7 +28,7 @@ entry:focus {
     padding: 8px 4px;
     font-size: 14px;
     border: none;
-    border-bottom: solid 1px @border_dark;
+    border-bottom: solid 1px @background_shimmer;
     font-weight: normal;
     color: @text_secondary;
     background-color: @background_secondary;
@@ -110,7 +109,7 @@ terminal {
 
 #sidebar_title {
     padding: 4px 4px 3px 4px;
-    border-bottom: solid 1px @border_dark;
+    border-bottom: solid 1px @background_shimmer;
 }
 
 #sidebar_title button {
@@ -165,11 +164,11 @@ hexeditor {
     font-size: 12px;
     font-weight: bold;
     color: @text_dark;
-    background-color: transparent;
+    background: transparent;
 }
 
 #dropdown button:hover {
-    background-color: @ripple;
+    background: @ripple;
 }
 
 #dropdown list {
@@ -182,7 +181,6 @@ hexeditor {
     outline: none;
     border: none;
     margin: 0 5px;
-    box-shadow: none;
     border-radius: 5px;
 }
 

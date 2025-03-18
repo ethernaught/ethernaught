@@ -11,11 +11,22 @@ hexeditor {
     background-color: @background_secondary;
 }
 
-combobox button {
+#selection_layout {
     padding: 10px;
-    margin: 10px;
+}
+
+combobox button {
     border-radius: 6px;
     color: @text_primary;
-    background: none;
-    background-color: @background_secondary;
+    background: @background_shimmer;
+    border: solid 1px @border_light;
+}
+
+combobox > window.popup * {
+    margin: 0 5px;
+    border-radius: 6px;
+}
+
+combobox > window.popup *:hover {
+    background: @primary;
 }

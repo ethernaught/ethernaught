@@ -43,5 +43,15 @@
             <attribute name="action">win.x</attribute>
             <attribute name="label" translatable="yes">Select</attribute>
         </item>
+        <item>
+            <attribute name="action">win.x</attribute>
+            <attribute name="label" translatable="yes">Save</attribute>
+            <attribute name="accel">&lt;control&gt;S</attribute>
+        </item>
+        <item>
+            <attribute name="action">win.x</attribute>
+            <attribute name="label" translatable="yes">Save As...</attribute>
+            <attribute name="accel">&lt;shift&gt;&lt;control&gt;S</attribute>
+        </item>
     </menu>
 </interface>
