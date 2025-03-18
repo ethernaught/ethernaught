@@ -1,6 +1,6 @@
 use std::net::IpAddr;
 use gtk::{gdk, Button, Container, EventBox, Image, Label, ListBox, ListBoxRow, Menu, MenuItem, Orientation};
-use gtk::gdk::EventButton;
+use gtk::gdk::{EventButton, EventMask};
 use gtk::glib::Cast;
 use gtk::glib::Propagation::Proceed;
 use gtk::prelude::{ButtonExt, ContainerExt, GtkMenuExt, ImageExt, LabelExt, ListBoxExt, ListBoxRowExt, MenuShellExt, StyleContextExt, WidgetExt, WidgetExtManual};
@@ -60,6 +60,33 @@ pub fn create_ethernet_layer_expander(db: &Database, offset: usize, hex_editor: 
 
             hex_editor.set_selection(offset + x, w);
         }
+    });
+
+    list_box.connect_button_press_event(move |list_box, event| {
+        if event.button() != 3 {
+            return Proceed;
+        }
+
+        let (_, y) = event.position();
+
+        if let Some(row) = list_box.row_at_y(y as i32) {
+            match row.index() {
+                0 => {
+                    println!("DESTINATION:");
+                }
+                1 => {
+                    println!("SOURCE:");
+                }
+                2 => {
+                    println!("TYPE:");
+                }
+                _ => unimplemented!()
+            }
+
+            create_row_context_menu(&row, event);
+        }
+
+        Proceed
     });
 
     dropdown.add(&list_box);
@@ -353,17 +380,6 @@ fn create_dropdown(title: &str) -> (Container, ListBox) {
 
 fn create_row(key: &str, value: String) -> ListBoxRow {
     let row = ListBoxRow::new();
-    let event_box = EventBox::new();
-
-    row.connect_button_press_event(move |row, event| {
-        if event.button() == 3 {
-            row.style_context().add_class("selected");
-            let menu = create_row_context_menu(row);
-            menu.popup_at_pointer(Some(event));
-        }
-
-        Proceed
-    });
 
     let hbox = gtk::Box::new(Orientation::Horizontal, 10);
 
@@ -377,14 +393,13 @@ fn create_row(key: &str, value: String) -> ListBoxRow {
     label.set_xalign(0.0);
     hbox.add(&label);
 
-    event_box.add(&hbox);
-    row.add(&event_box);
+    row.add(&hbox);
     row.show_all();
 
     row
 }
 
-fn create_row_context_menu(row: &ListBoxRow) -> Menu {
+fn create_row_context_menu(row: &ListBoxRow, event: &EventButton) {
     let menu = Menu::new();
 
     //COPY
@@ -413,5 +428,5 @@ fn create_row_context_menu(row: &ListBoxRow) -> Menu {
         }
     });
 
-    menu
+    menu.popup_at_pointer(Some(event));
 }
