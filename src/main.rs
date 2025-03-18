@@ -31,6 +31,7 @@ rustup override set nightly
 //save fragments so we can clear adapter
 
 fn main() {
+    /*
     if !cfg!(debug_assertions) {
         if !is_root() {
             println!("{:?}", env::current_exe().unwrap());
@@ -52,6 +53,7 @@ fn main() {
             exit(command.status().expect("Failed to execute pkexec").code().unwrap_or(1));
         }
     }
+    */
 
     let app = OApplication::new();
     app.run();
