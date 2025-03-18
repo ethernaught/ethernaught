@@ -1,8 +1,7 @@
-use std::cell::RefCell;
 use std::net::IpAddr;
-use std::rc::Rc;
 use gtk::{Button, Container, Image, Label, ListBox, ListBoxRow, Orientation};
 use gtk::glib::Cast;
+use gtk::glib::Propagation::Proceed;
 use gtk::prelude::{ButtonExt, ContainerExt, ImageExt, LabelExt, ListBoxExt, ListBoxRowExt, WidgetExt};
 use pcap::packet::layers::ethernet_frame::arp::arp_extension::ArpExtension;
 use pcap::packet::layers::ethernet_frame::ethernet_frame::EthernetFrame;
@@ -41,23 +40,26 @@ pub fn create_ethernet_layer_expander(db: &Database, offset: usize, hex_editor: 
     }
     list_box.add(&create_row("Type:", format!("{:?} (0x{:04X})", layer.get_type(), layer.get_type().get_code())));
 
-    let hex_editor = hex_editor.clone();
-    let layer = layer.clone();
-    list_box.connect_row_activated(move |_, row| {
-        let (x, w) = match row.index() {
-            0 => {
-                layer.get_selection("destination")
-            }
-            1 => {
-                layer.get_selection("source")
-            }
-            2 => {
-                layer.get_selection("type")
-            }
-            _ => unimplemented!()
-        };
+    list_box.connect_row_activated({
+        let hex_editor = hex_editor.clone();
+        let layer = layer.clone();
+        move |_, row| {
+            println!("CLICK");
+            let (x, w) = match row.index() {
+                0 => {
+                    layer.get_selection("destination")
+                }
+                1 => {
+                    layer.get_selection("source")
+                }
+                2 => {
+                    layer.get_selection("type")
+                }
+                _ => unimplemented!()
+            };
 
-        hex_editor.set_selection(offset+x, w);
+            hex_editor.set_selection(offset + x, w);
+        }
     });
 
     dropdown.add(&list_box);
@@ -129,41 +131,43 @@ pub fn create_ipv4_layer_expander(offset: usize, hex_editor: &HexEditor, layer: 
     list_box.add(&create_row("Source Address:", layer.get_source_address().to_string()));
     list_box.add(&create_row("Destination Address:", layer.get_destination_address().to_string()));
 
-    let hex_editor = hex_editor.clone();
-    let layer = layer.clone();
-    list_box.connect_row_activated(move |_, row| {
-        let (x, w) = match row.index() {
-            0 => {
-                layer.get_selection("version")
-            }
-            1 => {
-                layer.get_selection("tos")
-            }
-            2 => {
-                layer.get_selection("total_length")
-            }
-            3 => {
-                layer.get_selection("identification")
-            }
-            4 => {
-                layer.get_selection("ttl")
-            }
-            5 => {
-                layer.get_selection("protocol")
-            }
-            6 => {
-                layer.get_selection("checksum")
-            }
-            7 => {
-                layer.get_selection("source_address")
-            }
-            8 => {
-                layer.get_selection("destination_address")
-            }
-            _ => unimplemented!()
-        };
+    list_box.connect_row_activated({
+        let hex_editor = hex_editor.clone();
+        let layer = layer.clone();
+        move |_, row| {
+            let (x, w) = match row.index() {
+                0 => {
+                    layer.get_selection("version")
+                }
+                1 => {
+                    layer.get_selection("tos")
+                }
+                2 => {
+                    layer.get_selection("total_length")
+                }
+                3 => {
+                    layer.get_selection("identification")
+                }
+                4 => {
+                    layer.get_selection("ttl")
+                }
+                5 => {
+                    layer.get_selection("protocol")
+                }
+                6 => {
+                    layer.get_selection("checksum")
+                }
+                7 => {
+                    layer.get_selection("source_address")
+                }
+                8 => {
+                    layer.get_selection("destination_address")
+                }
+                _ => unimplemented!()
+            };
 
-        hex_editor.set_selection(offset+x, w);
+            hex_editor.set_selection(offset + x, w);
+        }
     });
 
     dropdown.add(&list_box);
@@ -180,32 +184,34 @@ pub fn create_ipv6_layer_expander(offset: usize, hex_editor: &HexEditor, layer: 
     list_box.add(&create_row("Source Address:", layer.get_source_address().to_string()));
     list_box.add(&create_row("Destination Address:", layer.get_destination_address().to_string()));
 
-    let hex_editor = hex_editor.clone();
-    let layer = layer.clone();
-    list_box.connect_row_activated(move |_, row| {
-        let (x, w) = match row.index() {
-            0 => {
-                layer.get_selection("version")
-            }
-            1 => {
-                layer.get_selection("payload_length")
-            }
-            2 => {
-                layer.get_selection("next_header")
-            }
-            3 => {
-                layer.get_selection("hop_limit")
-            }
-            4 => {
-                layer.get_selection("source_address")
-            }
-            5 => {
-                layer.get_selection("destination_address")
-            }
-            _ => unimplemented!()
-        };
+    list_box.connect_row_activated({
+        let hex_editor = hex_editor.clone();
+        let layer = layer.clone();
+        move |_, row| {
+            let (x, w) = match row.index() {
+                0 => {
+                    layer.get_selection("version")
+                }
+                1 => {
+                    layer.get_selection("payload_length")
+                }
+                2 => {
+                    layer.get_selection("next_header")
+                }
+                3 => {
+                    layer.get_selection("hop_limit")
+                }
+                4 => {
+                    layer.get_selection("source_address")
+                }
+                5 => {
+                    layer.get_selection("destination_address")
+                }
+                _ => unimplemented!()
+            };
 
-        hex_editor.set_selection(offset+x, w);
+            hex_editor.set_selection(offset + x, w);
+        }
     });
 
     dropdown.add(&list_box);

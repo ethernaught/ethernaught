@@ -1,4 +1,7 @@
 
+#selection_scroll_layout {
+    border-left: solid 1px @background_secondary;
+}
 
 hexeditor {
     padding: 10px;
