@@ -5,7 +5,7 @@ impl LayerExt for Ipv6Layer {
 
     fn get_selection(&self, variable: &str) -> (usize, usize) {
         match variable {
-            "all" => {
+            "frame" => {
                 (0, 40)
             }
             "version" => {
@@ -34,6 +34,22 @@ impl LayerExt for Ipv6Layer {
             }
             _ => unimplemented!()
         }
+    }
+
+    fn get_field_name(&self, variable: &str) -> String {
+        todo!()
+    }
+
+    fn get_value(&self, variable: &str) -> String {
+        todo!()
+    }
+
+    fn get_description(&self, variable: &str) -> String {
+        todo!()
+    }
+
+    fn get_value_as_bytes(&self, variable: &str) -> Vec<u8> {
+        todo!()
     }
 
     fn to_string(&self) -> String {

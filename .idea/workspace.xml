@@ -9,7 +9,10 @@
   <component name="ChangeListManager">
     <list default="true" id="29b3c7c6-90a5-4faa-970b-44b90a8c0a85" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ui/handlers/expanders.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui/handlers/expanders.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/layers/ethernet_frame/ethernet_frame.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/layers/ethernet_frame/ethernet_frame.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/layers/ethernet_frame/ip/ipv4_layer.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/layers/ethernet_frame/ip/ipv4_layer.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/layers/ethernet_frame/ip/ipv6_layer.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/layers/ethernet_frame/ip/ipv6_layer.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/layers/inter/layer_ext.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/layers/inter/layer_ext.rs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
