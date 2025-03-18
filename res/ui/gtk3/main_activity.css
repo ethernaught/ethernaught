@@ -1,5 +1,5 @@
 #window_pane {
-    border-left: solid 1px #1e1f22;
+    border-left: solid 1px @background_secondary;
 }
 
 
@@ -8,9 +8,9 @@ entry {
     padding: 4px 8px;
     border: none;
     border-radius: 0;
-    border-bottom: solid 1px #393b40;
-    color: #cbd7dc;
-    background-color: #1e1f22;
+    border-bottom: solid 1px @border_dark;
+    color: @text_primary;
+    background-color: @background_secondary;
     font-size: 14px;
 }
 
@@ -20,8 +20,8 @@ entry:focus {
 }
 
 #tree_view {
-    color: #a7a7a7;
-    background-color: #1e1f22;
+    color: @text_secondary;
+    background-color: @background_secondary;
     outline: none;
 }
 
@@ -29,14 +29,14 @@ entry:focus {
     padding: 8px 4px;
     font-size: 14px;
     border: none;
-    border-bottom: solid 1px #393b40;
+    border-bottom: solid 1px @border_dark;
     font-weight: normal;
-    color: #a7a7a7;
-    background-color: #1e1f22;
+    color: @text_secondary;
+    background-color: @background_secondary;
 }
 
 #tree_view *:hover {
-    background-color: #59436e;
+    background-color: @primary;
 }
 /*
 list row:active,
@@ -63,7 +63,7 @@ list row:active,
 
 #side_navbar_layout button.selected,
         #side_navbar_layout button:hover {
-    background-color: rgba(255, 255, 255, 0.15);
+    background-color: @ripple;
 }
 
 #side_navbar_layout #terminal_button {
@@ -85,12 +85,12 @@ list row:active,
 
 
 #terminal_layout {
-    border-top: solid 1px #1e1f22;
+    border-top: solid 1px @background_secondary;
 }
 
 #terminal_title label {
     padding: 0 10px;
-    color: #cbd7dc;
+    color: @text_primary;
     font-size: 14px;
 }
 
@@ -98,8 +98,8 @@ terminal {
     padding: 4px;
     font-family: Monospace;
     font-size: 18px;
-    color: #a7a7a7;
-    background-color: #1e1f22;
+    color: @text_secondary;
+    background-color: @background_secondary;
 }
 
 
@@ -110,7 +110,7 @@ terminal {
 
 #sidebar_title {
     padding: 4px 4px 3px 4px;
-    border-bottom: solid 1px #393b40;
+    border-bottom: solid 1px @border_dark;
 }
 
 #sidebar_title button {
@@ -133,7 +133,7 @@ terminal {
 }
 
 #sidebar_title button:hover {
-    background-color: rgba(255, 255, 255, 0.15);
+    background-color: @ripple;
 }
 
 
@@ -147,8 +147,8 @@ hexeditor {
     padding: 10px;
     font-family: Monospace;
     font-size: 16px;
-    color: #9B9D9F;
-    background-color: #1e1f22;
+    color: @text_dark;
+    background-color: @background_secondary;
 }
 
 
@@ -163,21 +163,21 @@ hexeditor {
     margin: 0 5px;
     border-radius: 5px;
     font-weight: bold;
-    color: #9b9d9f;
+    color: @text_dark;
     background: transparent;
 }
 
 #dropdown button:hover {
-    background-color: rgba(255, 255, 255, 0.15);
+    background-color: @ripple;
 }
 
 #dropdown list {
     padding-left: 32px;
-    background-color: #2b2d30;
+    background-color: @background;
 }
 
 #dropdown list row {
-    background-color: #2b2d30;
+    background-color: @background;
     outline: none;
     border: none;
     margin: 0 5px;
@@ -188,11 +188,11 @@ hexeditor {
 #dropdown list row label {
     padding: 10px;
     font-size: 14px;
-    color: #a7a7a7;
+    color: @text_secondary;
 }
 
 #dropdown list row:hover {
-    background-color: rgba(255, 255, 255, 0.15);
+    background-color: @ripple;
 }
 
 #dropdown list #key {

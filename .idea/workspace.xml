@@ -10,11 +10,10 @@
     <list default="true" id="29b3c7c6-90a5-4faa-970b-44b90a8c0a85" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/res/resources.gresources" beforeDir="false" afterPath="$PROJECT_DIR$/res/resources.gresources" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/ui/gtk3/devices_activity.css" beforeDir="false" afterPath="$PROJECT_DIR$/res/ui/gtk3/devices_activity.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/ui/gtk3/main_activity.css" beforeDir="false" afterPath="$PROJECT_DIR$/res/ui/gtk3/main_activity.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/res/ui/gtk3/packet_playground_window.css" beforeDir="false" afterPath="$PROJECT_DIR$/res/ui/gtk3/packet_playground_window.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/ui/gtk3/packet_playground_window.ui" beforeDir="false" afterPath="$PROJECT_DIR$/res/ui/gtk3/packet_playground_window.ui" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ui/fragment/sidebar_fragment.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui/fragment/sidebar_fragment.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ui/windows/packet_playground_window.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui/windows/packet_playground_window.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/ui/gtk3/window.css" beforeDir="false" afterPath="$PROJECT_DIR$/res/ui/gtk3/window.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

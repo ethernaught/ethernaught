@@ -6,20 +6,16 @@
     padding: 10px 15px;
     border-radius: 40px;
     font-weight: bold;
-    color: #cbd7dc;
-    background-color: #59436e;
-}
-
-#list_scroll_layout {
-    background-color: #666666;
+    color: @text_primary;
+    background-color: @primary;
 }
 
 #devices_list {
-    background-color: #2b2d30;
+    background-color: @background;
 }
 
 #devices_list row {
-    background-color: #2b2d30;
+    background-color: @background;
     outline: none;
     border: none;
     box-shadow: none;
@@ -30,7 +26,7 @@
 }
 
 #devices_list row:hover {
-    background-color: rgba(255, 255, 255, 0.15);
+    background-color: @ripple;
 }
 
 #devices_list row #icon {
@@ -39,42 +35,42 @@
 
 
 #devices_list row.any #icon {
-    background-color: #305755;
+    background-color: @device_any;
 }
 
 #devices_list row.ethernet #icon {
-    background-color: #5e5030;
+    background-color: @device_ethernet;
 }
 
 #devices_list row.lan #icon {
-    background-color: #5e3030;
+    background-color: @device_lan;
 }
 
 #devices_list row.wifi #icon {
-    background-color: #5e3058;
+    background-color: @device_wifi;
 }
 
 #devices_list row.vpn #icon {
-    background-color: #376141;
+    background-color: @device_vpn;
 }
 
 #devices_list row.bluetooth #icon {
-    background-color: #394366;
+    background-color: @device_bluetooth;
 }
 
 #devices_list row #title {
     font-size: 14px;
-    color: #cbd7dc;
+    color: @text_primary;
 }
 
 #devices_list row label {
-    color: #a7a7a7;
+    color: @text_secondary;
 }
 
 #devices_list row graph {
-    color: #57965C;
+    color: @green;
 }
 
 #devices_list row.down graph {
-    color: #DB5C5C;
+    color: @red;
 }
