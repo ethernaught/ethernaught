@@ -1,6 +1,6 @@
-use gtk::{gdk, ApplicationWindow, Builder, Container, CssProvider, Paned, StyleContext, Window, WindowType};
+use gtk::{gdk, ApplicationWindow, Builder, ComboBoxText, Container, CssProvider, Paned, StyleContext, Window, WindowType};
 use gtk::gdk::RGBA;
-use gtk::prelude::{BuilderExtManual, CssProviderExt, GtkWindowExt, PanedExt, WidgetExt};
+use gtk::prelude::{BuilderExtManual, ComboBoxExtManual, ComboBoxTextExt, ContainerExt, CssProviderExt, GtkWindowExt, PanedExt, WidgetExt};
 use crate::ui::widgets::hex_editor::HexEditor;
 
 pub struct PacketPlaygroundWindow {
@@ -29,26 +29,26 @@ impl PacketPlaygroundWindow {
         );
 
         let window: Window = builder
-            .object("PacketPlaygroundWindow")
-            .expect("Failed to get the 'PacketPlaygroundWindow' from window.ui");
+            .object("packet_playground_window")
+            .expect("Failed to get the 'packet_playground_window' from packet_playground_window.ui");
 
 
 
 
         let window_content: Paned = builder
             .object("window_content")
-            .expect("Couldn't find 'window_content' in window.ui");
+            .expect("Couldn't find 'window_content' in packet_playground_window.ui");
 
         let hex_scroll_layout: Container = builder
             .object("hex_scroll_layout")
-            .expect("Couldn't find 'hex_scroll_layout' in window.ui");
+            .expect("Couldn't find 'hex_scroll_layout' in packet_playground_window.ui");
 
         window_content.set_child_shrink(&hex_scroll_layout, false);
         window_content.set_child_resize(&hex_scroll_layout, true);
 
         let selection_scroll_layout: Container = builder
             .object("selection_scroll_layout")
-            .expect("Couldn't find 'selection_scroll_layout' in window.ui");
+            .expect("Couldn't find 'selection_scroll_layout' in packet_playground_window.ui");
 
         window_content.set_child_shrink(&selection_scroll_layout, false);
 
@@ -62,7 +62,7 @@ impl PacketPlaygroundWindow {
 
         let hex_editor: HexEditor = builder
             .object("hex_editor")
-            .expect("Couldn't find 'hex_editor' in window.ui");
+            .expect("Couldn't find 'hex_editor' in packet_playground_window.ui");
 
         hex_editor.set_data(hex_data);
         hex_editor.set_hexpand(true);
@@ -70,6 +70,30 @@ impl PacketPlaygroundWindow {
         hex_editor.set_line_number_color(RGBA::new(0.286, 0.306, 0.341, 1.0));
         hex_editor.set_cursor_color(RGBA::new(0.608, 0.616, 0.624, 1.0));
         hex_editor.set_selection_color(RGBA::new(0.349, 0.263, 0.431, 1.0));
+
+
+
+
+
+        let selection_layout: Container = builder
+            .object("selection_layout")
+            .expect("Couldn't find 'selection_layout' in packet_playground_window.ui");
+
+        let combo_box = ComboBoxText::new();
+        combo_box.append_text("Data Link Type");
+        combo_box.append_text("Ethernet");
+
+        combo_box.set_active(Some(0));
+
+        selection_layout.add(&combo_box);
+
+        combo_box.show_all();
+
+
+
+
+
+
 
 
 

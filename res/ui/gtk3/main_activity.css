@@ -165,7 +165,7 @@ hexeditor {
     font-size: 12px;
     font-weight: bold;
     color: @text_dark;
-    background: transparent;
+    background-color: transparent;
 }
 
 #dropdown button:hover {

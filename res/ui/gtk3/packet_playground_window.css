@@ -10,3 +10,12 @@ hexeditor {
     color: @text_dark;
     background-color: @background_secondary;
 }
+
+combobox button {
+    padding: 10px;
+    margin: 10px;
+    border-radius: 6px;
+    color: @text_primary;
+    background: none;
+    background-color: @background_secondary;
+}

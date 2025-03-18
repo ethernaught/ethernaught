@@ -34,20 +34,10 @@ window {
     border-bottom: solid 1px @border;
 }
 
-button {
-    border: none;
-}
-
 window.maximized {
     border-left: none;
     border-right: none;
     border-bottom: none;
-}
-
-button:focus, button:checked {
-    outline: none;
-    border: none;
-    box-shadow: none;
 }
 
 
@@ -57,6 +47,18 @@ tooltip {
     color: @text_primary;
     background-color: @background;
     font-size: 12px;
+}
+
+
+
+button {
+    border: none;
+}
+
+button:focus, button:checked {
+    outline: none;
+    border: none;
+    box-shadow: none;
 }
 
 
@@ -80,7 +82,6 @@ window.maximized #titlebar {
     min-height: 0;
     padding: 4px;
     border-radius: 6px;
-    border: none;
     background-color: transparent;
     background-size: auto;
     background-repeat: no-repeat;
@@ -93,27 +94,27 @@ window.maximized #titlebar {
 
 
 #titlebar.any {
-    background: linear-gradient(90deg, @background 0%, @device_any 20%, @background 40%);
+    background-image: linear-gradient(90deg, @background 0%, @device_any 20%, @background 40%);
 }
 
 #titlebar.ethernet {
-    background: linear-gradient(90deg, @background 0%, @device_ethernet 20%, @background 40%);
+    background-image: linear-gradient(90deg, @background 0%, @device_ethernet 20%, @background 40%);
 }
 
 #titlebar.lan {
-    background: linear-gradient(90deg, @background 0%, @device_lan 20%, @background 40%);
+    background-image: linear-gradient(90deg, @background 0%, @device_lan 20%, @background 40%);
 }
 
 #titlebar.wifi {
-    background: linear-gradient(90deg, @background 0%, @device_wifi 20%, @background 40%);
+    background-image: linear-gradient(90deg, @background 0%, @device_wifi 20%, @background 40%);
 }
 
 #titlebar.vpn {
-    background: linear-gradient(90deg, @background 0%, @device_vpn 20%, @background 40%);
+    background-image: linear-gradient(90deg, @background 0%, @device_vpn 20%, @background 40%);
 }
 
 #titlebar.bluetooth {
-    background: linear-gradient(90deg, @background 0%, @device_bluetooth 20%, @background 40%);
+    background-image: linear-gradient(90deg, @background 0%, @device_bluetooth 20%, @background 40%);
 }
 
 

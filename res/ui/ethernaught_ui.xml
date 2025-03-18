@@ -31,9 +31,9 @@
             </section>
             <section>
                 <item>
-                    <attribute name="action">win.quit</attribute>
-                    <attribute name="label" translatable="yes">_Quit</attribute>
-                    <attribute name="accel">&lt;control&gt;Q</attribute>
+                    <attribute name="action">win.exit</attribute>
+                    <attribute name="label" translatable="yes">E_xit</attribute>
+                    <attribute name="accel">&lt;control&gt;X</attribute>
                 </item>
             </section>
         </submenu>
@@ -46,7 +46,7 @@
                 </item>
                 <item>
                     <attribute name="action">win.find-next</attribute>
-                    <attribute name="label" translatable="yes">Find Ne_xt</attribute>
+                    <attribute name="label" translatable="yes">Find _Next</attribute>
                     <attribute name="accel">&lt;control&gt;N</attribute>
                 </item>
                 <item>

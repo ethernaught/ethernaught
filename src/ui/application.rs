@@ -173,7 +173,7 @@ impl OApplication {
         });
         window.add_action(&action);
 
-        let action = SimpleAction::new("quit", None);
+        let action = SimpleAction::new("exit", None);
         action.connect_activate({
             let context = self.context.get_application();
             move |_, _| {
