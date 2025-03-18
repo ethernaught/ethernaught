@@ -1,6 +1,6 @@
-use gtk::{gdk, ApplicationWindow, Builder, CssProvider, StyleContext, Window, WindowType};
+use gtk::{gdk, ApplicationWindow, Builder, Container, CssProvider, Paned, StyleContext, Window, WindowType};
 use gtk::gdk::RGBA;
-use gtk::prelude::{BuilderExtManual, CssProviderExt, GtkWindowExt, WidgetExt};
+use gtk::prelude::{BuilderExtManual, CssProviderExt, GtkWindowExt, PanedExt, WidgetExt};
 use crate::ui::widgets::hex_editor::HexEditor;
 
 pub struct PacketPlaygroundWindow {
@@ -31,6 +31,30 @@ impl PacketPlaygroundWindow {
         let window: Window = builder
             .object("PacketPlaygroundWindow")
             .expect("Failed to get the 'PacketPlaygroundWindow' from window.ui");
+
+
+
+
+        let window_content: Paned = builder
+            .object("window_content")
+            .expect("Couldn't find 'window_content' in window.ui");
+
+        let hex_scroll_layout: Container = builder
+            .object("hex_scroll_layout")
+            .expect("Couldn't find 'hex_scroll_layout' in window.ui");
+
+        window_content.set_child_shrink(&hex_scroll_layout, false);
+        window_content.set_child_resize(&hex_scroll_layout, true);
+
+        let selection_scroll_layout: Container = builder
+            .object("selection_scroll_layout")
+            .expect("Couldn't find 'selection_scroll_layout' in window.ui");
+
+        window_content.set_child_shrink(&selection_scroll_layout, false);
+
+
+
+
 
 
 

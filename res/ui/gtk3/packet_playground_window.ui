@@ -17,20 +17,42 @@
                 <property name="position">600</property>
 
                 <child>
-                    <object class="HexEditor" id="hex_editor">
+                    <object class="GtkScrolledWindow" id="hex_scroll_layout">
                         <property name="visible">True</property>
                         <property name="hexpand">True</property>
                         <property name="vexpand">True</property>
+                        <property name="overlay-scrolling">false</property>
+                        <property name="hscrollbar-policy">automatic</property>
+                        <property name="vscrollbar-policy">automatic</property>
+
+                        <child>
+                            <object class="HexEditor" id="hex_editor">
+                                <property name="visible">True</property>
+                                <property name="hexpand">True</property>
+                                <property name="vexpand">True</property>
+                            </object>
+                        </child>
                     </object>
                 </child>
 
                 <child>
-                    <object class="GtkBox" id="z_layout">
-                        <property name="name">z_layout</property>
+                    <object class="GtkScrolledWindow" id="selection_scroll_layout">
                         <property name="visible">True</property>
                         <property name="hexpand">True</property>
                         <property name="vexpand">True</property>
-                        <property name="orientation">vertical</property>
+                        <property name="overlay-scrolling">false</property>
+                        <property name="hscrollbar-policy">automatic</property>
+                        <property name="vscrollbar-policy">automatic</property>
+
+                        <child>
+                            <object class="GtkBox" id="selection_layout">
+                                <property name="name">selection_layout</property>
+                                <property name="visible">True</property>
+                                <property name="hexpand">True</property>
+                                <property name="vexpand">True</property>
+                                <property name="orientation">vertical</property>
+                            </object>
+                        </child>
                     </object>
                 </child>
             </object>
