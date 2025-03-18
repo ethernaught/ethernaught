@@ -6,6 +6,15 @@
         <submenu>
             <attribute name="label" translatable="true">_File</attribute>
             <section>
+                <submenu>
+                    <attribute name="label" translatable="true">_New</attribute>
+                    <section>
+                        <item>
+                            <attribute name="action">win.x</attribute>
+                            <attribute name="label" translatable="yes">Interface...</attribute>
+                        </item>
+                    </section>
+                </submenu>
                 <item>
                     <attribute name="action">win.open</attribute>
                     <attribute name="label" translatable="yes">_Open</attribute>
@@ -71,6 +80,8 @@
                     <attribute name="action">win.firewall</attribute>
                     <attribute name="label" translatable="yes">Firewall Rules</attribute>
                 </item>
+            </section>
+            <section>
                 <submenu>
                     <attribute name="label" translatable="true">_Protocol</attribute>
                     <section>
