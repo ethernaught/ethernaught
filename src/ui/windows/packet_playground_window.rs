@@ -14,10 +14,10 @@ impl PacketPlaygroundWindow {
     }
 
     pub fn on_create(&mut self) {
-        let builder = Builder::from_resource("/com/ethernaut/rust/res/ui/gtk3/packet_playground_window.ui");
+        let builder = Builder::from_resource("/net/ethernaught/rust/res/ui/gtk3/packet_playground_window.ui");
 
         let provider = CssProvider::new();
-        provider.load_from_resource("/com/ethernaut/rust/res/ui/gtk3/packet_playground_window.css");
+        provider.load_from_resource("/net/ethernaught/rust/res/ui/gtk3/packet_playground_window.css");
         //provider.load_from_path("res/ui/gtk3/window.css").expect("Failed to load CSS file.");
 
         StyleContext::add_provider_for_screen(

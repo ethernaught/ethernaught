@@ -314,7 +314,7 @@ fn create_dropdown(title: &str) -> (Container, ListBox) {
     dropdown.show();
 
     let hbox = gtk::Box::new(Orientation::Horizontal, 10);
-    let icon = Image::from_resource("/com/ethernaut/rust/res/icons/ic_expand_less.svg");
+    let icon = Image::from_resource("/net/ethernaught/rust/res/icons/ic_expand_less.svg");
 
     let label = Label::new(Some(title));
     label.set_xalign(0.0);
@@ -332,11 +332,11 @@ fn create_dropdown(title: &str) -> (Container, ListBox) {
         list_box_clone.set_visible(!list_box_clone.is_visible());
 
         if list_box_clone.is_visible() {
-            icon.set_from_resource(Some("/com/ethernaut/rust/res/icons/ic_expand_more.svg"));
+            icon.set_from_resource(Some("/net/ethernaught/rust/res/icons/ic_expand_more.svg"));
             return;
         }
 
-        icon.set_from_resource(Some("/com/ethernaut/rust/res/icons/ic_expand_less.svg"));
+        icon.set_from_resource(Some("/net/ethernaught/rust/res/icons/ic_expand_less.svg"));
     });
 
     dropdown.add(&button);

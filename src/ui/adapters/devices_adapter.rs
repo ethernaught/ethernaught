@@ -42,7 +42,7 @@ impl DevicesAdapter {
     }
 
     pub fn add(list_box: &ListBox, device: &Device) {
-        let builder = Builder::from_resource("/com/ethernaut/rust/res/ui/gtk3/device_list_item.ui");
+        let builder = Builder::from_resource("/net/ethernaught/rust/res/ui/gtk3/device_list_item.ui");
         let row: ListBoxRow = builder
             .object("row")
             .expect("Couldn't find 'row' in device_list_item.ui");
@@ -54,19 +54,19 @@ impl DevicesAdapter {
         match device.get_data_link_type() {
             DataLinkTypes::Ethernet => {
                 row.style_context().add_class("ethernet");
-                icon.set_resource(Some("/com/ethernaut/rust/res/icons/ic_ethernet.svg"));
+                icon.set_resource(Some("/net/ethernaught/rust/res/icons/ic_ethernet.svg"));
             }
             DataLinkTypes::Loopback => {
                 row.style_context().add_class("lan");
-                icon.set_resource(Some("/com/ethernaut/rust/res/icons/ic_lan.svg"));
+                icon.set_resource(Some("/net/ethernaught/rust/res/icons/ic_lan.svg"));
             }
             DataLinkTypes::Raw | DataLinkTypes::Tun | DataLinkTypes::Ipv4 | DataLinkTypes::Ipv6 => {
                 row.style_context().add_class("vpn");
-                icon.set_resource(Some("/com/ethernaut/rust/res/icons/ic_vpn.svg"));
+                icon.set_resource(Some("/net/ethernaught/rust/res/icons/ic_vpn.svg"));
             }
             DataLinkTypes::BluetoothHciH4 => {
                 row.style_context().add_class("bluetooth");
-                icon.set_resource(Some("/com/ethernaut/rust/res/icons/ic_bluetooth.svg"));
+                icon.set_resource(Some("/net/ethernaught/rust/res/icons/ic_bluetooth.svg"));
             }
             _ => {}
         }
@@ -89,7 +89,7 @@ impl DevicesAdapter {
     }
 
     pub fn add_any(list_box: &ListBox) {
-        let builder = Builder::from_resource("/com/ethernaut/rust/res/ui/gtk3/device_list_item.ui");
+        let builder = Builder::from_resource("/net/ethernaught/rust/res/ui/gtk3/device_list_item.ui");
         let row: ListBoxRow = builder
             .object("row")
             .expect("Couldn't find 'row' in device_list_item.ui");
@@ -99,7 +99,7 @@ impl DevicesAdapter {
             .expect("Couldn't find 'icon' in device_list_item.ui");
 
         row.style_context().add_class("any");
-        icon.set_resource(Some("/com/ethernaut/rust/res/icons/ic_any.svg"));
+        icon.set_resource(Some("/net/ethernaught/rust/res/icons/ic_any.svg"));
 
 
         let title_label: Label = builder

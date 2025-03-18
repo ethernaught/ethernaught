@@ -33,7 +33,7 @@ pub struct OApplication {
 impl OApplication {
 
     pub fn new() -> Self {
-        let app = Application::new(Some("com.ethernaut.rust"), ApplicationFlags::HANDLES_OPEN);
+        let app = Application::new(Some("net.ethernaught.rust"), ApplicationFlags::HANDLES_OPEN);
 
         Self {
             context: Context::new(app)
@@ -74,10 +74,10 @@ impl OApplication {
         let resource = Resource::from_data(&Bytes::from(resource_data)).unwrap();
         resources_register(&resource);
 
-        let builder = Builder::from_resource("/com/ethernaut/rust/res/ui/gtk3/window.ui");
+        let builder = Builder::from_resource("/net/ethernaught/rust/res/ui/gtk3/window.ui");
 
         let provider = CssProvider::new();
-        provider.load_from_resource("/com/ethernaut/rust/res/ui/gtk3/window.css");
+        provider.load_from_resource("/net/ethernaught/rust/res/ui/gtk3/window.css");
         //provider.load_from_path("res/ui/gtk3/window.css").expect("Failed to load CSS file.");
 
         StyleContext::add_provider_for_screen(
@@ -166,7 +166,7 @@ impl OApplication {
         action.connect_activate({
             let window = window.clone();
             move |_, _| {
-                if let Err(err) = show_uri_on_window(Some(&window), "https://ethernaut.com", gtk::current_event_time()) {
+                if let Err(err) = show_uri_on_window(Some(&window), "https://ethernaught.net", gtk::current_event_time()) {
                     eprintln!("Failed to open link: {}", err);
                 }
             }
@@ -214,19 +214,19 @@ pub fn open_file_selector(parent: &Window) -> Option<PathBuf> {
 }
 
 pub fn open_about_dialog(window: &Window) {
-    let icon_pixbuf = Pixbuf::from_resource("/com/ethernaut/rust/res/icons/ic_launcher.svg").expect("Failed to get Pixbuf from SVG");
+    let icon_pixbuf = Pixbuf::from_resource("/net/ethernaught/rust/res/icons/ic_launcher.svg").expect("Failed to get Pixbuf from SVG");
 
     let dialog = AboutDialog::builder()
         .transient_for(window)
         .modal(true)
-        .program_name("Ethernaut")
+        .program_name("Ethernaught")
         .version(format!("{}-{}", env!("PROFILE"), env!("CARGO_PKG_VERSION")).as_str())
         .authors(vec!["DrBrad"])
-        .website_label("https://ethernaut.com")
-        .website("https://ethernaut.com")
+        .website_label("https://ethernaught.net")
+        .website("https://ethernaught.net")
         .comments("")
-        .copyright("Copyright (c) 2024 Ethernaut")
-        .license("Copyright (c) 2024 Ethernaut\r\n\r\n\
+        .copyright("Copyright (c) 2024 Ethernaught")
+        .license("Copyright (c) 2024 Ethernaught\r\n\r\n\
         \
         Permission is hereby granted, free of charge, to any person obtaining a copy\r\n\
         of this software and associated documentation files (the \"Software\"), to deal\r\n\

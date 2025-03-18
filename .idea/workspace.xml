@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="ALL" />
+  </component>
+  <component name="CargoProjects">
+    <cargoProject FILE="$PROJECT_DIR$/Cargo.toml" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="29b3c7c6-90a5-4faa-970b-44b90a8c0a85" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/ethernaut.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Cargo.lock" beforeDir="false" afterPath="$PROJECT_DIR$/Cargo.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/Cargo.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DEB.md" beforeDir="false" afterPath="$PROJECT_DIR$/DEB.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build_deb.sh" beforeDir="false" afterPath="$PROJECT_DIR$/build_deb.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/gresources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/res/gresources.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/hicolor/128x128/apps/ethernaut.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/hicolor/16x16/apps/ethernaut.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/hicolor/256x256/apps/ethernaut.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/hicolor/32x32/apps/ethernaut.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/hicolor/512x512/apps/ethernaut.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/hicolor/64x64/apps/ethernaut.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/resources.gresources" beforeDir="false" afterPath="$PROJECT_DIR$/res/resources.gresources" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/ui/ethernaut_ui.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/ui/gtk3/devices_activity.ui" beforeDir="false" afterPath="$PROJECT_DIR$/res/ui/gtk3/devices_activity.ui" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/ui/gtk3/packet_playground_window.ui" beforeDir="false" afterPath="$PROJECT_DIR$/res/ui/gtk3/packet_playground_window.ui" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/ui/gtk3/window.ui" beforeDir="false" afterPath="$PROJECT_DIR$/res/ui/gtk3/window.ui" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/ui/titlebar_ui.xml" beforeDir="false" afterPath="$PROJECT_DIR$/res/ui/titlebar_ui.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ui/activity/devices_activity.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui/activity/devices_activity.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ui/activity/main_activity.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui/activity/main_activity.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ui/adapters/devices_adapter.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui/adapters/devices_adapter.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ui/application.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui/application.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ui/bottombar.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui/bottombar.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ui/fragment/main_fragment.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui/fragment/main_fragment.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ui/fragment/sidebar_fragment.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui/fragment/sidebar_fragment.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ui/fragment/terminal_fragment.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui/fragment/terminal_fragment.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ui/handlers/expanders.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui/handlers/expanders.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ui/titlebar.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui/titlebar.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ui/windows/packet_playground_window.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui/windows/packet_playground_window.rs" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="RsBuildProfile:dev" />
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MacroExpansionManager">
+    <option name="directoryName" value="ssNv6M0W" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 8
+}</component>
+  <component name="ProjectId" id="2uTbZnLzCVVnXMFFn038JbyPGE1" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Cargo.Run ethernaught.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.rust.reset.selective.auto.import&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;org.rust.cargo.project.model.PROJECT_DISCOVERY&quot;: &quot;true&quot;,
+    &quot;org.rust.first.attach.projects&quot;: &quot;true&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="RunManager" selected="Cargo.Run ethernaught">
+    <configuration name="Run ethernaught" type="CargoCommandRunConfiguration" factoryName="Cargo Command">
+      <option name="buildProfileId" value="dev" />
+      <option name="command" value="run --package ethernaught --bin ethernaught" />
+      <option name="workingDirectory" value="file://$PROJECT_DIR$" />
+      <envs />
+      <option name="emulateTerminal" value="true" />
+      <option name="channel" value="DEFAULT" />
+      <option name="requiredFeatures" value="true" />
+      <option name="allFeatures" value="false" />
+      <option name="withSudo" value="false" />
+      <option name="buildTarget" value="REMOTE" />
+      <option name="backtrace" value="SHORT" />
+      <option name="isRedirectInput" value="false" />
+      <option name="redirectInputPath" value="" />
+      <method v="2">
+        <option name="CARGO.BUILD_TASK_PROVIDER" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Test ethernaught" type="CargoCommandRunConfiguration" factoryName="Cargo Command">
+      <option name="command" value="test --workspace" />
+      <option name="workingDirectory" value="file://$PROJECT_DIR$" />
+      <envs />
+      <option name="emulateTerminal" value="true" />
+      <option name="channel" value="DEFAULT" />
+      <option name="requiredFeatures" value="true" />
+      <option name="allFeatures" value="false" />
+      <option name="withSudo" value="false" />
+      <option name="buildTarget" value="REMOTE" />
+      <option name="backtrace" value="SHORT" />
+      <option name="isRedirectInput" value="false" />
+      <option name="redirectInputPath" value="" />
+      <method v="2">
+        <option name="CARGO.BUILD_TASK_PROVIDER" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="RustProjectSettings">
+    <option name="toolchainHomeDirectory" value="$USER_HOME$/.cargo/bin" />
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="29b3c7c6-90a5-4faa-970b-44b90a8c0a85" name="Changes" comment="" />
+      <created>1742275568312</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1742275568312</updated>
+      <workItem from="1742275569432" duration="55000" />
+      <workItem from="1742275673110" duration="90000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>

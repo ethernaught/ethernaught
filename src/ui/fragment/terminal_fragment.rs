@@ -25,7 +25,7 @@ impl TerminalFragment {
 impl Fragment for TerminalFragment {
 
     fn on_create(&mut self, bundle: Option<Bundle>) -> &Container {
-        let builder = Builder::from_resource("/com/ethernaut/rust/res/ui/gtk3/terminal_fragment.ui");
+        let builder = Builder::from_resource("/net/ethernaught/rust/res/ui/gtk3/terminal_fragment.ui");
 
         self.root = Some(builder
             .object("terminal_layout")

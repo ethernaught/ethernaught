@@ -28,7 +28,7 @@ impl TitleBar {
     }
 
     pub fn on_create(&mut self) -> &Container {
-        let builder = Builder::from_resource("/com/ethernaut/rust/res/ui/titlebar_ui.xml");
+        let builder = Builder::from_resource("/net/ethernaught/rust/res/ui/titlebar_ui.xml");
 
         let root: gtk::Box = builder
             .object("titlebar")
@@ -47,10 +47,10 @@ impl TitleBar {
             .object("navigation_menubar")
             .expect("Couldn't find 'navigation_menubar' in titlebar_ui.xml");
 
-        let menu_builder = Builder::from_resource("/com/ethernaut/rust/res/ui/ethernaut_ui.xml");
+        let menu_builder = Builder::from_resource("/net/ethernaught/rust/res/ui/ethernaught_ui.xml");
         let menu: gio::MenuModel = menu_builder
             .object("main_window_menu")
-            .expect("Couldn't find 'main_window_menu' in ethernaut_ui.xml");
+            .expect("Couldn't find 'main_window_menu' in ethernaught_ui.xml");
 
         navigation_menubar.bind_model(Some(&menu), None, false);
 
@@ -58,7 +58,7 @@ impl TitleBar {
         let navigation_menubar = Rc::new(RefCell::new(navigation_menubar));
         let navigation_buttons = Rc::new(RefCell::new(builder
             .object::<gtk::Box>("navigation_buttons")
-            .expect("Couldn't find 'navigation_buttons' in ethernaut_ui.xml")));
+            .expect("Couldn't find 'navigation_buttons' in ethernaught_ui.xml")));
 
 
         let navigation_menubar_clone = Rc::clone(&navigation_menubar);

@@ -19,7 +19,7 @@ impl BottomBar {
     }
 
     pub fn on_create(&mut self) -> &Container {
-        let builder = Builder::from_resource("/com/ethernaut/rust/res/ui/bottombar_ui.xml");
+        let builder = Builder::from_resource("/net/ethernaught/rust/res/ui/bottombar_ui.xml");
 
         let root: gtk::Box = builder
             .object("bottombar")

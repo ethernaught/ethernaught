@@ -21,7 +21,7 @@
                     <object class="GtkImage">
                         <property name="visible">True</property>
                         <property name="icon-name">app-icon</property>
-                        <property name="resource">/com/ethernaut/rust/res/icons/ic_launcher_small.svg</property>
+                        <property name="resource">/net/ethernaught/rust/res/icons/ic_launcher_small.svg</property>
                     </object>
                 </child>
 

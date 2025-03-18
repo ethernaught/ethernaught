@@ -46,7 +46,7 @@ my-app.deb
 DEBIAN/control
 -----
 ```
-Package: ethernaut
+Package: ethernaught
 Version: 0.1.0
 Architecture: amd64
 Maintainer: DrBrad <brad@bradeagle.com>

@@ -2,7 +2,7 @@
 
 set -e  # Exit on error
 
-APP_NAME="ethernaut"
+APP_NAME="ethernaught"
 VERSION="0.1.0"
 BUILD_TYPE=${1:release}
 ARCH="amd64"
@@ -30,7 +30,7 @@ Package: $APP_NAME
 Version: $VERSION
 Architecture: $ARCH
 Maintainer: DrBrad <brad@bradeagle.com>
-Description: Ethernaut - Packet sniffer
+Description: Ethernaught - Packet sniffer
 EOF
 
 # Copy binary
@@ -39,14 +39,14 @@ cp "$BUILD_DIR/$APP_NAME" "$DEB_DIR/usr/local/bin/"
 
 # Create .desktop file
 mkdir -p "$DEB_DIR/usr/share/applications"
-cat > "$DEB_DIR/usr/share/applications/ethernaut.desktop" <<EOF
+cat > "$DEB_DIR/usr/share/applications/ethernaught.desktop" <<EOF
 [Desktop Entry]
-Name=Ethernaut
-GenericName=Ethernaut
-Comment=Ethernaut - Packet sniffer
+Name=Ethernaught
+GenericName=Ethernaught
+Comment=Ethernaught - Packet sniffer
 Keywords=packet;sniffer;capture;network;ethernet
-Exec=ethernaut %f
-Icon=ethernaut
+Exec=ethernaught %f
+Icon=ethernaught
 MimeType=application/vnd.tcpdump.pcap;application/x-pcapng;application/x-snoop;application/x-iptrace;application/x-lanalyzer;application/x-nettl;application/x-radcom;application/x-etherpeek;application/x-visualnetworks;application/x-netinstobserver;application/x-5view;application/x-tektronix-rf5;application/x-micropross-mplog;application/x-apple-packetlogger;application/x-endace-erf;application/ipfix;application/x-ixia-vwr;
 Terminal=false
 Type=Application

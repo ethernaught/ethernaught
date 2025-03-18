@@ -80,7 +80,7 @@ impl MainFragment {
 impl Fragment for MainFragment {
 
     fn on_create(&mut self, bundle: Option<Bundle>) -> &Container {
-        let builder = Builder::from_resource("/com/ethernaut/rust/res/ui/gtk3/main_fragment.ui");
+        let builder = Builder::from_resource("/net/ethernaught/rust/res/ui/gtk3/main_fragment.ui");
 
         self.root = Some(builder
             .object("content_layout")

@@ -67,7 +67,7 @@ pub fn get_lib_path(file_name: &str) -> PathBuf {
         return PathBuf::from(file_name);
     }
 
-    PathBuf::from(format!("/usr/var/lib/ethernaut/{}", file_name))
+    PathBuf::from(format!("/usr/var/lib/ethernaught/{}", file_name))
 }
 
 fn is_root() -> bool {

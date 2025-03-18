@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gresources>
-    <gresource prefix="/com/ethernaut/rust">
-        <file preprocess="xml-stripblanks">res/ui/ethernaut_ui.xml</file>
+    <gresource prefix="/net/ethernaught/rust">
+        <file preprocess="xml-stripblanks">res/ui/ethernaught_ui.xml</file>
         <file preprocess="xml-stripblanks">res/ui/titlebar_ui.xml</file>
         <file preprocess="xml-stripblanks">res/ui/bottombar_ui.xml</file>
 

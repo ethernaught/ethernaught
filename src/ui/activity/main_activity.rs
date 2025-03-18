@@ -124,10 +124,10 @@ impl Activity for MainActivity {
     }
 
     fn on_create(&mut self, bundle: Option<Bundle>) -> &Container {
-        let builder = Builder::from_resource("/com/ethernaut/rust/res/ui/gtk3/main_activity.ui");
+        let builder = Builder::from_resource("/net/ethernaught/rust/res/ui/gtk3/main_activity.ui");
 
         let provider = CssProvider::new();
-        provider.load_from_resource("/com/ethernaut/rust/res/ui/gtk3/main_activity.css");
+        provider.load_from_resource("/net/ethernaught/rust/res/ui/gtk3/main_activity.css");
 
         StyleContext::add_provider_for_screen(
             &gdk::Screen::default().expect("Failed to get default screen."),
@@ -201,23 +201,23 @@ impl Activity for MainActivity {
                         match self.data_link_type {
                             DataLinkTypes::Null => {
                                 titlebar.style_context().add_class("any");
-                                icon.set_resource(Some("/com/ethernaut/rust/res/icons/ic_any.svg"));
+                                icon.set_resource(Some("/net/ethernaught/rust/res/icons/ic_any.svg"));
                             }
                             DataLinkTypes::Ethernet | DataLinkTypes::Sll2 => {
                                 titlebar.style_context().add_class("ethernet");
-                                icon.set_resource(Some("/com/ethernaut/rust/res/icons/ic_ethernet.svg"));
+                                icon.set_resource(Some("/net/ethernaught/rust/res/icons/ic_ethernet.svg"));
                             }
                             DataLinkTypes::Loopback => {
                                 titlebar.style_context().add_class("lan");
-                                icon.set_resource(Some("/com/ethernaut/rust/res/icons/ic_lan.svg"));
+                                icon.set_resource(Some("/net/ethernaught/rust/res/icons/ic_lan.svg"));
                             }
                             DataLinkTypes::Raw | DataLinkTypes::Tun | DataLinkTypes::Ipv4 | DataLinkTypes::Ipv6 => {
                                 titlebar.style_context().add_class("vpn");
-                                icon.set_resource(Some("/com/ethernaut/rust/res/icons/ic_vpn.svg"));
+                                icon.set_resource(Some("/net/ethernaught/rust/res/icons/ic_vpn.svg"));
                             }
                             DataLinkTypes::BluetoothHciH4 => {
                                 titlebar.style_context().add_class("bluetooth");
-                                icon.set_resource(Some("/com/ethernaut/rust/res/icons/ic_bluetooth.svg"));
+                                icon.set_resource(Some("/net/ethernaught/rust/res/icons/ic_bluetooth.svg"));
                             }
                             _ => {}
                         }
@@ -285,19 +285,19 @@ impl Activity for MainActivity {
                         match self.data_link_type {
                             DataLinkTypes::Ethernet | DataLinkTypes::Sll2 => {
                                 titlebar.style_context().add_class("ethernet");
-                                icon.set_resource(Some("/com/ethernaut/rust/res/icons/ic_ethernet.svg"));
+                                icon.set_resource(Some("/net/ethernaught/rust/res/icons/ic_ethernet.svg"));
                             }
                             DataLinkTypes::Loopback => {
                                 titlebar.style_context().add_class("lan");
-                                icon.set_resource(Some("/com/ethernaut/rust/res/icons/ic_lan.svg"));
+                                icon.set_resource(Some("/net/ethernaught/rust/res/icons/ic_lan.svg"));
                             }
                             DataLinkTypes::Raw | DataLinkTypes::Tun | DataLinkTypes::Ipv4 | DataLinkTypes::Ipv6 => {
                                 titlebar.style_context().add_class("vpn");
-                                icon.set_resource(Some("/com/ethernaut/rust/res/icons/ic_vpn.svg"));
+                                icon.set_resource(Some("/net/ethernaught/rust/res/icons/ic_vpn.svg"));
                             }
                             DataLinkTypes::BluetoothHciH4 => {
                                 titlebar.style_context().add_class("bluetooth");
-                                icon.set_resource(Some("/com/ethernaut/rust/res/icons/ic_bluetooth.svg"));
+                                icon.set_resource(Some("/net/ethernaught/rust/res/icons/ic_bluetooth.svg"));
                             }
                             _ => {}
                         }
