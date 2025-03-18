@@ -35,6 +35,9 @@
 
 
 
+        <file preprocess="xml-stripblanks">res/ui/sidebar_context_menu.xml</file>
+
+
         <file preprocess="xml-stripblanks">res/icons/ic_launcher.svg</file>
         <file preprocess="xml-stripblanks">res/icons/ic_launcher_small.svg</file>
 

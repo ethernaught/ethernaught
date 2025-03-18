@@ -87,8 +87,8 @@ impl OApplication {
         );
 
         let window: ApplicationWindow = builder
-            .object("MainWindow")
-            .expect("Failed to get the 'MainWindow' from window.ui");
+            .object("main_window")
+            .expect("Failed to get the 'main_window' from window.ui");
 
         window.set_application(Some(app));
         window.connect_destroy(|_| exit(0));

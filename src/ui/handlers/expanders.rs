@@ -1,9 +1,9 @@
 use std::net::IpAddr;
-use gtk::{gdk, Button, Container, EventBox, Image, Label, ListBox, ListBoxRow, Menu, MenuItem, Orientation};
+use gtk::{gdk, gio, Builder, Button, Container, EventBox, Image, Label, ListBox, ListBoxRow, Menu, MenuItem, Orientation};
 use gtk::gdk::{EventButton, EventMask};
 use gtk::glib::Cast;
 use gtk::glib::Propagation::Proceed;
-use gtk::prelude::{ButtonExt, ContainerExt, GtkMenuExt, ImageExt, LabelExt, ListBoxExt, ListBoxRowExt, MenuShellExt, StyleContextExt, WidgetExt, WidgetExtManual};
+use gtk::prelude::{BuilderExtManual, ButtonExt, ContainerExt, GtkMenuExt, ImageExt, LabelExt, ListBoxExt, ListBoxRowExt, MenuShellExt, StyleContextExt, WidgetExt, WidgetExtManual};
 use pcap::packet::layers::ethernet_frame::arp::arp_extension::ArpExtension;
 use pcap::packet::layers::ethernet_frame::ethernet_frame::EthernetFrame;
 use pcap::packet::layers::ethernet_frame::ip::icmp::icmp_layer::IcmpLayer;
@@ -45,48 +45,55 @@ pub fn create_ethernet_layer_expander(db: &Database, offset: usize, hex_editor: 
         let hex_editor = hex_editor.clone();
         let layer = layer.clone();
         move |_, row| {
-            let (x, w) = match row.index() {
+            let (x, w) = layer.get_selection(match row.index() {
                 0 => {
-                    layer.get_selection("destination")
+                    "destination"
                 }
                 1 => {
-                    layer.get_selection("source")
+                    "source"
                 }
                 2 => {
-                    layer.get_selection("type")
+                    "type"
                 }
                 _ => unimplemented!()
-            };
+            });
 
             hex_editor.set_selection(offset + x, w);
         }
     });
 
-    list_box.connect_button_press_event(move |list_box, event| {
-        if event.button() != 3 {
-            return Proceed;
-        }
-
-        let (_, y) = event.position();
-
-        if let Some(row) = list_box.row_at_y(y as i32) {
-            match row.index() {
-                0 => {
-                    println!("DESTINATION:");
-                }
-                1 => {
-                    println!("SOURCE:");
-                }
-                2 => {
-                    println!("TYPE:");
-                }
-                _ => unimplemented!()
+    list_box.connect_button_press_event({
+        let hex_editor = hex_editor.clone();
+        let layer = layer.clone();
+        move |list_box, event| {
+            if event.button() != 3 {
+                return Proceed;
             }
 
-            create_row_context_menu(&row, event);
-        }
+            let (_, y) = event.position();
 
-        Proceed
+            if let Some(row) = list_box.row_at_y(y as i32) {
+                let variable = match row.index() {
+                    0 => {
+                        "destination"
+                    }
+                    1 => {
+                        "source"
+                    }
+                    2 => {
+                        "type"
+                    }
+                    _ => unimplemented!()
+                };
+
+                let menu = create_row_context_menu(&row, event);
+
+                let (x, w) = layer.get_selection(variable);
+                hex_editor.set_selection(offset + x, w);
+            }
+
+            Proceed
+        }
     });
 
     dropdown.add(&list_box);
@@ -399,27 +406,16 @@ fn create_row(key: &str, value: String) -> ListBoxRow {
     row
 }
 
-fn create_row_context_menu(row: &ListBoxRow, event: &EventButton) {
-    let menu = Menu::new();
+fn create_row_context_menu(row: &ListBoxRow, event: &EventButton) -> Menu {
+    row.style_context().add_class("selected");
 
-    //COPY
-    // - Field Name
-    // - Value
-    // - Description
-    //----------------
-    // - Copy Bytes as Hex & ASCII Dump
-    // - ...as Byte Array
-    // - ...as Hex Dump
-    // - ...as ASCII Dump
-    // - ...as Raw Binary
+    let builder = Builder::from_resource("/net/ethernaught/rust/res/ui/sidebar_context_menu.xml");
 
-    let item1 = MenuItem::with_label("Edit");
-    let item2 = MenuItem::with_label("Delete");
+    let model: gio::MenuModel = builder
+        .object("context_menu")
+        .expect("Couldn't find 'context_menu' in sidebar_context_menu.xml");
 
-    menu.add(&item1);
-    menu.add(&item2);
-
-    menu.show_all();
+    let menu = Menu::from_model(&model);
 
     menu.connect_deactivate({
         let row = row.clone();
@@ -429,4 +425,6 @@ fn create_row_context_menu(row: &ListBoxRow, event: &EventButton) {
     });
 
     menu.popup_at_pointer(Some(event));
+
+    menu
 }

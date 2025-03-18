@@ -2,7 +2,7 @@
 <interface domain="net.ethernaught.rust">
     <requires lib="gtk+" version="3.24"/>
 
-    <object class="GtkApplicationWindow" id="PacketPlaygroundWindow">
+    <object class="GtkApplicationWindow" id="packet_playground_window">
         <property name="title">Packet Playground</property>
         <property name="default_width">1200</property>
         <property name="default_height">700</property>

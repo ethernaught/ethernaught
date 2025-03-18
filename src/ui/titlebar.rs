@@ -48,11 +48,11 @@ impl TitleBar {
             .expect("Couldn't find 'navigation_menubar' in titlebar_ui.xml");
 
         let menu_builder = Builder::from_resource("/net/ethernaught/rust/res/ui/ethernaught_ui.xml");
-        let menu: gio::MenuModel = menu_builder
+        let model: gio::MenuModel = menu_builder
             .object("main_window_menu")
             .expect("Couldn't find 'main_window_menu' in ethernaught_ui.xml");
 
-        navigation_menubar.bind_model(Some(&menu), None, false);
+        navigation_menubar.bind_model(Some(&model), None, false);
 
 
         let navigation_menubar = Rc::new(RefCell::new(navigation_menubar));

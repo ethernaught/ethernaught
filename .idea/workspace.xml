@@ -8,11 +8,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="29b3c7c6-90a5-4faa-970b-44b90a8c0a85" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/res/ui/sidebar_context_menu.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/layers/ethernet_frame/ethernet_frame.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/layers/ethernet_frame/ethernet_frame.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/layers/ethernet_frame/ip/ipv4_layer.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/layers/ethernet_frame/ip/ipv4_layer.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/layers/ethernet_frame/ip/ipv6_layer.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/layers/ethernet_frame/ip/ipv6_layer.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/layers/inter/layer_ext.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/layers/inter/layer_ext.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/gresources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/res/gresources.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/resources.gresources" beforeDir="false" afterPath="$PROJECT_DIR$/res/resources.gresources" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/ui/gtk3/packet_playground_window.ui" beforeDir="false" afterPath="$PROJECT_DIR$/res/ui/gtk3/packet_playground_window.ui" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/ui/gtk3/window.css" beforeDir="false" afterPath="$PROJECT_DIR$/res/ui/gtk3/window.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/ui/gtk3/window.ui" beforeDir="false" afterPath="$PROJECT_DIR$/res/ui/gtk3/window.ui" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ui/application.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui/application.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ui/handlers/expanders.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui/handlers/expanders.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ui/titlebar.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui/titlebar.rs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -34,22 +39,30 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Cargo.Run ethernaught.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.rust.reset.selective.auto.import&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/brad/CLionProjects/upnp&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;org.rust.cargo.project.model.PROJECT_DISCOVERY&quot;: &quot;true&quot;,
-    &quot;org.rust.first.attach.projects&quot;: &quot;true&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Cargo.Run ethernaught.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.rust.reset.selective.auto.import": "true",
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "/home/brad/CLionProjects/ethernaught/res/ui/gtk3",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "org.rust.cargo.project.model.PROJECT_DISCOVERY": "true",
+    "org.rust.first.attach.projects": "true",
+    "settings.editor.selected.configurable": "preferences.lookFeel",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/res/ui/gtk3" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/res/ui" />
+    </key>
+  </component>
   <component name="RunManager" selected="Cargo.Run ethernaught">
     <configuration name="Run ethernaught" type="CargoCommandRunConfiguration" factoryName="Cargo Command">
       <option name="buildProfileId" value="dev" />

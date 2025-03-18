@@ -26,7 +26,7 @@ window {
     background-color: @background;
 }
 
-#MainWindow {
+#main_window {
     background-color: @background;
     border-top: solid 1px @background_secondary;
     border-left: solid 1px @border;
