@@ -358,7 +358,8 @@ fn create_row(key: &str, value: String) -> ListBoxRow {
     row.connect_button_press_event(move |row, event| {
         if event.button() == 3 {
             row.style_context().add_class("selected");
-            show_context_menu(row, event);
+            let menu = create_row_context_menu(row);
+            menu.popup_at_pointer(Some(event));
         }
 
         Proceed
@@ -383,7 +384,7 @@ fn create_row(key: &str, value: String) -> ListBoxRow {
     row
 }
 
-fn show_context_menu(row: &ListBoxRow, event: &EventButton) {
+fn create_row_context_menu(row: &ListBoxRow) -> Menu {
     let menu = Menu::new();
 
     //COPY
@@ -392,7 +393,7 @@ fn show_context_menu(row: &ListBoxRow, event: &EventButton) {
     // - Description
     //----------------
     // - Copy Bytes as Hex & ASCII Dump
-    // - ...as Byte array
+    // - ...as Byte Array
     // - ...as Hex Dump
     // - ...as ASCII Dump
     // - ...as Raw Binary
@@ -412,5 +413,5 @@ fn show_context_menu(row: &ListBoxRow, event: &EventButton) {
         }
     });
 
-    menu.popup_at_pointer(Some(&event));
+    menu
 }
