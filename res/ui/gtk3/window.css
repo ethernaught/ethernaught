@@ -39,7 +39,7 @@ window {
     border-bottom: solid 1px @border;
 }
 
-window.maximized {
+#main_window.maximized {
     border-left: none;
     border-right: none;
     border-bottom: none;
@@ -76,7 +76,7 @@ button:focus, button:checked {
     background: linear-gradient(90deg, @background 0%, @primary 20%, @background 40%);
 }
 
-window.maximized #titlebar {
+#main_window.maximized #titlebar {
     border-top: none;
     border-left: none;
     border-right: none;
