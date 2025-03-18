@@ -71,6 +71,31 @@
                     <attribute name="action">win.firewall</attribute>
                     <attribute name="label" translatable="yes">Firewall Rules</attribute>
                 </item>
+                <submenu>
+                    <attribute name="label" translatable="true">_Protocol</attribute>
+                    <section>
+                        <item>
+                            <attribute name="action">win.x</attribute>
+                            <attribute name="label" translatable="yes">UPnP</attribute>
+                        </item>
+                        <item>
+                            <attribute name="action">win.x</attribute>
+                            <attribute name="label" translatable="yes">DNS</attribute>
+                        </item>
+                        <item>
+                            <attribute name="action">win.x</attribute>
+                            <attribute name="label" translatable="yes">Trace Route</attribute>
+                        </item>
+                        <item>
+                            <attribute name="action">win.x</attribute>
+                            <attribute name="label" translatable="yes">ARP</attribute>
+                        </item>
+                    </section>
+                </submenu>
+                <item>
+                    <attribute name="action">win.x</attribute>
+                    <attribute name="label" translatable="yes">Port Report</attribute>
+                </item>
             </section>
         </submenu>
         <submenu>
