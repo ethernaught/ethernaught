@@ -13,6 +13,14 @@
                             <attribute name="action">win.x</attribute>
                             <attribute name="label" translatable="yes">Interface...</attribute>
                         </item>
+                        <item>
+                            <attribute name="action">win.x</attribute>
+                            <attribute name="label" translatable="yes">Socket Listener...</attribute>
+                        </item>
+                        <item>
+                            <attribute name="action">win.x</attribute>
+                            <attribute name="label" translatable="yes">Socket Client...</attribute>
+                        </item>
                     </section>
                 </submenu>
                 <item>
@@ -79,6 +87,10 @@
                 <item>
                     <attribute name="action">win.firewall</attribute>
                     <attribute name="label" translatable="yes">Firewall Rules</attribute>
+                </item>
+                <item>
+                    <attribute name="action">win.x</attribute>
+                    <attribute name="label" translatable="yes">Protocol Designer</attribute>
                 </item>
             </section>
             <section>
