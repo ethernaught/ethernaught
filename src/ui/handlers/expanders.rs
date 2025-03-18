@@ -1,8 +1,9 @@
 use std::net::IpAddr;
-use gtk::{Button, Container, Image, Label, ListBox, ListBoxRow, Orientation};
+use gtk::{gdk, Button, Container, EventBox, Image, Label, ListBox, ListBoxRow, Menu, MenuItem, Orientation};
+use gtk::gdk::EventButton;
 use gtk::glib::Cast;
 use gtk::glib::Propagation::Proceed;
-use gtk::prelude::{ButtonExt, ContainerExt, ImageExt, LabelExt, ListBoxExt, ListBoxRowExt, WidgetExt};
+use gtk::prelude::{ButtonExt, ContainerExt, GtkMenuExt, ImageExt, LabelExt, ListBoxExt, ListBoxRowExt, MenuShellExt, StyleContextExt, WidgetExt, WidgetExtManual};
 use pcap::packet::layers::ethernet_frame::arp::arp_extension::ArpExtension;
 use pcap::packet::layers::ethernet_frame::ethernet_frame::EthernetFrame;
 use pcap::packet::layers::ethernet_frame::ip::icmp::icmp_layer::IcmpLayer;
@@ -44,7 +45,6 @@ pub fn create_ethernet_layer_expander(db: &Database, offset: usize, hex_editor: 
         let hex_editor = hex_editor.clone();
         let layer = layer.clone();
         move |_, row| {
-            println!("CLICK");
             let (x, w) = match row.index() {
                 0 => {
                     layer.get_selection("destination")
@@ -353,6 +353,16 @@ fn create_dropdown(title: &str) -> (Container, ListBox) {
 
 fn create_row(key: &str, value: String) -> ListBoxRow {
     let row = ListBoxRow::new();
+    let event_box = EventBox::new();
+
+    row.connect_button_press_event(move |row, event| {
+        if event.button() == 3 {
+            row.style_context().add_class("selected");
+            show_context_menu(row, event);
+        }
+
+        Proceed
+    });
 
     let hbox = gtk::Box::new(Orientation::Horizontal, 10);
 
@@ -366,8 +376,41 @@ fn create_row(key: &str, value: String) -> ListBoxRow {
     label.set_xalign(0.0);
     hbox.add(&label);
 
-    row.add(&hbox);
+    event_box.add(&hbox);
+    row.add(&event_box);
     row.show_all();
 
     row
+}
+
+fn show_context_menu(row: &ListBoxRow, event: &EventButton) {
+    let menu = Menu::new();
+
+    //COPY
+    // - Field Name
+    // - Value
+    // - Description
+    //----------------
+    // - Copy Bytes as Hex & ASCII Dump
+    // - ...as Byte array
+    // - ...as Hex Dump
+    // - ...as ASCII Dump
+    // - ...as Raw Binary
+
+    let item1 = MenuItem::with_label("Edit");
+    let item2 = MenuItem::with_label("Delete");
+
+    menu.add(&item1);
+    menu.add(&item2);
+
+    menu.show_all();
+
+    menu.connect_deactivate({
+        let row = row.clone();
+        move |_| {
+            row.style_context().remove_class("selected");
+        }
+    });
+
+    menu.popup_at_pointer(Some(&event));
 }

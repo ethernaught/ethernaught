@@ -192,7 +192,8 @@ hexeditor {
     color: @text_secondary;
 }
 
-#dropdown list row:hover {
+#dropdown list row:hover,
+        #dropdown list row.selected {
     background-color: @ripple;
 }
 
