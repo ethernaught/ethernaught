@@ -30,6 +30,9 @@ rustup override set nightly
 //re-implement sidebar replay...
 //save fragments so we can clear adapter
 
+//FIND A BETTER METHOD WITHIN PCAP LIB TO SEND ADDRESS DETAILS AS IT WOND BE THE SAME STRUCT PER OS
+// - not to mention we will need the data when saving, so might want to add to the packet - MAINLY FOR PROMISCUOUS MODE...
+
 fn main() {
     /*
     if !cfg!(debug_assertions) {
