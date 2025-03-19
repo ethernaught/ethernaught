@@ -22,7 +22,7 @@ combobox button {
     border: solid 1px @border_light;
 }
 
-combobox > window.popup * {
+combobox > window.popup menuitem {
     margin: 0 5px;
     border-radius: 6px;
 }
