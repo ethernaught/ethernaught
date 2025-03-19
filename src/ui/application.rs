@@ -23,7 +23,8 @@ use crate::ui::titlebar::TitleBar;
 use crate::ui::widgets::graph::Graph;
 use crate::ui::widgets::hex_editor::HexEditor;
 use crate::ui::widgets::terminal::Terminal;
-use crate::ui::windows::packet_playground_window::PacketPlaygroundWindow;
+use crate::ui::window::inter::iwindow::IWindow;
+use crate::ui::window::packet_playground_window::PacketPlaygroundWindow;
 
 #[derive(Clone)]
 pub struct OApplication {
@@ -157,7 +158,7 @@ impl OApplication {
         action.connect_activate({
             move |_, _| {
                 let mut window = PacketPlaygroundWindow::new();
-                window.on_create();
+                window.on_create(None);
             }
         });
         window.add_action(&action);

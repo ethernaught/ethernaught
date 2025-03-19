@@ -49,7 +49,7 @@ impl MainActivity {
     */
 
     pub fn open_footerbar(&self, title: &str, mut fragment: Box<dyn Fragment>) {
-        if let Some(pane) = self.context.get_child_by_name::<Paned>(self.root.as_ref().unwrap().upcast_ref(), "window_pane") {
+        if let Some(pane) = self.context.get_child_by_name::<Paned>(self.root.as_ref().unwrap().upcast_ref(), "main_activity_pane") {
             match pane.child2() {
                 Some(child) => {
                     pane.remove(&child);
@@ -71,7 +71,7 @@ impl MainActivity {
     }
 
     pub fn close_footerbar(&self) {
-        if let Some(pane) = self.context.get_child_by_name::<Paned>(self.root.as_ref().unwrap().upcast_ref(), "window_pane") {
+        if let Some(pane) = self.context.get_child_by_name::<Paned>(self.root.as_ref().unwrap().upcast_ref(), "main_activity_pane") {
             match pane.child2() {
                 Some(child) => {
                     if self.footer_selected.borrow().as_str() != "" {
@@ -87,7 +87,7 @@ impl MainActivity {
     }
 
     pub fn open_sidebar(&self, mut fragment: Box<dyn Fragment>) {
-        if let Some(pane) = self.context.get_child_by_name::<Paned>(self.root.as_ref().unwrap().upcast_ref(), "window_content_pane") {
+        if let Some(pane) = self.context.get_child_by_name::<Paned>(self.root.as_ref().unwrap().upcast_ref(), "main_activity_content_pane") {
             match pane.child2() {
                 Some(child) => {
                     pane.remove(&child);
@@ -102,7 +102,7 @@ impl MainActivity {
     }
 
     pub fn close_sidebar(&self) {
-        if let Some(pane) = self.context.get_child_by_name::<Paned>(self.root.as_ref().unwrap().upcast_ref(), "window_content_pane") {
+        if let Some(pane) = self.context.get_child_by_name::<Paned>(self.root.as_ref().unwrap().upcast_ref(), "main_activity_content_pane") {
             match pane.child2() {
                 Some(child) => {
                     pane.remove(&child);
@@ -136,22 +136,22 @@ impl Activity for MainActivity {
         );
 
         self.root = Some(builder
-            .object("window_layout")
-            .expect("Couldn't find 'window_layout' in main_activity.ui"));
+            .object("main_activity_layout")
+            .expect("Couldn't find 'main_activity_layout' in main_activity.ui"));
 
 
-        let mut window_content_pane: Paned = builder
-            .object("window_content_pane")
-            .expect("Couldn't find 'window_content_pane' in main_activity.ui");
+        let mut main_activity_content_pane: Paned = builder
+            .object("main_activity_content_pane")
+            .expect("Couldn't find 'main_activity_content_pane' in main_activity.ui");
 
 
-        let mut window_pane: Paned = builder
-            .object("window_pane")
-            .expect("Couldn't find 'window_pane' in main_activity.ui");
+        let mut main_activity_pane: Paned = builder
+            .object("main_activity_pane")
+            .expect("Couldn't find 'main_activity_pane' in main_activity.ui");
 
-        let content = window_content_pane.upcast_ref::<Container>();
-        window_pane.set_child_shrink(content, false);
-        window_pane.set_child_resize(content, true);
+        let content = main_activity_content_pane.upcast_ref::<Container>();
+        main_activity_pane.set_child_shrink(content, false);
+        main_activity_pane.set_child_resize(content, true);
 
 
         let terminal_button: Button = builder
@@ -226,9 +226,9 @@ impl Activity for MainActivity {
 
                         let mut main_fragment = MainFragment::new(self.dyn_clone());
                         let content = main_fragment.on_create(None);
-                        window_content_pane.add(content);
-                        window_content_pane.set_child_shrink(content, false);
-                        window_content_pane.set_child_resize(content, true);
+                        main_activity_content_pane.add(content);
+                        main_activity_content_pane.set_child_shrink(content, false);
+                        main_activity_content_pane.set_child_resize(content, true);
 
                         let main_fragment = Rc::new(RefCell::new(main_fragment));
 
@@ -315,9 +315,9 @@ impl Activity for MainActivity {
 
                         let mut main_fragment = MainFragment::new(self.dyn_clone());
                         let content = main_fragment.on_create(Some(bundle));
-                        window_content_pane.add(content);
-                        window_content_pane.set_child_shrink(content, false);
-                        window_content_pane.set_child_resize(content, true);
+                        main_activity_content_pane.add(content);
+                        main_activity_content_pane.set_child_shrink(content, false);
+                        main_activity_content_pane.set_child_resize(content, true);
                     }
                     _ => {}
                 }

@@ -7,4 +7,4 @@ pub mod application;
 pub mod titlebar;
 pub mod bottombar;
 pub mod context;
-mod windows;
+mod window;

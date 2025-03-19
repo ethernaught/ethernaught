@@ -1,36 +1,41 @@
-use gtk::{gdk, ApplicationWindow, Builder, ComboBoxText, Container, CssProvider, Paned, StyleContext, Window, WindowType};
+use std::any::Any;
+use gtk::{gdk, glib, Builder, ComboBoxText, Container, CssProvider, ListBox, ListBoxRow, Paned, Stack, StyleContext};
 use gtk::gdk::RGBA;
-use gtk::prelude::{BuilderExtManual, ComboBoxExtManual, ComboBoxTextExt, ContainerExt, CssProviderExt, GtkWindowExt, PanedExt, WidgetExt};
+use gtk::glib::{Cast, PropertyGet, Receiver, Sender};
+use gtk::prelude::{BuilderExtManual, ComboBoxExt, ComboBoxExtManual, ComboBoxTextExt, ContainerExt, PanedExt, WidgetExt};
+use crate::ui::activity::inter::activity::Activity;
+use crate::ui::context::Context;
+use crate::ui::handlers::bundle::Bundle;
 use crate::ui::widgets::hex_editor::HexEditor;
 
-pub struct PacketPlaygroundWindow {
-    window: Option<Window>
+#[derive(Clone)]
+pub struct DevicesActivity {
+    context: Context,
+    root: Option<Container>
 }
 
-impl PacketPlaygroundWindow {
+impl DevicesActivity {
 
-    pub fn new() -> Self {
+    pub fn new(context: Context) -> Self {
         Self {
-            window: None
+            context,
+            root: None
         }
     }
+}
 
-    pub fn on_create(&mut self) {
-        let builder = Builder::from_resource("/net/ethernaught/rust/res/ui/gtk3/packet_playground_window.ui");
+impl Activity for DevicesActivity {
 
-        let provider = CssProvider::new();
-        provider.load_from_resource("/net/ethernaught/rust/res/ui/gtk3/packet_playground_window.css");
-        //provider.load_from_path("res/ui/gtk3/window.css").expect("Failed to load CSS file.");
+    fn get_name(&self) -> String {
+        "packet_playground_activity".to_string()
+    }
 
-        StyleContext::add_provider_for_screen(
-            &gdk::Screen::default().expect("Failed to get default screen."),
-            &provider,
-            gtk::STYLE_PROVIDER_PRIORITY_APPLICATION,
-        );
+    fn get_title(&self) -> String {
+        "PacketPlaygroundActivity".to_string()
+    }
 
-        let window: Window = builder
-            .object("packet_playground_window")
-            .expect("Failed to get the 'packet_playground_window' from packet_playground_window.ui");
+    fn on_create(&mut self, bundle: Option<Bundle>) -> &Container {
+        let builder = Builder::from_resource("/net/ethernaught/rust/res/ui/gtk3/packet_playground_activity.ui");
 
 
 
@@ -82,8 +87,13 @@ impl PacketPlaygroundWindow {
         let combo_box = ComboBoxText::new();
         combo_box.append_text("Data Link Type");
         combo_box.append_text("Ethernet");
-
         combo_box.set_active(Some(0));
+
+        combo_box.connect_changed(move |combobox| {
+            println!("SELECTION RECEIVED   {}", combobox.active_text().unwrap());
+        });
+
+
 
         selection_layout.add(&combo_box);
 
@@ -91,15 +101,27 @@ impl PacketPlaygroundWindow {
 
 
 
+        &self.root.as_ref().unwrap().upcast_ref()
+    }
 
+    fn on_resume(&self) {
+    }
 
+    fn on_pause(&self) {
+    }
 
+    fn on_destroy(&self) {
+    }
 
+    fn as_any(&self) -> &dyn Any {
+        self
+    }
 
+    fn as_any_mut(&mut self) -> &mut dyn Any {
+        self
+    }
 
-
-        window.show();
-
-        self.window = Some(window);
+    fn dyn_clone(&self) -> Box<dyn Activity> {
+        Box::new(self.clone())
     }
 }

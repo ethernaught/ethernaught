@@ -2,8 +2,8 @@
 <interface>
     <requires lib="gtk+" version="3.24"/>
 
-    <object class="GtkBox" id="window_layout">
-        <property name="name">window_layout</property>
+    <object class="GtkBox" id="main_activity_layout">
+        <property name="name">main_activity_layout</property>
         <property name="visible">True</property>
         <property name="hexpand">True</property>
         <property name="vexpand">True</property>
@@ -48,15 +48,15 @@
         </child>
 
         <child>
-            <object class="GtkPaned" id="window_pane">
-                <property name="name">window_pane</property>
+            <object class="GtkPaned" id="main_activity_pane">
+                <property name="name">main_activity_pane</property>
                 <property name="visible">True</property>
                 <property name="orientation">vertical</property>
                 <property name="position">400</property>
 
                 <child>
-                    <object class="GtkPaned" id="window_content_pane">
-                        <property name="name">window_content_pane</property>
+                    <object class="GtkPaned" id="main_activity_content_pane">
+                        <property name="name">main_activity_content_pane</property>
                         <property name="visible">True</property>
                         <property name="orientation">horizontal</property>
                         <property name="position">700</property>

@@ -8,9 +8,25 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="29b3c7c6-90a5-4faa-970b-44b90a8c0a85" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/res/ui/gtk3/packet_playground_activity.ui" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/ui/window/about_window.rs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/ui/window/inter/iwindow.rs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/ui/window/inter/mod.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/res/resources.gresources" beforeDir="false" afterPath="$PROJECT_DIR$/res/resources.gresources" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/ui/gtk3/packet_playground_window.css" beforeDir="false" afterPath="$PROJECT_DIR$/res/ui/gtk3/packet_playground_window.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/ui/gtk3/devices_activity.css" beforeDir="false" afterPath="$PROJECT_DIR$/res/ui/gtk3/devices_activity.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/ui/gtk3/devices_activity.ui" beforeDir="false" afterPath="$PROJECT_DIR$/res/ui/gtk3/devices_activity.ui" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/ui/gtk3/main_activity.css" beforeDir="false" afterPath="$PROJECT_DIR$/res/ui/gtk3/main_activity.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/ui/gtk3/main_activity.ui" beforeDir="false" afterPath="$PROJECT_DIR$/res/ui/gtk3/main_activity.ui" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/ui/gtk3/packet_playground_window.ui" beforeDir="false" afterPath="$PROJECT_DIR$/res/ui/gtk3/packet_playground_window.ui" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ui/activity/devices_activity.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui/activity/devices_activity.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ui/activity/main_activity.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui/activity/main_activity.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ui/activity/mod.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui/activity/mod.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ui/application.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui/application.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ui/mod.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui/mod.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ui/windows/about_window.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui/activity/packet_playground_activity.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ui/windows/mod.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui/window/mod.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ui/windows/packet_playground_window.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui/window/packet_playground_window.rs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -18,6 +34,13 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="RsBuildProfile:dev" />
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Rust File" />
+      </list>
+    </option>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>

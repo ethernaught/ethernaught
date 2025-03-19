@@ -67,8 +67,8 @@ impl Activity for DevicesActivity {
         );
 
         self.root = Some(builder
-            .object("devices_layout")
-            .expect("Couldn't find 'devices_layout' in devices_activity.ui"));
+            .object("devices_activity_layout")
+            .expect("Couldn't find 'devices_activity_layout' in devices_activity.ui"));
 
 
         let devices_list: ListBox = builder
