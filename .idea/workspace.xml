@@ -7,22 +7,11 @@
     <cargoProject FILE="$PROJECT_DIR$/Cargo.toml" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="29b3c7c6-90a5-4faa-970b-44b90a8c0a85" name="Changes" comment="">
+    <list default="true" id="f0704e63-1929-42d3-83d7-8cbc904dc132" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/gresources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/res/gresources.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/res/resources.gresources" beforeDir="false" afterPath="$PROJECT_DIR$/res/resources.gresources" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/res/ui/gtk3/packet_playground_activity.ui" beforeDir="false" afterPath="$PROJECT_DIR$/res/ui/gtk3/packet_playground_activity.ui" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/ui/gtk3/packet_playground_window.css" beforeDir="false" afterPath="$PROJECT_DIR$/res/ui/gtk3/packet_playground_activity.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/ui/gtk3/packet_playground_window.ui" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ui/activity/packet_playground_activity.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui/activity/packet_playground_activity.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ui/application.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui/application.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ui/context.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui/context.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ui/mod.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui/mod.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ui/window/about_window.rs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ui/window/inter/iwindow.rs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ui/window/inter/mod.rs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ui/window/mod.rs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ui/window/packet_playground_window.rs" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -30,53 +19,39 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="RsBuildProfile:dev" />
-  <component name="FileTemplateManagerImpl">
-    <option name="RECENT_TEMPLATES">
-      <list>
-        <option value="Rust File" />
-      </list>
-    </option>
-  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="MacroExpansionManager">
-    <option name="directoryName" value="ssNv6M0W" />
+    <option name="directoryName" value="5Nc09qwp" />
   </component>
-  <component name="ProjectColorInfo">{
-  &quot;associatedIndex&quot;: 8
-}</component>
-  <component name="ProjectId" id="2uTbZnLzCVVnXMFFn038JbyPGE1" />
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 8
+}]]></component>
+  <component name="ProjectId" id="2uXVRHIOli6cjjGaQVOVpq1ZQ9M" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Cargo.Run ethernaught.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.rust.reset.selective.auto.import&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/brad/CLionProjects/ethernaught/res/ui/gtk3&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;org.rust.cargo.project.model.PROJECT_DISCOVERY&quot;: &quot;true&quot;,
-    &quot;org.rust.first.attach.projects&quot;: &quot;true&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Cargo.Run ethernaught.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.rust.reset.selective.auto.import": "true",
+    "git-widget-placeholder": "main",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "org.rust.cargo.project.model.PROJECT_DISCOVERY": "true",
+    "org.rust.first.attach.projects": "true",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
-  <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/res/ui/gtk3" />
-    </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/res/ui" />
-    </key>
-  </component>
-  <component name="RunManager" selected="Cargo.Run ethernaught">
-    <configuration name="Run ethernaught" type="CargoCommandRunConfiguration" factoryName="Cargo Command">
+}]]></component>
+  <component name="RunManager">
+    <configuration name="Run ethernaught" type="CargoCommandRunConfiguration" factoryName="Cargo Command" temporary="true">
       <option name="buildProfileId" value="dev" />
       <option name="command" value="run --package ethernaught --bin ethernaught" />
       <option name="workingDirectory" value="file://$PROJECT_DIR$" />
@@ -94,23 +69,11 @@
         <option name="CARGO.BUILD_TASK_PROVIDER" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Test ethernaught" type="CargoCommandRunConfiguration" factoryName="Cargo Command">
-      <option name="command" value="test --workspace" />
-      <option name="workingDirectory" value="file://$PROJECT_DIR$" />
-      <envs />
-      <option name="emulateTerminal" value="true" />
-      <option name="channel" value="DEFAULT" />
-      <option name="requiredFeatures" value="true" />
-      <option name="allFeatures" value="false" />
-      <option name="withSudo" value="false" />
-      <option name="buildTarget" value="REMOTE" />
-      <option name="backtrace" value="SHORT" />
-      <option name="isRedirectInput" value="false" />
-      <option name="redirectInputPath" value="" />
-      <method v="2">
-        <option name="CARGO.BUILD_TASK_PROVIDER" enabled="true" />
-      </method>
-    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Cargo.Run ethernaught" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="RustProjectSettings">
     <option name="toolchainHomeDirectory" value="$USER_HOME$/.cargo/bin" />
@@ -118,13 +81,12 @@
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="29b3c7c6-90a5-4faa-970b-44b90a8c0a85" name="Changes" comment="" />
-      <created>1742275568312</created>
+      <changelist id="f0704e63-1929-42d3-83d7-8cbc904dc132" name="Changes" comment="" />
+      <created>1742394895275</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1742275568312</updated>
-      <workItem from="1742275569432" duration="55000" />
-      <workItem from="1742275673110" duration="90000" />
+      <updated>1742394895275</updated>
+      <workItem from="1742394896457" duration="499000" />
     </task>
     <servers />
   </component>
