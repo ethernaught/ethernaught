@@ -2,19 +2,19 @@ use std::any::Any;
 use gtk::{gdk, glib, Builder, ComboBoxText, Container, CssProvider, ListBox, ListBoxRow, Paned, Stack, StyleContext};
 use gtk::gdk::RGBA;
 use gtk::glib::{Cast, PropertyGet, Receiver, Sender};
-use gtk::prelude::{BuilderExtManual, ComboBoxExt, ComboBoxExtManual, ComboBoxTextExt, ContainerExt, PanedExt, WidgetExt};
+use gtk::prelude::{BuilderExtManual, ComboBoxExt, ComboBoxExtManual, ComboBoxTextExt, ContainerExt, CssProviderExt, PanedExt, WidgetExt};
 use crate::ui::activity::inter::activity::Activity;
 use crate::ui::context::Context;
 use crate::ui::handlers::bundle::Bundle;
 use crate::ui::widgets::hex_editor::HexEditor;
 
 #[derive(Clone)]
-pub struct DevicesActivity {
+pub struct PacketPlaygroundActivity {
     context: Context,
     root: Option<Container>
 }
 
-impl DevicesActivity {
+impl PacketPlaygroundActivity {
 
     pub fn new(context: Context) -> Self {
         Self {
@@ -24,7 +24,7 @@ impl DevicesActivity {
     }
 }
 
-impl Activity for DevicesActivity {
+impl Activity for PacketPlaygroundActivity {
 
     fn get_name(&self) -> String {
         "packet_playground_activity".to_string()
@@ -37,6 +37,19 @@ impl Activity for DevicesActivity {
     fn on_create(&mut self, bundle: Option<Bundle>) -> &Container {
         let builder = Builder::from_resource("/net/ethernaught/rust/res/ui/gtk3/packet_playground_activity.ui");
 
+        let provider = CssProvider::new();
+        provider.load_from_resource("/net/ethernaught/rust/res/ui/gtk3/packet_playground_activity.css");
+        //provider.load_from_path("res/ui/gtk3/window.css").expect("Failed to load CSS file.");
+
+        StyleContext::add_provider_for_screen(
+            &gdk::Screen::default().expect("Failed to get default screen."),
+            &provider,
+            gtk::STYLE_PROVIDER_PRIORITY_APPLICATION,
+        );
+
+        self.root = Some(builder
+            .object("packet_playground_activity_layout")
+            .expect("Couldn't find 'packet_playground_activity_layout' in packet_playground_window.ui"));
 
 
 

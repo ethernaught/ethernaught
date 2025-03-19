@@ -29,8 +29,8 @@
 
 
 
-        <file preprocess="xml-stripblanks">res/ui/gtk3/packet_playground_window.ui</file>
-        <file>res/ui/gtk3/packet_playground_window.css</file>
+        <file preprocess="xml-stripblanks">res/ui/gtk3/packet_playground_activity.ui</file>
+        <file>res/ui/gtk3/packet_playground_activity.css</file>
 
 
 

@@ -16,6 +16,7 @@ use gtk::prelude::{ActionMapExt, GtkWindowExt};
 use crate::ui::activity::devices_activity::DevicesActivity;
 use crate::ui::activity::inter::activity::Activity;
 use crate::ui::activity::main_activity::MainActivity;
+use crate::ui::activity::packet_playground_activity::PacketPlaygroundActivity;
 use crate::ui::bottombar::BottomBar;
 use crate::ui::context::Context;
 use crate::ui::handlers::bundle::Bundle;
@@ -23,8 +24,6 @@ use crate::ui::titlebar::TitleBar;
 use crate::ui::widgets::graph::Graph;
 use crate::ui::widgets::hex_editor::HexEditor;
 use crate::ui::widgets::terminal::Terminal;
-use crate::ui::window::inter::iwindow::IWindow;
-use crate::ui::window::packet_playground_window::PacketPlaygroundWindow;
 
 #[derive(Clone)]
 pub struct OApplication {
@@ -156,9 +155,11 @@ impl OApplication {
 
         let action = SimpleAction::new("packet-playground", None);
         action.connect_activate({
-            move |_, _| {
-                let mut window = PacketPlaygroundWindow::new();
-                window.on_create(None);
+            let context = self.context.clone();
+            {
+                move |_, _| {
+                    context.create_window_from_activity(Box::new(PacketPlaygroundActivity::new(context.clone())), None);
+                }
             }
         });
         window.add_action(&action);

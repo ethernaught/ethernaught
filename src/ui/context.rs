@@ -2,7 +2,7 @@ use std::cell::RefCell;
 use std::rc::Rc;
 use gtk::glib::{Cast, IsA};
 use gtk::prelude::{BinExt, ContainerExt, GtkApplicationExt, GtkWindowExt, StackExt, StyleContextExt, WidgetExt};
-use gtk::{Application, Container, Stack, Widget, Window};
+use gtk::{Application, Container, Stack, Widget, Window, WindowType};
 use crate::qsync::task::Task;
 use crate::ui::activity::inter::activity::Activity;
 use crate::ui::handlers::bundle::Bundle;
@@ -158,6 +158,15 @@ impl Context {
         }
 
         None
+    }
+
+    pub fn create_window_from_activity(&self, mut activity: Box<dyn Activity>, bundle: Option<Bundle>) {
+        let window = Window::new(WindowType::Toplevel);
+        window.set_title(&activity.get_title());
+        window.set_default_size(1200, 700);
+
+        window.add(activity.on_create(bundle));
+        window.show();
     }
 
     pub fn get_task(&self) -> &Task {
