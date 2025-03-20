@@ -164,7 +164,7 @@ impl Fragment for SidebarFragment {
                                             }
                                             UdpTypes::Dns => {}
                                             UdpTypes::Quick => {}
-                                            UdpTypes::uTp => {}
+                                            UdpTypes::Utp => {}
                                             UdpTypes::BitTorrent => {}
                                             _ => {}
                                         }
@@ -208,7 +208,7 @@ impl Fragment for SidebarFragment {
                                             }
                                             UdpTypes::Dns => {}
                                             UdpTypes::Quick => {}
-                                            UdpTypes::uTp => {}
+                                            UdpTypes::Utp => {}
                                             UdpTypes::BitTorrent => {}
                                             _ => {}
                                         }
@@ -264,7 +264,7 @@ impl Fragment for SidebarFragment {
                                             }
                                             UdpTypes::Dns => {}
                                             UdpTypes::Quick => {}
-                                            UdpTypes::uTp => {}
+                                            UdpTypes::Utp => {}
                                             UdpTypes::BitTorrent => {}
                                             _ => {}
                                         }
@@ -304,7 +304,7 @@ impl Fragment for SidebarFragment {
                                             }
                                             UdpTypes::Dns => {}
                                             UdpTypes::Quick => {}
-                                            UdpTypes::uTp => {}
+                                            UdpTypes::Utp => {}
                                             UdpTypes::BitTorrent => {}
                                             _ => {}
                                         }
