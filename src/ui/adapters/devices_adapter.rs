@@ -52,22 +52,26 @@ impl DevicesAdapter {
             .expect("Couldn't find 'icon' in device_list_item.ui");
 
         match device.get_data_link_type() {
-            DataLinkTypes::Ethernet => {
+            DataLinkTypes::En10mb | DataLinkTypes::En3mb => {
                 row.style_context().add_class("ethernet");
                 icon.set_resource(Some("/net/ethernaught/rust/res/icons/ic_ethernet.svg"));
             }
+            /*
             DataLinkTypes::Loopback => {
                 row.style_context().add_class("lan");
                 icon.set_resource(Some("/net/ethernaught/rust/res/icons/ic_lan.svg"));
             }
-            DataLinkTypes::Raw | DataLinkTypes::Tun | DataLinkTypes::Ipv4 | DataLinkTypes::Ipv6 => {
+            */
+            DataLinkTypes::Raw | DataLinkTypes::Ipv4 | DataLinkTypes::Ipv6 => {
                 row.style_context().add_class("vpn");
                 icon.set_resource(Some("/net/ethernaught/rust/res/icons/ic_vpn.svg"));
             }
+            /*
             DataLinkTypes::BluetoothHciH4 => {
                 row.style_context().add_class("bluetooth");
                 icon.set_resource(Some("/net/ethernaught/rust/res/icons/ic_bluetooth.svg"));
             }
+            */
             _ => {}
         }
 
