@@ -252,6 +252,10 @@ menuitem {
     font-size: 14px;
 }
 
+menuitem:hover {
+    background-color: @ripple;
+}
+
 menuitem menuitem {
     margin: 0 5px;
     border-radius: 5px;
