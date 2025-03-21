@@ -4,7 +4,7 @@
 
 hexeditor {
     padding: 10px;
-    font-family: Monospace;
+    font-family: monospace;
     font-size: 16px;
     color: @text_dark;
     background-color: @background_secondary;

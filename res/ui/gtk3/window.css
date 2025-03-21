@@ -358,8 +358,12 @@ scrollbar.horizontal slider {
     padding: 2px 0;
 }
 
-paned separator {
-    background-image: linear-gradient(@background_secondary);
+overshoot {
+    background-image: linear-gradient(transparent, transparent);
+}
+
+paned > separator {
+    background-image: linear-gradient(@background, @background);
 }
 
 
