@@ -420,6 +420,7 @@ impl Activity for MainActivity {
 
                 let app_options = self.context.get_child_by_name::<Widget>(&titlebar, "app_options").unwrap();
                 app_options.style_context().remove_class("running");
+                app_options.hide();
                 self.context.get_child_by_name::<Widget>(&app_options, "stop_button").unwrap().hide();
             }
         }
