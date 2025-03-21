@@ -118,7 +118,7 @@ impl WidgetImpl for HexEditorImpl {
         let ascii_offset = (BYTES_PER_ROW as f64) * (char_width * 2.0) + 9.0;
         let line_numbers_width = padding.left as f64 + 8.0 * char_width;
 
-        cr.select_font_face(font_desc.family().unwrap().as_str(), FontSlant::Normal, font_weight);
+        cr.select_font_face(font_desc.family().unwrap().split(',').next().unwrap().trim(), FontSlant::Normal, font_weight);
         cr.set_font_size(font_size);
 
         for (i, &byte) in self.data.borrow().iter().enumerate() {

@@ -33,6 +33,13 @@ Maintainer: DrBrad <brad@bradeagle.com>
 Description: Ethernaught - Packet sniffer
 EOF
 
+cat > "$DEB_DIR/DEBIAN/postinst" <<EOF
+#!/bin/bash
+fc-cache -fv
+exit 0
+EOF
+chmod 755 "$DEB_DIR/DEBIAN/postinst"
+
 # Copy binary
 mkdir -p "$DEB_DIR/usr/local/bin"
 cp "$BUILD_DIR/$APP_NAME" "$DEB_DIR/usr/local/bin/"
@@ -56,6 +63,10 @@ EOF
 # Create icons
 mkdir -p "$DEB_DIR/usr/share/icons/hicolor"
 cp -r res/hicolor/* "$DEB_DIR/usr/share/icons/hicolor/" || true
+
+# Create fonts
+mkdir -p "$DEB_DIR/usr/share/fonts/truetype/$APP_NAME"
+cp -r res/fonts/* "$DEB_DIR/usr/share/fonts/truetype/$APP_NAME/" || true
 
 # Create database file
 mkdir -p "$DEB_DIR/usr/var/lib/$APP_NAME"

@@ -23,11 +23,6 @@
 @define-color device_vpn #376141;
 @define-color device_bluetooth #394366;
 
-@font-face {
-    font-family: "mono";
-    src: url("../../fonts/ubuntu_mono_regular.ttf");
-}
-
 * {
     box-shadow: none;
     text-shadow: none;

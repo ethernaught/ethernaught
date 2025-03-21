@@ -79,8 +79,5 @@
 
         <file preprocess="xml-stripblanks">res/icons/ic_expand_less.svg</file>
         <file preprocess="xml-stripblanks">res/icons/ic_expand_more.svg</file>
-
-
-        <file>res/fonts/ubuntu_mono_regular.ttf</file>
     </gresource>
 </gresources>
