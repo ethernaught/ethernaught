@@ -33,13 +33,6 @@ Maintainer: DrBrad <brad@bradeagle.com>
 Description: Ethernaught - Packet sniffer
 EOF
 
-cat > "$DEB_DIR/DEBIAN/postinst" <<EOF
-#!/bin/bash
-fc-cache -fv
-exit 0
-EOF
-chmod 755 "$DEB_DIR/DEBIAN/postinst"
-
 # Copy binary
 mkdir -p "$DEB_DIR/usr/local/bin"
 cp "$BUILD_DIR/$APP_NAME" "$DEB_DIR/usr/local/bin/"

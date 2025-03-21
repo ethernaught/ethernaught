@@ -10,14 +10,6 @@
     <list default="true" id="f0704e63-1929-42d3-83d7-8cbc904dc132" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build_deb.sh" beforeDir="false" afterPath="$PROJECT_DIR$/build_deb.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/fonts/ubuntu_mono_regular.ttf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/gresources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/res/gresources.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/resources.gresources" beforeDir="false" afterPath="$PROJECT_DIR$/res/resources.gresources" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/ui/gtk3/main_activity.css" beforeDir="false" afterPath="$PROJECT_DIR$/res/ui/gtk3/main_activity.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/ui/gtk3/packet_playground_activity.css" beforeDir="false" afterPath="$PROJECT_DIR$/res/ui/gtk3/packet_playground_activity.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/ui/gtk3/window.css" beforeDir="false" afterPath="$PROJECT_DIR$/res/ui/gtk3/window.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ui/application.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui/application.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ui/widgets/hex_editor.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui/widgets/hex_editor.rs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
