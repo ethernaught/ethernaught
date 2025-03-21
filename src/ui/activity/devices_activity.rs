@@ -99,6 +99,7 @@ impl Activity for DevicesActivity {
 
 
 
+        /*
         let tx = self.context.get_handler().get_sender();
 
         self.context.get_task().spawn(async move {
@@ -163,6 +164,7 @@ impl Activity for DevicesActivity {
                 i += 1;
             });
         });
+        */
 
         self.devices_adapter = Some(device_adapter);
 

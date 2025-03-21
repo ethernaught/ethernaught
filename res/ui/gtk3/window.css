@@ -331,7 +331,9 @@ window.release #bottombar #license {
 
 
 
-
+scrollbar {
+    border: none;
+}
 
 scrollbar trough {
     background-color: @background_secondary;
