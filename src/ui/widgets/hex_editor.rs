@@ -118,8 +118,20 @@ impl WidgetImpl for HexEditorImpl {
         let ascii_offset = (BYTES_PER_ROW as f64) * (char_width * 2.0) + 9.0;
         let line_numbers_width = padding.left as f64 + 8.0 * char_width;
 
+        println!("{} {}", char_width, row_height);
+
         cr.select_font_face(font_desc.family().unwrap().split(',').next().unwrap().trim(), FontSlant::Normal, font_weight);
         cr.set_font_size(font_size);
+
+        for i in 0..8 {
+            if i%2 == 0 {
+                cr.set_source_rgb(1.0, 1.0, 0.0);
+            } else {
+                cr.set_source_rgb(1.0, 0.0, 0.0);
+            }
+            cr.rectangle(padding.top as f64 + (i as f64 * char_width), padding.left as f64, char_width, row_height);
+            cr.fill();
+        }
 
         for (i, &byte) in self.data.borrow().iter().enumerate() {
             let row = i / BYTES_PER_ROW;
