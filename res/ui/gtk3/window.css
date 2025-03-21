@@ -25,6 +25,7 @@
 
 * {
     box-shadow: none;
+    text-shadow: none;
 }
 
 window {
@@ -357,6 +358,8 @@ scrollbar.horizontal slider {
     padding: 2px 0;
 }
 
-
+paned separator {
+    background-image: linear-gradient(@background_secondary);
+}
 
 
