@@ -110,6 +110,9 @@ impl WidgetImpl for HexEditorImpl {
         cr.select_font_face(font_desc.family().unwrap().split(',').next().unwrap().trim(), FontSlant::Normal, font_weight);
         cr.set_font_size(font_desc.size() as f64 / 1024.0 * widget.screen().unwrap().resolution() / 96.0);
 
+        let char_padding = 2.0 * widget.screen().unwrap().resolution() / 96.0;
+        println!("{}", char_padding);
+
         let extents = cr.font_extents().unwrap();
         let char_width = extents.max_x_advance() + 2.0;
         let row_padding = 2.0;
@@ -262,7 +265,7 @@ impl WidgetImpl for HexEditorImpl {
         }
 
         let mut col = ((x - hex_offset) / (char_width * 2.0)).floor() as isize;
-        let row = ((y - padding.top as f64) / row_height).floor() as isize;
+        let row = ((y - padding.top as f64 - 1.0) / row_height).floor() as isize;
 
         if x >= ascii_offset {
             let ascii_col = ((x - ascii_offset) / char_width).floor() as isize;
