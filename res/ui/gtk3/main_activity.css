@@ -144,7 +144,7 @@ terminal {
 
 hexeditor {
     padding: 10px;
-    font-family: monospace;
+    font-family: "Ethernaught Mono", monospace;
     font-size: 20px;
     color: @text_dark;
     background-color: @background_secondary;
