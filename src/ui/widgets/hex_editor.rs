@@ -58,9 +58,10 @@ impl HexEditorImpl {
         cr.set_font_size(font_desc.size() as f64 / pango::SCALE as f64);
 
         let extents = cr.font_extents().unwrap();
-        let row_height = extents.ascent() + extents.descent();
+        let char_width = extents.max_x_advance() + 2.0;
+        let row_height = extents.ascent() + extents.descent() + 2.0;
 
-        let width = padding.left as i32 + padding.right as i32 + (extents.max_x_advance() as i32 * ((BYTES_PER_ROW as i32 * 3) + 8)) + 30;
+        let width = padding.left as i32 + padding.right as i32 + (char_width as i32 * ((BYTES_PER_ROW as i32 * 3) + 8)) + extents.max_x_advance() as i32 * 2;
         let height = padding.top as i32 + padding.bottom as i32 + ((self.data.borrow().len() / BYTES_PER_ROW) as i32 + 1) * row_height as i32;
 
         (width, height)
@@ -110,17 +111,19 @@ impl WidgetImpl for HexEditorImpl {
         cr.set_font_size(font_desc.size() as f64 / pango::SCALE as f64);
 
         let extents = cr.font_extents().unwrap();
-        let row_height = extents.ascent() + extents.descent();
-        let hex_offset = padding.left as f64 + 15.0 + extents.max_x_advance() * 8.0;
-        let ascii_offset = hex_offset + 15.0 + extents.max_x_advance() * (BYTES_PER_ROW as f64 * 2.0);
+        let char_width = extents.max_x_advance() + 2.0;
+        let row_padding = 2.0;
+        let row_height = extents.ascent() + extents.descent() + row_padding;
+        let hex_offset = padding.left as f64 + extents.max_x_advance() + char_width * 8.0;
+        let ascii_offset = hex_offset + extents.max_x_advance() + char_width * (BYTES_PER_ROW as f64 * 2.0);
 
         for (i, &byte) in self.data.borrow().iter().enumerate() {
             let row = i / BYTES_PER_ROW;
             let col = i % BYTES_PER_ROW;
 
-            let hex_x = hex_offset + col as f64 * (extents.max_x_advance() * 2.0);
+            let hex_x = hex_offset + col as f64 * (char_width * 2.0);
             let y = padding.top as f64 + (row as f64 * row_height);
-            let ascii_x = ascii_offset + col as f64 * extents.max_x_advance();
+            let ascii_x = ascii_offset + col as f64 * char_width;
 
             if col == 0 {
                 let color = match *self.cursor.borrow() {
@@ -141,10 +144,9 @@ impl WidgetImpl for HexEditorImpl {
                 let line_number = format!("{:08X}", row * BYTES_PER_ROW);
 
                 for (i, c) in line_number.chars().enumerate() {
-                    cr.move_to(padding.left as f64 + (i as f64 * extents.max_x_advance()), y + extents.ascent());
+                    cr.move_to(padding.left as f64 + (i as f64 * char_width), y + extents.ascent() + row_padding);
                     cr.show_text(&c.to_string());
                 }
-
             }
 
             match *self.selection.borrow() {
@@ -152,10 +154,10 @@ impl WidgetImpl for HexEditorImpl {
                     if i >= x && i <= x+x2-1  {
                         let color = self.selection_color.borrow();
                         cr.set_source_rgba(color.red(), color.green(), color.blue(), color.alpha());
-                        cr.rectangle(hex_x - 1.0, y, extents.max_x_advance() * 2.0, row_height);
+                        cr.rectangle(hex_x - 1.0, y, char_width * 2.0, row_height);
                         cr.fill().unwrap();
 
-                        cr.rectangle(ascii_x - 1.0, y, extents.max_x_advance() - 2.0 + 2.0, row_height);
+                        cr.rectangle(ascii_x - 1.0, y, char_width - 2.0 + 2.0, row_height);
                         cr.fill().unwrap();
                     }
                 }
@@ -165,10 +167,10 @@ impl WidgetImpl for HexEditorImpl {
             if Some(i) == *self.cursor.borrow() {
                 let color = self.cursor_color.borrow();
                 cr.set_source_rgba(color.red(), color.green(), color.blue(), color.alpha());
-                cr.rectangle(hex_x, y + 1.0, extents.max_x_advance() * 2.0 - 2.0, row_height - 2.0);
+                cr.rectangle(hex_x, y + 1.0, char_width * 2.0 - 2.0, row_height - 2.0);
                 cr.stroke().unwrap();
 
-                cr.rectangle(ascii_x, y + 1.0, extents.max_x_advance() - 2.0, row_height - 2.0);
+                cr.rectangle(ascii_x, y + 1.0, char_width - 2.0, row_height - 2.0);
                 cr.stroke().unwrap();
             }
 
@@ -176,12 +178,12 @@ impl WidgetImpl for HexEditorImpl {
             let hex = format!("{:02X}", byte);
 
             for (i, c) in hex.chars().enumerate() {
-                cr.move_to(hex_x + (i as f64 * extents.max_x_advance()), y + extents.ascent());
+                cr.move_to(hex_x + (i as f64 * char_width), y + extents.ascent() + row_padding);
                 cr.show_text(&c.to_string());
             }
 
             let ascii_char = if byte.is_ascii_graphic() { byte as char } else { '.' };
-            cr.move_to(ascii_x, y + extents.ascent());
+            cr.move_to(ascii_x, y + extents.ascent() + row_padding);
             cr.show_text(&ascii_char.to_string());
         }
 
@@ -245,9 +247,10 @@ impl WidgetImpl for HexEditorImpl {
         cr.set_font_size(font_desc.size() as f64 / pango::SCALE as f64);
 
         let extents = cr.font_extents().unwrap();
-        let row_height = extents.ascent() + extents.descent();
-        let hex_offset = padding.left as f64 + 15.0 + extents.max_x_advance() * 8.0;
-        let ascii_offset = hex_offset + 15.0 + extents.max_x_advance() * (BYTES_PER_ROW as f64 * 2.0);
+        let char_width = extents.max_x_advance() + 2.0;
+        let row_height = extents.ascent() + extents.descent() + 2.0;
+        let hex_offset = padding.left as f64 + extents.max_x_advance() + char_width * 8.0;
+        let ascii_offset = hex_offset + extents.max_x_advance() + char_width * (BYTES_PER_ROW as f64 * 2.0);
 
         let (x, y) = event.position();
 
@@ -258,11 +261,11 @@ impl WidgetImpl for HexEditorImpl {
             return Proceed;
         }
 
-        let mut col = ((x - hex_offset) / (extents.max_x_advance() * 2.0)).floor() as isize;
+        let mut col = ((x - hex_offset) / (char_width * 2.0)).floor() as isize;
         let row = ((y - padding.top as f64) / row_height).floor() as isize;
 
         if x >= ascii_offset {
-            let ascii_col = ((x - ascii_offset) / extents.max_x_advance()).floor() as isize;
+            let ascii_col = ((x - ascii_offset) / char_width).floor() as isize;
             col = ascii_col;
         }
 
