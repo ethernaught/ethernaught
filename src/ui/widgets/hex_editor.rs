@@ -2,11 +2,11 @@ use std::cell::RefCell;
 use std::cmp::max;
 use gtk::gdk::{EventMask, EventMotion, WindowAttr, WindowType, WindowWindowClass, RGBA};
 use gtk::{gdk, glib, pango, Allocation, Buildable, Misc, StateFlags, Widget};
-use gtk::cairo::{Context, FontSlant, FontWeight};
+use gtk::cairo::{Content, Context, FontSlant, FontWeight, Format, ImageSurface, RecordingSurface};
 use gtk::glib::Propagation;
 use gtk::glib::Propagation::Proceed;
 use gtk::pango::Weight;
-use gtk::prelude::{StyleContextExt, StyleContextExtManual, WidgetExt};
+use gtk::prelude::{CellRendererExt, StyleContextExt, StyleContextExtManual, WidgetExt};
 use gtk::subclass::prelude::{ObjectImpl, ObjectSubclass, ObjectSubclassExt, ObjectSubclassIsExt, WidgetClassSubclassExt, WidgetImpl};
 
 const BYTES_PER_ROW: usize = 16;
@@ -39,27 +39,31 @@ impl HexEditorImpl {
     fn calculate_size(&self) -> (i32, i32) {
         let widget = self.obj();
         let style_context = widget.style_context();
-        let pango_context = widget.create_pango_context();
-
-        style_context.set_state(StateFlags::NORMAL);
-
-        let font_desc = style_context.font(StateFlags::NORMAL);
-        let metrics = pango_context.metrics(Some(&font_desc), None);
-
-        let ascent = metrics.ascent() as f64 / pango::SCALE as f64;
-        let decent = metrics.descent() as f64 / pango::SCALE as f64;
 
         let padding = style_context.padding(StateFlags::NORMAL);
 
-        let char_width = metrics.approximate_char_width() as f64 / pango::SCALE as f64;
-        let row_height = ascent + decent;
-        let ascii_offset = (BYTES_PER_ROW as f64) * (char_width * 2.0) + 9.0;
-        let line_numbers_width = padding.left as f64 + 8.0 * char_width;
+        let surface = RecordingSurface::create(Content::Color, None).unwrap();
+        let cr = Context::new(&surface).unwrap();
 
-        let width = padding.right as f64 + (char_width * BYTES_PER_ROW as f64) + line_numbers_width + ascii_offset;
-        let height = padding.top as f64 + padding.bottom as f64 + ((self.data.borrow().len() / BYTES_PER_ROW) as f64 + 1.0) * row_height;
+        let font_desc = style_context.font(StateFlags::NORMAL);
 
-        (width as i32, height as i32)
+        let font_weight = match font_desc.weight() {
+            Weight::Bold => FontWeight::Bold,
+            _ => {
+                FontWeight::Normal
+            }
+        };
+
+        cr.select_font_face(font_desc.family().unwrap().split(',').next().unwrap().trim(), FontSlant::Normal, font_weight);
+        cr.set_font_size(font_desc.size() as f64 / pango::SCALE as f64);
+
+        let extents = cr.font_extents().unwrap();
+        let row_height = extents.ascent() + extents.descent();
+
+        let width = padding.left as i32 + padding.right as i32 + (extents.max_x_advance() as i32 * ((BYTES_PER_ROW as i32 * 3) + 8)) + 30;
+        let height = padding.top as i32 + padding.bottom as i32 + ((self.data.borrow().len() / BYTES_PER_ROW) as i32 + 1) * row_height as i32;
+
+        (width, height)
     }
 }
 
@@ -82,29 +86,9 @@ impl WidgetImpl for HexEditorImpl {
     fn draw(&self, cr: &Context) -> Propagation {
         let widget = self.obj();
         let style_context = widget.style_context();
-        let pango_context = widget.create_pango_context();
 
         style_context.set_state(StateFlags::NORMAL);
         let text_color = style_context.color(StateFlags::NORMAL);
-
-        let font_desc = style_context.font(StateFlags::NORMAL);
-        let metrics = pango_context.metrics(Some(&font_desc), None);
-
-        let ascent = metrics.ascent() as f64 / pango::SCALE as f64;
-        let decent = metrics.descent() as f64 / pango::SCALE as f64;
-
-        let font_size = if font_desc.is_size_absolute() {
-            font_desc.size() as f64
-        } else {
-            font_desc.size() as f64 / pango::SCALE as f64
-        };
-
-        let font_weight = match font_desc.weight() {
-            Weight::Bold => FontWeight::Bold,
-            _ => {
-                FontWeight::Normal
-            }
-        };
 
         let padding = style_context.padding(StateFlags::NORMAL);
 
@@ -113,33 +97,30 @@ impl WidgetImpl for HexEditorImpl {
             cr.paint();
         }
 
-        let char_width = metrics.approximate_char_width() as f64 / pango::SCALE as f64;
-        let row_height = ascent + decent;
-        let ascii_offset = (BYTES_PER_ROW as f64) * (char_width * 2.0) + 9.0;
-        let line_numbers_width = padding.left as f64 + 8.0 * char_width;
+        let font_desc = style_context.font(StateFlags::NORMAL);
 
-        println!("{} {}", char_width, row_height);
+        let font_weight = match font_desc.weight() {
+            Weight::Bold => FontWeight::Bold,
+            _ => {
+                FontWeight::Normal
+            }
+        };
 
         cr.select_font_face(font_desc.family().unwrap().split(',').next().unwrap().trim(), FontSlant::Normal, font_weight);
-        cr.set_font_size(font_size);
+        cr.set_font_size(font_desc.size() as f64 / pango::SCALE as f64);
 
-        for i in 0..8 {
-            if i%2 == 0 {
-                cr.set_source_rgb(1.0, 1.0, 0.0);
-            } else {
-                cr.set_source_rgb(1.0, 0.0, 0.0);
-            }
-            cr.rectangle(padding.top as f64 + (i as f64 * char_width), padding.left as f64, char_width, row_height);
-            cr.fill();
-        }
+        let extents = cr.font_extents().unwrap();
+        let row_height = extents.ascent() + extents.descent();
+        let hex_offset = padding.left as f64 + 15.0 + extents.max_x_advance() * 8.0;
+        let ascii_offset = hex_offset + 15.0 + extents.max_x_advance() * (BYTES_PER_ROW as f64 * 2.0);
 
         for (i, &byte) in self.data.borrow().iter().enumerate() {
             let row = i / BYTES_PER_ROW;
             let col = i % BYTES_PER_ROW;
 
-            let hex_x = col as f64 * (char_width * 2.0) + line_numbers_width;
+            let hex_x = hex_offset + col as f64 * (extents.max_x_advance() * 2.0);
             let y = padding.top as f64 + (row as f64 * row_height);
-            let ascii_x = ascii_offset + col as f64 * char_width + line_numbers_width;
+            let ascii_x = ascii_offset + col as f64 * extents.max_x_advance();
 
             if col == 0 {
                 let color = match *self.cursor.borrow() {
@@ -158,8 +139,12 @@ impl WidgetImpl for HexEditorImpl {
 
                 cr.set_source_rgba(color.red(), color.green(), color.blue(), color.alpha());
                 let line_number = format!("{:08X}", row * BYTES_PER_ROW);
-                cr.move_to(padding.left as f64, y + row_height - decent);
-                cr.show_text(&line_number);
+
+                for (i, c) in line_number.chars().enumerate() {
+                    cr.move_to(padding.left as f64 + (i as f64 * extents.max_x_advance()), y + extents.ascent());
+                    cr.show_text(&c.to_string());
+                }
+
             }
 
             match *self.selection.borrow() {
@@ -167,10 +152,10 @@ impl WidgetImpl for HexEditorImpl {
                     if i >= x && i <= x+x2-1  {
                         let color = self.selection_color.borrow();
                         cr.set_source_rgba(color.red(), color.green(), color.blue(), color.alpha());
-                        cr.rectangle(hex_x - 2.0, y, char_width * 2.0, row_height);
+                        cr.rectangle(hex_x - 1.0, y, extents.max_x_advance() * 2.0, row_height);
                         cr.fill().unwrap();
 
-                        cr.rectangle(ascii_x - 1.0, y, char_width - 2.0 + 2.0, row_height);
+                        cr.rectangle(ascii_x - 1.0, y, extents.max_x_advance() - 2.0 + 2.0, row_height);
                         cr.fill().unwrap();
                     }
                 }
@@ -180,20 +165,23 @@ impl WidgetImpl for HexEditorImpl {
             if Some(i) == *self.cursor.borrow() {
                 let color = self.cursor_color.borrow();
                 cr.set_source_rgba(color.red(), color.green(), color.blue(), color.alpha());
-                cr.rectangle(hex_x - 1.0, y + 1.0, char_width * 2.0 - 2.0, row_height - 2.0);
+                cr.rectangle(hex_x, y + 1.0, extents.max_x_advance() * 2.0 - 2.0, row_height - 2.0);
                 cr.stroke().unwrap();
 
-                cr.rectangle(ascii_x, y + 1.0, char_width - 2.0, row_height - 2.0);
+                cr.rectangle(ascii_x, y + 1.0, extents.max_x_advance() - 2.0, row_height - 2.0);
                 cr.stroke().unwrap();
             }
 
             cr.set_source_rgba(text_color.red(), text_color.green(), text_color.blue(), text_color.alpha());
             let hex = format!("{:02X}", byte);
-            cr.move_to(hex_x, y + row_height - decent);
-            cr.show_text(&hex);
+
+            for (i, c) in hex.chars().enumerate() {
+                cr.move_to(hex_x + (i as f64 * extents.max_x_advance()), y + extents.ascent());
+                cr.show_text(&c.to_string());
+            }
 
             let ascii_char = if byte.is_ascii_graphic() { byte as char } else { '.' };
-            cr.move_to(ascii_x, y + row_height - decent);
+            cr.move_to(ascii_x, y + extents.ascent());
             cr.show_text(&ascii_char.to_string());
         }
 
@@ -238,36 +226,49 @@ impl WidgetImpl for HexEditorImpl {
     fn motion_notify_event(&self, event: &EventMotion) -> Propagation {
         let widget = self.obj();
         let style_context = widget.style_context();
-        let pango_context = widget.create_pango_context();
-
-        style_context.set_state(StateFlags::NORMAL);
-
-        let font_desc = style_context.font(StateFlags::NORMAL);
-        let metrics = pango_context.metrics(Some(&font_desc), None);
-
-        let ascent = metrics.ascent() as f64 / pango::SCALE as f64;
-        let decent = metrics.descent() as f64 / pango::SCALE as f64;
 
         let padding = style_context.padding(StateFlags::NORMAL);
 
-        let char_width = metrics.approximate_char_width() as f64 / pango::SCALE as f64;
-        let row_height = ascent + decent;
-        let ascii_offset = (BYTES_PER_ROW as f64) * (char_width * 2.0) + 10.0;
-        let line_numbers_width = padding.left as f64 + 8.0 * char_width;
+        let surface = RecordingSurface::create(Content::Color, None).unwrap();
+        let cr = Context::new(&surface).unwrap();
 
+        let font_desc = style_context.font(StateFlags::NORMAL);
+
+        let font_weight = match font_desc.weight() {
+            Weight::Bold => FontWeight::Bold,
+            _ => {
+                FontWeight::Normal
+            }
+        };
+
+        cr.select_font_face(font_desc.family().unwrap().split(',').next().unwrap().trim(), FontSlant::Normal, font_weight);
+        cr.set_font_size(font_desc.size() as f64 / pango::SCALE as f64);
+
+        let extents = cr.font_extents().unwrap();
+        let row_height = extents.ascent() + extents.descent();
+        let hex_offset = padding.left as f64 + 15.0 + extents.max_x_advance() * 8.0;
+        let ascii_offset = hex_offset + 15.0 + extents.max_x_advance() * (BYTES_PER_ROW as f64 * 2.0);
 
         let (x, y) = event.position();
 
-        let mut col = ((x - line_numbers_width) / (char_width * 2.0)).floor() as isize;
+
+        if y < padding.top as f64 {
+            *self.cursor.borrow_mut() = None;
+            self.obj().queue_draw();
+            return Proceed;
+        }
+
+        let mut col = ((x - hex_offset) / (extents.max_x_advance() * 2.0)).floor() as isize;
         let row = ((y - padding.top as f64) / row_height).floor() as isize;
 
-        if x-line_numbers_width >= ascii_offset {
-            let ascii_col = ((x - line_numbers_width - ascii_offset) / char_width).floor() as isize;
+        if x >= ascii_offset {
+            let ascii_col = ((x - ascii_offset) / extents.max_x_advance()).floor() as isize;
             col = ascii_col;
         }
 
         if col >= BYTES_PER_ROW as isize || row < 0 {
             *self.cursor.borrow_mut() = None;
+            self.obj().queue_draw();
             return Proceed;
         }
 
