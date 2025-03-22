@@ -110,9 +110,6 @@ impl WidgetImpl for HexEditorImpl {
         cr.select_font_face(font_desc.family().unwrap().split(',').next().unwrap().trim(), FontSlant::Normal, font_weight);
         cr.set_font_size(font_desc.size() as f64 / 1024.0 * widget.screen().unwrap().resolution() / 96.0);
 
-        let char_padding = 2.0 * widget.screen().unwrap().resolution() / 96.0;
-        println!("{}", char_padding);
-
         let extents = cr.font_extents().unwrap();
         let char_width = extents.max_x_advance() + 2.0;
         let row_padding = 2.0;
