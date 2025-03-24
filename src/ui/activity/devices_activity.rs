@@ -81,6 +81,7 @@ impl Activity for DevicesActivity {
         let device_adapter = DevicesAdapter::from_devices(&devices_list, devices.clone());
 
         let context = self.context.clone();
+        #[cfg(target_os = "linux")]
         devices_list.connect_row_activated(move |_, row| {
             if row.index() > 0 {
                 let mut bundle = Bundle::new();
@@ -95,11 +96,15 @@ impl Activity for DevicesActivity {
             context.start_activity(Box::new(MainActivity::new(context.clone())), Some(bundle));
         });
 
+        #[cfg(target_os = "macos")]
+        devices_list.connect_row_activated(move |_, row| {
+            let mut bundle = Bundle::new();
+            bundle.put("type", String::from("device"));
+            bundle.put("device", devices[row.index() as usize].clone());
+            context.start_activity(Box::new(MainActivity::new(context.clone())), Some(bundle));
+        });
 
 
-
-
-        /*
         let tx = self.context.get_handler().get_sender();
 
         self.context.get_task().spawn(async move {
@@ -164,7 +169,6 @@ impl Activity for DevicesActivity {
                 i += 1;
             });
         });
-        */
 
         self.devices_adapter = Some(device_adapter);
 

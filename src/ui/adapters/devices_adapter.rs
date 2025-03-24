@@ -24,9 +24,13 @@ impl DevicesAdapter {
 
     pub fn from_devices(list_box: &ListBox, devices: Vec<Device>) -> Self {
         let mut if_map = Vec::new();
-        if_map.push(-1);
 
-        Self::add_any(list_box);
+        #[cfg(target_os = "linux")]
+        {
+            if_map.push(-1);
+            Self::add_any(list_box);
+        }
+
         devices.iter().for_each(|device| {
             if device.get_flags().contains(&InterfaceFlags::Running) {
                 if_map.push(device.get_index());
