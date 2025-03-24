@@ -5,7 +5,7 @@
 hexeditor {
     padding: 10px;
     font-family: "Ethernaught Mono", monospace;
-    font-size: 16px;
+    font-size: 20px;
     color: @text_dark;
     background-color: @background_secondary;
 }
