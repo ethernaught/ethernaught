@@ -72,7 +72,7 @@ impl WidgetImpl for GraphImpl {
         let max = *points.iter().max_by(|a, b| a.partial_cmp(b).unwrap()).unwrap() as f64;
 
         let range = if max > min { max - min } else { 1.0 };
-        let distance = 4.0;
+        let distance = 4.0 * widget.screen().unwrap().resolution() / 96.0;
 
         cr.move_to(0.0, height - ((points[0] as f64 - min) / range) * height);
 
@@ -150,7 +150,7 @@ impl Graph {
     pub fn add_point(&self, point: u32) {
         let allocation = self.allocation();
         let width = allocation.width();
-        let distance = 4;
+        let distance = 4.0 * self.screen().unwrap().resolution() / 96.0;
 
         if self.imp().points.borrow().len() > width as usize / distance as usize {
             let size_to_remove = self.imp().points.borrow_mut().len() - width as usize / distance as usize;
