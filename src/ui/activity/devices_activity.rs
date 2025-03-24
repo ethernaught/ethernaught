@@ -81,12 +81,13 @@ impl Activity for DevicesActivity {
         let device_adapter = DevicesAdapter::from_devices(&devices_list, devices.clone());
 
         let context = self.context.clone();
+        let devices_clone = devices.clone();
         #[cfg(target_os = "linux")]
         devices_list.connect_row_activated(move |_, row| {
             if row.index() > 0 {
                 let mut bundle = Bundle::new();
                 bundle.put("type", String::from("device"));
-                bundle.put("device", devices[row.index() as usize - 1].clone());
+                bundle.put("device", devices_clone[row.index() as usize - 1].clone());
                 context.start_activity(Box::new(MainActivity::new(context.clone())), Some(bundle));
                 return;
             }
@@ -107,8 +108,9 @@ impl Activity for DevicesActivity {
 
         let tx = self.context.get_handler().get_sender();
 
+        /*
         self.context.get_task().spawn(async move {
-            let mut cap = Capture::any().expect("Failed to open device");
+            let cap = Capture::any().expect("Failed to open device");
             cap.set_immediate_mode(true);
             cap.open().expect("Failed to start capture");
 
@@ -125,10 +127,62 @@ impl Activity for DevicesActivity {
                         *if_bytes.entry(-1).or_insert(0) += packet.len();
                         *if_bytes.entry(address.sll_ifindex).or_insert(0) += packet.len();
 
-                        let event = CaptureEvent::new(address.sll_ifindex, packet);
-                        tx.send(Box::new(event)).unwrap();
+                        tx.send(Box::new(CaptureEvent::new(address.sll_ifindex, packet))).unwrap();
                     }
                     _ => {}
+                }
+
+                let now = SystemTime::now()
+                    .duration_since(UNIX_EPOCH)
+                    .expect("Time went backwards")
+                    .as_millis();
+
+                if now-time >= 250 {
+                    time = now;
+
+                    let event = TransmittedEvent::new(if_bytes.clone());
+                    tx.send(Box::new(event)).unwrap();
+
+                    if_bytes.clear();
+                }
+
+                Task::delay_for(Duration::from_millis(1)).await;
+            }
+        });
+        */
+
+
+        self.context.get_task().spawn(async move {
+            let mut captures = Vec::new();
+            devices.iter().for_each(|device| {
+                if device.get_flags().contains(&InterfaceFlags::Running) {
+                    let cap = Capture::from_device(device).expect("Failed to open device");
+                    cap.set_immediate_mode(true);
+                    cap.open().expect("Failed to start capture");
+                    captures.push(cap);
+                }
+            });
+
+            let mut if_bytes = HashMap::new();
+
+            let mut time = SystemTime::now()
+                .duration_since(UNIX_EPOCH)
+                .expect("Time went backwards")
+                .as_millis();
+
+            loop {
+                for cap in &captures {
+                    match cap.try_recv() {
+                        Ok((address, packet)) => {
+                            let device = cap.get_device().unwrap();
+                            *if_bytes.entry(-1).or_insert(0) += packet.len();
+                            *if_bytes.entry(device.get_index()).or_insert(0) += packet.len();
+                            //*if_bytes.entry(address.sll_ifindex).or_insert(0) += packet.len();
+
+                            tx.send(Box::new(CaptureEvent::new(device.get_index(), packet))).unwrap();
+                        }
+                        _ => {}
+                    }
                 }
 
                 let now = SystemTime::now()
