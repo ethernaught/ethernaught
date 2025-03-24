@@ -10,6 +10,7 @@
     <list default="true" id="f0704e63-1929-42d3-83d7-8cbc904dc132" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ui/activity/devices_activity.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui/activity/devices_activity.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ui/adapters/devices_adapter.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui/adapters/devices_adapter.rs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -92,6 +93,7 @@
       <workItem from="1742530575123" duration="579000" />
       <workItem from="1742582588075" duration="378000" />
       <workItem from="1742595047894" duration="6652000" />
+      <workItem from="1742792481756" duration="1247000" />
     </task>
     <servers />
   </component>

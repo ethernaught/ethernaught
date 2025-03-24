@@ -82,7 +82,7 @@ impl Activity for DevicesActivity {
 
         let context = self.context.clone();
         let devices_clone = devices.clone();
-        #[cfg(target_os = "linux")]
+        //#[cfg(target_os = "linux")]
         devices_list.connect_row_activated(move |_, row| {
             if row.index() > 0 {
                 let mut bundle = Bundle::new();
@@ -97,13 +97,15 @@ impl Activity for DevicesActivity {
             context.start_activity(Box::new(MainActivity::new(context.clone())), Some(bundle));
         });
 
+        /*
         #[cfg(target_os = "macos")]
         devices_list.connect_row_activated(move |_, row| {
             let mut bundle = Bundle::new();
             bundle.put("type", String::from("device"));
-            bundle.put("device", devices[row.index() as usize].clone());
+            bundle.put("device", devices_clone[row.index() as usize].clone());
             context.start_activity(Box::new(MainActivity::new(context.clone())), Some(bundle));
         });
+        */
 
 
         let tx = self.context.get_handler().get_sender();
@@ -155,7 +157,8 @@ impl Activity for DevicesActivity {
         self.context.get_task().spawn(async move {
             let mut captures = Vec::new();
             devices.iter().for_each(|device| {
-                if device.get_flags().contains(&InterfaceFlags::Running) {
+                if device.get_name().eq("en0") {
+                //if device.get_flags().contains(&InterfaceFlags::Running) {
                     let cap = Capture::from_device(device).expect("Failed to open device");
                     cap.set_immediate_mode(true);
                     cap.open().expect("Failed to start capture");
