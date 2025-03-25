@@ -104,23 +104,14 @@ impl OApplication {
             .object("window_content")
             .expect("Failed to get the 'window_content' from window.ui");
 
+        window_content.add(&create_alertbar());
+
         let stack = Stack::new();
         window_content.add(&stack);
         stack.show();
 
         let mut bottombar = BottomBar::new(self.clone());
         window_content.add(bottombar.on_create());
-
-
-
-        let builder = Builder::from_resource("/net/ethernaught/rust/res/ui/alert_ui.xml");
-
-        let root: gtk::Box = builder
-            .object("alert")
-            .expect("Couldn't find 'alert' in alert_ui.xml");
-        window_content.add(&root);
-
-
 
         self.init_actions(&window);
 
@@ -198,6 +189,13 @@ impl OApplication {
         });
         window.add_action(&action);
     }
+}
+
+pub fn create_alertbar() -> Container {
+    let builder = Builder::from_resource("/net/ethernaught/rust/res/ui/alertbar_ui.xml");
+    builder
+        .object("alert")
+        .expect("Couldn't find 'alert' in alertbar_ui.xml")
 }
 
 pub fn open_file_selector(parent: &Window) -> Option<PathBuf> {

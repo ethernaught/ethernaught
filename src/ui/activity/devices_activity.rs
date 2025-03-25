@@ -227,6 +227,7 @@ impl Activity for DevicesActivity {
         });
 
         self.context.get_event_handler().register_listener("permission_event", {
+            let context = self.context.clone();
             let device_adapter = device_adapter.clone();
             let devices_list = devices_list.clone();
             move |event| {
@@ -235,6 +236,8 @@ impl Activity for DevicesActivity {
                 if event.has_permission() {
                     return;
                 }
+
+                context.alert("You don't have permission to read network interfaces.");
 
                 device_adapter.if_map.borrow().iter().for_each(|(pos, _)| {
                     devices_list.row_at_index(*pos).unwrap().style_context().add_class("error");

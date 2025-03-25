@@ -245,7 +245,13 @@ window.maximized #window_controls #window_maximize {
 
 
 #alert {
-    background-color: @red;
+    background-color: #2d2412;
+    border-bottom: solid 1px #9e6a03;
+}
+
+#alert label {
+    color: @text_primary;
+    font-size: 14px;
 }
 
 

@@ -8,20 +8,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f0704e63-1929-42d3-83d7-8cbc904dc132" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/res/ui/alert_ui.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/ui/handlers/events/permission_event.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/res/gresources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/res/gresources.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/res/resources.gresources" beforeDir="false" afterPath="$PROJECT_DIR$/res/resources.gresources" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/ui/gtk3/devices_activity.css" beforeDir="false" afterPath="$PROJECT_DIR$/res/ui/gtk3/devices_activity.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/ui/alert_ui.xml" beforeDir="false" afterPath="$PROJECT_DIR$/res/ui/alertbar_ui.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/res/ui/gtk3/window.css" beforeDir="false" afterPath="$PROJECT_DIR$/res/ui/gtk3/window.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/ui/titlebar_ui.xml" beforeDir="false" afterPath="$PROJECT_DIR$/res/ui/titlebar_ui.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ui/activity/devices_activity.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui/activity/devices_activity.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ui/activity/main_activity.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui/activity/main_activity.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ui/application.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui/application.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ui/handlers/event_handler.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui/handlers/event_handler.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ui/handlers/events/mod.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui/handlers/events/mod.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ui/titlebar.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui/titlebar.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ui/context.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui/context.rs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -50,7 +44,7 @@
     "RunOnceActivity.git.unshallow": "true",
     "RunOnceActivity.rust.reset.selective.auto.import": "true",
     "git-widget-placeholder": "main",
-    "last_opened_file_path": "/home/brad/CLionProjects/ethernaught/res/ui",
+    "last_opened_file_path": "/home/brad/CLionProjects/ethernaught/src/ui",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -65,6 +59,7 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/ui" />
       <recent name="$PROJECT_DIR$/res/ui" />
       <recent name="$PROJECT_DIR$/src/ui/handlers/events" />
     </key>

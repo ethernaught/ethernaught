@@ -4,10 +4,15 @@
 
     <object class="GtkBox" id="alert">
         <property name="name">alert</property>
-        <property name="visible">True</property>
         <property name="hexpand">True</property>
         <property name="orientation">horizontal</property>
-        <property name="spacing">30</property>
         <property name="height-request">40</property>
+
+        <child>
+            <object class="GtkLabel">
+                <property name="visible">True</property>
+                <property name="hexpand">True</property>
+            </object>
+        </child>
     </object>
 </interface>

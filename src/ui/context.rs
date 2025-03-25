@@ -1,8 +1,10 @@
 use std::cell::RefCell;
 use std::rc::Rc;
+use std::time::Duration;
 use gtk::glib::{Cast, IsA};
-use gtk::prelude::{BinExt, ContainerExt, GtkApplicationExt, GtkWindowExt, StackExt, StyleContextExt, WidgetExt};
-use gtk::{Application, Container, Stack, Widget, Window, WindowType};
+use gtk::prelude::{BinExt, ContainerExt, GtkApplicationExt, GtkWindowExt, LabelExt, StackExt, StyleContextExt, WidgetExt};
+use gtk::{glib, Application, Container, Stack, Widget, Window, WindowType};
+use gtk::glib::ControlFlow::Continue;
 use crate::ui::activity::inter::activity::Activity;
 use crate::ui::handlers::bundle::Bundle;
 use crate::ui::handlers::event_handler::EventHandler;
@@ -41,7 +43,7 @@ impl Context {
     }
 
     pub fn start_activity(&self, mut activity: Box<dyn Activity>, bundle: Option<Bundle>) {
-        let stack = self.get_application().active_window().unwrap().child().unwrap().downcast_ref::<Container>().unwrap().children()[0].clone().downcast::<Stack>().unwrap();
+        let stack = self.get_application().active_window().unwrap().child().unwrap().downcast_ref::<Container>().unwrap().children()[1].clone().downcast::<Stack>().unwrap();
 
         match stack.child_by_name(activity.get_name().as_ref()) {
             Some(child) => {
@@ -97,7 +99,7 @@ impl Context {
     }
 
     pub fn on_back_pressed(&self) {
-        let stack = self.get_window().unwrap().child().unwrap().downcast_ref::<Container>().unwrap().children()[0].clone().downcast::<Stack>().unwrap();
+        let stack = self.get_window().unwrap().child().unwrap().downcast_ref::<Container>().unwrap().children()[1].clone().downcast::<Stack>().unwrap();
 
         let children = stack.children();
         if let Some(current) = stack.visible_child() {
@@ -118,7 +120,7 @@ impl Context {
     }
 
     pub fn on_next_pressed(&self) {
-        let stack = self.get_window().unwrap().child().unwrap().downcast_ref::<Container>().unwrap().children()[0].clone().downcast::<Stack>().unwrap();
+        let stack = self.get_window().unwrap().child().unwrap().downcast_ref::<Container>().unwrap().children()[1].clone().downcast::<Stack>().unwrap();
 
         let children = stack.children();
         if let Some(current) = stack.visible_child() {
@@ -164,6 +166,29 @@ impl Context {
 
         window.add(activity.on_create(bundle));
         window.show();
+    }
+
+    pub fn alert(&self, message: &str) {
+        let alert = self.get_window().unwrap().child().unwrap().downcast_ref::<Container>().unwrap().children()[0].clone().downcast::<gtk::Box>().unwrap();
+
+        let label = alert.children()[0].clone().downcast::<gtk::Label>().unwrap();
+        label.set_label(message);
+
+        alert.show();
+    }
+
+    pub fn alert_with_timeout(&self, message: &str, timeout: Duration) {
+        let alert = self.get_window().unwrap().child().unwrap().downcast_ref::<Container>().unwrap().children()[0].clone().downcast::<gtk::Box>().unwrap();
+
+        let label = alert.children()[0].clone().downcast::<gtk::Label>().unwrap();
+        label.set_label(message);
+
+        alert.show();
+
+        glib::timeout_add_local(timeout, move || {
+            alert.hide();
+            Continue
+        });
     }
 
     pub fn get_event_handler(&self) -> &EventHandler {
