@@ -13,6 +13,7 @@ use gtk::glib::ControlFlow::{Break, Continue};
 use gtk::prelude::{BuilderExtManual, ContainerExt, CssProviderExt, GridExt, ListBoxExt, ListBoxRowExt, StackExt};
 use pcap::capture::Capture;
 use pcap::devices::Device;
+use pcap::utils::interface_flags::InterfaceFlags;
 use crate::qsync::task::Task;
 use crate::ui::application::OApplication;
 use crate::ui::activity::inter::activity::Activity;
@@ -156,8 +157,7 @@ impl Activity for DevicesActivity {
         self.context.get_task().spawn(async move {
             let mut captures = Vec::new();
             devices.iter().for_each(|device| {
-                if device.get_name().eq("en0") {
-                //if device.get_flags().contains(&InterfaceFlags::Running) {
+                if device.get_flags().contains(&InterfaceFlags::Running) {
                     let cap = Capture::from_device(device).expect("Failed to open device");
                     cap.set_immediate_mode(true);
                     cap.open().expect("Failed to start capture");

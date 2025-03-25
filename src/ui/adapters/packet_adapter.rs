@@ -1,7 +1,6 @@
 use std::sync::{Arc, Mutex};
 use gtk::{Builder, Label, ListBox, ListBoxRow, ListStore};
 use gtk::prelude::{BuilderExtManual, ContainerExt, GtkListStoreExt, GtkListStoreExtManual, LabelExt, StyleContextExt, ToValue, WidgetExt};
-use pcap::packet::inter::data_link_types::DataLinkTypes;
 use pcap::packet::layers::ethernet_frame::ethernet_frame::EthernetFrame;
 use pcap::packet::layers::ethernet_frame::inter::ethernet_types::EthernetTypes;
 use pcap::packet::layers::ethernet_frame::ip::inter::ip_protocols::IpProtocols;
@@ -11,6 +10,7 @@ use pcap::packet::layers::ethernet_frame::ip::udp::inter::udp_payloads::UdpPaylo
 use pcap::packet::layers::ethernet_frame::ip::udp::udp_layer::UdpLayer;
 use pcap::packet::layers::sll2_frame::sll2_frame::Sll2Frame;
 use pcap::packet::packet::Packet;
+use pcap::utils::data_link_types::DataLinkTypes;
 
 #[derive(Clone)]
 pub struct PacketAdapter {

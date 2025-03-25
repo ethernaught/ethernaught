@@ -3,8 +3,8 @@ use std::rc::Rc;
 use gtk::{Builder, Image, Label, ListBox, ListBoxRow};
 use gtk::prelude::{BuilderExtManual, ContainerExt, ImageExt, LabelExt, StyleContextExt, WidgetExt};
 use pcap::devices::Device;
+use pcap::utils::data_link_types::DataLinkTypes;
 use pcap::utils::interface_flags::InterfaceFlags;
-use pcap::packet::inter::data_link_types::DataLinkTypes;
 use crate::ui::widgets::graph::Graph;
 
 #[derive(Clone)]
@@ -29,9 +29,9 @@ impl DevicesAdapter {
         Self::add_any(list_box);
 
         devices.iter().for_each(|device| {
-            //if device.get_flags().contains(&InterfaceFlags::Running) {
+            if device.get_flags().contains(&InterfaceFlags::Running) {
                 if_map.push(device.get_index());
-            //}
+            }
 
             Self::add(list_box, device);
         });
