@@ -77,12 +77,14 @@ impl Activity for DevicesActivity {
         devices_list.set_selection_mode(gtk::SelectionMode::Single);
 
 
-        let devices = Device::list().expect("Failed to get device list");
+        let mut devices = Device::list().expect("Failed to get device list");
+        devices.sort_by(|a, b| {
+            b.get_flags().contains(&InterfaceFlags::Running).cmp(&a.get_flags().contains(&InterfaceFlags::Running))
+        });
         let device_adapter = DevicesAdapter::from_devices(&devices_list, devices.clone());
 
         let context = self.context.clone();
         let devices_clone = devices.clone();
-        //#[cfg(target_os = "linux")]
         devices_list.connect_row_activated(move |_, row| {
             if row.index() > 0 {
                 let mut bundle = Bundle::new();
@@ -97,20 +99,10 @@ impl Activity for DevicesActivity {
             context.start_activity(Box::new(MainActivity::new(context.clone())), Some(bundle));
         });
 
-        /*
-        #[cfg(target_os = "macos")]
-        devices_list.connect_row_activated(move |_, row| {
-            let mut bundle = Bundle::new();
-            bundle.put("type", String::from("device"));
-            bundle.put("device", devices_clone[row.index() as usize].clone());
-            context.start_activity(Box::new(MainActivity::new(context.clone())), Some(bundle));
-        });
-        */
-
 
         let tx = self.context.get_handler().get_sender();
 
-        /*
+        #[cfg(target_os = "linux")]
         self.context.get_task().spawn(async move {
             let cap = Capture::any().expect("Failed to open device");
             cap.set_immediate_mode(true);
@@ -151,8 +143,8 @@ impl Activity for DevicesActivity {
                 Task::delay_for(Duration::from_millis(1)).await;
             }
         });
-        */
 
+        #[cfg(target_os = "macos")]
         self.context.get_task().spawn(async move {
             let mut captures = Vec::new();
             devices.iter().for_each(|device| {

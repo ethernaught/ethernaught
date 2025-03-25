@@ -58,12 +58,10 @@ impl DevicesAdapter {
                 row.style_context().add_class("ethernet");
                 icon.set_resource(Some("/net/ethernaught/rust/res/icons/ic_ethernet.svg"));
             }
-            /*
-            DataLinkTypes::Loopback => {
+            DataLinkTypes::Loop => {
                 row.style_context().add_class("lan");
                 icon.set_resource(Some("/net/ethernaught/rust/res/icons/ic_lan.svg"));
             }
-            */
             DataLinkTypes::Raw | DataLinkTypes::Ipv4 | DataLinkTypes::Ipv6 => {
                 row.style_context().add_class("vpn");
                 icon.set_resource(Some("/net/ethernaught/rust/res/icons/ic_vpn.svg"));

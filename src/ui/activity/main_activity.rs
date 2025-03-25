@@ -291,12 +291,10 @@ impl Activity for MainActivity {
                                 titlebar.style_context().add_class("ethernet");
                                 icon.set_resource(Some("/net/ethernaught/rust/res/icons/ic_ethernet.svg"));
                             }
-                            /*
-                            DataLinkTypes::Loopback => {
+                            DataLinkTypes::Loop => {
                                 titlebar.style_context().add_class("lan");
                                 icon.set_resource(Some("/net/ethernaught/rust/res/icons/ic_lan.svg"));
                             }
-                            */
                             DataLinkTypes::Raw | DataLinkTypes::Ipv4 | DataLinkTypes::Ipv6 => {
                                 titlebar.style_context().add_class("vpn");
                                 icon.set_resource(Some("/net/ethernaught/rust/res/icons/ic_vpn.svg"));
@@ -359,11 +357,9 @@ impl Activity for MainActivity {
             DataLinkTypes::En10mb | DataLinkTypes::En3mb | DataLinkTypes::Sll2 => {
                 titlebar.style_context().add_class("ethernet");
             }
-            /*
-            DataLinkTypes::Loopback => {
+            DataLinkTypes::Loop => {
                 titlebar.style_context().add_class("lan");
             }
-            */
             DataLinkTypes::Raw | DataLinkTypes::Ipv4 | DataLinkTypes::Ipv6 => {
                 titlebar.style_context().add_class("vpn");
             }
@@ -395,11 +391,9 @@ impl Activity for MainActivity {
             DataLinkTypes::En10mb | DataLinkTypes::En3mb | DataLinkTypes::Sll2 => {
                 titlebar.style_context().remove_class("ethernet");
             }
-            /*
-            DataLinkTypes::Loopback => {
+            DataLinkTypes::Loop => {
                 titlebar.style_context().remove_class("lan");
             }
-            */
             DataLinkTypes::Raw | DataLinkTypes::Ipv4 | DataLinkTypes::Ipv6 => {
                 titlebar.style_context().remove_class("vpn");
             }
