@@ -10,7 +10,7 @@ use crate::ui::widgets::graph::Graph;
 #[derive(Clone)]
 pub struct DevicesAdapter {
     pub(crate) list_box: ListBox,
-    pub(crate) if_map: Rc<RefCell<Vec<i32>>>
+    pub(crate) if_map: Rc<RefCell<Vec<(i32, i32)>>>
 }
 
 impl DevicesAdapter {
@@ -24,16 +24,17 @@ impl DevicesAdapter {
 
     pub fn from_devices(list_box: &ListBox, devices: Vec<Device>) -> Self {
         let mut if_map = Vec::new();
-
-        if_map.push(-1);
+        if_map.push((0, -1));
         Self::add_any(list_box);
 
+        let mut i = 1;
         devices.iter().for_each(|device| {
             if device.get_flags().contains(&InterfaceFlags::Running) {
-                if_map.push(device.get_index());
+                if_map.push((i, device.get_index()));
             }
 
             Self::add(list_box, device);
+            i += 1;
         });
 
         Self {

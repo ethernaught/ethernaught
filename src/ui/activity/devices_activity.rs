@@ -153,7 +153,6 @@ impl Activity for DevicesActivity {
         });
         */
 
-
         self.context.get_task().spawn(async move {
             let mut captures = Vec::new();
             devices.iter().for_each(|device| {
@@ -209,9 +208,8 @@ impl Activity for DevicesActivity {
         self.context.get_handler().register_listener("transmitted_event", move |event| {
             let event = event.as_any().downcast_ref::<TransmittedEvent>().unwrap();
 
-            let mut i = 0;
-            device_adapter_clone.if_map.borrow().iter().for_each(|index| {
-                let row = devices_list.row_at_index(i).unwrap();
+            device_adapter_clone.if_map.borrow().iter().for_each(|(pos, index)| {
+                let row = devices_list.row_at_index(*pos).unwrap();
 
                 if event.if_bytes.contains_key(index) {
                     row.children().get(0).unwrap().downcast_ref::<gtk::Box>().unwrap().children().get(1).unwrap()
@@ -221,8 +219,6 @@ impl Activity for DevicesActivity {
                     row.children().get(0).unwrap().downcast_ref::<gtk::Box>().unwrap().children().get(1).unwrap()
                         .downcast_ref::<Graph>().unwrap().add_point(0);
                 }
-
-                i += 1;
             });
         });
 
@@ -237,9 +233,8 @@ impl Activity for DevicesActivity {
         self.context.get_handler().register_listener("transmitted_event", move |event| {
             let event = event.as_any().downcast_ref::<TransmittedEvent>().unwrap();
 
-            let mut i = 0;
-            devices_adapter.if_map.borrow().iter().for_each(|index| {
-                let row = devices_adapter.list_box.row_at_index(i).unwrap();
+            devices_adapter.if_map.borrow().iter().for_each(|(pos, index)| {
+                let row = devices_adapter.list_box.row_at_index(*pos).unwrap();
 
                 if event.if_bytes.contains_key(index) {
                     row.children().get(0).unwrap().downcast_ref::<gtk::Box>().unwrap().children().get(1).unwrap()
@@ -249,8 +244,6 @@ impl Activity for DevicesActivity {
                     row.children().get(0).unwrap().downcast_ref::<gtk::Box>().unwrap().children().get(1).unwrap()
                         .downcast_ref::<Graph>().unwrap().add_point(0);
                 }
-
-                i += 1;
             });
         });
     }
