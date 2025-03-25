@@ -4,12 +4,14 @@ use gtk::prelude::{BuilderExtManual, ContainerExt, GtkListStoreExt, GtkListStore
 use pcap::packet::layers::ethernet_frame::ethernet_frame::EthernetFrame;
 use pcap::packet::layers::ethernet_frame::inter::ethernet_types::EthernetTypes;
 use pcap::packet::layers::ethernet_frame::ip::inter::ip_protocols::IpProtocols;
+use pcap::packet::layers::ethernet_frame::ip::inter::ip_versions::IpVersions;
 use pcap::packet::layers::ethernet_frame::ip::ipv4_layer::Ipv4Layer;
 use pcap::packet::layers::ethernet_frame::ip::ipv6_layer::Ipv6Layer;
 use pcap::packet::layers::ethernet_frame::ip::udp::inter::udp_payloads::UdpPayloads;
 use pcap::packet::layers::ethernet_frame::ip::udp::udp_layer::UdpLayer;
 use pcap::packet::layers::loop_frame::inter::loop_types::LoopTypes;
 use pcap::packet::layers::loop_frame::loop_frame::LoopFrame;
+use pcap::packet::layers::raw_frame::raw_frame::RawFrame;
 use pcap::packet::layers::sll2_frame::sll2_frame::Sll2Frame;
 use pcap::packet::packet::Packet;
 use pcap::utils::data_link_types::DataLinkTypes;
@@ -157,6 +159,57 @@ impl PacketAdapter {
                     }
                 }
             }
+            DataLinkTypes::Raw => {
+                let raw_frame = packet.get_frame().as_any().downcast_ref::<RawFrame>().unwrap();
+
+                match raw_frame.get_type() {
+                    IpVersions::Ipv4 => {
+                        let ipv4_layer = raw_frame.get_data().unwrap().as_any().downcast_ref::<Ipv4Layer>().unwrap();
+
+                        match ipv4_layer.get_protocol() {
+                            IpProtocols::Udp => {
+                                let udp_layer = ipv4_layer.get_data().unwrap().as_any().downcast_ref::<UdpLayer>().unwrap();
+
+                                match udp_layer.get_payload() {
+                                    UdpPayloads::Known(_type, _) => {
+                                        (ipv4_layer.get_source_address().to_string(), ipv4_layer.get_destination_address().to_string(), udp_layer.get_type().to_string())
+                                    }
+                                    _ => {
+                                        (ipv4_layer.get_source_address().to_string(), ipv4_layer.get_destination_address().to_string(), ipv4_layer.get_protocol().to_string())
+                                    }
+                                }
+                            }
+                            _ => {
+                                (ipv4_layer.get_source_address().to_string(), ipv4_layer.get_destination_address().to_string(), ipv4_layer.get_protocol().to_string())
+                            }
+                        }
+                    }
+                    IpVersions::Ipv6 => {
+                        let ipv6_layer = raw_frame.get_data().unwrap().as_any().downcast_ref::<Ipv6Layer>().unwrap();
+
+                        match ipv6_layer.get_next_header() {
+                            IpProtocols::Udp => {
+                                let udp_layer = ipv6_layer.get_data().unwrap().as_any().downcast_ref::<UdpLayer>().unwrap();
+
+                                match udp_layer.get_payload() {
+                                    UdpPayloads::Known(_type, _) => {
+                                        (ipv6_layer.get_source_address().to_string(), ipv6_layer.get_destination_address().to_string(), udp_layer.get_type().to_string())
+                                    }
+                                    _ => {
+                                        (ipv6_layer.get_source_address().to_string(), ipv6_layer.get_destination_address().to_string(), ipv6_layer.get_next_header().to_string())
+                                    }
+                                }
+                            }
+                            _ => {
+                                (ipv6_layer.get_source_address().to_string(), ipv6_layer.get_destination_address().to_string(), ipv6_layer.get_next_header().to_string())
+                            }
+                        }
+                    }
+                    _ => {
+                        unimplemented!()
+                    }
+                }
+            }
             DataLinkTypes::Loop => {
                 let loop_frame = packet.get_frame().as_any().downcast_ref::<LoopFrame>().unwrap();
 
@@ -207,8 +260,6 @@ impl PacketAdapter {
                         unimplemented!()
                     }
                 }
-
-
             }
             _ => {
                 //"[WiFi] TODO".to_string()
