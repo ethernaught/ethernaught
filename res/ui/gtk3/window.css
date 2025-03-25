@@ -15,6 +15,7 @@
 @define-color purple #784da1;
 @define-color green #57965C;
 @define-color red #db5c5c;
+@define-color yellow #d4bf4a;
 
 @define-color device_any #305755;
 @define-color device_ethernet #5e5030;
@@ -213,37 +214,39 @@ button:focus, button:checked {
 
 
 
-#window_options {
+#window_controls {
     padding: 8px 4px;
 }
 
-#window_options button {
+#window_controls button {
     padding: 4px;
 }
 
-#window_options button {
+#window_controls button {
     border-radius: 100%;
 }
 
-#window_options #window_minimize {
+#window_controls #window_minimize {
     background-image: url('../../icons/ic_minimize.svg');
 }
 
-#window_options #window_maximize {
+#window_controls #window_maximize {
     background-image: url('../../icons/ic_maximize.svg');
 }
 
-window.maximized #window_options #window_maximize {
+window.maximized #window_controls #window_maximize {
     background-image: url('../../icons/ic_maximize_active.svg');
 }
 
-#window_options #window_close {
+#window_controls #window_close {
     background-image: url('../../icons/ic_close.svg');
 }
 
 
 
-
+#alert {
+    background-color: @red;
+}
 
 
 

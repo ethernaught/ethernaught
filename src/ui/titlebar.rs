@@ -35,7 +35,7 @@ impl TitleBar {
             .expect("Couldn't find 'titlebar' in titlebar_ui.xml");
 
         self.init_navigation_options(&builder);
-        self.init_window_options(&builder);
+        self.init_window_controls(&builder);
 
         self.root = Some(root.upcast());
 
@@ -101,7 +101,7 @@ impl TitleBar {
         });
     }
 
-    fn init_window_options(&self, builder: &Builder) {
+    fn init_window_controls(&self, builder: &Builder) {
         let minimize_button: Button = builder
             .object("minimize_button")
             .expect("Couldn't find 'minimize_button' in titlebar_ui.xml");

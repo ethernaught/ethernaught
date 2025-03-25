@@ -111,6 +111,17 @@ impl OApplication {
         let mut bottombar = BottomBar::new(self.clone());
         window_content.add(bottombar.on_create());
 
+
+
+        let builder = Builder::from_resource("/net/ethernaught/rust/res/ui/alert_ui.xml");
+
+        let root: gtk::Box = builder
+            .object("alert")
+            .expect("Couldn't find 'alert' in alert_ui.xml");
+        window_content.add(&root);
+
+
+
         self.init_actions(&window);
 
         let context = self.context.clone();

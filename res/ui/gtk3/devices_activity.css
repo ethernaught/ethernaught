@@ -73,3 +73,7 @@
 #devices_list row.down graph {
     color: @red;
 }
+
+#devices_list row.error graph {
+    color: @yellow;
+}

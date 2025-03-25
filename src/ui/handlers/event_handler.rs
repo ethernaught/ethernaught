@@ -25,7 +25,7 @@ impl EventHandler {
         };
 
         let event_listeners = _self.event_listeners.clone();
-        glib::timeout_add_local(Duration::from_millis(1000), move || {
+        glib::timeout_add_local(Duration::from_millis(10), move || {
             loop {
                 match rx.try_recv() {
                     Ok(event) => {

@@ -11,7 +11,7 @@ use std::time::{Duration, SystemTime, UNIX_EPOCH};
 use gtk::{gdk, glib, Builder, Container, CssProvider, ListBox, ListBoxRow, Paned, Stack, StyleContext};
 use gtk::glib::{Cast, PropertyGet, Receiver, Sender};
 use gtk::glib::ControlFlow::{Break, Continue};
-use gtk::prelude::{BuilderExtManual, ContainerExt, CssProviderExt, GridExt, ListBoxExt, ListBoxRowExt, StackExt};
+use gtk::prelude::{BuilderExtManual, ContainerExt, CssProviderExt, GridExt, ListBoxExt, ListBoxRowExt, StackExt, StyleContextExt, WidgetExt};
 use pcap::capture::Capture;
 use pcap::devices::Device;
 use pcap::utils::interface_flags::InterfaceFlags;
@@ -23,6 +23,7 @@ use crate::ui::context::Context;
 use crate::ui::handlers::bundle::Bundle;
 use crate::ui::handlers::events::capture_event::CaptureEvent;
 use crate::ui::handlers::events::inter::event::Event;
+use crate::ui::handlers::events::permission_event::PermissionEvent;
 use crate::ui::handlers::events::transmitted_event::TransmittedEvent;
 use crate::ui::widgets::graph::Graph;
 
@@ -104,60 +105,86 @@ impl Activity for DevicesActivity {
 
         #[cfg(target_os = "linux")]
         thread::spawn(move || {
-        //self.context.get_task().spawn(async move {
-            let cap = Capture::any().expect("Failed to open device");
-            cap.set_immediate_mode(true);
-            cap.open().expect("Failed to start capture");
+            match Capture::any() {
+                Ok(cap) => {
+                    cap.set_immediate_mode(true).unwrap();
 
-            let mut if_bytes = HashMap::new();
+                    match cap.open() {
+                        Ok(_) => {
+                            let mut if_bytes = HashMap::new();
 
-            let mut time = SystemTime::now()
-                .duration_since(UNIX_EPOCH)
-                .expect("Time went backwards")
-                .as_millis();
+                            let mut time = SystemTime::now()
+                                .duration_since(UNIX_EPOCH)
+                                .expect("Time went backwards")
+                                .as_millis();
 
-            loop {
-                match cap.try_recv() {
-                    Ok((address, packet)) => {
-                        *if_bytes.entry(-1).or_insert(0) += packet.len();
-                        *if_bytes.entry(address.sll_ifindex).or_insert(0) += packet.len();
+                            loop {
+                                match cap.try_recv() {
+                                    Ok((address, packet)) => {
+                                        *if_bytes.entry(-1).or_insert(0) += packet.len();
+                                        *if_bytes.entry(address.sll_ifindex).or_insert(0) += packet.len();
 
-                        tx.send(Box::new(CaptureEvent::new(address.sll_ifindex, packet))).unwrap();
+                                        tx.send(Box::new(CaptureEvent::new(address.sll_ifindex, packet))).unwrap();
+                                    }
+                                    _ => {}
+                                }
+
+                                let now = SystemTime::now()
+                                    .duration_since(UNIX_EPOCH)
+                                    .expect("Time went backwards")
+                                    .as_millis();
+
+                                if now-time >= 1000 {
+                                    time = now;
+
+                                    tx.send(Box::new(TransmittedEvent::new(if_bytes.clone()))).unwrap();
+
+                                    if_bytes.clear();
+                                }
+
+                                sleep(Duration::from_millis(10));
+                            }
+                        }
+                        Err(_) => {
+                            tx.send(Box::new(PermissionEvent::new(false))).unwrap();
+                        }
                     }
-                    _ => {}
                 }
-
-                let now = SystemTime::now()
-                    .duration_since(UNIX_EPOCH)
-                    .expect("Time went backwards")
-                    .as_millis();
-
-                if now-time >= 1000 {
-                    time = now;
-
-                    let event = TransmittedEvent::new(if_bytes.clone());
-                    tx.send(Box::new(event)).unwrap();
-
-                    if_bytes.clear();
+                Err(_) => {
+                    tx.send(Box::new(PermissionEvent::new(false))).unwrap();
                 }
-
-                sleep(Duration::from_millis(10));
-                //Task::delay_for(Duration::from_millis(1)).await;
             }
         });
 
         #[cfg(target_os = "macos")]
         thread::spawn(move || {
-        //self.context.get_task().spawn(async move {
             let mut captures = Vec::new();
             devices.iter().for_each(|device| {
                 if device.get_flags().contains(&InterfaceFlags::Running) {
-                    let cap = Capture::from_device(device).expect("Failed to open device");
-                    cap.set_immediate_mode(true);
-                    cap.open().expect("Failed to start capture");
-                    captures.push(cap);
+                    match Capture::from_device(device) {
+                        Ok(cap) => {
+                            cap.set_immediate_mode(true);
+                            match cap.open() {
+                                Ok(_) => {
+                                    captures.push(cap);
+                                }
+                                Err(_) => {
+                                    tx.send(Box::new(PermissionEvent::new(false))).unwrap();
+                                    return;
+                                }
+                            }
+                        }
+                        Err(_) => {
+                            tx.send(Box::new(PermissionEvent::new(false))).unwrap();
+                            return;
+                        }
+                    }
                 }
             });
+
+            if captures.is_empty() {
+                return;
+            }
 
             let mut if_bytes = HashMap::new();
 
@@ -196,26 +223,43 @@ impl Activity for DevicesActivity {
                 }
 
                 sleep(Duration::from_millis(10));
-                //Task::delay_for(Duration::from_millis(1)).await;
             }
         });
 
-        let device_adapter_clone = device_adapter.clone();
-        self.context.get_event_handler().register_listener("transmitted_event", move |event| {
-            let event = event.as_any().downcast_ref::<TransmittedEvent>().unwrap();
+        self.context.get_event_handler().register_listener("permission_event", {
+            let device_adapter = device_adapter.clone();
+            let devices_list = devices_list.clone();
+            move |event| {
+                let event = event.as_any().downcast_ref::<PermissionEvent>().unwrap();
 
-            device_adapter_clone.if_map.borrow().iter().for_each(|(pos, index)| {
-                let row = devices_list.row_at_index(*pos).unwrap();
-
-                if event.if_bytes.contains_key(index) {
-                    row.children().get(0).unwrap().downcast_ref::<gtk::Box>().unwrap().children().get(1).unwrap()
-                        .downcast_ref::<Graph>().unwrap().add_point(event.if_bytes.get(index).unwrap().clone() as u32);
-
-                } else {
-                    row.children().get(0).unwrap().downcast_ref::<gtk::Box>().unwrap().children().get(1).unwrap()
-                        .downcast_ref::<Graph>().unwrap().add_point(0);
+                if event.has_permission() {
+                    return;
                 }
-            });
+
+                device_adapter.if_map.borrow().iter().for_each(|(pos, _)| {
+                    devices_list.row_at_index(*pos).unwrap().style_context().add_class("error");
+                });
+            }
+        });
+
+        self.context.get_event_handler().register_listener("transmitted_event", {
+            let device_adapter = device_adapter.clone();
+            let devices_list = devices_list.clone();
+            move |event| {
+                let event = event.as_any().downcast_ref::<TransmittedEvent>().unwrap();
+
+                device_adapter.if_map.borrow().iter().for_each(|(pos, index)| {
+                    let row = devices_list.row_at_index(*pos).unwrap();
+
+                    if event.if_bytes.contains_key(index) {
+                        row.children().get(0).unwrap().downcast_ref::<gtk::Box>().unwrap().children().get(1).unwrap()
+                            .downcast_ref::<Graph>().unwrap().add_point(event.if_bytes.get(index).unwrap().clone() as u32);
+                    } else {
+                        row.children().get(0).unwrap().downcast_ref::<gtk::Box>().unwrap().children().get(1).unwrap()
+                            .downcast_ref::<Graph>().unwrap().add_point(0);
+                    }
+                });
+            }
         });
 
         self.devices_adapter = Some(device_adapter);
