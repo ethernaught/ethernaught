@@ -13,7 +13,6 @@ use gtk::glib::ControlFlow::{Break, Continue};
 use gtk::prelude::{BuilderExtManual, ContainerExt, CssProviderExt, GridExt, ListBoxExt, ListBoxRowExt, StackExt};
 use pcap::capture::Capture;
 use pcap::devices::Device;
-use pcap::interface_flags::InterfaceFlags;
 use crate::qsync::task::Task;
 use crate::ui::application::OApplication;
 use crate::ui::activity::inter::activity::Activity;

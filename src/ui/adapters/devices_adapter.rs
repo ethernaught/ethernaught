@@ -3,7 +3,7 @@ use std::rc::Rc;
 use gtk::{Builder, Image, Label, ListBox, ListBoxRow};
 use gtk::prelude::{BuilderExtManual, ContainerExt, ImageExt, LabelExt, StyleContextExt, WidgetExt};
 use pcap::devices::Device;
-use pcap::interface_flags::InterfaceFlags;
+use pcap::utils::interface_flags::InterfaceFlags;
 use pcap::packet::inter::data_link_types::DataLinkTypes;
 use crate::ui::widgets::graph::Graph;
 
