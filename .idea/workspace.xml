@@ -9,7 +9,16 @@
   <component name="ChangeListManager">
     <list default="true" id="f0704e63-1929-42d3-83d7-8cbc904dc132" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/qsync/delay.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/qsync/mod.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/qsync/task.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ui/activity/devices_activity.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui/activity/devices_activity.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ui/activity/main_activity.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui/activity/main_activity.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ui/context.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui/context.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ui/handlers/handler.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui/handlers/event_handler.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ui/handlers/mod.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui/handlers/mod.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ui/widgets/graph.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui/widgets/graph.rs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

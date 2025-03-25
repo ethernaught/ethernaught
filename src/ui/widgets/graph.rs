@@ -152,13 +152,13 @@ impl Graph {
         let width = allocation.width();
         let distance = 4.0 * self.screen().unwrap().resolution() / 96.0;
 
-        if self.imp().points.borrow().len() > width as usize / distance as usize {
+        if self.imp().points.borrow().len() >= width as usize / distance as usize {
             let size_to_remove = self.imp().points.borrow_mut().len() - width as usize / distance as usize;
             self.imp().points.borrow_mut().drain(0..size_to_remove);
         }
 
         self.imp().points.borrow_mut().push(point);
-        if point > 0 {
+        if point > 0 || self.imp().points.borrow().len() >= width as usize / distance as usize {
             self.queue_draw();
         }
     }

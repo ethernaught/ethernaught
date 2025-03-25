@@ -9,12 +9,12 @@ use gtk::glib::ControlFlow::Continue;
 use crate::ui::handlers::events::inter::event::Event;
 
 #[derive(Clone)]
-pub struct Handler {
+pub struct EventHandler {
     tx: Sender<Box<dyn Event>>,
     event_listeners: Rc<RefCell<HashMap<String, Box<dyn Fn(Box<dyn Event>)>>>>
 }
 
-impl Handler {
+impl EventHandler {
 
     pub fn new() -> Self {
         let (tx, rx) = channel();

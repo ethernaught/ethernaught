@@ -243,7 +243,7 @@ impl Activity for MainActivity {
 
                         {
                             let app_options = Rc::clone(&app_options);
-                            let handler = self.context.get_handler().clone();
+                            let handler = self.context.get_event_handler().clone();
 
                             stop_button.connect_clicked(move |button| {
                                 app_options.borrow().style_context().remove_class("running");
@@ -256,7 +256,7 @@ impl Activity for MainActivity {
                         {
                             let app_options = Rc::clone(&app_options);
                             let main_fragment = Rc::clone(&main_fragment);
-                            let handler = self.context.get_handler().clone();
+                            let handler = self.context.get_event_handler().clone();
 
                             start_button.connect_clicked(move |_| {
                                 app_options.borrow().style_context().add_class("running");
@@ -408,7 +408,7 @@ impl Activity for MainActivity {
 
         if let Some(_type) = self._type.as_ref() {
             if _type == "device" {
-                self.context.get_handler().remove_listener("capture_event");
+                self.context.get_event_handler().remove_listener("capture_event");
 
                 let app_options = self.context.get_child_by_name::<Widget>(&titlebar, "app_options").unwrap();
                 app_options.style_context().remove_class("running");

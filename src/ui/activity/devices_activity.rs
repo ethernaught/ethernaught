@@ -15,7 +15,6 @@ use gtk::prelude::{BuilderExtManual, ContainerExt, CssProviderExt, GridExt, List
 use pcap::capture::Capture;
 use pcap::devices::Device;
 use pcap::utils::interface_flags::InterfaceFlags;
-use crate::qsync::task::Task;
 use crate::ui::application::OApplication;
 use crate::ui::activity::inter::activity::Activity;
 use crate::ui::activity::main_activity::MainActivity;
@@ -101,7 +100,7 @@ impl Activity for DevicesActivity {
         });
 
 
-        let tx = self.context.get_handler().get_sender();
+        let tx = self.context.get_event_handler().get_sender();
 
         #[cfg(target_os = "linux")]
         thread::spawn(move || {
@@ -202,7 +201,7 @@ impl Activity for DevicesActivity {
         });
 
         let device_adapter_clone = device_adapter.clone();
-        self.context.get_handler().register_listener("transmitted_event", move |event| {
+        self.context.get_event_handler().register_listener("transmitted_event", move |event| {
             let event = event.as_any().downcast_ref::<TransmittedEvent>().unwrap();
 
             device_adapter_clone.if_map.borrow().iter().for_each(|(pos, index)| {
@@ -227,7 +226,7 @@ impl Activity for DevicesActivity {
     fn on_resume(&self) {
         let devices_adapter = self.devices_adapter.as_ref().unwrap().clone();
 
-        self.context.get_handler().register_listener("transmitted_event", move |event| {
+        self.context.get_event_handler().register_listener("transmitted_event", move |event| {
             let event = event.as_any().downcast_ref::<TransmittedEvent>().unwrap();
 
             devices_adapter.if_map.borrow().iter().for_each(|(pos, index)| {
@@ -254,7 +253,7 @@ impl Activity for DevicesActivity {
                 .downcast_ref::<Graph>().unwrap().clear_points();
         }
 
-        self.context.get_handler().remove_listener("transmitted_event");
+        self.context.get_event_handler().remove_listener("transmitted_event");
     }
 
     fn on_destroy(&self) {

@@ -3,16 +3,14 @@ use std::rc::Rc;
 use gtk::glib::{Cast, IsA};
 use gtk::prelude::{BinExt, ContainerExt, GtkApplicationExt, GtkWindowExt, StackExt, StyleContextExt, WidgetExt};
 use gtk::{Application, Container, Stack, Widget, Window, WindowType};
-use crate::qsync::task::Task;
 use crate::ui::activity::inter::activity::Activity;
 use crate::ui::handlers::bundle::Bundle;
-use crate::ui::handlers::handler::Handler;
+use crate::ui::handlers::event_handler::EventHandler;
 
 #[derive(Clone)]
 pub struct Context {
     app: Application,
-    handler: Handler,
-    task: Task,
+    handler: EventHandler,
     stack: Rc<RefCell<Vec<Box<dyn Activity>>>>
 }
 
@@ -21,8 +19,7 @@ impl Context {
     pub fn new(app: Application) -> Self {
         Self {
             app,
-            handler: Handler::new(),
-            task: Task::new(),
+            handler: EventHandler::new(),
             stack: Rc::new(RefCell::new(Vec::new()))
         }
     }
@@ -169,11 +166,7 @@ impl Context {
         window.show();
     }
 
-    pub fn get_task(&self) -> &Task {
-        &self.task
-    }
-
-    pub fn get_handler(&self) -> &Handler {
+    pub fn get_event_handler(&self) -> &EventHandler {
         &self.handler
     }
 }
