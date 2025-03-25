@@ -158,7 +158,9 @@ impl Graph {
         }
 
         self.imp().points.borrow_mut().push(point);
-        self.queue_draw();
+        if point > 0 {
+            self.queue_draw();
+        }
     }
 
     pub fn get_points(&self) -> Vec<u32> {

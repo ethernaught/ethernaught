@@ -6,6 +6,7 @@ use std::sync::{Arc, Mutex};
 use std::sync::atomic::Ordering;
 use std::sync::mpsc::channel;
 use std::thread;
+use std::thread::sleep;
 use std::time::{Duration, SystemTime, UNIX_EPOCH};
 use gtk::{gdk, glib, Builder, Container, CssProvider, ListBox, ListBoxRow, Paned, Stack, StyleContext};
 use gtk::glib::{Cast, PropertyGet, Receiver, Sender};
@@ -103,7 +104,8 @@ impl Activity for DevicesActivity {
         let tx = self.context.get_handler().get_sender();
 
         #[cfg(target_os = "linux")]
-        self.context.get_task().spawn(async move {
+        thread::spawn(move || {
+        //self.context.get_task().spawn(async move {
             let cap = Capture::any().expect("Failed to open device");
             cap.set_immediate_mode(true);
             cap.open().expect("Failed to start capture");
@@ -131,7 +133,7 @@ impl Activity for DevicesActivity {
                     .expect("Time went backwards")
                     .as_millis();
 
-                if now-time >= 250 {
+                if now-time >= 1000 {
                     time = now;
 
                     let event = TransmittedEvent::new(if_bytes.clone());
@@ -140,12 +142,14 @@ impl Activity for DevicesActivity {
                     if_bytes.clear();
                 }
 
-                Task::delay_for(Duration::from_millis(1)).await;
+                sleep(Duration::from_millis(10));
+                //Task::delay_for(Duration::from_millis(1)).await;
             }
         });
 
         #[cfg(target_os = "macos")]
-        self.context.get_task().spawn(async move {
+        thread::spawn(move || {
+        //self.context.get_task().spawn(async move {
             let mut captures = Vec::new();
             devices.iter().for_each(|device| {
                 if device.get_flags().contains(&InterfaceFlags::Running) {
@@ -183,7 +187,7 @@ impl Activity for DevicesActivity {
                     .expect("Time went backwards")
                     .as_millis();
 
-                if now-time >= 250 {
+                if now-time >= 1000 {
                     time = now;
 
                     let event = TransmittedEvent::new(if_bytes.clone());
@@ -192,7 +196,8 @@ impl Activity for DevicesActivity {
                     if_bytes.clear();
                 }
 
-                Task::delay_for(Duration::from_millis(1)).await;
+                sleep(Duration::from_millis(10));
+                //Task::delay_for(Duration::from_millis(1)).await;
             }
         });
 
