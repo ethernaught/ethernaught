@@ -136,7 +136,7 @@ impl Fragment for SidebarFragment {
                 details_layout.add(&create_ethernet_layer_expander(&db, 0, &hex_editor, &ethernet_frame));
 
                 match ethernet_frame.get_type() {
-                    EthernetTypes::IPv4 => {
+                    EthernetTypes::Ipv4 => {
                         let ipv4_layer = ethernet_frame.get_data().unwrap().as_any().downcast_ref::<Ipv4Layer>().unwrap();
                         details_layout.add(&create_ipv4_layer_expander(ethernet_frame.len()-ipv4_layer.len(), &hex_editor, &ipv4_layer));
 
@@ -183,7 +183,7 @@ impl Fragment for SidebarFragment {
                         let arp_layer = ethernet_frame.get_data().unwrap().as_any().downcast_ref::<ArpExtension>().unwrap();
                         details_layout.add(&create_arp_layer_expander(&arp_layer));
                     }
-                    EthernetTypes::IPv6 => {
+                    EthernetTypes::Ipv6 => {
                         let ipv6_layer = ethernet_frame.get_data().unwrap().as_any().downcast_ref::<Ipv6Layer>().unwrap();
                         details_layout.add(&create_ipv6_layer_expander(ethernet_frame.len()-ipv6_layer.len(), &hex_editor, &ipv6_layer));
 
@@ -236,7 +236,7 @@ impl Fragment for SidebarFragment {
                 details_layout.add(&create_sll2_layer_expander(0, &hex_editor, &sll2_frame));
 
                 match sll2_frame.get_protocol() {
-                    EthernetTypes::IPv4 => {
+                    EthernetTypes::Ipv4 => {
                         let ipv4_layer = sll2_frame.get_data().unwrap().as_any().downcast_ref::<Ipv4Layer>().unwrap();
                         details_layout.add(&create_ipv4_layer_expander(sll2_frame.len()-ipv4_layer.len(), &hex_editor, &ipv4_layer));
 
@@ -279,7 +279,7 @@ impl Fragment for SidebarFragment {
                             IpProtocols::Sps => {}
                         }
                     }
-                    EthernetTypes::IPv6 => {
+                    EthernetTypes::Ipv6 => {
                         let ipv6_layer = sll2_frame.get_data().unwrap().as_any().downcast_ref::<Ipv6Layer>().unwrap();
                         details_layout.add(&create_ipv6_layer_expander(sll2_frame.len()-ipv6_layer.len(), &hex_editor, &ipv6_layer));
 
