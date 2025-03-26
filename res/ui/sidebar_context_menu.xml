@@ -7,49 +7,45 @@
             <attribute name="label" translatable="true">_Copy</attribute>
             <section>
                 <item>
-                    <attribute name="action">win.open</attribute>
+                    <attribute name="action">context.copy-field-name</attribute>
                     <attribute name="label" translatable="yes">Field Name</attribute>
                 </item>
                 <item>
-                    <attribute name="action">win.open</attribute>
+                    <attribute name="action">context.copy-value</attribute>
                     <attribute name="label" translatable="yes">Value</attribute>
                 </item>
                 <item>
-                    <attribute name="action">win.open</attribute>
+                    <attribute name="action">context.copy-description</attribute>
                     <attribute name="label" translatable="yes">Description</attribute>
                     <attribute name="accel">&lt;control&gt;C</attribute>
                 </item>
             </section>
             <section>
                 <item>
-                    <attribute name="action">win.x</attribute>
+                    <attribute name="action">context.copy-byte-array</attribute>
                     <attribute name="label" translatable="yes">...as Byte Array</attribute>
                 </item>
                 <item>
-                    <attribute name="action">win.x</attribute>
+                    <attribute name="action">context.copy-hex</attribute>
                     <attribute name="label" translatable="yes">...as Hex Dump</attribute>
                 </item>
                 <item>
-                    <attribute name="action">win.x</attribute>
+                    <attribute name="action">context.copy-ascii</attribute>
                     <attribute name="label" translatable="yes">...as ASCII Dump</attribute>
                 </item>
                 <item>
-                    <attribute name="action">win.x</attribute>
+                    <attribute name="action">context.copy-raw</attribute>
                     <attribute name="label" translatable="yes">...as Raw Binary</attribute>
                 </item>
             </section>
         </submenu>
         <item>
-            <attribute name="action">win.x</attribute>
-            <attribute name="label" translatable="yes">Select</attribute>
-        </item>
-        <item>
-            <attribute name="action">win.x</attribute>
+            <attribute name="action">context.save</attribute>
             <attribute name="label" translatable="yes">Save</attribute>
             <attribute name="accel">&lt;control&gt;S</attribute>
         </item>
         <item>
-            <attribute name="action">win.x</attribute>
+            <attribute name="action">context.save-as</attribute>
             <attribute name="label" translatable="yes">Save As...</attribute>
             <attribute name="accel">&lt;shift&gt;&lt;control&gt;S</attribute>
         </item>

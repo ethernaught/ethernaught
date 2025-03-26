@@ -1,10 +1,11 @@
 use std::net::IpAddr;
 use gtk::{gdk, gio, Builder, Button, Container, EventBox, Image, Label, ListBox, ListBoxRow, Menu, MenuItem, Orientation};
-use gtk::gdk::{EventButton, EventMask};
+use gtk::gdk::{Display, EventButton, EventMask};
 use gtk::gdk_pixbuf::Pixbuf;
+use gtk::gio::{SimpleAction, SimpleActionGroup};
 use gtk::glib::Cast;
 use gtk::glib::Propagation::Proceed;
-use gtk::prelude::{BuilderExtManual, ButtonExt, ContainerExt, GtkMenuExt, ImageExt, LabelExt, ListBoxExt, ListBoxRowExt, MenuShellExt, StyleContextExt, WidgetExt, WidgetExtManual};
+use gtk::prelude::{ActionMapExt, BuilderExtManual, ButtonExt, ContainerExt, GtkMenuExt, ImageExt, LabelExt, ListBoxExt, ListBoxRowExt, MenuShellExt, StyleContextExt, WidgetExt, WidgetExtManual};
 use pcap::packet::layers::ethernet_frame::arp::arp_extension::ArpExtension;
 use pcap::packet::layers::ethernet_frame::ethernet_frame::EthernetFrame;
 use pcap::packet::layers::ethernet_frame::ip::icmp::icmp_layer::IcmpLayer;
@@ -89,6 +90,24 @@ pub fn create_ethernet_layer_expander(db: &Database, offset: usize, hex_editor: 
                 };
 
                 let menu = create_row_context_menu(&row, event);
+
+
+
+                let actions = SimpleActionGroup::new();
+
+                let open_action = SimpleAction::new("copy-field-name", None);
+                open_action.connect_activate({
+                    let value = layer.get_field_name(variable);
+                    move |_, _| {
+                        let display = Display::default().expect("No display available");
+                        let clipboard = gtk::Clipboard::default(&display).expect("Failed to get clipboard");
+                        clipboard.set_text(&value);
+                    }
+                });
+                actions.add_action(&open_action);
+
+                menu.insert_action_group("context", Some(&actions));
+
 
                 let (x, w) = layer.get_selection(variable);
                 hex_editor.set_selection(offset + x, w);
