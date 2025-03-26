@@ -15,6 +15,7 @@ use pcap::packet::layers::ethernet_frame::ip::ipv6_layer::Ipv6Layer;
 use pcap::packet::layers::ethernet_frame::ip::tcp::tcp_layer::TcpLayer;
 use pcap::packet::layers::ethernet_frame::ip::udp::dhcp::dhcp_layer::DhcpLayer;
 use pcap::packet::layers::ethernet_frame::ip::udp::udp_layer::UdpLayer;
+use pcap::packet::layers::inter::layer::Layer;
 use pcap::packet::layers::sll2_frame::sll2_frame::Sll2Frame;
 use crate::database::sqlite::Database;
 use crate::layers::inter::layer_ext::LayerExt;
@@ -89,25 +90,7 @@ pub fn create_ethernet_layer_expander(db: &Database, offset: usize, hex_editor: 
                     _ => unimplemented!()
                 };
 
-                let menu = create_row_context_menu(&row, event);
-
-
-
-                let actions = SimpleActionGroup::new();
-
-                let open_action = SimpleAction::new("copy-field-name", None);
-                open_action.connect_activate({
-                    let value = layer.get_field_name(variable);
-                    move |_, _| {
-                        let display = Display::default().expect("No display available");
-                        let clipboard = gtk::Clipboard::default(&display).expect("Failed to get clipboard");
-                        clipboard.set_text(&value);
-                    }
-                });
-                actions.add_action(&open_action);
-
-                menu.insert_action_group("context", Some(&actions));
-
+                create_row_context_menu(&row, event, variable, &layer);
 
                 let (x, w) = layer.get_selection(variable);
                 hex_editor.set_selection(offset + x, w);
@@ -484,7 +467,7 @@ fn create_row_with_icon(key: &str, icon: Pixbuf, value: String) -> ListBoxRow {
     row
 }
 
-fn create_row_context_menu(row: &ListBoxRow, event: &EventButton) -> Menu {
+fn create_row_context_menu(row: &ListBoxRow, event: &EventButton, variable: &str, layer: &dyn LayerExt) {
     row.style_context().add_class("selected");
 
     let builder = Builder::from_resource("/net/ethernaught/rust/res/ui/sidebar_context_menu.xml");
@@ -495,6 +478,116 @@ fn create_row_context_menu(row: &ListBoxRow, event: &EventButton) -> Menu {
 
     let menu = Menu::from_model(&model);
 
+
+
+    let actions = SimpleActionGroup::new();
+
+    let action = SimpleAction::new("copy-field-name", None);
+    action.connect_activate({
+        let value = layer.get_field_name(variable);
+        move |_, _| {
+            let display = Display::default().expect("No display available");
+            let clipboard = gtk::Clipboard::default(&display).expect("Failed to get clipboard");
+            clipboard.set_text(&value);
+        }
+    });
+    actions.add_action(&action);
+
+    let action = SimpleAction::new("copy-value", None);
+    action.connect_activate({
+        let value = layer.get_value(variable);
+        move |_, _| {
+            let display = Display::default().expect("No display available");
+            let clipboard = gtk::Clipboard::default(&display).expect("Failed to get clipboard");
+            clipboard.set_text(&value);
+        }
+    });
+    actions.add_action(&action);
+
+    let action = SimpleAction::new("copy-description", None);
+    action.connect_activate({
+        let value = layer.get_description(variable);
+        move |_, _| {
+            let display = Display::default().expect("No display available");
+            let clipboard = gtk::Clipboard::default(&display).expect("Failed to get clipboard");
+            clipboard.set_text(&value);
+        }
+    });
+    actions.add_action(&action);
+
+    let action = SimpleAction::new("copy-byte-array", None);
+    action.connect_activate({
+        let value = format!("let buf = [{}];", layer.get_value_as_bytes(variable)
+            .chunks(16)
+            .map(|chunk| {
+                chunk
+                    .iter()
+                    .map(|byte| format!("0x{:02x}", byte))
+                    .collect::<Vec<String>>()
+                    .join(", ")
+            })
+            .collect::<Vec<String>>()
+            .join(",\n"));
+        move |_, _| {
+            let display = Display::default().expect("No display available");
+            let clipboard = gtk::Clipboard::default(&display).expect("Failed to get clipboard");
+            clipboard.set_text(&value);
+        }
+    });
+    actions.add_action(&action);
+
+    let action = SimpleAction::new("copy-hex", None);
+    action.connect_activate({
+        let value = layer.get_value_as_bytes(variable).chunks(16)
+            .enumerate()
+            .map(|(i, chunk)| {
+                let line_number = format!("{:08X}", i * 16);
+                let hex_values = chunk.iter()
+                    .map(|b| format!("{:02X}", b))
+                    .collect::<Vec<_>>()
+                    .join(" ");
+                format!("{}  {}", line_number, hex_values)
+            })
+            .collect::<Vec<_>>()
+            .join("\n");
+        move |_, _| {
+            let display = Display::default().expect("No display available");
+            let clipboard = gtk::Clipboard::default(&display).expect("Failed to get clipboard");
+            clipboard.set_text(&value);
+        }
+    });
+    actions.add_action(&action);
+
+    let action = SimpleAction::new("copy-ascii", None);
+    action.connect_activate({
+        let value = layer.get_value_as_bytes(variable).chunks(16)
+            .enumerate()
+            .map(|(i, chunk)| {
+                let line_number = format!("{:08X}", i * 16);
+                let ascii_string = chunk.iter()
+                    .map(|&b| {
+                        if b.is_ascii() && !b.is_ascii_control() {
+                            b as char
+                        } else {
+                            '.'
+                        }
+                    }).collect::<String>();
+                format!("{}  {}", line_number, ascii_string)
+            })
+            .collect::<Vec<_>>()
+            .join("\n");
+        move |_, _| {
+            let display = Display::default().expect("No display available");
+            let clipboard = gtk::Clipboard::default(&display).expect("Failed to get clipboard");
+            clipboard.set_text(&value);
+        }
+    });
+    actions.add_action(&action);
+
+
+
+    menu.insert_action_group("context", Some(&actions));
+
     menu.connect_deactivate({
         let row = row.clone();
         move |_| {
@@ -503,6 +596,4 @@ fn create_row_context_menu(row: &ListBoxRow, event: &EventButton) -> Menu {
     });
 
     menu.popup_at_pointer(Some(event));
-
-    menu
 }
