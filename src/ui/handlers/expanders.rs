@@ -1,6 +1,7 @@
 use std::net::IpAddr;
 use gtk::{gdk, gio, Builder, Button, Container, EventBox, Image, Label, ListBox, ListBoxRow, Menu, MenuItem, Orientation};
 use gtk::gdk::{EventButton, EventMask};
+use gtk::gdk_pixbuf::Pixbuf;
 use gtk::glib::Cast;
 use gtk::glib::Propagation::Proceed;
 use gtk::prelude::{BuilderExtManual, ButtonExt, ContainerExt, GtkMenuExt, ImageExt, LabelExt, ListBoxExt, ListBoxRowExt, MenuShellExt, StyleContextExt, WidgetExt, WidgetExtManual};
@@ -17,6 +18,7 @@ use pcap::packet::layers::sll2_frame::sll2_frame::Sll2Frame;
 use crate::database::sqlite::Database;
 use crate::layers::inter::layer_ext::LayerExt;
 use crate::ui::handlers::ethernet_utils::ethernet_to_company;
+use crate::ui::handlers::ip_utils::ip_to_icon;
 use crate::ui::widgets::hex_editor::HexEditor;
 
 pub fn create_ethernet_layer_expander(db: &Database, offset: usize, hex_editor: &HexEditor, layer: &EthernetFrame) -> Container {
@@ -149,7 +151,7 @@ pub fn create_arp_layer_expander(layer: &ArpExtension) -> Container {
     dropdown.upcast()
 }
 
-pub fn create_ipv4_layer_expander(offset: usize, hex_editor: &HexEditor, layer: &Ipv4Layer) -> Container {
+pub fn create_ipv4_layer_expander(db: &Database, offset: usize, hex_editor: &HexEditor, layer: &Ipv4Layer) -> Container {
     let (dropdown, list_box) = create_dropdown("Internet Protocol Version 4");
 
     list_box.add(&create_row("Version:", layer.get_version().to_string()));
@@ -162,8 +164,29 @@ pub fn create_ipv4_layer_expander(offset: usize, hex_editor: &HexEditor, layer: 
 
     let checksum_string = if layer.validate_checksum() { "correct" } else { "incorrect" };
     list_box.add(&create_row("Header Checksum:", format!("0x{:04X} [{}]", layer.get_checksum(), checksum_string)));
-    list_box.add(&create_row("Source Address:", layer.get_source_address().to_string()));
-    list_box.add(&create_row("Destination Address:", layer.get_destination_address().to_string()));
+
+
+    match ip_to_icon(db, IpAddr::V4(layer.get_source_address())) {
+        Some(icon) => {
+            list_box.add(&create_row_with_icon("Source Address 1:", icon, layer.get_source_address().to_string()));
+        }
+        None => {
+            list_box.add(&create_row("Source Address 2:", layer.get_source_address().to_string()));
+        }
+    }
+
+
+    match ip_to_icon(db, IpAddr::V4(layer.get_destination_address())) {
+        Some(icon) => {
+            list_box.add(&create_row_with_icon("Destination Address 1:", icon, layer.get_destination_address().to_string()));
+        }
+        None => {
+            list_box.add(&create_row("Destination Address 2:", layer.get_destination_address().to_string()));
+        }
+    }
+
+    //list_box.add(&create_row("Source Address:", layer.get_source_address().to_string()));
+    //list_box.add(&create_row("Destination Address:", layer.get_destination_address().to_string()));
 
     list_box.connect_row_activated({
         let hex_editor = hex_editor.clone();
@@ -394,6 +417,31 @@ fn create_row(key: &str, value: String) -> ListBoxRow {
     label.set_widget_name("key");
     label.set_xalign(0.0);
     hbox.add(&label);
+
+    let label = Label::new(Some(value.as_str()));
+    label.set_widget_name("value");
+    label.set_xalign(0.0);
+    hbox.add(&label);
+
+    row.add(&hbox);
+    row.show_all();
+
+    row
+}
+
+fn create_row_with_icon(key: &str, icon: Pixbuf, value: String) -> ListBoxRow {
+    let row = ListBoxRow::new();
+
+    let hbox = gtk::Box::new(Orientation::Horizontal, 10);
+
+    let label = Label::new(Some(key));
+    label.set_widget_name("key");
+    label.set_xalign(0.0);
+    hbox.add(&label);
+
+    let image = Image::from_pixbuf(Some(&icon));
+    image.set_size_request(24, 24);
+    hbox.add(&image);
 
     let label = Label::new(Some(value.as_str()));
     label.set_widget_name("value");

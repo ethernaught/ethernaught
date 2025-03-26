@@ -3,6 +3,7 @@ use core::ffi::c_void;
 use core::ffi::CStr;
 use std::collections::HashMap;
 use std::ffi::CString;
+use std::io;
 
 pub struct Database {
     db: *mut c_void
@@ -10,15 +11,15 @@ pub struct Database {
 
 impl Database {
 
-    pub fn open(name: &str) -> Option<Self> {
+    pub fn open(name: &str) -> io::Result<Self> {
         let c_db_name = CString::new(name).unwrap();
         let mut db: *mut c_void = ptr::null_mut();
         let rc = unsafe { sqlite3_open(c_db_name.as_ptr(), &mut db) };
         if rc != 0 {
-            return None;
+            return Err(io::Error::last_os_error());
         }
 
-        Some(Self {
+        Ok(Self {
             db
         })
     }

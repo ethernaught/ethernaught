@@ -80,5 +80,45 @@
 
         <file preprocess="xml-stripblanks">res/icons/ic_expand_less.svg</file>
         <file preprocess="xml-stripblanks">res/icons/ic_expand_more.svg</file>
+
+
+        <file preprocess="xml-stripblanks">res/icons/flags/ic_amenia.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/flags/ic_austria.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/flags/ic_belgium.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/flags/ic_bolivia.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/flags/ic_brazil.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/flags/ic_bulgaria.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/flags/ic_canada.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/flags/ic_chad.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/flags/ic_china.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/flags/ic_denmark.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/flags/ic_estonia.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/flags/ic_finland.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/flags/ic_france.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/flags/ic_gabon.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/flags/ic_georgia.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/flags/ic_germany.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/flags/ic_guinea.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/flags/ic_hungary.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/flags/ic_ireland.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/flags/ic_italy.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/flags/ic_ivory_coast.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/flags/ic_japan.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/flags/ic_latvia.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/flags/ic_lithuania.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/flags/ic_luxembourg.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/flags/ic_mali.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/flags/ic_netherlands.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/flags/ic_nigeria.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/flags/ic_panama.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/flags/ic_peru.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/flags/ic_romania.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/flags/ic_russia.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/flags/ic_sweden.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/flags/ic_switzerland.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/flags/ic_united_kingdom.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/flags/ic_united_states.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/flags/ic_yemen.svg</file>
+
     </gresource>
 </gresources>

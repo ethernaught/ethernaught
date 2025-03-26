@@ -138,7 +138,7 @@ impl Fragment for SidebarFragment {
                 match ethernet_frame.get_type() {
                     EthernetTypes::Ipv4 => {
                         let ipv4_layer = ethernet_frame.get_data().unwrap().as_any().downcast_ref::<Ipv4Layer>().unwrap();
-                        details_layout.add(&create_ipv4_layer_expander(ethernet_frame.len()-ipv4_layer.len(), &hex_editor, &ipv4_layer));
+                        details_layout.add(&create_ipv4_layer_expander(&db, ethernet_frame.len()-ipv4_layer.len(), &hex_editor, &ipv4_layer));
 
                         match ipv4_layer.get_protocol() {
                             IpProtocols::HopByHop => {}
@@ -238,7 +238,7 @@ impl Fragment for SidebarFragment {
                 match sll2_frame.get_protocol() {
                     EthernetTypes::Ipv4 => {
                         let ipv4_layer = sll2_frame.get_data().unwrap().as_any().downcast_ref::<Ipv4Layer>().unwrap();
-                        details_layout.add(&create_ipv4_layer_expander(sll2_frame.len()-ipv4_layer.len(), &hex_editor, &ipv4_layer));
+                        details_layout.add(&create_ipv4_layer_expander(&db, sll2_frame.len()-ipv4_layer.len(), &hex_editor, &ipv4_layer));
 
                         match ipv4_layer.get_protocol() {
                             IpProtocols::HopByHop => {}
