@@ -66,6 +66,7 @@ fn main() {
     app.run();
 }
 
+//CAN WE CHANGE THIS TO A VARIABLE SET ON BUILD...?
 pub fn get_lib_path(file_name: &str) -> PathBuf {
     if cfg!(debug_assertions) {
         return PathBuf::from(file_name);
