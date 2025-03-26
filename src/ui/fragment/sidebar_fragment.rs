@@ -175,7 +175,7 @@ impl Fragment for SidebarFragment {
             DataLinkTypes::Raw => {
                 let raw_frame = self.packet.get_frame().as_any().downcast_ref::<RawFrame>().unwrap();
 
-                match raw_frame.get_type() {
+                match raw_frame.get_version() {
                     IpVersions::Ipv4 => {
                         let ipv4_layer = raw_frame.get_data().unwrap().as_any().downcast_ref::<Ipv4Layer>().unwrap();
                         create_ipv4_details(&details_layout, &hex_editor, &db, &ipv4_layer, raw_frame.len());

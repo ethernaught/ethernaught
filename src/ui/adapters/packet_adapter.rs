@@ -90,7 +90,7 @@ impl PacketAdapter {
             DataLinkTypes::Raw => {
                 let raw_frame = packet.get_frame().as_any().downcast_ref::<RawFrame>().unwrap();
 
-                match raw_frame.get_type() {
+                match raw_frame.get_version() {
                     IpVersions::Ipv4 => {
                         get_data_from_ipv4_frame(raw_frame.get_data().unwrap().as_any().downcast_ref::<Ipv4Layer>().unwrap())
                     }
