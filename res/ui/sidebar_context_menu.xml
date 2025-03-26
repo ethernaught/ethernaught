@@ -34,7 +34,7 @@
                     <attribute name="label" translatable="yes">...as ASCII Dump</attribute>
                 </item>
                 <item>
-                    <attribute name="action">context.copy-raw</attribute>
+                    <attribute name="action">context.copy-binary</attribute>
                     <attribute name="label" translatable="yes">...as Raw Binary</attribute>
                 </item>
             </section>

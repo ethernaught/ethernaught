@@ -584,6 +584,21 @@ fn create_row_context_menu(row: &ListBoxRow, event: &EventButton, variable: &str
     });
     actions.add_action(&action);
 
+    let action = SimpleAction::new("copy-binary", None);
+    action.connect_activate({
+        let value = layer.get_value_as_bytes(variable)
+            .iter()
+            .map(|byte| format!("{:08b}", byte))
+            .collect::<Vec<_>>()
+            .join(" ");
+        move |_, _| {
+            let display = Display::default().expect("No display available");
+            let clipboard = gtk::Clipboard::default(&display).expect("Failed to get clipboard");
+            clipboard.set_text(&value);
+        }
+    });
+    actions.add_action(&action);
+
 
 
     menu.insert_action_group("context", Some(&actions));
