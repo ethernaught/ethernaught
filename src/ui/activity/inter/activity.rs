@@ -1,6 +1,7 @@
 use std::any::Any;
 use gtk::Container;
 use crate::ui::application::OApplication;
+use crate::ui::context::Context;
 use crate::ui::handlers::bundle::Bundle;
 
 pub trait Activity {
@@ -16,6 +17,8 @@ pub trait Activity {
     fn on_pause(&self);
 
     fn on_destroy(&self);
+
+    fn get_context(&self) -> &Context;
 
     fn as_any(&self) -> &dyn Any;
 

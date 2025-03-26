@@ -126,6 +126,10 @@ impl Activity for PacketPlaygroundActivity {
     fn on_destroy(&self) {
     }
 
+    fn get_context(&self) -> &Context {
+        &self.context
+    }
+
     fn as_any(&self) -> &dyn Any {
         self
     }

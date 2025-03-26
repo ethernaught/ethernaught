@@ -2,7 +2,7 @@ use std::net::IpAddr;
 use gtk::{gdk, gio, Builder, Button, Container, EventBox, Image, Label, ListBox, ListBoxRow, Menu, MenuItem, Orientation};
 use gtk::gdk::{Display, EventButton, EventMask};
 use gtk::gdk_pixbuf::Pixbuf;
-use gtk::gio::{SimpleAction, SimpleActionGroup};
+use gtk::gio::{ActionGroup, SimpleAction, SimpleActionGroup};
 use gtk::glib::Cast;
 use gtk::glib::Propagation::Proceed;
 use gtk::prelude::{ActionMapExt, BuilderExtManual, ButtonExt, ContainerExt, GtkMenuExt, ImageExt, LabelExt, ListBoxExt, ListBoxRowExt, MenuShellExt, StyleContextExt, WidgetExt, WidgetExtManual};
@@ -23,7 +23,7 @@ use crate::ui::handlers::ethernet_utils::ethernet_to_company;
 use crate::ui::handlers::ip_utils::ip_to_icon;
 use crate::ui::widgets::hex_editor::HexEditor;
 
-pub fn create_ethernet_layer_expander(db: &Database, offset: usize, hex_editor: &HexEditor, layer: &EthernetFrame) -> Container {
+pub fn create_ethernet_layer_expander(db: &Database, offset: usize, hex_editor: &HexEditor, actions: &SimpleActionGroup, layer: &EthernetFrame) -> Container {
     let (dropdown, list_box) = create_dropdown("Ethernet II");
 
     match ethernet_to_company(db, layer.get_destination_mac()) {
@@ -69,6 +69,7 @@ pub fn create_ethernet_layer_expander(db: &Database, offset: usize, hex_editor: 
     list_box.connect_button_press_event({
         let hex_editor = hex_editor.clone();
         let layer = layer.clone();
+        let actions = actions.clone();
         move |list_box, event| {
             if event.button() != 3 {
                 return Proceed;
@@ -90,7 +91,7 @@ pub fn create_ethernet_layer_expander(db: &Database, offset: usize, hex_editor: 
                     _ => unimplemented!()
                 };
 
-                create_row_context_menu(&row, event, variable, &layer);
+                create_row_context_menu(&row, event, &actions, variable, &layer);
 
                 let (x, w) = layer.get_selection(variable);
                 hex_editor.set_selection(offset + x, w);
@@ -467,7 +468,7 @@ fn create_row_with_icon(key: &str, icon: Pixbuf, value: String) -> ListBoxRow {
     row
 }
 
-fn create_row_context_menu(row: &ListBoxRow, event: &EventButton, variable: &str, layer: &dyn LayerExt) {
+fn create_row_context_menu(row: &ListBoxRow, event: &EventButton, actions: &SimpleActionGroup, variable: &str, layer: &dyn LayerExt) {
     row.style_context().add_class("selected");
 
     let builder = Builder::from_resource("/net/ethernaught/rust/res/ui/sidebar_context_menu.xml");
@@ -477,10 +478,6 @@ fn create_row_context_menu(row: &ListBoxRow, event: &EventButton, variable: &str
         .expect("Couldn't find 'context_menu' in sidebar_context_menu.xml");
 
     let menu = Menu::from_model(&model);
-
-
-
-    let actions = SimpleActionGroup::new();
 
     let action = SimpleAction::new("copy-field-name", None);
     action.connect_activate({
@@ -599,9 +596,7 @@ fn create_row_context_menu(row: &ListBoxRow, event: &EventButton, variable: &str
     });
     actions.add_action(&action);
 
-
-
-    menu.insert_action_group("context", Some(&actions));
+    menu.insert_action_group("context", Some(actions));
 
     menu.connect_deactivate({
         let row = row.clone();

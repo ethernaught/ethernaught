@@ -3,6 +3,10 @@
     <requires lib="gtk+" version="3.24"/>
 
     <menu id="context_menu">
+        <item>
+            <attribute name="action">context.open-new-window</attribute>
+            <attribute name="label" translatable="yes">Open in new Window</attribute>
+        </item>
         <submenu>
             <attribute name="label" translatable="true">_Copy</attribute>
             <section>

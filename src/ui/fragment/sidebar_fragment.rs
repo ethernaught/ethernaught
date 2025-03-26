@@ -6,8 +6,9 @@ use std::sync::mpsc::Sender;
 use gtk::{Builder, Button, Container, DrawingArea, Paned, ScrolledWindow};
 use gtk::ffi::GtkScrolledWindow;
 use gtk::gdk::{EventMask, RGBA};
+use gtk::gio::{SimpleAction, SimpleActionGroup};
 use gtk::glib::{clone, Propagation};
-use gtk::prelude::{BuilderExtManual, ButtonExt, Cast, ContainerExt, PanedExt, SocketExtManual, WidgetExt, WidgetExtManual};
+use gtk::prelude::{ActionMapExt, BuilderExtManual, ButtonExt, Cast, ContainerExt, PanedExt, SocketExtManual, WidgetExt, WidgetExtManual};
 use pcap::packet::layers::ethernet_frame::arp::arp_extension::ArpExtension;
 use pcap::packet::layers::ethernet_frame::ethernet_frame::EthernetFrame;
 use pcap::packet::layers::ethernet_frame::inter::ethernet_types::EthernetTypes;
@@ -31,6 +32,7 @@ use pcap::packet::packet::Packet;
 use pcap::utils::data_link_types::DataLinkTypes;
 use crate::database::sqlite::Database;
 use crate::get_lib_path;
+use crate::ui::activity::devices_activity::DevicesActivity;
 use crate::ui::activity::inter::activity::Activity;
 use crate::ui::activity::main_activity::MainActivity;
 use crate::ui::fragment::inter::fragment::Fragment;
@@ -93,10 +95,12 @@ impl Fragment for SidebarFragment {
             .object("dismiss_button")
             .expect("Couldn't find 'dismiss_button' in window.ui");
 
-        let _self = self.clone();
-        dismiss_button.connect_clicked(move |_| {
-            let main_activity = _self.activity.as_any().downcast_ref::<MainActivity>().unwrap();
-            main_activity.close_sidebar();
+        dismiss_button.connect_clicked({
+            let _self = self.clone();
+            move |_| {
+                let main_activity = _self.activity.as_any().downcast_ref::<MainActivity>().unwrap();
+                main_activity.close_sidebar();
+            }
         });
 
         let replay_button: Button = builder
@@ -104,14 +108,16 @@ impl Fragment for SidebarFragment {
             .expect("Couldn't find 'replay_button' in window.ui");
 
         let _self = self.clone();
-        replay_button.connect_clicked(move |_| {
-            /*
-            let main_activity = _self.activity.as_any().downcast_ref::<MainActivity>().unwrap();
+        replay_button.connect_clicked({
+            move |_| {
+                /*
+                let main_activity = _self.activity.as_any().downcast_ref::<MainActivity>().unwrap();
 
-            if let Some(capture_service) = main_activity.get_capture_service() {
-                capture_service.send(_self.packet.clone());
+                if let Some(capture_service) = main_activity.get_capture_service() {
+                    capture_service.send(_self.packet.clone());
+                }
+                */
             }
-            */
         });
 
 
@@ -129,6 +135,18 @@ impl Fragment for SidebarFragment {
 
         let db = Database::open(get_lib_path("database.db").to_str().unwrap()).expect("Couldn't open database.db");
 
+
+        let actions = SimpleActionGroup::new();
+
+        let action = SimpleAction::new("open-new-window", None);
+        action.connect_activate({
+            let context = self.activity.get_context().clone();
+            move |_, _| {
+                //context.create_window_from_activity(Box::new(DevicesActivity::new(context.clone())), None);
+            }
+        });
+        actions.add_action(&action);
+
         let details_layout: gtk::Box = builder
             .object("details_layout")
             .expect("Couldn't find 'details_layout' in window.ui");
@@ -137,7 +155,7 @@ impl Fragment for SidebarFragment {
         match self.packet.get_data_link_type() {
             DataLinkTypes::En10mb => {
                 let ethernet_frame = self.packet.get_frame().as_any().downcast_ref::<EthernetFrame>().unwrap();
-                details_layout.add(&create_ethernet_layer_expander(&db, 0, &hex_editor, &ethernet_frame));
+                details_layout.add(&create_ethernet_layer_expander(&db, 0, &hex_editor, &actions, &ethernet_frame));
 
                 match ethernet_frame.get_type() {
                     EthernetTypes::Ipv4 => {
