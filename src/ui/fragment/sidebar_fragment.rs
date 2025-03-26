@@ -185,7 +185,7 @@ impl Fragment for SidebarFragment {
                     }
                     EthernetTypes::Ipv6 => {
                         let ipv6_layer = ethernet_frame.get_data().unwrap().as_any().downcast_ref::<Ipv6Layer>().unwrap();
-                        details_layout.add(&create_ipv6_layer_expander(ethernet_frame.len()-ipv6_layer.len(), &hex_editor, &ipv6_layer));
+                        details_layout.add(&create_ipv6_layer_expander(&db, ethernet_frame.len()-ipv6_layer.len(), &hex_editor, &ipv6_layer));
 
                         match ipv6_layer.get_next_header() {
                             IpProtocols::HopByHop => {}
@@ -281,7 +281,7 @@ impl Fragment for SidebarFragment {
                     }
                     EthernetTypes::Ipv6 => {
                         let ipv6_layer = sll2_frame.get_data().unwrap().as_any().downcast_ref::<Ipv6Layer>().unwrap();
-                        details_layout.add(&create_ipv6_layer_expander(sll2_frame.len()-ipv6_layer.len(), &hex_editor, &ipv6_layer));
+                        details_layout.add(&create_ipv6_layer_expander(&db, sll2_frame.len()-ipv6_layer.len(), &hex_editor, &ipv6_layer));
 
                         match ipv6_layer.get_next_header() {
                             IpProtocols::HopByHop => {}

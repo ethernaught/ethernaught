@@ -165,28 +165,23 @@ pub fn create_ipv4_layer_expander(db: &Database, offset: usize, hex_editor: &Hex
     let checksum_string = if layer.validate_checksum() { "correct" } else { "incorrect" };
     list_box.add(&create_row("Header Checksum:", format!("0x{:04X} [{}]", layer.get_checksum(), checksum_string)));
 
-
     match ip_to_icon(db, IpAddr::V4(layer.get_source_address())) {
         Some(icon) => {
-            list_box.add(&create_row_with_icon("Source Address 1:", icon, layer.get_source_address().to_string()));
+            list_box.add(&create_row_with_icon("Source Address:", icon, layer.get_source_address().to_string()));
         }
         None => {
-            list_box.add(&create_row("Source Address 2:", layer.get_source_address().to_string()));
+            list_box.add(&create_row("Source Address:", layer.get_source_address().to_string()));
         }
     }
-
 
     match ip_to_icon(db, IpAddr::V4(layer.get_destination_address())) {
         Some(icon) => {
-            list_box.add(&create_row_with_icon("Destination Address 1:", icon, layer.get_destination_address().to_string()));
+            list_box.add(&create_row_with_icon("Destination Address:", icon, layer.get_destination_address().to_string()));
         }
         None => {
-            list_box.add(&create_row("Destination Address 2:", layer.get_destination_address().to_string()));
+            list_box.add(&create_row("Destination Address:", layer.get_destination_address().to_string()));
         }
     }
-
-    //list_box.add(&create_row("Source Address:", layer.get_source_address().to_string()));
-    //list_box.add(&create_row("Destination Address:", layer.get_destination_address().to_string()));
 
     list_box.connect_row_activated({
         let hex_editor = hex_editor.clone();
@@ -231,15 +226,31 @@ pub fn create_ipv4_layer_expander(db: &Database, offset: usize, hex_editor: &Hex
     dropdown.upcast()
 }
 
-pub fn create_ipv6_layer_expander(offset: usize, hex_editor: &HexEditor, layer: &Ipv6Layer) -> Container {
+pub fn create_ipv6_layer_expander(db: &Database, offset: usize, hex_editor: &HexEditor, layer: &Ipv6Layer) -> Container {
     let (dropdown, list_box) = create_dropdown("Internet Protocol Version 6");
 
     list_box.add(&create_row("Version:", layer.get_version().to_string()));
     list_box.add(&create_row("Payload Length:", layer.get_payload_length().to_string()));
     list_box.add(&create_row("Next Header:", format!("{:?} ({})", layer.get_next_header(), layer.get_next_header().get_code())));
     list_box.add(&create_row("Hop Limit:", layer.get_hop_limit().to_string()));
-    list_box.add(&create_row("Source Address:", layer.get_source_address().to_string()));
-    list_box.add(&create_row("Destination Address:", layer.get_destination_address().to_string()));
+
+    match ip_to_icon(db, IpAddr::V6(layer.get_source_address())) {
+        Some(icon) => {
+            list_box.add(&create_row_with_icon("Source Address:", icon, layer.get_source_address().to_string()));
+        }
+        None => {
+            list_box.add(&create_row("Source Address:", layer.get_source_address().to_string()));
+        }
+    }
+
+    match ip_to_icon(db, IpAddr::V6(layer.get_destination_address())) {
+        Some(icon) => {
+            list_box.add(&create_row_with_icon("Destination Address:", icon, layer.get_destination_address().to_string()));
+        }
+        None => {
+            list_box.add(&create_row("Destination Address:", layer.get_destination_address().to_string()));
+        }
+    }
 
     list_box.connect_row_activated({
         let hex_editor = hex_editor.clone();
