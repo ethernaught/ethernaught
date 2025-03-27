@@ -1,6 +1,7 @@
 use std::process::exit;
 use gtk::{gdk, Application, ApplicationWindow, Builder, CssProvider, Stack, StyleContext, Window};
-use gtk::prelude::{BuilderExtManual, ContainerExt, CssProviderExt, GtkWindowExt, StackExt, WidgetExt};
+use gtk::glib::Propagation::Proceed;
+use gtk::prelude::{ActionGroupExt, BuilderExtManual, ContainerExt, CssProviderExt, GtkWindowExt, StackExt, WidgetExt};
 use pcap::devices::Device;
 use pcap::utils::interface_flags::InterfaceFlags;
 use crate::actions::window_actions::{register_stack_actions, register_window_actions};
@@ -72,22 +73,22 @@ impl MainWindow {
         let view = DevicesView::new(&window, devices);
         stack.add_titled(&view.root, &view.get_name(), &view.get_title());
 
-        /*
-        let context = self.context.clone();
-        window.connect_button_press_event(move |_, event| {
-            match event.button() {
-                8 => {
-                    context.on_back_pressed();
+        window.connect_button_press_event({
+            let window = window.clone();
+            move |_, event| {
+                match event.button() {
+                    8 => {
+                        window.activate_action("back", None);
+                    }
+                    9 => {
+                        window.activate_action("next", None);
+                    }
+                    _ => {}
                 }
-                9 => {
-                    context.on_next_pressed();
-                }
-                _ => {}
-            }
 
-            Proceed
+                Proceed
+            }
         });
-        */
 
         register_window_actions(&window);
         register_stack_actions(&window, &stack);

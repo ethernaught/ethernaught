@@ -40,6 +40,7 @@
                                 <property name="visible">True</property>
                                 <property name="width-request">24</property>
                                 <property name="height-request">24</property>
+                                <property name="action-name">win.menu</property>
                             </object>
                         </child>
 
@@ -56,6 +57,7 @@
                                         <property name="visible">True</property>
                                         <property name="width-request">24</property>
                                         <property name="height-request">24</property>
+                                        <property name="action-name">win.back</property>
                                     </object>
                                 </child>
 
@@ -66,6 +68,7 @@
                                         <property name="visible">True</property>
                                         <property name="width-request">24</property>
                                         <property name="height-request">24</property>
+                                        <property name="action-name">win.next</property>
                                     </object>
                                 </child>
                             </object>
@@ -146,6 +149,7 @@
                         <property name="visible">True</property>
                         <property name="width-request">16</property>
                         <property name="height-request">16</property>
+                        <property name="action-name">app.minimize</property>
                     </object>
                 </child>
 
@@ -157,6 +161,7 @@
                         <property name="visible">True</property>
                         <property name="width-request">16</property>
                         <property name="height-request">16</property>
+                        <property name="action-name">app.maximize</property>
                     </object>
                 </child>
 
@@ -167,6 +172,7 @@
                         <property name="visible">True</property>
                         <property name="width-request">16</property>
                         <property name="height-request">16</property>
+                        <property name="action-name">app.close</property>
                     </object>
                 </child>
             </object>

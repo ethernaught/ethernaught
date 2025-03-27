@@ -1,5 +1,5 @@
 use gtk::gio::{SimpleAction, SimpleActionGroup};
-use gtk::prelude::{ActionMapExt, StackExt, WidgetExt};
+use gtk::prelude::{ActionMapExt, ContainerExt, StackExt, WidgetExt};
 use gtk::{glib, ApplicationWindow, Stack};
 use pcap::devices::Device;
 use crate::pcap_ext::devices::Serialize;
@@ -27,6 +27,38 @@ pub fn register_stack_actions(window: &ApplicationWindow, stack: &Stack) {
                 let name = view.get_name();
                 stack.add_titled(&view.root, &name, &view.get_title());
                 stack.set_visible_child_name(&name);
+            }
+        }
+    });
+    window.add_action(&action);
+
+    let action = SimpleAction::new("back", None);
+    action.connect_activate({
+        let stack = stack.clone();
+        move |_, _| {
+            let children = stack.children();
+            if let Some(current) = stack.visible_child() {
+                if let Some(pos) = children.iter().position(|child| child == &current) {
+                    if pos > 0 {
+                        stack.set_visible_child(&children[pos - 1]);
+                    }
+                }
+            }
+        }
+    });
+    window.add_action(&action);
+
+    let action = SimpleAction::new("next", None);
+    action.connect_activate({
+        let stack = stack.clone();
+        move |_, _| {
+            let children = stack.children();
+            if let Some(current) = stack.visible_child() {
+                if let Some(pos) = children.iter().position(|child| child == &current) {
+                    if pos < children.len() - 1 {
+                        stack.set_visible_child(&children[pos + 1]);
+                    }
+                }
             }
         }
     });
