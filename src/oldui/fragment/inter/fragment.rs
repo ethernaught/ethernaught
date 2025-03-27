@@ -1,7 +1,7 @@
 use std::any::Any;
 use gtk::Container;
-use crate::ui::activity::inter::activity::Activity;
-use crate::ui::handlers::bundle::Bundle;
+use crate::oldui::activity::inter::activity::Activity;
+use crate::oldui::handlers::bundle::Bundle;
 
 pub trait Fragment {
 

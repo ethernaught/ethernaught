@@ -5,7 +5,7 @@ use gtk::prelude::{BuilderExtManual, ContainerExt, ImageExt, LabelExt, StyleCont
 use pcap::devices::Device;
 use pcap::utils::data_link_types::DataLinkTypes;
 use pcap::utils::interface_flags::InterfaceFlags;
-use crate::ui::widgets::graph::Graph;
+use crate::oldui::widgets::graph::Graph;
 
 #[derive(Clone)]
 pub struct DevicesAdapter {
@@ -44,14 +44,14 @@ impl DevicesAdapter {
     }
 
     pub fn add(list_box: &ListBox, device: &Device) {
-        let builder = Builder::from_resource("/net/ethernaught/rust/res/ui/gtk3/device_list_item.ui");
+        let builder = Builder::from_resource("/net/ethernaught/rust/res/oldui/gtk3/device_list_item.oldui");
         let row: ListBoxRow = builder
             .object("row")
-            .expect("Couldn't find 'row' in device_list_item.ui");
+            .expect("Couldn't find 'row' in device_list_item.oldui");
 
         let icon: Image = builder
             .object("icon")
-            .expect("Couldn't find 'icon' in device_list_item.ui");
+            .expect("Couldn't find 'icon' in device_list_item.oldui");
 
         match device.get_data_link_type() {
             DataLinkTypes::En10mb | DataLinkTypes::En3mb => {
@@ -77,12 +77,12 @@ impl DevicesAdapter {
 
         let title_label: Label = builder
             .object("title")
-            .expect("Couldn't find 'title' in device_list_item.ui");
+            .expect("Couldn't find 'title' in device_list_item.oldui");
         title_label.set_label(format!("{}", device.get_name()).as_str());
 
         let description_label: Label = builder
             .object("description")
-            .expect("Couldn't find 'description' in device_list_item.ui");
+            .expect("Couldn't find 'description' in device_list_item.oldui");
         description_label.set_label(format!("{:?}", device.get_flags()).as_str());
 
         if !device.get_flags().contains(&InterfaceFlags::Running) {
@@ -93,14 +93,14 @@ impl DevicesAdapter {
     }
 
     pub fn add_any(list_box: &ListBox) {
-        let builder = Builder::from_resource("/net/ethernaught/rust/res/ui/gtk3/device_list_item.ui");
+        let builder = Builder::from_resource("/net/ethernaught/rust/res/oldui/gtk3/device_list_item.oldui");
         let row: ListBoxRow = builder
             .object("row")
-            .expect("Couldn't find 'row' in device_list_item.ui");
+            .expect("Couldn't find 'row' in device_list_item.oldui");
 
         let icon: Image = builder
             .object("icon")
-            .expect("Couldn't find 'icon' in device_list_item.ui");
+            .expect("Couldn't find 'icon' in device_list_item.oldui");
 
         row.style_context().add_class("any");
         icon.set_resource(Some("/net/ethernaught/rust/res/icons/ic_any.svg"));
@@ -108,12 +108,12 @@ impl DevicesAdapter {
 
         let title_label: Label = builder
             .object("title")
-            .expect("Couldn't find 'title' in device_list_item.ui");
+            .expect("Couldn't find 'title' in device_list_item.oldui");
         title_label.set_label("Any");
 
         let description_label: Label = builder
             .object("description")
-            .expect("Couldn't find 'description' in device_list_item.ui");
+            .expect("Couldn't find 'description' in device_list_item.oldui");
         description_label.set_label("[Promiscuous]");
 
         list_box.add(&row);

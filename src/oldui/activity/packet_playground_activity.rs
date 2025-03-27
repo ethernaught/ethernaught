@@ -3,10 +3,10 @@ use gtk::{gdk, glib, Builder, ComboBoxText, Container, CssProvider, ListBox, Lis
 use gtk::gdk::RGBA;
 use gtk::glib::{Cast, PropertyGet, Receiver, Sender};
 use gtk::prelude::{BuilderExtManual, ComboBoxExt, ComboBoxExtManual, ComboBoxTextExt, ContainerExt, CssProviderExt, PanedExt, WidgetExt};
-use crate::ui::activity::inter::activity::Activity;
-use crate::ui::context::Context;
-use crate::ui::handlers::bundle::Bundle;
-use crate::ui::widgets::hex_editor::HexEditor;
+use crate::oldui::activity::inter::activity::Activity;
+use crate::oldui::context::Context;
+use crate::oldui::handlers::bundle::Bundle;
+use crate::oldui::widgets::hex_editor::HexEditor;
 
 #[derive(Clone)]
 pub struct PacketPlaygroundActivity {
@@ -35,11 +35,11 @@ impl Activity for PacketPlaygroundActivity {
     }
 
     fn on_create(&mut self, bundle: Option<Bundle>) -> &Container {
-        let builder = Builder::from_resource("/net/ethernaught/rust/res/ui/gtk3/packet_playground_activity.ui");
+        let builder = Builder::from_resource("/net/ethernaught/rust/res/oldui/gtk3/packet_playground_activity.oldui");
 
         let provider = CssProvider::new();
-        provider.load_from_resource("/net/ethernaught/rust/res/ui/gtk3/packet_playground_activity.css");
-        //provider.load_from_path("res/ui/gtk3/window.css").expect("Failed to load CSS file.");
+        provider.load_from_resource("/net/ethernaught/rust/res/oldui/gtk3/packet_playground_activity.css");
+        //provider.load_from_path("res/oldui/gtk3/window.css").expect("Failed to load CSS file.");
 
         StyleContext::add_provider_for_screen(
             &gdk::Screen::default().expect("Failed to get default screen."),
@@ -49,24 +49,24 @@ impl Activity for PacketPlaygroundActivity {
 
         self.root = Some(builder
             .object("packet_playground_activity_layout")
-            .expect("Couldn't find 'packet_playground_activity_layout' in packet_playground_window.ui"));
+            .expect("Couldn't find 'packet_playground_activity_layout' in packet_playground_window.oldui"));
 
 
 
         let window_content: Paned = builder
             .object("window_content")
-            .expect("Couldn't find 'window_content' in packet_playground_window.ui");
+            .expect("Couldn't find 'window_content' in packet_playground_window.oldui");
 
         let hex_scroll_layout: Container = builder
             .object("hex_scroll_layout")
-            .expect("Couldn't find 'hex_scroll_layout' in packet_playground_window.ui");
+            .expect("Couldn't find 'hex_scroll_layout' in packet_playground_window.oldui");
 
         window_content.set_child_shrink(&hex_scroll_layout, false);
         window_content.set_child_resize(&hex_scroll_layout, true);
 
         let selection_scroll_layout: Container = builder
             .object("selection_scroll_layout")
-            .expect("Couldn't find 'selection_scroll_layout' in packet_playground_window.ui");
+            .expect("Couldn't find 'selection_scroll_layout' in packet_playground_window.oldui");
 
         window_content.set_child_shrink(&selection_scroll_layout, false);
 
@@ -80,7 +80,7 @@ impl Activity for PacketPlaygroundActivity {
 
         let hex_editor: HexEditor = builder
             .object("hex_editor")
-            .expect("Couldn't find 'hex_editor' in packet_playground_window.ui");
+            .expect("Couldn't find 'hex_editor' in packet_playground_window.oldui");
 
         hex_editor.set_data(hex_data);
         hex_editor.set_hexpand(true);
@@ -95,7 +95,7 @@ impl Activity for PacketPlaygroundActivity {
 
         let selection_layout: Container = builder
             .object("selection_layout")
-            .expect("Couldn't find 'selection_layout' in packet_playground_window.ui");
+            .expect("Couldn't find 'selection_layout' in packet_playground_window.oldui");
 
         let combo_box = ComboBoxText::new();
         combo_box.append_text("Data Link Type");

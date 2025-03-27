@@ -8,9 +8,9 @@ use gtk::prelude::*;
 use gtk::gio::SimpleAction;
 use gtk::glib::{clone, Propagation, PropertyGet};
 use gtk::prelude::{ActionMapExt, GtkWindowExt};
-use crate::ui::activity::inter::activity::Activity;
-use crate::ui::application::OApplication;
-use crate::ui::context::Context;
+use crate::oldui::activity::inter::activity::Activity;
+use crate::oldui::application::OApplication;
+use crate::oldui::context::Context;
 
 #[derive(Clone)]
 pub struct TitleBar {
@@ -28,7 +28,7 @@ impl TitleBar {
     }
 
     pub fn on_create(&mut self) -> &Container {
-        let builder = Builder::from_resource("/net/ethernaught/rust/res/ui/titlebar_ui.xml");
+        let builder = Builder::from_resource("/net/ethernaught/rust/res/oldui/titlebar_ui.xml");
 
         let root: gtk::Box = builder
             .object("titlebar")
@@ -47,7 +47,7 @@ impl TitleBar {
             .object("navigation_menubar")
             .expect("Couldn't find 'navigation_menubar' in titlebar_ui.xml");
 
-        let menu_builder = Builder::from_resource("/net/ethernaught/rust/res/ui/ethernaught_ui.xml");
+        let menu_builder = Builder::from_resource("/net/ethernaught/rust/res/oldui/ethernaught_ui.xml");
         let model: gio::MenuModel = menu_builder
             .object("main_window_menu")
             .expect("Couldn't find 'main_window_menu' in ethernaught_ui.xml");

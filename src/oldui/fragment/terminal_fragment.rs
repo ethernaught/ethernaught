@@ -2,9 +2,9 @@ use std::any::Any;
 use gtk::{Builder, Button, Container, DrawingArea};
 use gtk::prelude::{BuilderExtManual, ButtonExt, Cast, ContainerExt, PanedExt, WidgetExt, WidgetExtManual};
 use pcap::packet::packet::Packet;
-use crate::ui::activity::inter::activity::Activity;
-use crate::ui::fragment::inter::fragment::Fragment;
-use crate::ui::handlers::bundle::Bundle;
+use crate::oldui::activity::inter::activity::Activity;
+use crate::oldui::fragment::inter::fragment::Fragment;
+use crate::oldui::handlers::bundle::Bundle;
 
 #[derive(Clone)]
 pub struct TerminalFragment {
@@ -25,11 +25,11 @@ impl TerminalFragment {
 impl Fragment for TerminalFragment {
 
     fn on_create(&mut self, bundle: Option<Bundle>) -> &Container {
-        let builder = Builder::from_resource("/net/ethernaught/rust/res/ui/gtk3/terminal_fragment.ui");
+        let builder = Builder::from_resource("/net/ethernaught/rust/res/oldui/gtk3/terminal_fragment.oldui");
 
         self.root = Some(builder
             .object("terminal_layout")
-            .expect("Couldn't find 'terminal_layout' in window.ui"));
+            .expect("Couldn't find 'terminal_layout' in window.oldui"));
 
         &self.root.as_ref().unwrap().upcast_ref()
     }

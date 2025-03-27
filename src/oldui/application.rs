@@ -7,17 +7,17 @@ use gtk::gio::{resources_register, ApplicationFlags, Resource, SimpleAction};
 use gtk::glib::Bytes;
 use gtk::glib::Propagation::Proceed;
 use gtk::prelude::{ActionMapExt, GtkWindowExt};
-use crate::ui::activity::devices_activity::DevicesActivity;
-use crate::ui::activity::inter::activity::Activity;
-use crate::ui::activity::main_activity::MainActivity;
-use crate::ui::activity::packet_playground_activity::PacketPlaygroundActivity;
-use crate::ui::bottombar::BottomBar;
-use crate::ui::context::Context;
-use crate::ui::handlers::bundle::Bundle;
-use crate::ui::titlebar::TitleBar;
-use crate::ui::widgets::graph::Graph;
-use crate::ui::widgets::hex_editor::HexEditor;
-use crate::ui::widgets::terminal::Terminal;
+use crate::oldui::activity::devices_activity::DevicesActivity;
+use crate::oldui::activity::inter::activity::Activity;
+use crate::oldui::activity::main_activity::MainActivity;
+use crate::oldui::activity::packet_playground_activity::PacketPlaygroundActivity;
+use crate::oldui::bottombar::BottomBar;
+use crate::oldui::context::Context;
+use crate::oldui::handlers::bundle::Bundle;
+use crate::oldui::titlebar::TitleBar;
+use crate::oldui::widgets::graph::Graph;
+use crate::oldui::widgets::hex_editor::HexEditor;
+use crate::oldui::widgets::terminal::Terminal;
 
 #[derive(Clone)]
 pub struct OApplication {
@@ -68,11 +68,11 @@ impl OApplication {
         let resource = Resource::from_data(&Bytes::from(resource_data)).unwrap();
         resources_register(&resource);
 
-        let builder = Builder::from_resource("/net/ethernaught/rust/res/ui/gtk3/window.ui");
+        let builder = Builder::from_resource("/net/ethernaught/rust/res/oldui/gtk3/window.ui");
 
         let provider = CssProvider::new();
-        provider.load_from_resource("/net/ethernaught/rust/res/ui/gtk3/window.css");
-        //provider.load_from_path("res/ui/gtk3/window.css").expect("Failed to load CSS file.");
+        provider.load_from_resource("/net/ethernaught/rust/res/oldui/gtk3/window.css");
+        //provider.load_from_path("res/oldui/gtk3/window.css").expect("Failed to load CSS file.");
 
         StyleContext::add_provider_for_screen(
             &gdk::Screen::default().expect("Failed to get default screen."),
@@ -82,7 +82,7 @@ impl OApplication {
 
         let window: ApplicationWindow = builder
             .object("main_window")
-            .expect("Failed to get the 'main_window' from window.ui");
+            .expect("Failed to get the 'main_window' from window.oldui");
 
         window.set_application(Some(app));
         window.connect_destroy(|_| exit(0));
@@ -102,7 +102,7 @@ impl OApplication {
 
         let window_content: gtk::Box = builder
             .object("window_content")
-            .expect("Failed to get the 'window_content' from window.ui");
+            .expect("Failed to get the 'window_content' from window.oldui");
 
         window_content.add(&create_alertbar());
 
@@ -192,7 +192,7 @@ impl OApplication {
 }
 
 pub fn create_alertbar() -> Container {
-    let builder = Builder::from_resource("/net/ethernaught/rust/res/ui/alertbar_ui.xml");
+    let builder = Builder::from_resource("/net/ethernaught/rust/res/oldui/alertbar_ui.xml");
     builder
         .object("alert")
         .expect("Couldn't find 'alert' in alertbar_ui.xml")

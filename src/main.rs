@@ -1,6 +1,7 @@
-mod ui;
 mod layers;
 mod database;
+mod app;
+mod actions;
 
 use std::sync::{Arc, Mutex};
 use std::sync::mpsc::channel;
@@ -13,8 +14,8 @@ use std::time::{Duration, SystemTime, UNIX_EPOCH};
 use pcap::devices::Device;
 use gtk::prelude::*;
 use pcap::capture::Capture;
+use crate::app::App;
 use crate::database::sqlite::Database;
-use crate::ui::application::OApplication;
 
 //SIDEBAR SHOULD BE A FRAGMENT...
 //export GTK_DEBUG=interactive
@@ -38,6 +39,10 @@ rustup override set nightly
 //MacOS Font goes to /Library/fonts
 
 fn main() {
+    let app = App::new();
+    app.run();
+
+
     /*
     if !cfg!(debug_assertions) {
         if !is_root() {
@@ -61,9 +66,6 @@ fn main() {
         }
     }
     */
-
-    let app = OApplication::new();
-    app.run();
 }
 
 //CAN WE CHANGE THIS TO A VARIABLE SET ON BUILD...?

@@ -1,7 +1,7 @@
 use gtk::{AboutDialog, ApplicationWindow, Builder, Image, Application, TreeViewColumn, CellRendererText, ScrolledWindow, Button, ListBoxRow, Label, CssProvider, StyleContext, gdk, Stack, Container, TreeView, Widget, Window, gio, MenuBar, MenuItem, Menu};
 use gtk::prelude::*;
 use gtk::prelude::{ActionMapExt, GtkWindowExt};
-use crate::ui::application::OApplication;
+use crate::oldui::application::OApplication;
 
 #[derive(Clone)]
 pub struct BottomBar {
@@ -19,7 +19,7 @@ impl BottomBar {
     }
 
     pub fn on_create(&mut self) -> &Container {
-        let builder = Builder::from_resource("/net/ethernaught/rust/res/ui/bottombar_ui.xml");
+        let builder = Builder::from_resource("/net/ethernaught/rust/res/oldui/bottombar_ui.xml");
 
         let root: gtk::Box = builder
             .object("bottombar")

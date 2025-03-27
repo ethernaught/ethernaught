@@ -19,9 +19,9 @@ use pcap::packet::layers::inter::layer::Layer;
 use pcap::packet::layers::sll2_frame::sll2_frame::Sll2Frame;
 use crate::database::sqlite::Database;
 use crate::layers::inter::layer_ext::LayerExt;
-use crate::ui::handlers::ethernet_utils::ethernet_to_company;
-use crate::ui::handlers::ip_utils::ip_to_icon;
-use crate::ui::widgets::hex_editor::HexEditor;
+use crate::oldui::handlers::ethernet_utils::ethernet_to_company;
+use crate::oldui::handlers::ip_utils::ip_to_icon;
+use crate::oldui::widgets::hex_editor::HexEditor;
 
 pub fn create_ethernet_layer_expander(db: &Database, offset: usize, hex_editor: &HexEditor, actions: &SimpleActionGroup, layer: &EthernetFrame) -> Container {
     let (dropdown, list_box) = create_dropdown("Ethernet II");
@@ -471,7 +471,7 @@ fn create_row_with_icon(key: &str, icon: Pixbuf, value: String) -> ListBoxRow {
 fn create_row_context_menu(row: &ListBoxRow, event: &EventButton, actions: &SimpleActionGroup, variable: &str, layer: &dyn LayerExt) {
     row.style_context().add_class("selected");
 
-    let builder = Builder::from_resource("/net/ethernaught/rust/res/ui/sidebar_context_menu.xml");
+    let builder = Builder::from_resource("/net/ethernaught/rust/res/oldui/sidebar_context_menu.xml");
 
     let model: gio::MenuModel = builder
         .object("context_menu")

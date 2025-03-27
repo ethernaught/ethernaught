@@ -1,8 +1,8 @@
 use std::any::Any;
 use gtk::Container;
-use crate::ui::application::OApplication;
-use crate::ui::context::Context;
-use crate::ui::handlers::bundle::Bundle;
+use crate::oldui::application::OApplication;
+use crate::oldui::context::Context;
+use crate::oldui::handlers::bundle::Bundle;
 
 pub trait Activity {
 

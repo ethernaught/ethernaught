@@ -1,37 +1,27 @@
 use std::any::Any;
-use pcap::packet::packet::Packet;
-use crate::ui::handlers::events::inter::event::Event;
+use std::collections::HashMap;
+use crate::oldui::handlers::events::inter::event::Event;
 
 #[derive(Clone)]
-pub struct CaptureEvent {
+pub struct TransmittedEvent {
     prevent_default: bool,
-    if_index: i32,
-    packet: Packet
+    pub(crate) if_bytes: HashMap<i32, usize>
 }
 
-impl CaptureEvent {
+impl TransmittedEvent {
 
-    pub fn new(if_index: i32, packet: Packet) -> Self {
+    pub fn new(if_bytes: HashMap<i32, usize>) -> Self {
         Self {
             prevent_default: false,
-            if_index,
-            packet
+            if_bytes
         }
-    }
-
-    pub fn get_if_index(&self) -> i32 {
-        self.if_index
-    }
-
-    pub fn get_packet(&self) -> &Packet {
-        &self.packet
     }
 }
 
-impl Event for CaptureEvent {
+impl Event for TransmittedEvent {
 
     fn get_name(&self) -> String {
-        String::from("capture_event")
+        String::from("transmitted_event")
     }
 
     fn is_prevent_default(&self) -> bool {

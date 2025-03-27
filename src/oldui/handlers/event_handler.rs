@@ -6,7 +6,7 @@ use std::sync::mpsc::channel;
 use std::time::Duration;
 use gtk::glib;
 use gtk::glib::ControlFlow::Continue;
-use crate::ui::handlers::events::inter::event::Event;
+use crate::oldui::handlers::events::inter::event::Event;
 
 #[derive(Clone)]
 pub struct EventHandler {

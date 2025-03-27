@@ -5,9 +5,9 @@ use gtk::glib::{Cast, IsA};
 use gtk::prelude::{BinExt, ContainerExt, GtkApplicationExt, GtkWindowExt, LabelExt, StackExt, StyleContextExt, WidgetExt};
 use gtk::{glib, Application, Container, Stack, Widget, Window, WindowType};
 use gtk::glib::ControlFlow::Continue;
-use crate::ui::activity::inter::activity::Activity;
-use crate::ui::handlers::bundle::Bundle;
-use crate::ui::handlers::event_handler::EventHandler;
+use crate::oldui::activity::inter::activity::Activity;
+use crate::oldui::handlers::bundle::Bundle;
+use crate::oldui::handlers::event_handler::EventHandler;
 
 #[derive(Clone)]
 pub struct Context {

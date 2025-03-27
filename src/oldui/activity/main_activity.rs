@@ -8,14 +8,14 @@ use pcap::devices::Device;
 use pcap::packet::packet::Packet;
 use pcap::pcap::pcap::Pcap;
 use pcap::utils::data_link_types::DataLinkTypes;
-use crate::ui::activity::inter::activity::Activity;
-use crate::ui::context::Context;
-use crate::ui::fragment::inter::fragment::Fragment;
-use crate::ui::fragment::main_fragment::MainFragment;
-use crate::ui::fragment::sidebar_fragment::SidebarFragment;
-use crate::ui::fragment::terminal_fragment::TerminalFragment;
-use crate::ui::handlers::bundle::Bundle;
-use crate::ui::handlers::events::capture_event::CaptureEvent;
+use crate::oldui::activity::inter::activity::Activity;
+use crate::oldui::context::Context;
+use crate::oldui::fragment::inter::fragment::Fragment;
+use crate::oldui::fragment::main_fragment::MainFragment;
+use crate::oldui::fragment::sidebar_fragment::SidebarFragment;
+use crate::oldui::fragment::terminal_fragment::TerminalFragment;
+use crate::oldui::handlers::bundle::Bundle;
+use crate::oldui::handlers::events::capture_event::CaptureEvent;
 
 #[derive(Clone)]
 pub struct MainActivity {
@@ -124,10 +124,10 @@ impl Activity for MainActivity {
     }
 
     fn on_create(&mut self, bundle: Option<Bundle>) -> &Container {
-        let builder = Builder::from_resource("/net/ethernaught/rust/res/ui/gtk3/main_activity.ui");
+        let builder = Builder::from_resource("/net/ethernaught/rust/res/oldui/gtk3/main_activity.oldui");
 
         let provider = CssProvider::new();
-        provider.load_from_resource("/net/ethernaught/rust/res/ui/gtk3/main_activity.css");
+        provider.load_from_resource("/net/ethernaught/rust/res/oldui/gtk3/main_activity.css");
 
         StyleContext::add_provider_for_screen(
             &gdk::Screen::default().expect("Failed to get default screen."),
@@ -137,17 +137,17 @@ impl Activity for MainActivity {
 
         self.root = Some(builder
             .object("main_activity_layout")
-            .expect("Couldn't find 'main_activity_layout' in main_activity.ui"));
+            .expect("Couldn't find 'main_activity_layout' in main_activity.oldui"));
 
 
         let mut main_activity_content_pane: Paned = builder
             .object("main_activity_content_pane")
-            .expect("Couldn't find 'main_activity_content_pane' in main_activity.ui");
+            .expect("Couldn't find 'main_activity_content_pane' in main_activity.oldui");
 
 
         let mut main_activity_pane: Paned = builder
             .object("main_activity_pane")
-            .expect("Couldn't find 'main_activity_pane' in main_activity.ui");
+            .expect("Couldn't find 'main_activity_pane' in main_activity.oldui");
 
         let content = main_activity_content_pane.upcast_ref::<Container>();
         main_activity_pane.set_child_shrink(content, false);
@@ -156,7 +156,7 @@ impl Activity for MainActivity {
 
         let terminal_button: Button = builder
             .object("terminal_button")
-            .expect("Couldn't find 'terminal_button' in window.ui");
+            .expect("Couldn't find 'terminal_button' in window.oldui");
 
         let _self = self.clone();
         terminal_button.connect_clicked(move |_| {

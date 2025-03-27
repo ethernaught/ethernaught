@@ -32,13 +32,13 @@ use pcap::packet::packet::Packet;
 use pcap::utils::data_link_types::DataLinkTypes;
 use crate::database::sqlite::Database;
 use crate::get_lib_path;
-use crate::ui::activity::devices_activity::DevicesActivity;
-use crate::ui::activity::inter::activity::Activity;
-use crate::ui::activity::main_activity::MainActivity;
-use crate::ui::fragment::inter::fragment::Fragment;
-use crate::ui::handlers::bundle::Bundle;
-use crate::ui::handlers::expanders::{create_arp_layer_expander, create_dhcp_layer_expander, create_ethernet_layer_expander, create_icmp_layer_expander, create_icmpv6_layer_expander, create_ipv4_layer_expander, create_ipv6_layer_expander, create_sll2_layer_expander, create_tcp_layer_expander, create_udp_layer_expander};
-use crate::ui::widgets::hex_editor::HexEditor;
+use crate::oldui::activity::devices_activity::DevicesActivity;
+use crate::oldui::activity::inter::activity::Activity;
+use crate::oldui::activity::main_activity::MainActivity;
+use crate::oldui::fragment::inter::fragment::Fragment;
+use crate::oldui::handlers::bundle::Bundle;
+use crate::oldui::handlers::expanders::{create_arp_layer_expander, create_dhcp_layer_expander, create_ethernet_layer_expander, create_icmp_layer_expander, create_icmpv6_layer_expander, create_ipv4_layer_expander, create_ipv6_layer_expander, create_sll2_layer_expander, create_tcp_layer_expander, create_udp_layer_expander};
+use crate::oldui::widgets::hex_editor::HexEditor;
 
 #[derive(Clone)]
 pub struct SidebarFragment {
@@ -61,29 +61,29 @@ impl SidebarFragment {
 impl Fragment for SidebarFragment {
 
     fn on_create(&mut self, bundle: Option<Bundle>) -> &Container {
-        let builder = Builder::from_resource("/net/ethernaught/rust/res/ui/gtk3/sidebar_fragment.ui");
+        let builder = Builder::from_resource("/net/ethernaught/rust/res/oldui/gtk3/sidebar_fragment.oldui");
 
         let sidebar_content: Paned = builder
             .object("sidebar_content")
-            .expect("Couldn't find 'sidebar_content' in window.ui");
+            .expect("Couldn't find 'sidebar_content' in window.oldui");
 
         let hex_scroll_layout: Container = builder
             .object("hex_scroll_layout")
-            .expect("Couldn't find 'hex_scroll_layout' in window.ui");
+            .expect("Couldn't find 'hex_scroll_layout' in window.oldui");
 
         sidebar_content.set_child_shrink(&hex_scroll_layout, false);
         sidebar_content.set_child_resize(&hex_scroll_layout, true);
 
         let details_scroll_layout: Container = builder
             .object("details_scroll_layout")
-            .expect("Couldn't find 'details_scroll_layout' in window.ui");
+            .expect("Couldn't find 'details_scroll_layout' in window.oldui");
 
         sidebar_content.set_child_shrink(&details_scroll_layout, false);
 
 
         self.root = Some(builder
             .object("sidebar_layout")
-            .expect("Couldn't find 'sidebar_layout' in window.ui"));
+            .expect("Couldn't find 'sidebar_layout' in window.oldui"));
 
 
 
@@ -93,7 +93,7 @@ impl Fragment for SidebarFragment {
 
         let dismiss_button: Button = builder
             .object("dismiss_button")
-            .expect("Couldn't find 'dismiss_button' in window.ui");
+            .expect("Couldn't find 'dismiss_button' in window.oldui");
 
         dismiss_button.connect_clicked({
             let _self = self.clone();
@@ -105,7 +105,7 @@ impl Fragment for SidebarFragment {
 
         let replay_button: Button = builder
             .object("replay_button")
-            .expect("Couldn't find 'replay_button' in window.ui");
+            .expect("Couldn't find 'replay_button' in window.oldui");
 
         let _self = self.clone();
         replay_button.connect_clicked({
@@ -123,7 +123,7 @@ impl Fragment for SidebarFragment {
 
         let hex_editor: HexEditor = builder
             .object("hex_editor")
-            .expect("Couldn't find 'hex_editor' in window.ui");
+            .expect("Couldn't find 'hex_editor' in window.oldui");
 
         hex_editor.set_data(self.packet.to_bytes());
         hex_editor.set_hexpand(true);
@@ -149,7 +149,7 @@ impl Fragment for SidebarFragment {
 
         let details_layout: gtk::Box = builder
             .object("details_layout")
-            .expect("Couldn't find 'details_layout' in window.ui");
+            .expect("Couldn't find 'details_layout' in window.oldui");
 
 
         match self.packet.get_data_link_type() {

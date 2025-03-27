@@ -7,12 +7,12 @@ use gtk::glib::Propagation::Proceed;
 use gtk::glib::{idle_add, idle_add_local, MainContext, Type};
 use gtk::glib::ControlFlow::Continue;
 use pcap::pcap::pcap::Pcap;
-use crate::ui::activity::inter::activity::Activity;
-use crate::ui::activity::main_activity::MainActivity;
-use crate::ui::adapters::packet_adapter::PacketAdapter;
-use crate::ui::fragment::inter::fragment::Fragment;
-use crate::ui::fragment::sidebar_fragment::SidebarFragment;
-use crate::ui::handlers::bundle::Bundle;
+use crate::oldui::activity::inter::activity::Activity;
+use crate::oldui::activity::main_activity::MainActivity;
+use crate::oldui::adapters::packet_adapter::PacketAdapter;
+use crate::oldui::fragment::inter::fragment::Fragment;
+use crate::oldui::fragment::sidebar_fragment::SidebarFragment;
+use crate::oldui::handlers::bundle::Bundle;
 
 #[derive(Clone)]
 pub struct MainFragment {
@@ -80,11 +80,11 @@ impl MainFragment {
 impl Fragment for MainFragment {
 
     fn on_create(&mut self, bundle: Option<Bundle>) -> &Container {
-        let builder = Builder::from_resource("/net/ethernaught/rust/res/ui/gtk3/main_fragment.ui");
+        let builder = Builder::from_resource("/net/ethernaught/rust/res/oldui/gtk3/main_fragment.oldui");
 
         self.root = Some(builder
             .object("content_layout")
-            .expect("Couldn't find 'content_layout' in window.ui"));
+            .expect("Couldn't find 'content_layout' in window.oldui"));
 
         let model = ListStore::new(&[Type::U32, Type::STRING, Type::STRING, Type::STRING, Type::STRING, Type::STRING, Type::STRING]);
 
@@ -106,7 +106,7 @@ impl Fragment for MainFragment {
 
         let tree_view: TreeView = builder
             .object("tree_view")
-            .expect("Couldn't find 'tree_view' in window.ui");
+            .expect("Couldn't find 'tree_view' in window.oldui");
 
         tree_view.set_model(Some(&model));
 
@@ -145,7 +145,7 @@ impl Fragment for MainFragment {
 
         let list_scroll_layout: ScrolledWindow = builder
             .object("list_scroll_layout")
-            .expect("Couldn't find 'list_scroll_layout' in window.ui");
+            .expect("Couldn't find 'list_scroll_layout' in window.oldui");
 
 
         let vadj = Rc::new(list_scroll_layout.vadjustment());

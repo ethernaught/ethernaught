@@ -15,17 +15,17 @@ use gtk::prelude::{BuilderExtManual, ContainerExt, CssProviderExt, GridExt, List
 use pcap::capture::Capture;
 use pcap::devices::Device;
 use pcap::utils::interface_flags::InterfaceFlags;
-use crate::ui::application::OApplication;
-use crate::ui::activity::inter::activity::Activity;
-use crate::ui::activity::main_activity::MainActivity;
-use crate::ui::adapters::devices_adapter::DevicesAdapter;
-use crate::ui::context::Context;
-use crate::ui::handlers::bundle::Bundle;
-use crate::ui::handlers::events::capture_event::CaptureEvent;
-use crate::ui::handlers::events::inter::event::Event;
-use crate::ui::handlers::events::permission_event::PermissionEvent;
-use crate::ui::handlers::events::transmitted_event::TransmittedEvent;
-use crate::ui::widgets::graph::Graph;
+use crate::oldui::application::OApplication;
+use crate::oldui::activity::inter::activity::Activity;
+use crate::oldui::activity::main_activity::MainActivity;
+use crate::oldui::adapters::devices_adapter::DevicesAdapter;
+use crate::oldui::context::Context;
+use crate::oldui::handlers::bundle::Bundle;
+use crate::oldui::handlers::events::capture_event::CaptureEvent;
+use crate::oldui::handlers::events::inter::event::Event;
+use crate::oldui::handlers::events::permission_event::PermissionEvent;
+use crate::oldui::handlers::events::transmitted_event::TransmittedEvent;
+use crate::oldui::widgets::graph::Graph;
 
 #[derive(Clone)]
 pub struct DevicesActivity {
@@ -56,10 +56,10 @@ impl Activity for DevicesActivity {
     }
 
     fn on_create(&mut self, bundle: Option<Bundle>) -> &Container {
-        let builder = Builder::from_resource("/net/ethernaught/rust/res/ui/gtk3/devices_activity.ui");
+        let builder = Builder::from_resource("/net/ethernaught/rust/res/oldui/gtk3/devices_activity.oldui");
 
         let provider = CssProvider::new();
-        provider.load_from_resource("/net/ethernaught/rust/res/ui/gtk3/devices_activity.css");
+        provider.load_from_resource("/net/ethernaught/rust/res/oldui/gtk3/devices_activity.css");
 
         StyleContext::add_provider_for_screen(
             &gdk::Screen::default().expect("Failed to get default screen."),
@@ -69,12 +69,12 @@ impl Activity for DevicesActivity {
 
         self.root = Some(builder
             .object("devices_activity_layout")
-            .expect("Couldn't find 'devices_activity_layout' in devices_activity.ui"));
+            .expect("Couldn't find 'devices_activity_layout' in devices_activity.oldui"));
 
 
         let devices_list: ListBox = builder
             .object("devices_list")
-            .expect("Couldn't find 'devices_list' in devices_activity.ui");
+            .expect("Couldn't find 'devices_list' in devices_activity.oldui");
         devices_list.set_selection_mode(gtk::SelectionMode::Single);
 
 

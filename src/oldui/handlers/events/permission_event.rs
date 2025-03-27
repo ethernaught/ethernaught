@@ -1,6 +1,6 @@
 use std::any::Any;
 use std::collections::HashMap;
-use crate::ui::handlers::events::inter::event::Event;
+use crate::oldui::handlers::events::inter::event::Event;
 
 #[derive(Clone)]
 pub struct PermissionEvent {
