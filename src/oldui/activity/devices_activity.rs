@@ -59,7 +59,7 @@ impl Activity for DevicesActivity {
         let builder = Builder::from_resource("/net/ethernaught/rust/res/oldui/gtk3/devices_activity.oldui");
 
         let provider = CssProvider::new();
-        provider.load_from_resource("/net/ethernaught/rust/res/oldui/gtk3/devices_activity.css");
+        provider.load_from_resource("/net/ethernaught/rust/res/oldui/gtk3/devices_view.css");
 
         StyleContext::add_provider_for_screen(
             &gdk::Screen::default().expect("Failed to get default screen."),

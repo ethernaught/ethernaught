@@ -2,6 +2,7 @@ mod layers;
 mod database;
 mod app;
 mod actions;
+mod views;
 
 use std::sync::{Arc, Mutex};
 use std::sync::mpsc::channel;

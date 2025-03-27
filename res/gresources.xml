@@ -13,11 +13,13 @@
 
 
 
-        <file preprocess="xml-stripblanks">res/ui/gtk3/devices_activity.ui</file>
-        <file>res/ui/gtk3/devices_activity.css</file>
 
         <file preprocess="xml-stripblanks">res/ui/gtk3/main_activity.ui</file>
         <file>res/ui/gtk3/main_activity.css</file>
+
+        <file preprocess="xml-stripblanks">res/ui/gtk3/devices_view.ui</file>
+        <file>res/ui/gtk3/devices_view.css</file>
+
 
 
         <file preprocess="xml-stripblanks">res/ui/gtk3/main_fragment.ui</file>

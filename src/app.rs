@@ -3,7 +3,9 @@ use gtk::{gdk, Application, ApplicationWindow, Builder, CssProvider, Stack, Styl
 use gtk::gio::{resources_register, ApplicationFlags, Resource};
 use gtk::glib::Bytes;
 use gtk::glib::Propagation::Proceed;
-use gtk::prelude::{ApplicationExt, ApplicationExtManual, BuilderExtManual, ContainerExt, CssProviderExt, FileExt, GtkWindowExt, WidgetExt};
+use gtk::prelude::{ApplicationExt, ApplicationExtManual, BuilderExtManual, ContainerExt, CssProviderExt, FileExt, GtkWindowExt, StackExt, WidgetExt};
+use crate::views::devices_view::DevicesView;
+use crate::views::inter::view::View;
 
 pub struct App {
     app: Application
@@ -64,9 +66,17 @@ impl App {
 
             //window_content.add(&create_alertbar());
 
-            let stack = Stack::new();
+            let stack: Stack = builder
+                .object("stack")
+                .expect("Failed to get the 'stack' from window.ui");
+
+            //let stack = Stack::new();
             window_content.add(&stack);
             stack.show();
+
+
+            let view = DevicesView::new();
+            stack.add_titled(&view.root, &view.get_name(), &view.get_title());
 
             //let mut bottombar = BottomBar::new(self.clone());
             //window_content.add(bottombar.on_create());
