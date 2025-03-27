@@ -3,7 +3,7 @@ use gtk::{gdk, Application, ApplicationWindow, Builder, CssProvider, Stack, Styl
 use gtk::prelude::{BuilderExtManual, ContainerExt, CssProviderExt, GtkWindowExt, StackExt, WidgetExt};
 use pcap::devices::Device;
 use pcap::utils::interface_flags::InterfaceFlags;
-use crate::actions::window_actions::register_window_actions;
+use crate::actions::window_actions::{register_stack_actions, register_window_actions};
 use crate::views::bottom_bar::BottomBar;
 use crate::views::devices_view::DevicesView;
 use crate::views::inter::view::View;
@@ -90,6 +90,7 @@ impl MainWindow {
         */
 
         register_window_actions(&window);
+        register_stack_actions(&window, &stack);
 
         window.show();
 

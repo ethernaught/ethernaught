@@ -1,45 +1,36 @@
-use pcap::packet::layers::ethernet_frame::ip::ipv4_layer::Ipv4Layer;
-use crate::layers::inter::layer_ext::LayerExt;
+use pcap::packet::layers::ethernet_frame::ip::ipv6_layer::Ipv6Layer;
+use crate::pcap_ext::layers::inter::layer_ext::LayerExt;
 
-impl LayerExt for Ipv4Layer {
+impl LayerExt for Ipv6Layer {
 
     fn get_selection(&self, variable: &str) -> (usize, usize) {
         match variable {
             "frame" => {
-                (0, 20)
+                (0, 40)
             }
             "version" => {
                 (0, 1)
             }
-            "tos" => {
+            "traffic_class" => {
                 (1, 1)
             }
-            "total_length" => {
-                (2, 2)
+            "flow_label" => {
+                (1, 4)
             }
-            "identification" => {
+            "payload_length" => {
                 (4, 2)
             }
-            "flags" => {
+            "next_header" => {
                 (6, 1)
             }
-            "fragment_offset" => {
-                (6, 2)
-            }
-            "ttl" => {
-                (8, 1)
-            }
-            "protocol" => {
-                (9, 1)
-            }
-            "checksum" => {
-                (10, 2)
+            "hop_limit" => {
+                (7, 1)
             }
             "source_address" => {
-                (12, 4)
+                (8, 16)
             }
             "destination_address" => {
-                (16, 4)
+                (24, 16)
             }
             _ => unimplemented!()
         }

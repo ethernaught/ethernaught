@@ -1,7 +1,6 @@
 use gtk::{gdk, Builder, CssProvider, StyleContext};
 use gtk::prelude::{BuilderExtManual, CssProviderExt};
 use pcap::devices::Device;
-use crate::views::devices_view::DevicesView;
 use crate::views::inter::view::View;
 
 pub struct MainView {

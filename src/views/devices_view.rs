@@ -3,6 +3,7 @@ use gtk::glib::{Variant, VariantDict};
 use gtk::prelude::{ActionGroupExt, BuilderExtManual, ContainerExt, CssProviderExt, ListBoxExt, ListBoxRowExt, WidgetExt};
 use pcap::devices::Device;
 use pcap::utils::interface_flags::InterfaceFlags;
+use crate::pcap_ext::devices::Serialize;
 use crate::views::device_list_item::DeviceListItem;
 use crate::views::inter::view::View;
 use crate::views::main_view::MainView;
@@ -42,19 +43,6 @@ impl DevicesView {
             let window = window.clone();
             let devices = devices.clone();
             move |_, row| {
-
-                /*
-                println!("CLICK");
-
-                if let Some(app) = gio::Application::default() {
-                    println!("2");
-                    app.activate_action(
-                        "win.open",
-                        Some(&Variant::from("Hello from the button!")),
-                    );
-                }*/
-
-
                 if row.index() > 0 {
                     //let mut bundle = Bundle::new();
                     //bundle.put("type", String::from("device"));
@@ -62,7 +50,9 @@ impl DevicesView {
                     //context.start_activity(Box::new(MainActivity::new(context.clone())), Some(bundle));
                     //let view = MainView::from_device(&devices[row.index() as usize - 1]);
 
-                    window.activate_action("open", None);//Some(&devices[row.index() as usize - 1]));
+                    let variant = Variant::from(&devices[row.index() as usize - 1].serialize().as_slice());
+
+                    window.activate_action("open", Some(&variant));
 
                     return;
                 }
