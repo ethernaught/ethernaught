@@ -1,4 +1,5 @@
 use gtk::{gdk, Builder, CssProvider, StyleContext};
+use gtk::glib::Propagation::Proceed;
 use gtk::prelude::{BuilderExtManual, CssProviderExt, ImageExt, LabelExt, StyleContextExt, WidgetExt};
 use pcap::devices::Device;
 use pcap::utils::data_link_types::DataLinkTypes;
@@ -27,7 +28,7 @@ impl MainView {
             .object("root")
             .expect("Couldn't find 'root' in main_view.ui");
 
-        match device.get_data_link_type() {
+        match device.data_link_type {
             DataLinkTypes::Null => {
                 window.title_bar.root.style_context().add_class("any");
                 window.title_bar.network_type_icon.set_resource(Some("/net/ethernaught/rust/res/icons/ic_any.svg"));

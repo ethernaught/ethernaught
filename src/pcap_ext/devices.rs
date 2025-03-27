@@ -14,16 +14,16 @@ impl Serialize for Device {
 
     fn serialize(&self) -> Vec<u8> {
         let mut buf = Vec::new();
-        let name = self.get_name().into_bytes();
+        let name = self.name.as_bytes();
         buf.push(name.len() as u8);
         buf.extend_from_slice(&name);
 
-        buf.extend_from_slice(&self.get_index().to_ne_bytes());
-        buf.extend_from_slice(&self.get_data_link_type().get_code().to_ne_bytes());
+        buf.extend_from_slice(&self.index.to_ne_bytes());
+        buf.extend_from_slice(&self.data_link_type.get_code().to_ne_bytes());
         //FLAGS - U32
-        buf.extend_from_slice(&self.get_mac().to_bytes());
+        buf.extend_from_slice(&self.mac.to_bytes());
 
-        match self.get_address() {
+        match self.address {
             Some(address) => {
                 match address {
                     IpAddr::V4(address) => {

@@ -71,7 +71,7 @@ impl MainWindow {
 
         let mut devices = Device::list().expect("Failed to get device list");
         devices.sort_by(|a, b| {
-            b.get_flags().contains(&InterfaceFlags::Running).cmp(&a.get_flags().contains(&InterfaceFlags::Running))
+            b.flags.contains(&InterfaceFlags::Running).cmp(&a.flags.contains(&InterfaceFlags::Running))
         });
 
         let view = DevicesView::new(&window, devices);
