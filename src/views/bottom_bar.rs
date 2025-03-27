@@ -1,6 +1,7 @@
 use gtk::{gdk, Builder, Container, CssProvider, Label, ListBox, StyleContext};
 use gtk::prelude::{BuilderExtManual, ContainerExt, CssProviderExt, LabelExt, ListBoxExt, WidgetExt};
 
+#[derive(Clone)]
 pub struct BottomBar {
     pub root: gtk::Box,
     pub license: Label

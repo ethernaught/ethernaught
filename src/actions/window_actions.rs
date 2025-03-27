@@ -5,8 +5,9 @@ use pcap::devices::Device;
 use crate::pcap_ext::devices::Serialize;
 use crate::views::inter::view::View;
 use crate::views::main_view::MainView;
+use crate::windows::main_window::MainWindow;
 
-pub fn register_window_actions(window: &ApplicationWindow) {
+pub fn register_window_actions(window: &MainWindow) {
     //window.action_group("win");
     //let actions = SimpleActionGroup::new();
 
@@ -14,27 +15,27 @@ pub fn register_window_actions(window: &ApplicationWindow) {
     //window.insert_action_group("win", Some(&actions));
 }
 
-pub fn register_stack_actions(window: &ApplicationWindow, stack: &Stack) {
+pub fn register_stack_actions(window: &MainWindow) {
     let action = SimpleAction::new("open", Some(&glib::VariantTy::BYTE_STRING));//Some(&glib::VariantTy::ANY));
     action.connect_activate({
-        let stack = stack.clone();
+        let window = window.clone();
         move |_, param| {
             if let Some(param) = param {
                 let device = Device::unserialize(&param.get::<Vec<u8>>().unwrap());
 
-                let view = MainView::from_device(&device);
+                let view = MainView::from_device(&window, &device);
 
                 let name = view.get_name();
-                stack.add_titled(&view.root, &name, &view.get_title());
-                stack.set_visible_child_name(&name);
+                window.stack.add_titled(&view.root, &name, &view.get_title());
+                window.stack.set_visible_child_name(&name);
             }
         }
     });
-    window.add_action(&action);
+    window.window.add_action(&action);
 
     let action = SimpleAction::new("back", None);
     action.connect_activate({
-        let stack = stack.clone();
+        let stack = window.stack.clone();
         move |_, _| {
             let children = stack.children();
             if let Some(current) = stack.visible_child() {
@@ -46,11 +47,11 @@ pub fn register_stack_actions(window: &ApplicationWindow, stack: &Stack) {
             }
         }
     });
-    window.add_action(&action);
+    window.window.add_action(&action);
 
     let action = SimpleAction::new("next", None);
     action.connect_activate({
-        let stack = stack.clone();
+        let stack = window.stack.clone();
         move |_, _| {
             let children = stack.children();
             if let Some(current) = stack.visible_child() {
@@ -62,5 +63,5 @@ pub fn register_stack_actions(window: &ApplicationWindow, stack: &Stack) {
             }
         }
     });
-    window.add_action(&action);
+    window.window.add_action(&action);
 }

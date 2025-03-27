@@ -2,6 +2,7 @@ use gtk::{gdk, Builder, CssProvider, StyleContext};
 use gtk::prelude::{BuilderExtManual, CssProviderExt};
 use pcap::devices::Device;
 use crate::views::inter::view::View;
+use crate::windows::main_window::MainWindow;
 
 pub struct MainView {
     pub root: gtk::Box
@@ -9,7 +10,7 @@ pub struct MainView {
 
 impl MainView {
 
-    pub fn from_device(device: &Device) -> Self {
+    pub fn from_device(window: &MainWindow, device: &Device) -> Self {
         let builder = Builder::from_resource("/net/ethernaught/rust/res/ui/gtk3/main_view.ui");
 
         let provider = CssProvider::new();
@@ -24,6 +25,8 @@ impl MainView {
         let root: gtk::Box = builder
             .object("root")
             .expect("Couldn't find 'root' in main_view.ui");
+
+        println!("{:?}", window.title_bar.root);
 
         Self {
             root

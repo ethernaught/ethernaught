@@ -10,8 +10,12 @@ use crate::views::devices_view::DevicesView;
 use crate::views::inter::view::View;
 use crate::views::title_bar::TitleBar;
 
+#[derive(Clone)]
 pub struct MainWindow {
-    pub window: ApplicationWindow
+    pub window: ApplicationWindow,
+    pub title_bar: TitleBar,
+    pub stack: Stack,
+    pub bottom_bar: BottomBar
 }
 
 impl MainWindow {
@@ -90,13 +94,18 @@ impl MainWindow {
             }
         });
 
-        register_window_actions(&window);
-        register_stack_actions(&window, &stack);
-
         window.show();
 
-        Self {
-            window
-        }
+        let _self = Self {
+            window,
+            title_bar,
+            stack,
+            bottom_bar
+        };
+
+        register_window_actions(&_self);
+        register_stack_actions(&_self);
+
+        _self
     }
 }
