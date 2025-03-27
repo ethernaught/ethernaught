@@ -290,7 +290,7 @@ menu {
 
 
 
-#bottombar {
+#bottom_bar {
     padding: 4px 10px;
     font-size: 12px;
     color: @text_secondary;
@@ -298,7 +298,7 @@ menu {
     border-top: solid 1px @background_secondary;
 }
 
-#bottombar #license {
+#bottom_bar #license {
     padding: 0 6px;
     border-radius: 28px;
     font-size: 10px;
@@ -306,17 +306,17 @@ menu {
     border: solid 1px @red;
 }
 
-window.nightly #bottombar #license {
+window.nightly #bottom_bar #license {
     color: @purple;
     border: solid 1px @purple;
 }
 
-window.release #bottombar #license {
+window.release #bottom_bar #license {
     color: @green;
     border: solid 1px @green;
 }
 
-#bottombar button {
+#bottom_bar button {
     min-height: 0;
     padding: 0;
     border-radius: 6px;
@@ -327,19 +327,19 @@ window.release #bottombar #license {
     background-position: center;
 }
 
-#bottombar button:hover {
+#bottom_bar button:hover {
     background-color: @ripple;
 }
 
-#bottombar #warning_button {
+#bottom_bar #warning_button {
     background-image: url('../../icons/ic_status_good.svg');
 }
 
-#bottombar #warning_button.warning {
+#bottom_bar #warning_button.warning {
     background-image: url('../../icons/ic_status_warning.svg');
 }
 
-#bottombar #warning_button.severe {
+#bottom_bar #warning_button.severe {
     background-image: url('../../icons/ic_status_severe.svg');
 }
 

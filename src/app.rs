@@ -6,6 +6,7 @@ use gtk::glib::Propagation::Proceed;
 use gtk::prelude::{ApplicationExt, ApplicationExtManual, BuilderExtManual, ContainerExt, CssProviderExt, FileExt, GtkWindowExt, StackExt, WidgetExt};
 use pcap::devices::Device;
 use pcap::utils::interface_flags::InterfaceFlags;
+use crate::views::bottom_bar::BottomBar;
 use crate::views::devices_view::DevicesView;
 use crate::views::inter::view::View;
 use crate::widgets::graph::Graph;
@@ -81,6 +82,8 @@ impl App {
 
             stack.show();
 
+            let bottom_bar = BottomBar::new();
+            window_content.add(&bottom_bar.root);
 
 
             let mut devices = Device::list().expect("Failed to get device list");
@@ -90,9 +93,6 @@ impl App {
 
             let view = DevicesView::new(devices);
             stack.add_titled(&view.root, &view.get_name(), &view.get_title());
-
-            //let mut bottombar = BottomBar::new(self.clone());
-            //window_content.add(bottombar.on_create());
 
             /*
             let context = self.context.clone();

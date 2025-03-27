@@ -19,15 +19,15 @@ impl BottomBar {
     }
 
     pub fn on_create(&mut self) -> &Container {
-        let builder = Builder::from_resource("/net/ethernaught/rust/res/oldui/bottombar_ui.xml");
+        let builder = Builder::from_resource("/net/ethernaught/rust/res/ui/bottom_bar.ui");
 
         let root: gtk::Box = builder
             .object("bottombar")
-            .expect("Couldn't find 'bottombar' in bottombar_ui.xml");
+            .expect("Couldn't find 'bottombar' in bottom_bar.ui");
 
         let license: Label = builder
             .object("license")
-            .expect("Couldn't find 'license' in bottombar_ui.xml");
+            .expect("Couldn't find 'license' in bottom_bar.ui");
 
         license.set_label(format!("{}-{}", env!("PROFILE"), env!("CARGO_PKG_VERSION")).as_str());
 

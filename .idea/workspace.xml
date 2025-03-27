@@ -8,18 +8,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f0704e63-1929-42d3-83d7-8cbc904dc132" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/views/device_list_item.rs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/views/bottom_bar.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/gresources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/res/gresources.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/res/resources.gresources" beforeDir="false" afterPath="$PROJECT_DIR$/res/resources.gresources" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/ui/gtk3/device_list_item.ui" beforeDir="false" afterPath="$PROJECT_DIR$/res/ui/gtk3/device_list_item.ui" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/ui/gtk3/devices_view.ui" beforeDir="false" afterPath="$PROJECT_DIR$/res/ui/gtk3/devices_view.ui" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/ui/bottombar_ui.xml" beforeDir="false" afterPath="$PROJECT_DIR$/res/ui/gtk3/bottom_bar.ui" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/ui/gtk3/window.css" beforeDir="false" afterPath="$PROJECT_DIR$/res/ui/gtk3/window.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/app.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/oldui/widgets/graph.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/widgets/graph.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/oldui/widgets/hex_editor.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/widgets/hex_editor.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/oldui/widgets/mod.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/widgets/mod.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/oldui/widgets/terminal.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/widgets/terminal.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/devices_view.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/devices_view.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/oldui/bottombar.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/oldui/bottombar.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/views/mod.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/mod.rs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -77,6 +73,7 @@
       <recent name="$PROJECT_DIR$/src/ui/handlers/events" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/res/ui/gtk3" />
       <recent name="$PROJECT_DIR$/src" />
     </key>
   </component>
