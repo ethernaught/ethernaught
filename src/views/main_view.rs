@@ -1,6 +1,5 @@
 use gtk::{gdk, Builder, CssProvider, StyleContext};
-use gtk::glib::Propagation::Proceed;
-use gtk::prelude::{BuilderExtManual, CssProviderExt, ImageExt, LabelExt, StyleContextExt, WidgetExt};
+use gtk::prelude::{BuilderExtManual, CssProviderExt, ImageExt, LabelExt, StyleContextExt, WidgetExt, WidgetExtManual};
 use pcap::devices::Device;
 use pcap::utils::data_link_types::DataLinkTypes;
 use crate::views::inter::view::View;
@@ -69,9 +68,5 @@ impl View for MainView {
 
     fn get_name(&self) -> String {
         "main_view".to_string()
-    }
-
-    fn get_title(&self) -> String {
-        "MainView".to_string()
     }
 }

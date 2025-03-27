@@ -9,8 +9,11 @@
   <component name="ChangeListManager">
     <list default="true" id="f0704e63-1929-42d3-83d7-8cbc904dc132" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pcap_ext/devices.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/pcap_ext/devices.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/device_list_item.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/device_list_item.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/ui/gtk3/title_bar.ui" beforeDir="false" afterPath="$PROJECT_DIR$/res/ui/gtk3/title_bar.ui" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/actions/app_actions.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/actions/app_actions.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/actions/window_actions.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/actions/window_actions.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/devices_view.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/devices_view.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/inter/view.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/inter/view.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/views/main_view.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/main_view.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/windows/main_window.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/windows/main_window.rs" afterDir="false" />
     </list>
@@ -119,7 +122,7 @@
       <workItem from="1742792481756" duration="1247000" />
       <workItem from="1742856271521" duration="779000" />
       <workItem from="1742862895673" duration="2038000" />
-      <workItem from="1743101508758" duration="1979000" />
+      <workItem from="1743101508758" duration="4207000" />
     </task>
     <servers />
   </component>

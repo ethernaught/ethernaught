@@ -1,5 +1,5 @@
 use gtk::gio::{SimpleAction, SimpleActionGroup};
-use gtk::prelude::{ActionMapExt, ContainerExt, StackExt, WidgetExt};
+use gtk::prelude::{ActionMapExt, ContainerExt, GtkWindowExt, StackExt, WidgetExt};
 use gtk::{glib, ApplicationWindow, Stack};
 use pcap::devices::Device;
 use crate::pcap_ext::devices::Serialize;
@@ -13,6 +13,28 @@ pub fn register_window_actions(window: &MainWindow) {
 
     //let actions = SimpleActionGroup::new();
     //window.insert_action_group("win", Some(&actions));
+    let action = SimpleAction::new("minimize", None);
+    action.connect_activate({
+        let window = window.window.clone();
+        move |_, _| {
+            window.iconify();
+        }
+    });
+    window.window.add_action(&action);
+
+    let action = SimpleAction::new("maximize", None);
+    action.connect_activate({
+        let window = window.window.clone();
+        move |_, _| {
+            if window.is_maximized() {
+                window.unmaximize();
+                return;
+            }
+
+            window.maximize();
+        }
+    });
+    window.window.add_action(&action);
 }
 
 pub fn register_stack_actions(window: &MainWindow) {
@@ -26,8 +48,18 @@ pub fn register_stack_actions(window: &MainWindow) {
                 let view = MainView::from_device(&window, &device);
 
                 let name = view.get_name();
-                window.stack.add_titled(&view.root, &name, &view.get_title());
+                window.stack.add_named(&view.root, &name);
                 window.stack.set_visible_child_name(&name);
+
+
+                /*
+                window.stack.connect_visible_child_name_notify(move |stack| {
+                    if let Some(visible_child) = stack.visible_child() {
+                        let child_name = visible_child.widget_name();
+                        println!("✅ Visible child changed: {}", child_name);
+                    }
+                });
+                */
             }
         }
     });

@@ -75,7 +75,7 @@ impl MainWindow {
         });
 
         let view = DevicesView::new(&window, devices);
-        stack.add_titled(&view.root, &view.get_name(), &view.get_title());
+        stack.add_named(&view.root, &view.get_name());
 
         window.connect_button_press_event({
             let window = window.clone();

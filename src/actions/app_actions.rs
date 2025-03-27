@@ -1,12 +1,13 @@
 use gtk::{glib, Application};
 use gtk::gio::SimpleAction;
-use gtk::prelude::ActionMapExt;
+use gtk::prelude::{ActionMapExt, ApplicationExt};
 
 pub fn register_app_actions(app: &Application) {
-    let action = SimpleAction::new("open", Some(&glib::VariantTy::STRING));
+    let action = SimpleAction::new("quit", None);
     action.connect_activate({
-        move |_, param| {
-            println!("BBBBB");
+        let app = app.clone();
+        move |_, _| {
+            app.quit();
         }
     });
     app.add_action(&action);

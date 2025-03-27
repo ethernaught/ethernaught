@@ -83,8 +83,4 @@ impl View for DevicesView {
     fn get_name(&self) -> String {
         "devices_view".to_string()
     }
-
-    fn get_title(&self) -> String {
-        "DevicesView".to_string()
-    }
 }

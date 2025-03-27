@@ -149,7 +149,7 @@
                         <property name="visible">True</property>
                         <property name="width-request">16</property>
                         <property name="height-request">16</property>
-                        <property name="action-name">app.minimize</property>
+                        <property name="action-name">win.minimize</property>
                     </object>
                 </child>
 
@@ -160,7 +160,7 @@
                         <property name="visible">True</property>
                         <property name="width-request">16</property>
                         <property name="height-request">16</property>
-                        <property name="action-name">app.maximize</property>
+                        <property name="action-name">win.maximize</property>
                     </object>
                 </child>
 
@@ -171,7 +171,7 @@
                         <property name="visible">True</property>
                         <property name="width-request">16</property>
                         <property name="height-request">16</property>
-                        <property name="action-name">app.close</property>
+                        <property name="action-name">app.quit</property>
                     </object>
                 </child>
             </object>
