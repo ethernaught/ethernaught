@@ -32,13 +32,13 @@ impl MainView {
     }
 }
 
-impl View for DevicesView {
+impl View for MainView {
 
     fn get_name(&self) -> String {
-        "devices_view".to_string()
+        "main_view".to_string()
     }
 
     fn get_title(&self) -> String {
-        "DevicesView".to_string()
+        "MainView".to_string()
     }
 }
