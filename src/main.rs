@@ -4,6 +4,7 @@ mod app;
 mod actions;
 mod views;
 mod widgets;
+mod windows;
 
 use std::sync::{Arc, Mutex};
 use std::sync::mpsc::channel;

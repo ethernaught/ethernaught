@@ -1,9 +1,10 @@
 use gtk::{gdk, Builder, Container, CssProvider, ListBox, StyleContext};
-use gtk::prelude::{BuilderExtManual, ContainerExt, CssProviderExt, ListBoxExt, WidgetExt};
+use gtk::prelude::{BuilderExtManual, ContainerExt, CssProviderExt, ListBoxExt, ListBoxRowExt, WidgetExt};
 use pcap::devices::Device;
 use pcap::utils::interface_flags::InterfaceFlags;
 use crate::views::device_list_item::DeviceListItem;
 use crate::views::inter::view::View;
+use crate::views::main_view::MainView;
 
 pub struct DevicesView {
     pub root: gtk::Box,
@@ -31,10 +32,29 @@ impl DevicesView {
 
         let devices_list: ListBox = builder
             .object("devices_list")
-            .expect("Couldn't find 'devices_list' in devices_activity.oldui");
+            .expect("Couldn't find 'devices_list' in devices_activity.ui");
         devices_list.set_selection_mode(gtk::SelectionMode::Single);
 
 
+        devices_list.connect_row_activated({
+            let devices = devices.clone();
+            move |_, row| {
+                if row.index() > 0 {
+                    //let mut bundle = Bundle::new();
+                    //bundle.put("type", String::from("device"));
+                    //bundle.put("device", devices_clone[row.index() as usize - 1].clone());
+                    //context.start_activity(Box::new(MainActivity::new(context.clone())), Some(bundle));
+                    let view = MainView::from_device(&devices[row.index() as usize - 1]);
+
+
+                    return;
+                }
+
+                //let mut bundle = Bundle::new();
+                //bundle.put("type", String::from("device"));
+                //context.start_activity(Box::new(MainActivity::new(context.clone())), Some(bundle));
+            }
+        });
 
         devices.iter().for_each(|d| {
             let device_item = DeviceListItem::new(d);
