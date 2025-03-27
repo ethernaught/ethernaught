@@ -1,5 +1,5 @@
 use gtk::{gdk, gio, ApplicationWindow, Builder, Container, CssProvider, ListBox, StyleContext, Window};
-use gtk::glib::Variant;
+use gtk::glib::{Variant, VariantDict};
 use gtk::prelude::{ActionGroupExt, BuilderExtManual, ContainerExt, CssProviderExt, ListBoxExt, ListBoxRowExt, WidgetExt};
 use pcap::devices::Device;
 use pcap::utils::interface_flags::InterfaceFlags;
@@ -42,7 +42,6 @@ impl DevicesView {
             let window = window.clone();
             let devices = devices.clone();
             move |_, row| {
-                window.activate_action("open", Some(&Variant::from("Hello from the button!")));
 
                 /*
                 println!("CLICK");
@@ -63,6 +62,7 @@ impl DevicesView {
                     //context.start_activity(Box::new(MainActivity::new(context.clone())), Some(bundle));
                     //let view = MainView::from_device(&devices[row.index() as usize - 1]);
 
+                    window.activate_action("open", None);//Some(&devices[row.index() as usize - 1]));
 
                     return;
                 }

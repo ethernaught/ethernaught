@@ -1,6 +1,5 @@
 use std::process::exit;
 use gtk::{gdk, Application, ApplicationWindow, Builder, CssProvider, Stack, StyleContext, Window};
-use gtk::glib::Cast;
 use gtk::prelude::{BuilderExtManual, ContainerExt, CssProviderExt, GtkWindowExt, StackExt, WidgetExt};
 use pcap::devices::Device;
 use pcap::utils::interface_flags::InterfaceFlags;
@@ -8,6 +7,7 @@ use crate::actions::window_actions::register_window_actions;
 use crate::views::bottom_bar::BottomBar;
 use crate::views::devices_view::DevicesView;
 use crate::views::inter::view::View;
+use crate::views::title_bar::TitleBar;
 
 pub struct MainWindow {
     pub window: ApplicationWindow
@@ -45,8 +45,8 @@ impl MainWindow {
 
         //window.set_icon_from_file("res/icons/ic_launcher.svg").expect("Failed to load icon");
 
-        //let mut titlebar = TitleBar::new(self.context.clone());
-        //window.set_titlebar(Some(titlebar.on_create()));
+        let title_bar = TitleBar::new();
+        window.set_titlebar(Some(&title_bar.root));
 
         let window_content: gtk::Box = builder
             .object("window_content")

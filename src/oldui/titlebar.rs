@@ -28,11 +28,11 @@ impl TitleBar {
     }
 
     pub fn on_create(&mut self) -> &Container {
-        let builder = Builder::from_resource("/net/ethernaught/rust/res/oldui/titlebar_ui.xml");
+        let builder = Builder::from_resource("/net/ethernaught/rust/res/oldui/title_bar.ui");
 
         let root: gtk::Box = builder
             .object("titlebar")
-            .expect("Couldn't find 'titlebar' in titlebar_ui.xml");
+            .expect("Couldn't find 'titlebar' in title_bar.ui");
 
         self.init_navigation_options(&builder);
         self.init_window_controls(&builder);
@@ -45,7 +45,7 @@ impl TitleBar {
     fn init_navigation_options(&mut self, builder: &Builder) {
         let navigation_menubar: MenuBar = builder
             .object("navigation_menubar")
-            .expect("Couldn't find 'navigation_menubar' in titlebar_ui.xml");
+            .expect("Couldn't find 'navigation_menubar' in title_bar.ui");
 
         let menu_builder = Builder::from_resource("/net/ethernaught/rust/res/oldui/ethernaught_ui.xml");
         let model: gio::MenuModel = menu_builder
@@ -71,7 +71,7 @@ impl TitleBar {
 
         let menu_button: Button = builder
             .object("menu_button")
-            .expect("Couldn't find 'menu_button' in titlebar_ui.xml");
+            .expect("Couldn't find 'menu_button' in title_bar.ui");
 
         let navigation_menubar_clone = Rc::clone(&navigation_menubar);
         let navigation_buttons_clone = Rc::clone(&navigation_buttons);
@@ -84,7 +84,7 @@ impl TitleBar {
 
         let back_button: Button = builder
             .object("back_button")
-            .expect("Couldn't find 'back_button' in titlebar_ui.xml");
+            .expect("Couldn't find 'back_button' in title_bar.ui");
 
         let context = self.context.clone();
         back_button.connect_clicked(move |_| {
@@ -93,7 +93,7 @@ impl TitleBar {
 
         let next_button: Button = builder
             .object("next_button")
-            .expect("Couldn't find 'next_button' in titlebar_ui.xml");
+            .expect("Couldn't find 'next_button' in title_bar.ui");
 
         let context = self.context.clone();
         next_button.connect_clicked(move |_| {
@@ -104,7 +104,7 @@ impl TitleBar {
     fn init_window_controls(&self, builder: &Builder) {
         let minimize_button: Button = builder
             .object("minimize_button")
-            .expect("Couldn't find 'minimize_button' in titlebar_ui.xml");
+            .expect("Couldn't find 'minimize_button' in title_bar.ui");
 
         let window = self.context.get_window().unwrap();
         minimize_button.connect_clicked(move |_| {
@@ -113,7 +113,7 @@ impl TitleBar {
 
         let maximize_button: Button = builder
             .object("maximize_button")
-            .expect("Couldn't find 'maximize_button' in titlebar_ui.xml");
+            .expect("Couldn't find 'maximize_button' in title_bar.ui");
 
         let window = self.context.get_window().unwrap();
         maximize_button.connect_clicked(move |_| {
@@ -127,7 +127,7 @@ impl TitleBar {
 
         let close_button: Button = builder
             .object("close_button")
-            .expect("Couldn't find 'close_button' in titlebar_ui.xml");
+            .expect("Couldn't find 'close_button' in title_bar.ui");
 
         let context = self.context.get_application();
         close_button.connect_clicked(move |_| {
