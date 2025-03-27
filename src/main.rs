@@ -3,6 +3,7 @@ mod database;
 mod app;
 mod actions;
 mod views;
+mod widgets;
 
 use std::sync::{Arc, Mutex};
 use std::sync::mpsc::channel;

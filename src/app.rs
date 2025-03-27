@@ -1,11 +1,16 @@
 use std::process::exit;
 use gtk::{gdk, Application, ApplicationWindow, Builder, CssProvider, Stack, StyleContext};
 use gtk::gio::{resources_register, ApplicationFlags, Resource};
-use gtk::glib::Bytes;
+use gtk::glib::{Bytes, StaticType};
 use gtk::glib::Propagation::Proceed;
 use gtk::prelude::{ApplicationExt, ApplicationExtManual, BuilderExtManual, ContainerExt, CssProviderExt, FileExt, GtkWindowExt, StackExt, WidgetExt};
+use pcap::devices::Device;
+use pcap::utils::interface_flags::InterfaceFlags;
 use crate::views::devices_view::DevicesView;
 use crate::views::inter::view::View;
+use crate::widgets::graph::Graph;
+use crate::widgets::hex_editor::HexEditor;
+use crate::widgets::terminal::Terminal;
 
 pub struct App {
     app: Application
@@ -22,6 +27,10 @@ impl App {
     }
 
     pub fn run(&self) {
+        Graph::static_type();
+        HexEditor::static_type();
+        Terminal::static_type();
+
         self.app.connect_activate(move |app| {
             let resource_data = include_bytes!("../res/resources.gresources");
 
@@ -70,12 +79,16 @@ impl App {
                 .object("stack")
                 .expect("Failed to get the 'stack' from window.ui");
 
-            //let stack = Stack::new();
-            window_content.add(&stack);
             stack.show();
 
 
-            let view = DevicesView::new();
+
+            let mut devices = Device::list().expect("Failed to get device list");
+            devices.sort_by(|a, b| {
+                b.get_flags().contains(&InterfaceFlags::Running).cmp(&a.get_flags().contains(&InterfaceFlags::Running))
+            });
+
+            let view = DevicesView::new(devices);
             stack.add_titled(&view.root, &view.get_name(), &view.get_title());
 
             //let mut bottombar = BottomBar::new(self.clone());

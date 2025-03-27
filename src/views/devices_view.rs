@@ -1,14 +1,18 @@
-use gtk::{gdk, Builder, Container, CssProvider, StyleContext};
-use gtk::prelude::{BuilderExtManual, CssProviderExt, WidgetExt};
+use gtk::{gdk, Builder, Container, CssProvider, ListBox, StyleContext};
+use gtk::prelude::{BuilderExtManual, ContainerExt, CssProviderExt, ListBoxExt, WidgetExt};
+use pcap::devices::Device;
+use pcap::utils::interface_flags::InterfaceFlags;
+use crate::views::device_list_item::DeviceListItem;
 use crate::views::inter::view::View;
 
 pub struct DevicesView {
-    pub root: Container
+    pub root: gtk::Box,
+    pub devices_list: ListBox
 }
 
 impl DevicesView {
 
-    pub fn new() -> Self {
+    pub fn new(devices: Vec<Device>) -> Self {
         let builder = Builder::from_resource("/net/ethernaught/rust/res/ui/gtk3/devices_view.ui");
 
         let provider = CssProvider::new();
@@ -20,13 +24,29 @@ impl DevicesView {
             gtk::STYLE_PROVIDER_PRIORITY_APPLICATION,
         );
 
-        let root: Container = builder
-            .object("devices_activity_layout")
-            .expect("Couldn't find 'devices_activity_layout' in devices_view.ui");
+        let root: gtk::Box = builder
+            .object("root")
+            .expect("Couldn't find 'root' in devices_view.ui");
+
+
+        let devices_list: ListBox = builder
+            .object("devices_list")
+            .expect("Couldn't find 'devices_list' in devices_activity.oldui");
+        devices_list.set_selection_mode(gtk::SelectionMode::Single);
+
+
+
+        devices.iter().for_each(|d| {
+            let device_item = DeviceListItem::new(d);
+            devices_list.add(&device_item.root);
+        });
+
+
 
 
         Self {
-            root
+            root,
+            devices_list
         }
     }
 }

@@ -8,20 +8,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f0704e63-1929-42d3-83d7-8cbc904dc132" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/views/devices_view.rs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/views/inter/mod.rs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/views/inter/view.rs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/views/main_view.rs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/views/mod.rs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/views/device_list_item.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/gresources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/res/gresources.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/res/resources.gresources" beforeDir="false" afterPath="$PROJECT_DIR$/res/resources.gresources" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/ui/gtk3/devices_activity.css" beforeDir="false" afterPath="$PROJECT_DIR$/res/ui/gtk3/devices_view.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/ui/gtk3/devices_activity.ui" beforeDir="false" afterPath="$PROJECT_DIR$/res/ui/gtk3/devices_view.ui" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/ui/gtk3/window.ui" beforeDir="false" afterPath="$PROJECT_DIR$/res/ui/gtk3/window.ui" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/ui/gtk3/device_list_item.ui" beforeDir="false" afterPath="$PROJECT_DIR$/res/ui/gtk3/device_list_item.ui" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/ui/gtk3/devices_view.ui" beforeDir="false" afterPath="$PROJECT_DIR$/res/ui/gtk3/devices_view.ui" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/app.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/oldui/activity/devices_activity.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/oldui/activity/devices_activity.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/oldui/widgets/graph.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/widgets/graph.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/oldui/widgets/hex_editor.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/widgets/hex_editor.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/oldui/widgets/mod.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/widgets/mod.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/oldui/widgets/terminal.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/widgets/terminal.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/devices_view.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/devices_view.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/mod.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/mod.rs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -76,6 +75,9 @@
       <recent name="$PROJECT_DIR$/src/ui" />
       <recent name="$PROJECT_DIR$/res/ui" />
       <recent name="$PROJECT_DIR$/src/ui/handlers/events" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src" />
     </key>
   </component>
   <component name="RunManager">
