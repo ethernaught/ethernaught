@@ -6,6 +6,7 @@ use gtk::glib::Propagation::Proceed;
 use gtk::prelude::{ApplicationExt, ApplicationExtManual, BuilderExtManual, ContainerExt, CssProviderExt, FileExt, GtkWindowExt, StackExt, WidgetExt};
 use pcap::devices::Device;
 use pcap::utils::interface_flags::InterfaceFlags;
+use crate::actions::app_actions::register_app_actions;
 use crate::views::bottom_bar::BottomBar;
 use crate::views::devices_view::DevicesView;
 use crate::views::inter::view::View;
@@ -41,6 +42,7 @@ impl App {
 
             let window = MainWindow::new(&app);
 
+            register_app_actions(&app);
             //REGISTER ACTIONS
         });
 

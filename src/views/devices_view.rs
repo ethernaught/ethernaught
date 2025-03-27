@@ -1,5 +1,6 @@
-use gtk::{gdk, Builder, Container, CssProvider, ListBox, StyleContext};
-use gtk::prelude::{BuilderExtManual, ContainerExt, CssProviderExt, ListBoxExt, ListBoxRowExt, WidgetExt};
+use gtk::{gdk, gio, ApplicationWindow, Builder, Container, CssProvider, ListBox, StyleContext, Window};
+use gtk::glib::Variant;
+use gtk::prelude::{ActionGroupExt, BuilderExtManual, ContainerExt, CssProviderExt, ListBoxExt, ListBoxRowExt, WidgetExt};
 use pcap::devices::Device;
 use pcap::utils::interface_flags::InterfaceFlags;
 use crate::views::device_list_item::DeviceListItem;
@@ -13,7 +14,7 @@ pub struct DevicesView {
 
 impl DevicesView {
 
-    pub fn new(devices: Vec<Device>) -> Self {
+    pub fn new(window: &ApplicationWindow, devices: Vec<Device>) -> Self {
         let builder = Builder::from_resource("/net/ethernaught/rust/res/ui/gtk3/devices_view.ui");
 
         let provider = CssProvider::new();
@@ -36,15 +37,31 @@ impl DevicesView {
         devices_list.set_selection_mode(gtk::SelectionMode::Single);
 
 
+
         devices_list.connect_row_activated({
+            let window = window.clone();
             let devices = devices.clone();
             move |_, row| {
+                window.activate_action("open", Some(&Variant::from("Hello from the button!")));
+
+                /*
+                println!("CLICK");
+
+                if let Some(app) = gio::Application::default() {
+                    println!("2");
+                    app.activate_action(
+                        "win.open",
+                        Some(&Variant::from("Hello from the button!")),
+                    );
+                }*/
+
+
                 if row.index() > 0 {
                     //let mut bundle = Bundle::new();
                     //bundle.put("type", String::from("device"));
                     //bundle.put("device", devices_clone[row.index() as usize - 1].clone());
                     //context.start_activity(Box::new(MainActivity::new(context.clone())), Some(bundle));
-                    let view = MainView::from_device(&devices[row.index() as usize - 1]);
+                    //let view = MainView::from_device(&devices[row.index() as usize - 1]);
 
 
                     return;
