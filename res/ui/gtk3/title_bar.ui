@@ -153,7 +153,6 @@
                     </object>
                 </child>
 
-
                 <child>
                     <object class="GtkButton" id="maximize_button">
                         <property name="name">window_maximize</property>

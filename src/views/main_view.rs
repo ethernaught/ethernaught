@@ -1,6 +1,7 @@
 use gtk::{gdk, Builder, CssProvider, StyleContext};
-use gtk::prelude::{BuilderExtManual, CssProviderExt};
+use gtk::prelude::{BuilderExtManual, CssProviderExt, ImageExt, LabelExt, StyleContextExt, WidgetExt};
 use pcap::devices::Device;
+use pcap::utils::data_link_types::DataLinkTypes;
 use crate::views::inter::view::View;
 use crate::windows::main_window::MainWindow;
 
@@ -26,7 +27,36 @@ impl MainView {
             .object("root")
             .expect("Couldn't find 'root' in main_view.ui");
 
-        println!("{:?}", window.title_bar.root);
+        match device.get_data_link_type() {
+            DataLinkTypes::Null => {
+                window.title_bar.root.style_context().add_class("any");
+                window.title_bar.network_type_icon.set_resource(Some("/net/ethernaught/rust/res/icons/ic_any.svg"));
+            }
+            DataLinkTypes::En10mb | DataLinkTypes::En3mb | DataLinkTypes::Sll2 => {
+                window.title_bar.root.style_context().add_class("ethernet");
+                window.title_bar.network_type_icon.set_resource(Some("/net/ethernaught/rust/res/icons/ic_ethernet.svg"));
+            }
+            DataLinkTypes::Loop => {
+                window.title_bar.root.style_context().add_class("lan");
+                window.title_bar.network_type_icon.set_resource(Some("/net/ethernaught/rust/res/icons/ic_lan.svg"));
+            }
+            DataLinkTypes::Raw | DataLinkTypes::Ipv4 | DataLinkTypes::Ipv6 => {
+                window.title_bar.root.style_context().add_class("vpn");
+                window.title_bar.network_type_icon.set_resource(Some("/net/ethernaught/rust/res/icons/ic_vpn.svg"));
+            }
+            /*
+            DataLinkTypes::BluetoothHciH4 => {
+                titlebar.style_context().add_class("bluetooth");
+                icon.set_resource(Some("/net/ethernaught/rust/res/icons/ic_bluetooth.svg"));
+            }
+            */
+            _ => {}
+        }
+
+        window.title_bar.network_type_label.set_label(&device.name);
+
+        window.title_bar.network_type_icon.show();
+        window.title_bar.network_type_label.show();
 
         Self {
             root
