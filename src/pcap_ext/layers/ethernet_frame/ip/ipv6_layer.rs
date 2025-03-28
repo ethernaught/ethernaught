@@ -1,4 +1,4 @@
-use pcap::packet::layers::ethernet_frame::ip::ipv6_layer::Ipv6Layer;
+use pcap::packet::layers::ip::ipv6_layer::Ipv6Layer;
 use crate::pcap_ext::layers::inter::layer_ext::LayerExt;
 
 impl LayerExt for Ipv6Layer {
