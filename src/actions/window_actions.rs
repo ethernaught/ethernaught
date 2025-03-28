@@ -1,10 +1,8 @@
 use gtk::gio::{SimpleAction, SimpleActionGroup};
 use gtk::prelude::{ActionMapExt, ContainerExt, GtkWindowExt, ProxyResolverExt, StackExt, ToVariant, WidgetExt};
-use gtk::{glib, ApplicationWindow, Stack};
 use gtk::glib::{PropertyGet, VariantDict, VariantTy};
 use pcap::devices::Device;
 use crate::pcap_ext::devices::Serialize;
-use crate::views::inter::stackable::Stackable;
 use crate::views::main_view::MainView;
 use crate::windows::main_window::MainWindow;
 
@@ -33,6 +31,15 @@ pub fn register_window_actions(window: &MainWindow) {
             }
 
             window.maximize();
+        }
+    });
+    window.window.add_action(&action);
+
+    let action = SimpleAction::new("menu", None);
+    action.connect_activate({
+        let title_bar = window.title_bar.clone();
+        move |_, _| {
+            title_bar.open_menubar();
         }
     });
     window.window.add_action(&action);
