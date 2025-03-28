@@ -1,5 +1,4 @@
 use std::cell::RefCell;
-use std::cmp::max;
 use gtk::gdk::{EventMask, WindowAttr, WindowType, WindowWindowClass, RGBA};
 use gtk::{gdk, glib, Allocation, Buildable, Container, Misc, StateFlags, Widget};
 use gtk::cairo::Context;
@@ -27,7 +26,6 @@ impl ObjectSubclass for ViewStackImpl {
 }
 
 impl ObjectImpl for ViewStackImpl {}
-
 
 impl WidgetImpl for ViewStackImpl {
 
@@ -97,14 +95,12 @@ impl WidgetImpl for ViewStackImpl {
 impl ContainerImpl for ViewStackImpl {
 
     fn add(&self, widget: &Widget) {
-        let container = self.obj(); // Get the parent container
+        let container = self.obj();
         let mut children = self.children.borrow_mut();
 
-        // Add the child and set its parent
-        widget.set_parent(container.upcast_ref::<gtk::Widget>());
+        widget.set_parent(container.upcast_ref::<Widget>());
         children.push(widget.clone());
 
-        // Queue a resize since a child was added
         container.queue_resize();
     }
 
@@ -116,7 +112,6 @@ impl ContainerImpl for ViewStackImpl {
             children.remove(pos);
             widget.unparent();
 
-            // Queue a resize after removing a child
             container.queue_resize();
         }
     }
@@ -138,7 +133,17 @@ impl ViewStack {
 
     pub fn new() -> Self {
         glib::Object::builder().build()
-        //let _self = glib::Object::builder::<ViewStack>().build();
-        //_self
+    }
+
+    pub fn select(&self, name: &str) {
+
+    }
+
+    pub fn get_selected_widget(&self) -> Option<Widget> {
+        todo!()
+    }
+
+    pub fn get_selected_index(&self) -> usize {
+        0
     }
 }
