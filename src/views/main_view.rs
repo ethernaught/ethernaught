@@ -162,16 +162,13 @@ impl Stackable for MainView {
 
     fn on_resume(&self) {
         (self.show_title_bar)(true);
-        println!("RESUME {}", self.get_name());
     }
 
     fn on_pause(&self) {
         (self.show_title_bar)(false);
-        println!("PAUSE {}", self.get_name());
     }
 
     fn on_destroy(&self) {
-        todo!()
     }
 }
 

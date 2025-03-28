@@ -86,14 +86,11 @@ impl Stackable for DevicesView {
     }
 
     fn on_resume(&self) {
-        println!("RESUME {}", self.get_name());
     }
 
     fn on_pause(&self) {
-        println!("PAUSE {}", self.get_name());
     }
 
     fn on_destroy(&self) {
-        todo!()
     }
 }
