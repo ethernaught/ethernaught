@@ -48,9 +48,14 @@ impl DevicesView {
                     //context.start_activity(Box::new(MainActivity::new(context.clone())), Some(bundle));
                     //let view = MainView::from_device(&devices[row.index() as usize - 1]);
 
-                    let variant = Variant::from(&devices[row.index() as usize - 1].serialize().as_slice());
+                    //let variant = Variant::from(&devices[row.index() as usize - 1].serialize().as_slice());
 
-                    window.activate_action("open", Some(&variant));
+                    let mut dict = VariantDict::new(None);
+                    dict.insert_value("name", &Variant::from("main_view"));
+                    dict.insert_value("device", &Variant::from(&devices[row.index() as usize - 1].serialize().as_slice()));
+                    let params = dict.end();
+
+                    window.activate_action("open", Some(&params));
 
                     return;
                 }

@@ -1,6 +1,7 @@
 use gtk::gio::{SimpleAction, SimpleActionGroup};
-use gtk::prelude::{ActionMapExt, ContainerExt, GtkWindowExt, StackExt, WidgetExt};
+use gtk::prelude::{ActionMapExt, ContainerExt, GtkWindowExt, ProxyResolverExt, StackExt, ToVariant, WidgetExt};
 use gtk::{glib, ApplicationWindow, Stack};
+use gtk::glib::{VariantDict, VariantTy};
 use pcap::devices::Device;
 use crate::pcap_ext::devices::Serialize;
 use crate::views::inter::stackable::Stackable;
@@ -38,13 +39,26 @@ pub fn register_window_actions(window: &MainWindow) {
 }
 
 pub fn register_stack_actions(window: &MainWindow) {
-    let action = SimpleAction::new("open", Some(&glib::VariantTy::BYTE_STRING));//Some(&glib::VariantTy::ANY));
+    let action = SimpleAction::new("open", Some(&VariantTy::new("a{sv}").unwrap()));
+    //let action = SimpleAction::new("open", Some(&glib::VariantTy::BYTE_STRING));//Some(&glib::VariantTy::ANY));
     action.connect_activate({
         let window = window.clone();
         move |_, param| {
             if let Some(param) = param {
+                if let Some(dict) = param.get::<VariantDict>() {
+                    /*
+                    match dict.lookup::<String>("name").ok() {
+                        Some(_) => {}
+                        None => {}
+                    }
+                    */
+
+                    println!("{:?}", dict.lookup::<Vec<u8>>("device"));
+                }
+                /*
                 let device = Device::unserialize(&param.get::<Vec<u8>>().unwrap());
                 window.add_view(Box::new(MainView::from_device(&window, &device)));
+                */
             }
         }
     });
