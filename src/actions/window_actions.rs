@@ -3,7 +3,7 @@ use gtk::prelude::{ActionMapExt, ContainerExt, GtkWindowExt, StackExt, WidgetExt
 use gtk::{glib, ApplicationWindow, Stack};
 use pcap::devices::Device;
 use crate::pcap_ext::devices::Serialize;
-use crate::views::inter::view::View;
+use crate::views::inter::stackable::Stackable;
 use crate::views::main_view::MainView;
 use crate::windows::main_window::MainWindow;
 

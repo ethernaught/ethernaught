@@ -10,7 +10,7 @@ use pcap::utils::interface_flags::InterfaceFlags;
 use crate::actions::window_actions::{register_stack_actions, register_window_actions};
 use crate::views::bottom_bar::BottomBar;
 use crate::views::devices_view::DevicesView;
-use crate::views::inter::view::View;
+use crate::views::inter::stackable::Stackable;
 use crate::views::title_bar::TitleBar;
 
 #[derive(Clone)]
@@ -19,7 +19,7 @@ pub struct MainWindow {
     pub title_bar: TitleBar,
     pub stack: Stack,
     pub bottom_bar: BottomBar,
-    pub views: Rc<RefCell<HashMap<String, Box<dyn View>>>>
+    pub views: Rc<RefCell<HashMap<String, Box<dyn Stackable>>>>
 }
 
 impl MainWindow {
@@ -67,7 +67,7 @@ impl MainWindow {
             .object("stack")
             .expect("Failed to get the 'stack' from window.ui");
 
-        let views: Rc<RefCell<HashMap<String, Box<dyn View>>>> = Rc::new(RefCell::new(HashMap::new()));
+        let views: Rc<RefCell<HashMap<String, Box<dyn Stackable>>>> = Rc::new(RefCell::new(HashMap::new()));
 
         stack.connect_visible_child_name_notify({
             let views = views.clone();
@@ -142,7 +142,7 @@ impl MainWindow {
         _self
     }
 
-    pub fn add_view(&self, view: Box<dyn View>) {
+    pub fn add_view(&self, view: Box<dyn Stackable>) {
         let name = view.get_name();
         self.stack.add_named(view.get_root(), &name);
         self.stack.set_visible_child_name(&name);

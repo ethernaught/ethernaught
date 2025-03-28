@@ -4,7 +4,7 @@ use gtk::prelude::{ActionGroupExt, BuilderExtManual, ContainerExt, CssProviderEx
 use pcap::devices::Device;
 use crate::pcap_ext::devices::Serialize;
 use crate::views::device_list_item::DeviceListItem;
-use crate::views::inter::view::View;
+use crate::views::inter::stackable::Stackable;
 
 pub struct DevicesView {
     pub root: gtk::Box,
@@ -73,7 +73,7 @@ impl DevicesView {
     }
 }
 
-impl View for DevicesView {
+impl Stackable for DevicesView {
 
     fn get_name(&self) -> String {
         "devices_view".to_string()

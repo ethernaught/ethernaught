@@ -1,6 +1,6 @@
 use gtk::Container;
 
-pub trait View {
+pub trait Stackable {
 
     fn get_name(&self) -> String;
 

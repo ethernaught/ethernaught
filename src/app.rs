@@ -9,7 +9,7 @@ use pcap::utils::interface_flags::InterfaceFlags;
 use crate::actions::app_actions::register_app_actions;
 use crate::views::bottom_bar::BottomBar;
 use crate::views::devices_view::DevicesView;
-use crate::views::inter::view::View;
+use crate::views::inter::stackable::Stackable;
 use crate::widgets::graph::Graph;
 use crate::widgets::hex_editor::HexEditor;
 use crate::widgets::terminal::Terminal;

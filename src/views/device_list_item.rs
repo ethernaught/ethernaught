@@ -3,7 +3,7 @@ use gtk::prelude::{BuilderExtManual, CssProviderExt, ImageExt, LabelExt, StyleCo
 use pcap::devices::Device;
 use pcap::utils::data_link_types::DataLinkTypes;
 use pcap::utils::interface_flags::InterfaceFlags;
-use crate::views::inter::view::View;
+use crate::views::inter::stackable::Stackable;
 use crate::widgets::graph::Graph;
 
 pub struct DeviceListItem {

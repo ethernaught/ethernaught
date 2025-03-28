@@ -2,7 +2,7 @@ use gtk::{gdk, Builder, Container, CssProvider, Paned, StyleContext};
 use gtk::prelude::{BuilderExtManual, Cast, ContainerExt, CssProviderExt, ImageExt, LabelExt, PanedExt, StyleContextExt, WidgetExt, WidgetExtManual};
 use pcap::devices::Device;
 use pcap::utils::data_link_types::DataLinkTypes;
-use crate::views::inter::view::View;
+use crate::views::inter::stackable::Stackable;
 use crate::views::packets_view::PacketsView;
 use crate::windows::main_window::MainWindow;
 
@@ -57,7 +57,7 @@ impl MainView {
     }
 }
 
-impl View for MainView {
+impl Stackable for MainView {
 
     fn get_name(&self) -> String {
         "main_view".to_string()
