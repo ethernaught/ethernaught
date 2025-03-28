@@ -151,7 +151,6 @@ impl MainWindow {
                 let children = self.stack.children();
                 for i in (pos..children.len()).rev() {
                     let name = self.stack.child_name(&children[i]).unwrap().to_string();
-                    self.views.borrow().get(&name).unwrap().on_pause();
                     self.views.borrow().get(&name).unwrap().on_destroy();
                     self.stack.remove(&children[i]);
                     self.views.borrow_mut().remove(&name);
@@ -163,7 +162,6 @@ impl MainWindow {
                     if let Some(pos) = children.iter().position(|child| child == &current) {
                         for i in (pos + 1..children.len()).rev() {
                             let name = self.stack.child_name(&children[i]).unwrap().to_string();
-                            self.views.borrow().get(&name).unwrap().on_pause();
                             self.views.borrow().get(&name).unwrap().on_destroy();
                             self.stack.remove(&children[i]);
                             self.views.borrow_mut().remove(&name);
@@ -175,6 +173,7 @@ impl MainWindow {
 
         self.stack.add_named(view.get_root(), &name);
         self.stack.set_visible_child_name(&name);
+        view.on_create();
         self.views.borrow_mut().insert(name, view);
     }
 }

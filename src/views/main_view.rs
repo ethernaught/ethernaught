@@ -139,7 +139,7 @@ impl MainView {
         content_pane.set_child_shrink(&sidebar.root, false);
 
         let show_title_bar = Box::new(show_title_bar(window, "Any", DataLinkTypes::Null));
-        show_title_bar(true);
+        //show_title_bar(true);
 
         Self {
             show_title_bar,
@@ -158,6 +158,10 @@ impl Stackable for MainView {
 
     fn get_root(&self) -> &Container {
         self.root.upcast_ref()
+    }
+
+    fn on_create(&self) {
+        (self.show_title_bar)(true);
     }
 
     fn on_resume(&self) {

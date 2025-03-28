@@ -6,6 +6,8 @@ pub trait Stackable {
 
     fn get_root(&self) -> &Container;
 
+    fn on_create(&self);
+
     fn on_resume(&self);
 
     fn on_pause(&self);

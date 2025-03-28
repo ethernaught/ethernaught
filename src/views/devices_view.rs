@@ -85,6 +85,9 @@ impl Stackable for DevicesView {
         self.root.upcast_ref()
     }
 
+    fn on_create(&self) {
+    }
+
     fn on_resume(&self) {
     }
 
