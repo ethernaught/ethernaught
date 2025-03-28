@@ -10,6 +10,7 @@ use gtk::subclass::prelude::{ContainerImpl, ObjectImpl, ObjectSubclass, ObjectSu
 
 #[derive(Default)]
 pub struct ViewStackImpl {
+    pub names: RefCell<Vec<String>>,
     pub children: RefCell<Vec<Widget>>
 }
 
@@ -136,7 +137,11 @@ impl ViewStack {
     }
 
     pub fn select(&self, name: &str) {
+        //self.imp().names.borrow_mut().push(name.into());
+    }
 
+    pub fn get_by_name(&self, name: &str) -> Option<Widget> {
+        todo!()
     }
 
     pub fn get_selected_widget(&self) -> Option<Widget> {
