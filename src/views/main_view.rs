@@ -6,6 +6,7 @@ use crate::views::inter::view::View;
 use crate::windows::main_window::MainWindow;
 
 pub struct MainView {
+    pub show_title_bar: Box<dyn Fn(bool)>,
     pub root: gtk::Box
 }
 
@@ -27,38 +28,11 @@ impl MainView {
             .object("root")
             .expect("Couldn't find 'root' in main_view.ui");
 
-        match device.data_link_type {
-            DataLinkTypes::Null => {
-                window.title_bar.root.style_context().add_class("any");
-                window.title_bar.network_type_icon.set_resource(Some("/net/ethernaught/rust/res/icons/ic_any.svg"));
-            }
-            DataLinkTypes::En10mb | DataLinkTypes::En3mb | DataLinkTypes::Sll2 => {
-                window.title_bar.root.style_context().add_class("ethernet");
-                window.title_bar.network_type_icon.set_resource(Some("/net/ethernaught/rust/res/icons/ic_ethernet.svg"));
-            }
-            DataLinkTypes::Loop => {
-                window.title_bar.root.style_context().add_class("lan");
-                window.title_bar.network_type_icon.set_resource(Some("/net/ethernaught/rust/res/icons/ic_lan.svg"));
-            }
-            DataLinkTypes::Raw | DataLinkTypes::Ipv4 | DataLinkTypes::Ipv6 => {
-                window.title_bar.root.style_context().add_class("vpn");
-                window.title_bar.network_type_icon.set_resource(Some("/net/ethernaught/rust/res/icons/ic_vpn.svg"));
-            }
-            /*
-            DataLinkTypes::BluetoothHciH4 => {
-                titlebar.style_context().add_class("bluetooth");
-                icon.set_resource(Some("/net/ethernaught/rust/res/icons/ic_bluetooth.svg"));
-            }
-            */
-            _ => {}
-        }
-
-        window.title_bar.network_type_label.set_label(&device.name);
-
-        window.title_bar.network_type_icon.show();
-        window.title_bar.network_type_label.show();
+        let show_title_bar = Box::new(show_title_bar(window, device));
+        show_title_bar(true);
 
         Self {
+            show_title_bar,
             root
         }
     }
@@ -75,14 +49,80 @@ impl View for MainView {
     }
 
     fn on_resume(&self) {
+        (self.show_title_bar)(true);
         println!("RESUME {}", self.get_name());
     }
 
     fn on_pause(&self) {
+        (self.show_title_bar)(false);
         println!("PAUSE {}", self.get_name());
     }
 
     fn on_destroy(&self) {
         todo!()
+    }
+}
+
+fn show_title_bar(window: &MainWindow, device: &Device) -> impl Fn(bool) {
+    let title_bar = window.title_bar.clone();
+    let device = device.clone();
+    move |shown| {
+        if shown {
+            match device.data_link_type {
+                DataLinkTypes::Null => {
+                    title_bar.root.style_context().add_class("any");
+                    title_bar.network_type_icon.set_resource(Some("/net/ethernaught/rust/res/icons/ic_any.svg"));
+                }
+                DataLinkTypes::En10mb | DataLinkTypes::En3mb | DataLinkTypes::Sll2 => {
+                    title_bar.root.style_context().add_class("ethernet");
+                    title_bar.network_type_icon.set_resource(Some("/net/ethernaught/rust/res/icons/ic_ethernet.svg"));
+                }
+                DataLinkTypes::Loop => {
+                    title_bar.root.style_context().add_class("lan");
+                    title_bar.network_type_icon.set_resource(Some("/net/ethernaught/rust/res/icons/ic_lan.svg"));
+                }
+                DataLinkTypes::Raw | DataLinkTypes::Ipv4 | DataLinkTypes::Ipv6 => {
+                    title_bar.root.style_context().add_class("vpn");
+                    title_bar.network_type_icon.set_resource(Some("/net/ethernaught/rust/res/icons/ic_vpn.svg"));
+                }
+                /*
+                DataLinkTypes::BluetoothHciH4 => {
+                    titlebar.style_context().add_class("bluetooth");
+                    icon.set_resource(Some("/net/ethernaught/rust/res/icons/ic_bluetooth.svg"));
+                }
+                */
+                _ => {}
+            }
+
+            title_bar.network_type_label.set_label(&device.name);
+
+            title_bar.network_type_icon.show();
+            title_bar.network_type_label.show();
+            return;
+        }
+
+        match device.data_link_type {
+            DataLinkTypes::Null => {
+                title_bar.root.style_context().remove_class("any");
+            }
+            DataLinkTypes::En10mb | DataLinkTypes::En3mb | DataLinkTypes::Sll2 => {
+                title_bar.root.style_context().remove_class("ethernet");
+            }
+            DataLinkTypes::Loop => {
+                title_bar.root.style_context().remove_class("lan");
+            }
+            DataLinkTypes::Raw | DataLinkTypes::Ipv4 | DataLinkTypes::Ipv6 => {
+                title_bar.root.style_context().remove_class("vpn");
+            }
+            /*
+            DataLinkTypes::BluetoothHciH4 => {
+                titlebar.style_context().remove_class("bluetooth");
+            }
+            */
+            _ => {}
+        }
+
+        title_bar.network_type_icon.hide();
+        title_bar.network_type_label.hide();
     }
 }
