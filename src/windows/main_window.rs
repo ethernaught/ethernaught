@@ -144,6 +144,31 @@ impl MainWindow {
 
     pub fn add_view(&self, view: Box<dyn Stackable>) {
         let name = view.get_name();
+        match self.stack.child_by_name(&name) {
+            Some(child) => {
+                let pos = self.stack.child_position(&child) as usize;
+
+                let children = self.stack.children();
+                for i in (pos..children.len()).rev() {
+                    let name = self.stack.child_name(&children[i]).unwrap().to_string();
+                    self.stack.remove(&children[i]);
+                    self.views.borrow_mut().remove(&name);
+                }
+            }
+            None => {
+                let children = self.stack.children();
+                if let Some(current) = self.stack.visible_child() {
+                    if let Some(pos) = children.iter().position(|child| child == &current) {
+                        for i in (pos + 1..children.len()).rev() {
+                            let name = self.stack.child_name(&children[i]).unwrap().to_string();
+                            self.stack.remove(&children[i]);
+                            self.views.borrow_mut().remove(&name);
+                        }
+                    }
+                }
+            }
+        }
+
         self.stack.add_named(view.get_root(), &name);
         self.stack.set_visible_child_name(&name);
         self.views.borrow_mut().insert(name, view);

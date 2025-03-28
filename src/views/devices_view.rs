@@ -41,26 +41,22 @@ impl DevicesView {
             let window = window.clone();
             let devices = devices.clone();
             move |_, row| {
+                let mut dict = VariantDict::new(None);
+                dict.insert_value("name", &Variant::from("main_view"));
+
                 if row.index() > 0 {
-                    let mut dict = VariantDict::new(None);
-                    dict.insert_value("name", &Variant::from("main_view"));
                     dict.insert_value("type", &Variant::from("device"));
                     dict.insert_value("device", &Variant::from(&devices[row.index() as usize - 1].serialize().as_slice()));
                     let params = dict.end();
 
-                    window.activate_action("open", Some(&params));
+                    window.activate_action("view", Some(&params));
                     return;
                 }
 
-                let mut dict = VariantDict::new(None);
-                dict.insert_value("name", &Variant::from("main_view"));
                 dict.insert_value("type", &Variant::from("any"));
                 let params = dict.end();
 
-                window.activate_action("open", Some(&params));
-                //let mut bundle = Bundle::new();
-                //bundle.put("type", String::from("device"));
-                //context.start_activity(Box::new(MainActivity::new(context.clone())), Some(bundle));
+                window.activate_action("view", Some(&params));
             }
         });
 

@@ -1,3 +1,4 @@
+use std::path::PathBuf;
 use gtk::{gdk, Builder, Container, CssProvider, Paned, StyleContext};
 use gtk::prelude::{BuilderExtManual, Cast, ContainerExt, CssProviderExt, ImageExt, LabelExt, PanedExt, StyleContextExt, WidgetExt, WidgetExtManual};
 use pcap::devices::Device;
@@ -94,6 +95,50 @@ impl MainView {
         content_pane.set_child_shrink(&sidebar.root, false);
 
         let show_title_bar = Box::new(show_title_bar(window, &device.name, device.data_link_type));
+        show_title_bar(true);
+
+        Self {
+            show_title_bar,
+            root,
+            activity_pane,
+            content_pane
+        }
+    }
+
+    pub fn from_file(window: &MainWindow, path: &PathBuf) -> Self {
+        let builder = Builder::from_resource("/net/ethernaught/rust/res/ui/gtk3/main_view.ui");
+
+        let provider = CssProvider::new();
+        provider.load_from_resource("/net/ethernaught/rust/res/ui/gtk3/main_view.css");
+
+        StyleContext::add_provider_for_screen(
+            &gdk::Screen::default().expect("Failed to get default screen."),
+            &provider,
+            gtk::STYLE_PROVIDER_PRIORITY_APPLICATION,
+        );
+
+        let root: gtk::Box = builder
+            .object("root")
+            .expect("Couldn't find 'root' in main_view.ui");
+
+        let activity_pane: Paned = builder
+            .object("activity_pane")
+            .expect("Couldn't find 'activity_pane' in main_view.ui");
+
+        let content_pane: Paned = builder
+            .object("content_pane")
+            .expect("Couldn't find 'content_pane' in main_view.ui");
+        activity_pane.set_child_shrink(content_pane.upcast_ref::<Container>(), false);
+        activity_pane.set_child_resize(content_pane.upcast_ref::<Container>(), true);
+
+        let packets = PacketsView::new();
+        content_pane.add(&packets.root);
+
+        let sidebar = SidebarView::new();
+        content_pane.add(&sidebar.root);
+        content_pane.set_child_shrink(&sidebar.root, false);
+
+        let show_title_bar = Box::new(show_title_bar(window, "Any", DataLinkTypes::Null));
         show_title_bar(true);
 
         Self {
