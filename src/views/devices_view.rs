@@ -1,4 +1,4 @@
-use gtk::{gdk, gio, ApplicationWindow, Builder, Container, CssProvider, ListBox, StyleContext, Window};
+use gtk::{gdk, gio, ApplicationWindow, Builder, Container, CssProvider, Label, ListBox, StyleContext, Window};
 use gtk::glib::{Variant, VariantDict};
 use gtk::prelude::{ActionGroupExt, BuilderExtManual, ContainerExt, CssProviderExt, ListBoxExt, ListBoxRowExt, WidgetExt};
 use pcap::devices::Device;
@@ -7,6 +7,7 @@ use crate::pcap_ext::devices::Serialize;
 use crate::views::device_list_item::DeviceListItem;
 use crate::views::inter::view::View;
 use crate::views::main_view::MainView;
+use crate::widgets::view_stack::ViewStack;
 
 pub struct DevicesView {
     pub root: gtk::Box,
@@ -68,6 +69,15 @@ impl DevicesView {
             devices_list.add(&device_item.root);
         });
 
+
+        let label = Label::new(Some("Devices"));
+
+        let view_stack = ViewStack::new();
+        view_stack.set_vexpand(true);
+        view_stack.add(&label);
+        view_stack.show_all();
+
+        root.add(&view_stack);
 
 
 

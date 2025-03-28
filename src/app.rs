@@ -13,6 +13,7 @@ use crate::views::inter::view::View;
 use crate::widgets::graph::Graph;
 use crate::widgets::hex_editor::HexEditor;
 use crate::widgets::terminal::Terminal;
+use crate::widgets::view_stack::ViewStack;
 use crate::windows::main_window::MainWindow;
 
 pub struct App {
@@ -33,6 +34,7 @@ impl App {
         Graph::static_type();
         HexEditor::static_type();
         Terminal::static_type();
+        ViewStack::static_type();
 
         self.app.connect_activate(move |app| {
             let resource_data = include_bytes!("../res/resources.gresources");
