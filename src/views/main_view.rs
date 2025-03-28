@@ -1,5 +1,5 @@
 use gtk::{gdk, Builder, Container, CssProvider, Paned, StyleContext};
-use gtk::prelude::{BuilderExtManual, Cast, ContainerExt, CssProviderExt, ImageExt, LabelExt, StyleContextExt, WidgetExt, WidgetExtManual};
+use gtk::prelude::{BuilderExtManual, Cast, ContainerExt, CssProviderExt, ImageExt, LabelExt, PanedExt, StyleContextExt, WidgetExt, WidgetExtManual};
 use pcap::devices::Device;
 use pcap::utils::data_link_types::DataLinkTypes;
 use crate::views::inter::view::View;
@@ -38,6 +38,8 @@ impl MainView {
         let content_pane: Paned = builder
             .object("content_pane")
             .expect("Couldn't find 'content_pane' in main_view.ui");
+        activity_pane.set_child_shrink(content_pane.upcast_ref::<Container>(), false);
+        activity_pane.set_child_resize(content_pane.upcast_ref::<Container>(), true);
 
         let packets = PacketsView::new();
         content_pane.add(&packets.root);
