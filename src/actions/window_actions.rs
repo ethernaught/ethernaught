@@ -14,7 +14,7 @@ pub fn register_window_actions(window: &MainWindow) {
         let window = window.clone();
         move |_, _| {
             if let Some(path) = open_file_selector(window.window.upcast_ref()) {
-                let view = Box::new(MainView::from_file(&window, &path));
+                let view = Box::new(MainView::from_pcap(&window, &path));
                 window.add_view(view);
             }
         }

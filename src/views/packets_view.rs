@@ -2,14 +2,30 @@ use std::cell::RefCell;
 use std::rc::Rc;
 use gtk::{gdk, Builder, Button, CellRendererText, Container, CssProvider, Entry, Image, Label, ListBox, ListStore, ScrolledWindow, StyleContext, TreeView, TreeViewColumn};
 use gtk::glib::{ObjectExt, Type};
-use gtk::prelude::{AdjustmentExt, BuilderExtManual, CellLayoutExt, ContainerExt, CssProviderExt, LabelExt, ListBoxExt, ScrolledWindowExt, TreeModelExt, TreeViewColumnExt, TreeViewExt, WidgetExt};
+use gtk::prelude::{AdjustmentExt, BuilderExtManual, CellLayoutExt, ContainerExt, CssProviderExt, GtkListStoreExtManual, LabelExt, ListBoxExt, ScrolledWindowExt, TreeModelExt, TreeViewColumnExt, TreeViewExt, WidgetExt};
+use pcap::packet::layers::ethernet_frame::ethernet_frame::EthernetFrame;
+use pcap::packet::layers::ethernet_frame::inter::ethernet_types::EthernetTypes;
+use pcap::packet::layers::ip::inter::ip_protocols::IpProtocols;
+use pcap::packet::layers::ip::inter::ip_versions::IpVersions;
+use pcap::packet::layers::ip::ipv4_layer::Ipv4Layer;
+use pcap::packet::layers::ip::ipv6_layer::Ipv6Layer;
+use pcap::packet::layers::ip::udp::inter::udp_payloads::UdpPayloads;
+use pcap::packet::layers::ip::udp::udp_layer::UdpLayer;
+use pcap::packet::layers::loop_frame::inter::loop_types::LoopTypes;
+use pcap::packet::layers::loop_frame::loop_frame::LoopFrame;
+use pcap::packet::layers::raw_frame::raw_frame::RawFrame;
+use pcap::packet::layers::sll2_frame::sll2_frame::Sll2Frame;
+use pcap::packet::packet::Packet;
+use pcap::pcap::pcap::Pcap;
+use pcap::utils::data_link_types::DataLinkTypes;
 
 #[derive(Clone)]
 pub struct PacketsView {
     pub root: gtk::Box,
     pub search: Entry,
     pub scroll_layout: ScrolledWindow,
-    pub tree_view: TreeView
+    pub tree_view: TreeView,
+    pub model: ListStore
 }
 
 impl PacketsView {
@@ -43,8 +59,6 @@ impl PacketsView {
         init_column(&tree_view, "Protocol", 4, 80);
         init_column(&tree_view, "Length", 5, 80);
         init_column(&tree_view, "Info", 6, 80);
-
-
 
         let vadj = Rc::new(scroll_layout.vadjustment());
         let needs_scroll = Rc::new(RefCell::new(false));
@@ -85,7 +99,95 @@ impl PacketsView {
             search,
             scroll_layout,
             tree_view,
+            model
         }
+    }
+
+    pub fn add(&self, packet: &Packet, packet_number: i32) {
+        let (source, destination, protocol) = match packet.get_data_link_type() {
+            DataLinkTypes::En10mb => {
+                let ethernet_frame = packet.get_frame().as_any().downcast_ref::<EthernetFrame>().unwrap();
+
+                match ethernet_frame.get_type() {
+                    EthernetTypes::Ipv4 => {
+                        get_data_from_ipv4_frame(ethernet_frame.get_data().unwrap().as_any().downcast_ref::<Ipv4Layer>().unwrap())
+                    }
+                    EthernetTypes::Ipv6 => {
+                        get_data_from_ipv6_frame(ethernet_frame.get_data().unwrap().as_any().downcast_ref::<Ipv6Layer>().unwrap())
+                    }
+                    EthernetTypes::Broadcast => {
+                        //source_label.set_label(&ethernet_layer.get_source().to_string());
+                        //destination_label.set_label(&ethernet_layer.get_destination().to_string());
+                        (ethernet_frame.get_source_mac().to_string(), ethernet_frame.get_destination_mac().to_string(), ethernet_frame.get_type().to_string())
+                    }
+                    _ => {
+                        (ethernet_frame.get_source_mac().to_string(), ethernet_frame.get_destination_mac().to_string(), ethernet_frame.get_type().to_string())
+                    }
+                }
+            }
+            DataLinkTypes::Sll2 => {
+                let sll2_frame = packet.get_frame().as_any().downcast_ref::<Sll2Frame>().unwrap();
+
+                match sll2_frame.get_protocol() {
+                    EthernetTypes::Ipv4 => {
+                        get_data_from_ipv4_frame(sll2_frame.get_data().unwrap().as_any().downcast_ref::<Ipv4Layer>().unwrap())
+                    }
+                    EthernetTypes::Ipv6 => {
+                        get_data_from_ipv6_frame(sll2_frame.get_data().unwrap().as_any().downcast_ref::<Ipv6Layer>().unwrap())
+                    }
+                    _ => {
+                        unimplemented!()
+                    }
+                }
+            }
+            DataLinkTypes::Raw => {
+                let raw_frame = packet.get_frame().as_any().downcast_ref::<RawFrame>().unwrap();
+
+                match raw_frame.get_version() {
+                    IpVersions::Ipv4 => {
+                        get_data_from_ipv4_frame(raw_frame.get_data().unwrap().as_any().downcast_ref::<Ipv4Layer>().unwrap())
+                    }
+                    IpVersions::Ipv6 => {
+                        get_data_from_ipv6_frame(raw_frame.get_data().unwrap().as_any().downcast_ref::<Ipv6Layer>().unwrap())
+                    }
+                    _ => {
+                        unimplemented!()
+                    }
+                }
+            }
+            DataLinkTypes::Loop => {
+                let loop_frame = packet.get_frame().as_any().downcast_ref::<LoopFrame>().unwrap();
+
+                match loop_frame.get_type() {
+                    LoopTypes::Ipv4 => {
+                        get_data_from_ipv4_frame(loop_frame.get_data().unwrap().as_any().downcast_ref::<Ipv4Layer>().unwrap())
+                    }
+                    LoopTypes::Ipv6 | LoopTypes::Ipv6e2 | LoopTypes::Ipv6e3 => {
+                        get_data_from_ipv6_frame(loop_frame.get_data().unwrap().as_any().downcast_ref::<Ipv6Layer>().unwrap())
+                    }
+                    _ => {
+                        unimplemented!()
+                    }
+                }
+            }
+            _ => {
+                //"[WiFi] TODO".to_string()
+                todo!()
+            }
+        };
+
+        let frame_time = packet.get_frame_time().to_string();
+        let packet_length = packet.len().to_string();
+
+        self.model.insert_with_values(None, &[
+            (0, &packet_number),
+            (1, &frame_time),
+            (2, &source),
+            (3, &destination),
+            (4, &protocol),
+            (5, &packet_length),
+            //(6, &"TODO".to_string()),
+        ]);
     }
 }
 
@@ -128,4 +230,46 @@ fn init_column(tree: &TreeView, title: &str, col_id: i32, min_width: i32) {
     })));
 
     tree.append_column(&column);
+}
+
+
+
+fn get_data_from_ipv4_frame(layer: &Ipv4Layer) -> (String, String, String) {
+    match layer.get_protocol() {
+        IpProtocols::Udp => {
+            let udp_layer = layer.get_data().unwrap().as_any().downcast_ref::<UdpLayer>().unwrap();
+
+            match udp_layer.get_payload() {
+                UdpPayloads::Known(_type, _) => {
+                    (layer.get_source_address().to_string(), layer.get_destination_address().to_string(), udp_layer.get_type().to_string())
+                }
+                _ => {
+                    (layer.get_source_address().to_string(), layer.get_destination_address().to_string(), layer.get_protocol().to_string())
+                }
+            }
+        }
+        _ => {
+            (layer.get_source_address().to_string(), layer.get_destination_address().to_string(), layer.get_protocol().to_string())
+        }
+    }
+}
+
+fn get_data_from_ipv6_frame(layer: &Ipv6Layer) -> (String, String, String) {
+    match layer.get_next_header() {
+        IpProtocols::Udp => {
+            let udp_layer = layer.get_data().unwrap().as_any().downcast_ref::<UdpLayer>().unwrap();
+
+            match udp_layer.get_payload() {
+                UdpPayloads::Known(_type, _) => {
+                    (layer.get_source_address().to_string(), layer.get_destination_address().to_string(), udp_layer.get_type().to_string())
+                }
+                _ => {
+                    (layer.get_source_address().to_string(), layer.get_destination_address().to_string(), layer.get_next_header().to_string())
+                }
+            }
+        }
+        _ => {
+            (layer.get_source_address().to_string(), layer.get_destination_address().to_string(), layer.get_next_header().to_string())
+        }
+    }
 }

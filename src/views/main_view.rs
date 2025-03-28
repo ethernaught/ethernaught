@@ -1,7 +1,8 @@
 use std::path::PathBuf;
 use gtk::{gdk, Builder, Container, CssProvider, Paned, StyleContext};
-use gtk::prelude::{BuilderExtManual, Cast, ContainerExt, CssProviderExt, ImageExt, LabelExt, PanedExt, StyleContextExt, WidgetExt, WidgetExtManual};
+use gtk::prelude::{BuilderExtManual, Cast, ContainerExt, CssProviderExt, ImageExt, LabelExt, ListModelExtManual, PanedExt, StyleContextExt, WidgetExt, WidgetExtManual};
 use pcap::devices::Device;
+use pcap::pcap::pcap::Pcap;
 use pcap::utils::data_link_types::DataLinkTypes;
 use crate::views::inter::stackable::Stackable;
 use crate::views::packets_view::PacketsView;
@@ -105,7 +106,9 @@ impl MainView {
         }
     }
 
-    pub fn from_file(window: &MainWindow, path: &PathBuf) -> Self {
+    pub fn from_pcap(window: &MainWindow, path: &PathBuf) -> Self {
+        let pcap = Pcap::from_file(path.to_str().unwrap()).expect("Couldn't parse pcap");
+
         let builder = Builder::from_resource("/net/ethernaught/rust/res/ui/gtk3/main_view.ui");
 
         let provider = CssProvider::new();
@@ -131,15 +134,19 @@ impl MainView {
         activity_pane.set_child_shrink(content_pane.upcast_ref::<Container>(), false);
         activity_pane.set_child_resize(content_pane.upcast_ref::<Container>(), true);
 
-        let packets = PacketsView::new();
+        let mut packets = PacketsView::new();
         content_pane.add(&packets.root);
 
         let sidebar = SidebarView::new();
         content_pane.add(&sidebar.root);
         content_pane.set_child_shrink(&sidebar.root, false);
 
-        let show_title_bar = Box::new(show_title_bar(window, "Any", DataLinkTypes::Null));
+        let show_title_bar = Box::new(show_title_bar(window, path.file_name().unwrap().to_str().unwrap(), pcap.get_data_link_type()));
         //show_title_bar(true);
+
+        for (i, p) in pcap.get_packets().iter().enumerate() {
+            packets.add(p, i as i32 + 1);
+        }
 
         Self {
             show_title_bar,
