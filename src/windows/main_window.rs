@@ -1,4 +1,7 @@
+use std::cell::RefCell;
+use std::collections::HashMap;
 use std::process::exit;
+use std::rc::Rc;
 use gtk::{gdk, Application, ApplicationWindow, Builder, CssProvider, Stack, StyleContext, Window};
 use gtk::glib::Propagation::Proceed;
 use gtk::prelude::{ActionGroupExt, BuilderExtManual, ContainerExt, CssProviderExt, GtkWindowExt, StackExt, WidgetExt};
@@ -15,7 +18,8 @@ pub struct MainWindow {
     pub window: ApplicationWindow,
     pub title_bar: TitleBar,
     pub stack: Stack,
-    pub bottom_bar: BottomBar
+    pub bottom_bar: BottomBar,
+    pub views: Rc<RefCell<HashMap<String, Box<dyn View>>>>
 }
 
 impl MainWindow {
@@ -63,6 +67,29 @@ impl MainWindow {
             .object("stack")
             .expect("Failed to get the 'stack' from window.ui");
 
+        let views: Rc<RefCell<HashMap<String, Box<dyn View>>>> = Rc::new(RefCell::new(HashMap::new()));
+
+        stack.connect_visible_child_name_notify({
+            let views = views.clone();
+            let mut previous = RefCell::new(String::new());
+            move |stack| {
+                let current = stack.visible_child_name().unwrap_or_default().to_string();
+
+                if previous.borrow().is_empty() {
+                    *previous.borrow_mut() = current;
+                    return;
+                }
+
+                views.borrow().get(&*previous.borrow()).unwrap().on_pause();
+
+                if views.borrow().contains_key(&current) {
+                    views.borrow().get(&current).unwrap().on_resume();
+                }
+
+                *previous.borrow_mut() = current;
+            }
+        });
+
         stack.show();
 
         let bottom_bar = BottomBar::new();
@@ -75,7 +102,9 @@ impl MainWindow {
         });
 
         let view = DevicesView::new(&window, devices);
-        stack.add_named(&view.root, &view.get_name());
+
+
+
 
         window.connect_button_press_event({
             let window = window.clone();
@@ -100,12 +129,23 @@ impl MainWindow {
             window,
             title_bar,
             stack,
-            bottom_bar
+            bottom_bar,
+            views
         };
+
+        _self.add_view(Box::new(view));
+
 
         register_window_actions(&_self);
         register_stack_actions(&_self);
 
         _self
+    }
+
+    pub fn add_view(&self, view: Box<dyn View>) {
+        let name = view.get_name();
+        self.stack.add_named(view.get_root(), &name);
+        self.stack.set_visible_child_name(&name);
+        self.views.borrow_mut().insert(name, view);
     }
 }

@@ -1,4 +1,6 @@
 use std::cell::RefCell;
+use std::collections::HashMap;
+use std::rc::Rc;
 use gtk::gdk::{EventMask, WindowAttr, WindowType, WindowWindowClass, RGBA};
 use gtk::{gdk, glib, Allocation, Buildable, Container, Misc, StateFlags, Widget};
 use gtk::cairo::Context;
@@ -10,8 +12,9 @@ use gtk::subclass::prelude::{ContainerImpl, ObjectImpl, ObjectSubclass, ObjectSu
 
 #[derive(Default)]
 pub struct ViewStackImpl {
-    pub names: RefCell<Vec<String>>,
-    pub children: RefCell<Vec<Widget>>
+    names: RefCell<Vec<String>>,
+    children: RefCell<Vec<Widget>>,
+    //event_listeners: Rc<RefCell<Vec<String, Box<dyn Fn(Box<dyn Event>)>>>>
 }
 
 #[glib::object_subclass]
@@ -149,6 +152,14 @@ impl ViewStack {
     }
 
     pub fn get_selected_index(&self) -> usize {
-        0
+        self.imp().children.borrow().len()
+    }
+
+    pub fn connect_stack_change(&self) {
+
+    }
+
+    pub fn connect_(&self) {
+
     }
 }

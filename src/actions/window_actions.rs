@@ -44,22 +44,7 @@ pub fn register_stack_actions(window: &MainWindow) {
         move |_, param| {
             if let Some(param) = param {
                 let device = Device::unserialize(&param.get::<Vec<u8>>().unwrap());
-
-                let view = MainView::from_device(&window, &device);
-
-                let name = view.get_name();
-                window.stack.add_named(&view.root, &name);
-                window.stack.set_visible_child_name(&name);
-
-
-                /*
-                window.stack.connect_visible_child_name_notify(move |stack| {
-                    if let Some(visible_child) = stack.visible_child() {
-                        let child_name = visible_child.widget_name();
-                        println!("✅ Visible child changed: {}", child_name);
-                    }
-                });
-                */
+                window.add_view(Box::new(MainView::from_device(&window, &device)));
             }
         }
     });
