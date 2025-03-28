@@ -48,14 +48,14 @@
         </child>
 
         <child>
-            <object class="GtkPaned" id="main_activity_pane">
+            <object class="GtkPaned" id="activity_pane">
                 <property name="name">main_activity_pane</property>
                 <property name="visible">True</property>
                 <property name="orientation">vertical</property>
                 <property name="position">400</property>
 
                 <child>
-                    <object class="GtkPaned" id="main_activity_content_pane">
+                    <object class="GtkPaned" id="content_pane">
                         <property name="name">main_activity_content_pane</property>
                         <property name="visible">True</property>
                         <property name="orientation">horizontal</property>

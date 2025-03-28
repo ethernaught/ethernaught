@@ -1,13 +1,16 @@
-use gtk::{gdk, Builder, Container, CssProvider, StyleContext};
-use gtk::prelude::{BuilderExtManual, Cast, CssProviderExt, ImageExt, LabelExt, StyleContextExt, WidgetExt, WidgetExtManual};
+use gtk::{gdk, Builder, Container, CssProvider, Paned, StyleContext};
+use gtk::prelude::{BuilderExtManual, Cast, ContainerExt, CssProviderExt, ImageExt, LabelExt, StyleContextExt, WidgetExt, WidgetExtManual};
 use pcap::devices::Device;
 use pcap::utils::data_link_types::DataLinkTypes;
 use crate::views::inter::view::View;
+use crate::views::packets_view::PacketsView;
 use crate::windows::main_window::MainWindow;
 
 pub struct MainView {
     pub show_title_bar: Box<dyn Fn(bool)>,
-    pub root: gtk::Box
+    pub root: gtk::Box,
+    pub activity_pane: Paned,
+    pub content_pane: Paned
 }
 
 impl MainView {
@@ -28,12 +31,26 @@ impl MainView {
             .object("root")
             .expect("Couldn't find 'root' in main_view.ui");
 
+        let activity_pane: Paned = builder
+            .object("activity_pane")
+            .expect("Couldn't find 'activity_pane' in main_view.ui");
+
+        let content_pane: Paned = builder
+            .object("content_pane")
+            .expect("Couldn't find 'content_pane' in main_view.ui");
+
+        let packets = PacketsView::new();
+        content_pane.add(&packets.root);
+
+
         let show_title_bar = Box::new(show_title_bar(window, device));
         show_title_bar(true);
 
         Self {
             show_title_bar,
-            root
+            root,
+            activity_pane,
+            content_pane
         }
     }
 }
