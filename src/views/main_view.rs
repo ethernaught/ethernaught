@@ -4,6 +4,7 @@ use pcap::devices::Device;
 use pcap::utils::data_link_types::DataLinkTypes;
 use crate::views::inter::stackable::Stackable;
 use crate::views::packets_view::PacketsView;
+use crate::views::sidebar_view::SidebarView;
 use crate::windows::main_window::MainWindow;
 
 pub struct MainView {
@@ -43,6 +44,12 @@ impl MainView {
 
         let packets = PacketsView::new();
         content_pane.add(&packets.root);
+
+
+        let sidebar = SidebarView::new();
+        content_pane.add(&sidebar.root);
+        content_pane.set_child_shrink(&sidebar.root, false);
+
 
 
         let show_title_bar = Box::new(show_title_bar(window, device));
