@@ -42,32 +42,33 @@ impl DevicesView {
             let devices = devices.clone();
             move |_, row| {
                 if row.index() > 0 {
-                    //let mut bundle = Bundle::new();
-                    //bundle.put("type", String::from("device"));
-                    //bundle.put("device", devices_clone[row.index() as usize - 1].clone());
-                    //context.start_activity(Box::new(MainActivity::new(context.clone())), Some(bundle));
-                    //let view = MainView::from_device(&devices[row.index() as usize - 1]);
-
-                    //let variant = Variant::from(&devices[row.index() as usize - 1].serialize().as_slice());
-
                     let mut dict = VariantDict::new(None);
                     dict.insert_value("name", &Variant::from("main_view"));
+                    dict.insert_value("type", &Variant::from("device"));
                     dict.insert_value("device", &Variant::from(&devices[row.index() as usize - 1].serialize().as_slice()));
                     let params = dict.end();
 
                     window.activate_action("open", Some(&params));
-
                     return;
                 }
 
+                let mut dict = VariantDict::new(None);
+                dict.insert_value("name", &Variant::from("main_view"));
+                dict.insert_value("type", &Variant::from("any"));
+                let params = dict.end();
+
+                window.activate_action("open", Some(&params));
                 //let mut bundle = Bundle::new();
                 //bundle.put("type", String::from("device"));
                 //context.start_activity(Box::new(MainActivity::new(context.clone())), Some(bundle));
             }
         });
 
+        let device_item = DeviceListItem::new();
+        devices_list.add(&device_item.root);
+
         devices.iter().for_each(|d| {
-            let device_item = DeviceListItem::new(d);
+            let device_item = DeviceListItem::from_device(d);
             devices_list.add(&device_item.root);
         });
 

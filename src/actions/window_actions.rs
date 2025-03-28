@@ -1,7 +1,7 @@
 use gtk::gio::{SimpleAction, SimpleActionGroup};
 use gtk::prelude::{ActionMapExt, ContainerExt, GtkWindowExt, ProxyResolverExt, StackExt, ToVariant, WidgetExt};
 use gtk::{glib, ApplicationWindow, Stack};
-use gtk::glib::{VariantDict, VariantTy};
+use gtk::glib::{PropertyGet, VariantDict, VariantTy};
 use pcap::devices::Device;
 use crate::pcap_ext::devices::Serialize;
 use crate::views::inter::stackable::Stackable;
@@ -46,19 +46,55 @@ pub fn register_stack_actions(window: &MainWindow) {
         move |_, param| {
             if let Some(param) = param {
                 if let Some(dict) = param.get::<VariantDict>() {
-                    /*
-                    match dict.lookup::<String>("name").ok() {
-                        Some(_) => {}
-                        None => {}
-                    }
-                    */
+                    if let Some(name) = dict.lookup::<String>("name").ok().unwrap() {
+                        match window.stack.child_by_name(&name) {
+                            Some(child) => {
+                                let pos = window.stack.child_position(&child) as usize;
 
-                    println!("{:?}", dict.lookup::<Vec<u8>>("device"));
+                                let children = window.stack.children();
+                                for i in (pos..children.len()).rev() {
+                                    let name = window.stack.child_name(&children[i]).unwrap().to_string();
+                                    window.stack.remove(&children[i]);
+                                    window.views.borrow_mut().remove(&name);
+                                }
+                            }
+                            None => {
+                                let children = window.stack.children();
+                                if let Some(current) = window.stack.visible_child() {
+                                    if let Some(pos) = children.iter().position(|child| child == &current) {
+                                        for i in (pos + 1..children.len()).rev() {
+                                            let name = window.stack.child_name(&children[i]).unwrap().to_string();
+                                            window.stack.remove(&children[i]);
+                                            window.views.borrow_mut().remove(&name);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        let view = match name.as_str() {
+                            "main_view" => {
+                                if let Some(_type) = dict.lookup::<String>("type").ok().unwrap() {
+                                    match _type.as_str() {
+                                        "device" => {
+                                            let device =  Device::unserialize(&dict.lookup::<Vec<u8>>("device").ok().unwrap().unwrap());
+                                            Box::new(MainView::from_device(&window, &device))
+                                        }
+                                        "any" => {
+                                            Box::new(MainView::new(&window))
+                                        }
+                                        _ => unimplemented!()
+                                    }
+                                } else {
+                                    unimplemented!()
+                                }
+                            }
+                            _ => unimplemented!()
+                        };
+
+                        window.add_view(view);
+                    }
                 }
-                /*
-                let device = Device::unserialize(&param.get::<Vec<u8>>().unwrap());
-                window.add_view(Box::new(MainView::from_device(&window, &device)));
-                */
             }
         }
     });

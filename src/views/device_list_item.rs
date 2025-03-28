@@ -16,7 +16,43 @@ pub struct DeviceListItem {
 
 impl DeviceListItem {
 
-    pub fn new(device: &Device) -> Self {
+    pub fn new() -> Self {
+        let builder = Builder::from_resource("/net/ethernaught/rust/res/ui/gtk3/device_list_item.ui");
+        let root: ListBoxRow = builder
+            .object("root")
+            .expect("Couldn't find 'root' in device_list_item.ui");
+
+        let icon: Image = builder
+            .object("icon")
+            .expect("Couldn't find 'icon' in device_list_item.ui");
+
+        root.style_context().add_class("any");
+        icon.set_resource(Some("/net/ethernaught/rust/res/icons/ic_any.svg"));
+
+        let title: Label = builder
+            .object("title")
+            .expect("Couldn't find 'title' in device_list_item.ui");
+        title.set_label("Any");
+
+        let description: Label = builder
+            .object("description")
+            .expect("Couldn't find 'description' in device_list_item.ui");
+        description.set_label("[Promiscuous]");
+
+        let graph: Graph = builder
+            .object("graph")
+            .expect("Couldn't find 'graph' in device_list_item.ui");
+
+        Self {
+            root,
+            icon,
+            title,
+            description,
+            graph
+        }
+    }
+
+    pub fn from_device(device: &Device) -> Self {
         let builder = Builder::from_resource("/net/ethernaught/rust/res/ui/gtk3/device_list_item.ui");
         let root: ListBoxRow = builder
             .object("root")
