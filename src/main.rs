@@ -22,6 +22,7 @@ use gtk::glib::once_cell::sync::Lazy;
 use pcap::devices::Device;
 use gtk::prelude::*;
 use pcap::capture::Capture;
+use pcap::utils::interface_flags::InterfaceFlags;
 use crate::app::App;
 use crate::bus::events::permission_event::PermissionEvent;
 use crate::bus::event_bus::{register_event, send_event};
@@ -101,21 +102,24 @@ fn main() {
                         }
                     }
                     Err(_) => {
-                        //tx.send(Box::new(PermissionEvent::new(false))).unwrap();
+                        send_event(Box::new(PermissionEvent::new(false)));
                     }
                 }
             }
             Err(_) => {
-                //tx.send(Box::new(PermissionEvent::new(false))).unwrap();
+                event_bus::send_event(Box::new(PermissionEvent::new(false)));
             }
         }
     });
+
+
+    let mut devices = Device::list().expect("Failed to get device list");
 
     #[cfg(target_os = "macos")]
     thread::spawn(move || {
         let mut captures = Vec::new();
         devices.iter().for_each(|device| {
-            if device.get_flags().contains(&InterfaceFlags::Running) {
+            if device.flags.contains(&InterfaceFlags::Running) {
                 match Capture::from_device(device) {
                     Ok(cap) => {
                         cap.set_immediate_mode(true);
@@ -124,13 +128,13 @@ fn main() {
                                 captures.push(cap);
                             }
                             Err(_) => {
-                                tx.send(Box::new(PermissionEvent::new(false))).unwrap();
+                                send_event(Box::new(PermissionEvent::new(false)));
                                 return;
                             }
                         }
                     }
                     Err(_) => {
-                        tx.send(Box::new(PermissionEvent::new(false))).unwrap();
+                        send_event(Box::new(PermissionEvent::new(false)));
                         return;
                     }
                 }
@@ -154,10 +158,10 @@ fn main() {
                     Ok((address, packet)) => {
                         let device = cap.get_device().unwrap();
                         *if_bytes.entry(-1).or_insert(0) += packet.len();
-                        *if_bytes.entry(device.get_index()).or_insert(0) += packet.len();
+                        *if_bytes.entry(device.index).or_insert(0) += packet.len();
                         //*if_bytes.entry(address.sll_ifindex).or_insert(0) += packet.len();
 
-                        tx.send(Box::new(CaptureEvent::new(device.get_index(), packet))).unwrap();
+                        send_event(Box::new(CaptureEvent::new(device.index, packet)));
                     }
                     _ => {}
                 }
@@ -171,8 +175,7 @@ fn main() {
             if now-time >= 1000 {
                 time = now;
 
-                let event = TransmittedEvent::new(if_bytes.clone());
-                tx.send(Box::new(event)).unwrap();
+                send_event(Box::new(TransmittedEvent::new(if_bytes.clone())));
 
                 if_bytes.clear();
             }
