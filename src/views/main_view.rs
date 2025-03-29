@@ -7,7 +7,7 @@ use gtk::prelude::{ActionMapExt, BuilderExtManual, Cast, ContainerExt, CssProvid
 use pcap::devices::Device;
 use pcap::pcap::pcap::Pcap;
 use pcap::utils::data_link_types::DataLinkTypes;
-use crate::bus::event_bus::register_event;
+use crate::bus::event_bus::{pause_event, register_event, resume_event, unregister_event};
 use crate::bus::events::capture_event::CaptureEvent;
 use crate::views::inter::stackable::Stackable;
 use crate::views::packets_view::PacketsView;
@@ -20,7 +20,8 @@ pub struct MainView {
     pub activity_pane: Paned,
     pub content_pane: Paned,
     pub packets: PacketsView,
-    pub sidebar: Rc<RefCell<Option<SidebarView>>>
+    pub sidebar: Rc<RefCell<Option<SidebarView>>>,
+    pub event_listener: Option<RefCell<u32>>
 }
 
 impl MainView {
@@ -91,13 +92,13 @@ impl MainView {
         });
         content_pane.add(&packets.root);
 
-        let event_listener = RefCell::new(register_event("capture_event", {
+        let event_listener = Some(RefCell::new(register_event("capture_event", {
             let packets = packets.clone();
             move |event| {
                 let event = event.as_any().downcast_ref::<CaptureEvent>().unwrap();
                 packets.add(event.get_packet().clone());
             }
-        }));
+        }, true)));
 
         Self {
             show_title_bar,
@@ -105,7 +106,8 @@ impl MainView {
             activity_pane,
             content_pane,
             packets,
-            sidebar: Rc::new(RefCell::new(None))
+            sidebar: Rc::new(RefCell::new(None)),
+            event_listener
         }
     }
 
@@ -175,7 +177,7 @@ impl MainView {
         });
         content_pane.add(&packets.root);
 
-        let event_listener = RefCell::new(register_event("capture_event", {
+        let event_listener = Some(RefCell::new(register_event("capture_event", {
             let if_index = device.index;
             let packets = packets.clone();
             move |event| {
@@ -185,7 +187,7 @@ impl MainView {
                     packets.add(event.get_packet().clone());
                 }
             }
-        }));
+        }, true)));
 
         Self {
             show_title_bar,
@@ -193,7 +195,8 @@ impl MainView {
             activity_pane,
             content_pane,
             packets,
-            sidebar
+            sidebar,
+            event_listener
         }
     }
 
@@ -271,7 +274,8 @@ impl MainView {
             activity_pane,
             content_pane,
             packets,
-            sidebar
+            sidebar,
+            event_listener: None
         }
     }
 }
@@ -291,14 +295,25 @@ impl Stackable for MainView {
     }
 
     fn on_resume(&self) {
+        if let Some(event_listener) = &self.event_listener {
+            resume_event("transmitted_event", event_listener.borrow().clone());
+        }
+
         (self.show_title_bar)(true);
     }
 
     fn on_pause(&self) {
+        if let Some(event_listener) = &self.event_listener {
+            pause_event("transmitted_event", event_listener.borrow().clone());
+        }
+
         (self.show_title_bar)(false);
     }
 
     fn on_destroy(&self) {
+        if let Some(event_listener) = &self.event_listener {
+            unregister_event("transmitted_event", event_listener.borrow().clone());
+        }
     }
 }
 

@@ -15,7 +15,7 @@ thread_local! {
     static EVENT_BUS: RefCell<HashMap<String, HashMap<u32, CallbackState>>> = RefCell::new(HashMap::new());
 }
 
-pub fn register_event<F>(event: &str, callback: F) -> u32
+pub fn register_event<F>(event: &str, callback: F, paused: bool) -> u32
 where
     F: Fn(&Box<dyn Event>) + 'static,
 {
@@ -29,8 +29,8 @@ where
                 callback_id,
                 CallbackState {
                     callback: Box::new(callback),
-                    paused: false,
-                },
+                    paused
+                }
             );
     });
 

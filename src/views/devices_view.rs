@@ -96,7 +96,7 @@ impl DevicesView {
                     device_views.get(*pos).unwrap().graph.add_point(0);
                 }
             });
-        }));
+        }, false));
 
         Self {
             root,
