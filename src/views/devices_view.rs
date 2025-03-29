@@ -120,6 +120,8 @@ impl Stackable for DevicesView {
     }
 
     fn on_resume(&self) {
+        //clear all points on devices...
+
         resume_event("transmitted_event", self.event_listener.borrow().clone());
     }
 
