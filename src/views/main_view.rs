@@ -13,7 +13,9 @@ pub struct MainView {
     pub show_title_bar: Box<dyn Fn(bool)>,
     pub root: gtk::Box,
     pub activity_pane: Paned,
-    pub content_pane: Paned
+    pub content_pane: Paned,
+    pub packets: PacketsView,
+    pub sidebar: Option<SidebarView>,
 }
 
 impl MainView {
@@ -47,10 +49,6 @@ impl MainView {
         let packets = PacketsView::new();
         content_pane.add(&packets.root);
 
-        let sidebar = SidebarView::new();
-        content_pane.add(&sidebar.root);
-        content_pane.set_child_shrink(&sidebar.root, false);
-
         let show_title_bar = Box::new(show_title_bar(window, "Any", DataLinkTypes::Null));
         show_title_bar(true);
 
@@ -58,7 +56,9 @@ impl MainView {
             show_title_bar,
             root,
             activity_pane,
-            content_pane
+            content_pane,
+            packets,
+            sidebar: None
         }
     }
 
@@ -91,10 +91,6 @@ impl MainView {
         let packets = PacketsView::new();
         content_pane.add(&packets.root);
 
-        let sidebar = SidebarView::new();
-        content_pane.add(&sidebar.root);
-        content_pane.set_child_shrink(&sidebar.root, false);
-
         let show_title_bar = Box::new(show_title_bar(window, &device.name, device.data_link_type));
         show_title_bar(true);
 
@@ -102,7 +98,9 @@ impl MainView {
             show_title_bar,
             root,
             activity_pane,
-            content_pane
+            content_pane,
+            packets,
+            sidebar: None
         }
     }
 
@@ -137,10 +135,6 @@ impl MainView {
         let mut packets = PacketsView::new();
         content_pane.add(&packets.root);
 
-        let sidebar = SidebarView::new();
-        content_pane.add(&sidebar.root);
-        content_pane.set_child_shrink(&sidebar.root, false);
-
         let show_title_bar = Box::new(show_title_bar(window, path.file_name().unwrap().to_str().unwrap(), pcap.get_data_link_type()));
         //show_title_bar(true);
 
@@ -152,8 +146,32 @@ impl MainView {
             show_title_bar,
             root,
             activity_pane,
-            content_pane
+            content_pane,
+            packets,
+            sidebar: None
         }
+    }
+
+    pub fn open_sidebar(&mut self) {
+        let sidebar = SidebarView::new();
+        self.content_pane.add(&sidebar.root);
+        self.content_pane.set_child_shrink(&sidebar.root, false);
+        self.sidebar = Some(sidebar);
+    }
+
+    pub fn close_sidebar(&mut self) {
+        if let Some(sidebar) = self.sidebar.as_ref() {
+            self.content_pane.remove(&sidebar.root);
+            self.sidebar = None;
+        }
+    }
+
+    pub fn open_terminal(&mut self) {
+
+    }
+
+    pub fn close_terminal(&mut self) {
+
     }
 }
 

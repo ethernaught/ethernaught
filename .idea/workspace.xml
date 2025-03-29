@@ -9,9 +9,12 @@
   <component name="ChangeListManager">
     <list default="true" id="f0704e63-1929-42d3-83d7-8cbc904dc132" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/resources.gresources" beforeDir="false" afterPath="$PROJECT_DIR$/res/resources.gresources" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/ui/ethernaught_ui.xml" beforeDir="false" afterPath="$PROJECT_DIR$/res/ui/ethernaught_ui.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/actions/app_actions.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/actions/app_actions.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/actions/window_actions.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/actions/window_actions.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/oldui/application.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/oldui/application.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/views/main_view.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/main_view.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/packets_view.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/packets_view.rs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

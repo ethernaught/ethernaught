@@ -1,4 +1,4 @@
-use gtk::{glib, Application};
+use gtk::Application;
 use gtk::gio::SimpleAction;
 use gtk::prelude::{ActionMapExt, ApplicationExt};
 
