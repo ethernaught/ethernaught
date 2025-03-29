@@ -29,11 +29,9 @@ use crate::get_lib_path;
 use crate::views::utils::sidebar_expanders::{create_arp_layer_expander, create_dhcp_layer_expander, create_ethernet_layer_expander, create_icmp_layer_expander, create_icmpv6_layer_expander, create_ipv4_layer_expander, create_ipv6_layer_expander, create_sll2_layer_expander, create_tcp_layer_expander, create_udp_layer_expander};
 use crate::widgets::hex_editor::HexEditor;
 
-#[derive(Clone)]
 pub struct SidebarView {
     pub root: gtk::Box,
-    pub hex_editor: HexEditor,
-
+    pub hex_editor: HexEditor
 }
 
 impl SidebarView {

@@ -1,7 +1,9 @@
+use std::cell::RefCell;
 use gtk::{gdk, gio, ApplicationWindow, Builder, Container, CssProvider, Label, ListBox, StyleContext, Window};
 use gtk::glib::{Cast, Variant, VariantDict};
 use gtk::prelude::{ActionGroupExt, BuilderExtManual, ContainerExt, CssProviderExt, ListBoxExt, ListBoxRowExt, WidgetExt};
 use pcap::devices::Device;
+use pcap::utils::interface_flags::InterfaceFlags;
 use crate::bus::event_bus::register_event;
 use crate::bus::events::transmitted_event::TransmittedEvent;
 use crate::pcap_ext::devices::Serialize;
@@ -10,7 +12,8 @@ use crate::views::inter::stackable::Stackable;
 
 pub struct DevicesView {
     pub root: gtk::Box,
-    pub devices_list: ListBox
+    pub devices_list: ListBox,
+    pub event_listener: RefCell<usize>
 }
 
 impl DevicesView {
@@ -65,20 +68,36 @@ impl DevicesView {
         let device_item = DeviceListItem::new();
         devices_list.add(&device_item.root);
 
-        devices.iter().for_each(|d| {
-            let device_item = DeviceListItem::from_device(d);
+        let mut device_views = Vec::new();
+        let mut if_map = Vec::new();
+        let mut i = 0;
+        devices.iter().for_each(|device| {
+            if device.flags.contains(&InterfaceFlags::Running) {
+                if_map.push((i, device.index));
+            }
+            i += 1;
+
+            let device_item = DeviceListItem::from_device(device);
             devices_list.add(&device_item.root);
+            device_views.push(device_item);
         });
 
-        register_event("transmitted_event", |event| {
+        let event_listener = RefCell::new(register_event("transmitted_event", move |event| {
             let event = event.as_any().downcast_ref::<TransmittedEvent>().unwrap();
-            println!("{:?}", event);
-            devices_list.hide();
-        });
+
+            if_map.iter().for_each(|(pos, index)| {
+                if event.if_bytes.contains_key(index) {
+                    device_views.get(*pos).unwrap().graph.add_point(event.if_bytes.get(index).unwrap().clone() as u32);
+                } else {
+                    device_views.get(*pos).unwrap().graph.add_point(0);
+                }
+            });
+        }));
 
         Self {
             root,
-            devices_list
+            devices_list,
+            event_listener
         }
     }
 }

@@ -21,14 +21,13 @@ use pcap::packet::packet::Packet;
 use pcap::pcap::pcap::Pcap;
 use pcap::utils::data_link_types::DataLinkTypes;
 
-#[derive(Clone)]
 pub struct PacketsView {
     pub root: gtk::Box,
     pub search: Entry,
     pub scroll_layout: ScrolledWindow,
     pub tree_view: TreeView,
     pub model: ListStore,
-    pub packets: Rc<RefCell<Vec<Packet>>>
+    pub packets: RefCell<Vec<Packet>>
 }
 
 impl PacketsView {
@@ -103,7 +102,7 @@ impl PacketsView {
             scroll_layout,
             tree_view,
             model,
-            packets: Rc::new(RefCell::new(Vec::new()))
+            packets: RefCell::new(Vec::new())
         }
     }
 
@@ -196,7 +195,7 @@ impl PacketsView {
             scroll_layout,
             tree_view,
             model,
-            packets: Rc::new(RefCell::new(pcap.packets))
+            packets: RefCell::new(pcap.packets)
         }
     }
 

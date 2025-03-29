@@ -17,6 +17,7 @@ use std::path::PathBuf;
 use std::process::{exit, Command};
 use std::thread::sleep;
 use std::time::{Duration, SystemTime, UNIX_EPOCH};
+use gtk::glib;
 use gtk::glib::once_cell::sync::Lazy;
 use pcap::devices::Device;
 use gtk::prelude::*;
