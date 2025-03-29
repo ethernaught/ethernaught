@@ -7,6 +7,8 @@ use gtk::prelude::{ActionMapExt, BuilderExtManual, Cast, ContainerExt, CssProvid
 use pcap::devices::Device;
 use pcap::pcap::pcap::Pcap;
 use pcap::utils::data_link_types::DataLinkTypes;
+use crate::bus::event_bus::register_event;
+use crate::bus::events::capture_event::CaptureEvent;
 use crate::views::inter::stackable::Stackable;
 use crate::views::packets_view::PacketsView;
 use crate::views::sidebar_view::SidebarView;
@@ -89,6 +91,14 @@ impl MainView {
         });
         content_pane.add(&packets.root);
 
+        let event_listener = RefCell::new(register_event("capture_event", {
+            let packets = packets.clone();
+            move |event| {
+                let event = event.as_any().downcast_ref::<CaptureEvent>().unwrap();
+                packets.add(event.get_packet().clone());
+            }
+        }));
+
         Self {
             show_title_bar,
             root,
@@ -164,6 +174,18 @@ impl MainView {
             }
         });
         content_pane.add(&packets.root);
+
+        let event_listener = RefCell::new(register_event("capture_event", {
+            let if_index = device.index;
+            let packets = packets.clone();
+            move |event| {
+                let event = event.as_any().downcast_ref::<CaptureEvent>().unwrap();
+
+                if event.get_if_index() == if_index {
+                    packets.add(event.get_packet().clone());
+                }
+            }
+        }));
 
         Self {
             show_title_bar,

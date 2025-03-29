@@ -21,6 +21,7 @@ use pcap::packet::packet::Packet;
 use pcap::pcap::pcap::Pcap;
 use pcap::utils::data_link_types::DataLinkTypes;
 
+#[derive(Clone)]
 pub struct PacketsView {
     pub root: gtk::Box,
     pub search: Entry,
