@@ -19,12 +19,13 @@
                 <property name="orientation">horizontal</property>
 
                 <child>
-                    <object class="GtkButton" id="replay_button">
+                    <object class="GtkButton">
                         <property name="name">replay_button</property>
                         <property name="tooltip-text">Replay Packet</property>
                         <property name="visible">True</property>
                         <property name="width-request">16</property>
                         <property name="height-request">16</property>
+                        <property name="action-name">dialog.replay</property>
                     </object>
                 </child>
 
@@ -36,12 +37,13 @@
                 </child>
 
                 <child>
-                    <object class="GtkButton" id="dismiss_button">
+                    <object class="GtkButton">
                         <property name="name">dismiss_button</property>
                         <property name="tooltip-text">Close</property>
                         <property name="visible">True</property>
                         <property name="width-request">16</property>
                         <property name="height-request">16</property>
+                        <property name="action-name">dialog.dismiss</property>
                     </object>
                 </child>
             </object>

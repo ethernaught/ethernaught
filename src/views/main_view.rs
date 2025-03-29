@@ -2,7 +2,8 @@ use std::cell::RefCell;
 use std::path::PathBuf;
 use std::rc::Rc;
 use gtk::{gdk, Builder, Container, CssProvider, Paned, StyleContext};
-use gtk::prelude::{BuilderExtManual, Cast, ContainerExt, CssProviderExt, ImageExt, LabelExt, ListModelExtManual, PanedExt, StyleContextExt, WidgetExt, WidgetExtManual};
+use gtk::gio::{SimpleAction, SimpleActionGroup};
+use gtk::prelude::{ActionMapExt, BuilderExtManual, Cast, ContainerExt, CssProviderExt, ImageExt, LabelExt, ListModelExtManual, PanedExt, StyleContextExt, WidgetExt, WidgetExtManual};
 use pcap::devices::Device;
 use pcap::pcap::pcap::Pcap;
 use pcap::utils::data_link_types::DataLinkTypes;
@@ -167,6 +168,25 @@ impl MainView {
         let show_title_bar = Box::new(show_title_bar(window, path.file_name().unwrap().to_str().unwrap(), pcap.get_data_link_type()));
 
         let sidebar = Rc::new(RefCell::new(None::<SidebarView>));
+
+        let actions = SimpleActionGroup::new();
+
+        root.insert_action_group("dialog", Some(&actions));
+
+        let action = SimpleAction::new("dismiss", None);
+        action.connect_activate({
+            let content_pane = content_pane.clone();
+            let sidebar = sidebar.clone();
+            move |_, _| {
+                let view = sidebar.borrow().as_ref().map(|view| view.root.clone());
+
+                if let Some(view) = view {
+                    content_pane.remove(&view);
+                    *sidebar.borrow_mut() = None;
+                }
+            }
+        });
+        actions.add_action(&action);
 
         let mut packets = PacketsView::from_pcap(pcap);
         packets.connect_select({

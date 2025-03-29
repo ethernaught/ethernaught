@@ -543,7 +543,7 @@ fn create_row_context_menu(row: &ListBoxRow, event: &EventButton, actions: &Simp
                     .map(|b| format!("{:02X}", b))
                     .collect::<Vec<_>>()
                     .join(" ");
-                format!("{}  {}", line_number, hex_values)
+                format!("{} {}", line_number, hex_values)
             })
             .collect::<Vec<_>>()
             .join("\n");
