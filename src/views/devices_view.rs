@@ -65,12 +65,15 @@ impl DevicesView {
             }
         });
 
-        let device_item = DeviceListItem::new();
-        devices_list.add(&device_item.root);
-
         let mut device_views = Vec::new();
         let mut if_map = Vec::new();
-        let mut i = 0;
+
+        let device_item = DeviceListItem::new();
+        devices_list.add(&device_item.root);
+        if_map.push((0, -1));
+        device_views.push(device_item);
+
+        let mut i = 1;
         devices.iter().for_each(|device| {
             if device.flags.contains(&InterfaceFlags::Running) {
                 if_map.push((i, device.index));
