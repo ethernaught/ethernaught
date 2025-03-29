@@ -34,9 +34,9 @@ pub fn unregister_event(event: &str, callback_id: usize) -> bool {
     false
 }
 
-pub fn send_event(event: &str, data: Box<dyn Event>) {
+pub fn send_event(data: Box<dyn Event>) {
     if let Ok(subs) = EVENT_BUS.lock() {
-        if let Some(callbacks) = subs.get(event) {
+        if let Some(callbacks) = subs.get(&data.get_name()) {
             for callback in callbacks {
                 callback(&data);
             }

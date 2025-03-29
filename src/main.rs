@@ -24,6 +24,7 @@ use pcap::capture::Capture;
 use crate::app::App;
 use crate::bus::events::permission_event::PermissionEvent;
 use crate::bus::event_bus::{register_event, send_event};
+use crate::bus::events::capture_event::CaptureEvent;
 use crate::database::sqlite::Database;
 
 //SIDEBAR SHOULD BE A FRAGMENT...
@@ -48,17 +49,10 @@ rustup override set nightly
 //MacOS Font goes to /Library/fonts
 
 fn main() {
-
-    /*
-    register_event("pp", |e| {
-        println!("Subscribing to events");
+    register_event("capture_event", |event| {
+        let event = event.as_any().downcast_ref::<CaptureEvent>().unwrap();
+        println!("{:?}", event.get_packet());
     });
-
-    let event = PermissionEvent::new(true);
-
-    send_event("pp", Box::new(event));
-    */
-
 
     #[cfg(target_os = "linux")]
     thread::spawn(move || {
@@ -81,7 +75,7 @@ fn main() {
                                     *if_bytes.entry(-1).or_insert(0) += packet.len();
                                     *if_bytes.entry(address.sll_ifindex).or_insert(0) += packet.len();
 
-                                    //tx.send(Box::new(CaptureEvent::new(address.sll_ifindex, packet))).unwrap();
+                                    send_event(Box::new(CaptureEvent::new(address.sll_ifindex, packet)));
                                 }
                                 _ => {}
                             }
