@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+    <requires lib="gtk+" version="3.24"/>
+
+    <object class="GtkBox" id="root">
+        <property name="name">main_activity_layout</property>
+        <property name="visible">True</property>
+        <property name="hexpand">True</property>
+        <property name="vexpand">True</property>
+        <property name="orientation">horizontal</property>
+
+        <child>
+            <object class="GtkBox">
+                <property name="name">side_navbar_layout</property>
+                <property name="visible">True</property>
+                <property name="vexpand">True</property>
+                <property name="orientation">vertical</property>
+                <property name="width-request">40</property>
+                <property name="spacing">10</property>
+
+                <child>
+                    <object class="GtkButton" id="plugins_button">
+                        <property name="name">plugins_button</property>
+                        <property name="tooltip-text">Plugins</property>
+                        <property name="visible">True</property>
+                        <property name="width-request">24</property>
+                        <property name="height-request">24</property>
+                    </object>
+                </child>
+
+                <child>
+                    <object class="GtkBox">
+                        <property name="visible">True</property>
+                        <property name="vexpand">True</property>
+                    </object>
+                </child>
+
+                <child>
+                    <object class="GtkButton" id="terminal_button">
+                        <property name="name">terminal_button</property>
+                        <property name="tooltip-text">Terminal</property>
+                        <property name="visible">True</property>
+                        <property name="width-request">24</property>
+                        <property name="height-request">24</property>
+                    </object>
+                </child>
+            </object>
+        </child>
+
+        <child>
+            <object class="GtkPaned" id="activity_pane">
+                <property name="name">main_activity_pane</property>
+                <property name="visible">True</property>
+                <property name="orientation">vertical</property>
+                <property name="position">400</property>
+
+                <child>
+                    <object class="GtkPaned" id="content_pane">
+                        <property name="name">main_activity_content_pane</property>
+                        <property name="visible">True</property>
+                        <property name="orientation">horizontal</property>
+                        <property name="position">700</property>
+                    </object>
+                </child>
+            </object>
+        </child>
+    </object>
+</interface>

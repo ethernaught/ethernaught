@@ -9,14 +9,8 @@
   <component name="ChangeListManager">
     <list default="true" id="f0704e63-1929-42d3-83d7-8cbc904dc132" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/resources.gresources" beforeDir="false" afterPath="$PROJECT_DIR$/res/resources.gresources" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/ui/sidebar_context_menu.xml" beforeDir="false" afterPath="$PROJECT_DIR$/res/ui/sidebar_context_menu.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ui/activity/devices_activity.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui/activity/devices_activity.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ui/activity/inter/activity.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui/activity/inter/activity.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ui/activity/main_activity.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui/activity/main_activity.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ui/activity/packet_playground_activity.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui/activity/packet_playground_activity.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ui/fragment/sidebar_fragment.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui/fragment/sidebar_fragment.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ui/handlers/expanders.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui/handlers/expanders.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/main_view.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/main_view.rs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -24,6 +18,13 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="RsBuildProfile:dev" />
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Rust File" />
+      </list>
+    </option>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
@@ -44,8 +45,8 @@
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.rust.reset.selective.auto.import&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/brad/CLionProjects/ethernaught/src/ui&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;v3&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/brad/CLionProjects/ethernaught/src/bus&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -60,9 +61,17 @@
 }</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/bus" />
+      <recent name="$PROJECT_DIR$/src/views/utils" />
+      <recent name="$PROJECT_DIR$/src/views" />
       <recent name="$PROJECT_DIR$/src/ui" />
       <recent name="$PROJECT_DIR$/res/ui" />
-      <recent name="$PROJECT_DIR$/src/ui/handlers/events" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/utils" />
+      <recent name="$PROJECT_DIR$/src/pcap" />
+      <recent name="$PROJECT_DIR$/res/ui/gtk3" />
+      <recent name="$PROJECT_DIR$/src" />
     </key>
   </component>
   <component name="RunManager">
@@ -110,6 +119,7 @@
       <workItem from="1742792481756" duration="1247000" />
       <workItem from="1742856271521" duration="779000" />
       <workItem from="1742862895673" duration="2038000" />
+      <workItem from="1743101508758" duration="4207000" />
     </task>
     <servers />
   </component>

@@ -2,11 +2,11 @@
 <interface>
     <requires lib="gtk+" version="3.24"/>
 
-    <object class="GtkListBoxRow" id="row">
+    <object class="GtkListBoxRow" id="root">
         <property name="visible">True</property>
 
         <child>
-            <object class="GtkBox" id="row_root">
+            <object class="GtkBox">
                 <property name="visible">True</property>
                 <property name="hexpand">True</property>
                 <property name="orientation">horizontal</property>
