@@ -1,62 +1,45 @@
-use std::cell::RefCell;
+use std::sync::{Mutex, Arc};
 use std::collections::HashMap;
-use std::rc::Rc;
-use std::sync::mpsc::Sender;
-use std::sync::mpsc::channel;
-use std::time::Duration;
-use gtk::glib;
-use gtk::glib::ControlFlow::Continue;
+use gtk::glib::once_cell::sync::Lazy;
 use crate::bus::events::inter::event::Event;
 
-#[derive(Clone)]
-pub struct EventBus {
-    tx: Sender<Box<dyn Event>>,
-    event_listeners: Rc<RefCell<HashMap<String, Box<dyn Fn(Box<dyn Event>)>>>>
+type EventCallback = Box<dyn Fn(&Box<dyn Event>) + Send + Sync>;
+
+static EVENT_BUS: Lazy<Arc<Mutex<HashMap<String, Vec<EventCallback>>>>> = Lazy::new(|| {
+    Arc::new(Mutex::new(HashMap::new()))
+});
+
+pub fn register_event<F>(event: &str, callback: F)
+where
+    F: Fn(&Box<dyn Event>) + Send + Sync + 'static,
+{
+    let mut subs = EVENT_BUS.lock().unwrap();
+    subs.entry(event.to_string())
+        .or_insert_with(Vec::new)
+        .push(Box::new(callback));
 }
 
-impl EventBus {
+pub fn unregister_event(event: &str, callback_id: usize) -> bool {
+    let mut subs = EVENT_BUS.lock().unwrap();
 
-    pub fn new() -> Self {
-        let (tx, rx) = channel();
-
-        let _self = Self {
-            tx,
-            event_listeners: Rc::new(RefCell::new(HashMap::new()))
-        };
-
-        let event_listeners = _self.event_listeners.clone();
-        glib::timeout_add_local(Duration::from_millis(10), move || {
-            loop {
-                match rx.try_recv() {
-                    Ok(event) => {
-                        if event_listeners.borrow().contains_key(&event.get_name()) {
-                            event_listeners.borrow().get(&event.get_name()).unwrap()(event);
-                        }
-                    }
-                    Err(_) => {
-                        break;
-                    }
-                }
+    if let Some(callbacks) = subs.get_mut(event) {
+        if callback_id < callbacks.len() {
+            callbacks.remove(callback_id);
+            if callbacks.is_empty() {
+                subs.remove(event);
             }
-
-            Continue
-        });
-
-        _self
+            return true;
+        }
     }
+    false
+}
 
-    pub fn get_sender(&self) -> Sender<Box<dyn Event>> {
-        self.tx.clone()
-    }
-
-    pub fn register_listener<F>(&self, name: &str, post: F)
-    where
-        F: Fn(Box<dyn Event>) + 'static
-    {
-        self.event_listeners.borrow_mut().insert(name.to_string(), Box::new(post));
-    }
-
-    pub fn remove_listener(&self, name: &str) {
-        self.event_listeners.borrow_mut().remove(name);
+pub fn send_event(event: &str, data: Box<dyn Event>) {
+    if let Ok(subs) = EVENT_BUS.lock() {
+        if let Some(callbacks) = subs.get(event) {
+            for callback in callbacks {
+                callback(&data);
+            }
+        }
     }
 }

@@ -17,12 +17,13 @@ use std::path::PathBuf;
 use std::process::{exit, Command};
 use std::thread::sleep;
 use std::time::{Duration, SystemTime, UNIX_EPOCH};
+use gtk::glib::once_cell::sync::Lazy;
 use pcap::devices::Device;
 use gtk::prelude::*;
 use pcap::capture::Capture;
 use crate::app::App;
 use crate::bus::events::permission_event::PermissionEvent;
-use crate::bus::test::{EventBus, EVENT_BUS};
+use crate::bus::event_bus::{register_event, send_event};
 use crate::database::sqlite::Database;
 
 //SIDEBAR SHOULD BE A FRAGMENT...
@@ -48,15 +49,16 @@ rustup override set nightly
 
 fn main() {
 
-    //let tx = self.context.get_event_handler().get_sender();
-
-    EVENT_BUS.subscribe("pp", |e| {
+    /*
+    register_event("pp", |e| {
         println!("Subscribing to events");
     });
 
     let event = PermissionEvent::new(true);
 
-    EVENT_BUS.publish("pp", Box::new(event));
+    send_event("pp", Box::new(event));
+    */
+
 
     #[cfg(target_os = "linux")]
     thread::spawn(move || {
