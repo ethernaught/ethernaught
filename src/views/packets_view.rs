@@ -1,8 +1,10 @@
 use std::cell::RefCell;
 use std::rc::Rc;
 use gtk::{gdk, Builder, Button, CellRendererText, Container, CssProvider, Entry, Image, Label, ListBox, ListStore, ScrolledWindow, StyleContext, TreeView, TreeViewColumn};
-use gtk::glib::{ObjectExt, Type};
+use gtk::glib::{ObjectExt, PropertyGet, ToValue, Type};
+use gtk::glib::Propagation::Proceed;
 use gtk::prelude::{AdjustmentExt, BuilderExtManual, CellLayoutExt, ContainerExt, CssProviderExt, GtkListStoreExtManual, LabelExt, ListBoxExt, ScrolledWindowExt, TreeModelExt, TreeViewColumnExt, TreeViewExt, WidgetExt};
+use gtk::subclass::container::Callback;
 use pcap::packet::layers::ethernet_frame::ethernet_frame::EthernetFrame;
 use pcap::packet::layers::ethernet_frame::inter::ethernet_types::EthernetTypes;
 use pcap::packet::layers::ip::inter::ip_protocols::IpProtocols;
@@ -25,7 +27,8 @@ pub struct PacketsView {
     pub search: Entry,
     pub scroll_layout: ScrolledWindow,
     pub tree_view: TreeView,
-    pub model: ListStore
+    pub model: ListStore,
+    pub packets: Rc<RefCell<Vec<Packet>>>
 }
 
 impl PacketsView {
@@ -99,11 +102,126 @@ impl PacketsView {
             search,
             scroll_layout,
             tree_view,
-            model
+            model,
+            packets: Rc::new(RefCell::new(Vec::new()))
         }
     }
 
-    pub fn add(&self, packet: &Packet, packet_number: i32) {
+    pub fn from_pcap(pcap: Pcap) -> Self {
+        let builder = Builder::from_resource("/net/ethernaught/rust/res/ui/gtk3/packets_view.ui");
+
+        let root: gtk::Box = builder
+            .object("root")
+            .expect("Couldn't find 'root' in packet_view.ui");
+
+        let search: Entry = builder
+            .object("search")
+            .expect("Couldn't find 'search' in packet_view.ui");
+
+        let scroll_layout: ScrolledWindow = builder
+            .object("list_scroll_layout")
+            .expect("Couldn't find 'list_scroll_layout' in packet_view.ui");
+
+        let tree_view: TreeView = builder
+            .object("tree_view")
+            .expect("Couldn't find 'tree_view' in packet_view.ui");
+        let model = ListStore::new(&[Type::U32, Type::STRING, Type::STRING, Type::STRING, Type::STRING, Type::STRING, Type::STRING]);
+
+        tree_view.set_model(Some(&model));
+
+        init_column(&tree_view, "No.", 0, 100);
+        init_column(&tree_view, "Time", 1, 150);
+        init_column(&tree_view, "Source", 2, 180);
+        init_column(&tree_view, "Destination", 3, 180);
+        init_column(&tree_view, "Protocol", 4, 80);
+        init_column(&tree_view, "Length", 5, 80);
+        init_column(&tree_view, "Info", 6, 80);
+
+        let vadj = Rc::new(scroll_layout.vadjustment());
+        let needs_scroll = Rc::new(RefCell::new(false));
+        let user_scrolled_up = Rc::new(RefCell::new(false));
+
+        {
+            let vadj = vadj.clone();
+            let user_scrolled_up = user_scrolled_up.clone();
+            vadj.connect_value_changed(move |adj| {
+                let is_at_bottom = (adj.upper() - adj.value() - adj.page_size()).abs() < 100.0;
+                *user_scrolled_up.borrow_mut() = !is_at_bottom;
+            });
+        }
+
+        model.connect_row_inserted({
+            let vadj = vadj.clone();
+            let needs_scroll = needs_scroll.clone();
+            let user_scrolled_up = user_scrolled_up.clone();
+
+            move |_, _, _| {
+                if !*user_scrolled_up.borrow() {
+                    *needs_scroll.borrow_mut() = true;
+                }
+
+                let vadj = vadj.clone();
+                let needs_scroll = needs_scroll.clone();
+                let user_scrolled_up = user_scrolled_up.clone();
+
+                if *needs_scroll.borrow() && !*user_scrolled_up.borrow() {
+                    *needs_scroll.borrow_mut() = false;
+                    vadj.set_value(vadj.upper() - vadj.page_size());
+                }
+            }
+        });
+
+        for (i, packet) in pcap.get_packets().iter().enumerate() {
+            let (frame_time,
+                source,
+                destination,
+                protocol,
+                packet_length) = Self::get_model_values(&packet);
+
+            model.insert_with_values(None, &[
+                (0, &(i as u32)),
+                (1, &frame_time),
+                (2, &source),
+                (3, &destination),
+                (4, &protocol),
+                (5, &packet_length),
+                //(6, &"TODO".to_string()),
+            ]);
+            //self.add_to_model(p, i as i32 + 1);
+        }
+
+        Self {
+            root,
+            search,
+            scroll_layout,
+            tree_view,
+            model,
+            packets: Rc::new(RefCell::new(pcap.packets))
+        }
+    }
+
+    pub fn add(&self, packet: Packet) {
+        let (frame_time,
+            source,
+            destination,
+            protocol,
+            packet_length) = Self::get_model_values(&packet);
+
+        let packet_total = self.packets.borrow().len() as u32;
+
+        self.model.insert_with_values(None, &[
+            (0, &packet_total),
+            (1, &frame_time),
+            (2, &source),
+            (3, &destination),
+            (4, &protocol),
+            (5, &packet_length),
+            //(6, &"TODO".to_string()),
+        ]);
+        self.packets.borrow_mut().push(packet);
+    }
+
+    fn get_model_values(packet: &Packet) -> (String, String, String, String, String) {
         let (source, destination, protocol) = match packet.get_data_link_type() {
             DataLinkTypes::En10mb => {
                 let ethernet_frame = packet.get_frame().as_any().downcast_ref::<EthernetFrame>().unwrap();
@@ -179,15 +297,32 @@ impl PacketsView {
         let frame_time = packet.get_frame_time().to_string();
         let packet_length = packet.len().to_string();
 
-        self.model.insert_with_values(None, &[
-            (0, &packet_number),
-            (1, &frame_time),
-            (2, &source),
-            (3, &destination),
-            (4, &protocol),
-            (5, &packet_length),
-            //(6, &"TODO".to_string()),
-        ]);
+        (frame_time, source, destination, protocol, packet_length)
+    }
+
+    pub fn connect_select<F>(&self, callback: F)
+    where
+        F: Fn(&Packet) + 'static
+    {
+        self.tree_view.connect_button_press_event({
+            let packets = self.packets.clone();
+            move |tree_view, event| {
+                if event.button() == 1 {
+                    let (x, y) = event.position();
+
+                    let path = tree_view.path_at_pos(x as i32, y as i32);
+
+                    if let Some((Some(path), _column, _x, _y)) = path {
+                        let model = tree_view.model().unwrap();
+                        let index = model.value(&model.iter(&path).unwrap(), 0).get::<u32>().unwrap() - 1;
+
+                        callback(packets.borrow().get(index as usize).unwrap());
+                    }
+                }
+
+                Proceed
+            }
+        });
     }
 }
 

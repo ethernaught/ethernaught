@@ -132,15 +132,15 @@ impl MainView {
         activity_pane.set_child_shrink(content_pane.upcast_ref::<Container>(), false);
         activity_pane.set_child_resize(content_pane.upcast_ref::<Container>(), true);
 
-        let mut packets = PacketsView::new();
-        content_pane.add(&packets.root);
-
         let show_title_bar = Box::new(show_title_bar(window, path.file_name().unwrap().to_str().unwrap(), pcap.get_data_link_type()));
         //show_title_bar(true);
 
-        for (i, p) in pcap.get_packets().iter().enumerate() {
-            packets.add(p, i as i32 + 1);
-        }
+        let mut packets = PacketsView::from_pcap(pcap);
+        packets.connect_select(move |packet| {
+            println!("{:?}", packet);
+        });
+        content_pane.add(&packets.root);
+
 
         Self {
             show_title_bar,
