@@ -118,6 +118,7 @@
                         <property name="visible">True</property>
                         <property name="width-request">24</property>
                         <property name="height-request">24</property>
+                        <property name="action-name">win.start</property>
                     </object>
                 </child>
 
@@ -128,6 +129,7 @@
                         <property name="visible">False</property>
                         <property name="width-request">24</property>
                         <property name="height-request">24</property>
+                        <property name="action-name">win.stop</property>
                     </object>
                 </child>
             </object>

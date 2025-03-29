@@ -7,6 +7,7 @@ use gtk::prelude::{ActionMapExt, BuilderExtManual, Cast, ContainerExt, CssProvid
 use pcap::devices::Device;
 use pcap::pcap::pcap::Pcap;
 use pcap::utils::data_link_types::DataLinkTypes;
+use crate::actions::window_actions::open_about_dialog;
 use crate::bus::event_bus::{pause_event, register_event, resume_event, unregister_event};
 use crate::bus::events::capture_event::CaptureEvent;
 use crate::views::inter::stackable::Stackable;
@@ -189,6 +190,18 @@ impl MainView {
             }
         }, true)));
 
+
+
+        let action = SimpleAction::new("start", None);
+        action.connect_activate({
+            let event_listener = event_listener.as_ref().unwrap().clone();
+            move |_, _| {
+                println!("PLAY");
+                resume_event("capture_event", event_listener.borrow().clone());
+            }
+        });
+        window.window.add_action(&action);
+
         Self {
             show_title_bar,
             root,
@@ -296,7 +309,7 @@ impl Stackable for MainView {
 
     fn on_resume(&self) {
         if let Some(event_listener) = &self.event_listener {
-            resume_event("transmitted_event", event_listener.borrow().clone());
+            resume_event("capture_event", event_listener.borrow().clone());
         }
 
         (self.show_title_bar)(true);
@@ -304,7 +317,7 @@ impl Stackable for MainView {
 
     fn on_pause(&self) {
         if let Some(event_listener) = &self.event_listener {
-            pause_event("transmitted_event", event_listener.borrow().clone());
+            pause_event("capture_event", event_listener.borrow().clone());
         }
 
         (self.show_title_bar)(false);
@@ -312,7 +325,7 @@ impl Stackable for MainView {
 
     fn on_destroy(&self) {
         if let Some(event_listener) = &self.event_listener {
-            unregister_event("transmitted_event", event_listener.borrow().clone());
+            unregister_event("capture_event", event_listener.borrow().clone());
         }
     }
 }
