@@ -5,4 +5,5 @@ pub mod main_view;
 pub mod devices_view;
 pub mod device_list_item;
 pub mod packets_view;
-mod sidebar_view;
+pub mod sidebar_view;
+pub mod utils;

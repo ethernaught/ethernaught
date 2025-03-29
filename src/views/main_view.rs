@@ -1,4 +1,6 @@
+use std::cell::RefCell;
 use std::path::PathBuf;
+use std::rc::Rc;
 use gtk::{gdk, Builder, Container, CssProvider, Paned, StyleContext};
 use gtk::prelude::{BuilderExtManual, Cast, ContainerExt, CssProviderExt, ImageExt, LabelExt, ListModelExtManual, PanedExt, StyleContextExt, WidgetExt, WidgetExtManual};
 use pcap::devices::Device;
@@ -15,7 +17,7 @@ pub struct MainView {
     pub activity_pane: Paned,
     pub content_pane: Paned,
     pub packets: PacketsView,
-    pub sidebar: Option<SidebarView>,
+    pub sidebar: Rc<RefCell<Option<SidebarView>>>,
 }
 
 impl MainView {
@@ -46,11 +48,26 @@ impl MainView {
         activity_pane.set_child_shrink(content_pane.upcast_ref::<Container>(), false);
         activity_pane.set_child_resize(content_pane.upcast_ref::<Container>(), true);
 
-        let packets = PacketsView::new();
-        content_pane.add(&packets.root);
-
         let show_title_bar = Box::new(show_title_bar(window, "Any", DataLinkTypes::Null));
-        show_title_bar(true);
+
+        let sidebar = Rc::new(RefCell::new(None::<SidebarView>));
+
+        let packets = PacketsView::new();
+        packets.connect_select({
+            let content_pane = content_pane.clone();
+            let sidebar = sidebar.clone();
+            move |packet| {
+                if let Some(sidebar) = sidebar.borrow().as_ref() {
+                    content_pane.remove(&sidebar.root);
+                }
+
+                let view = SidebarView::from_packet(packet);
+                content_pane.add(&view.root);
+                content_pane.set_child_shrink(&view.root, false);
+                *sidebar.borrow_mut() = Some(view);
+            }
+        });
+        content_pane.add(&packets.root);
 
         Self {
             show_title_bar,
@@ -58,7 +75,7 @@ impl MainView {
             activity_pane,
             content_pane,
             packets,
-            sidebar: None
+            sidebar: Rc::new(RefCell::new(None))
         }
     }
 
@@ -88,11 +105,26 @@ impl MainView {
         activity_pane.set_child_shrink(content_pane.upcast_ref::<Container>(), false);
         activity_pane.set_child_resize(content_pane.upcast_ref::<Container>(), true);
 
-        let packets = PacketsView::new();
-        content_pane.add(&packets.root);
-
         let show_title_bar = Box::new(show_title_bar(window, &device.name, device.data_link_type));
-        show_title_bar(true);
+
+        let sidebar = Rc::new(RefCell::new(None::<SidebarView>));
+
+        let packets = PacketsView::new();
+        packets.connect_select({
+            let content_pane = content_pane.clone();
+            let sidebar = sidebar.clone();
+            move |packet| {
+                if let Some(sidebar) = sidebar.borrow().as_ref() {
+                    content_pane.remove(&sidebar.root);
+                }
+
+                let view = SidebarView::from_packet(packet);
+                content_pane.add(&view.root);
+                content_pane.set_child_shrink(&view.root, false);
+                *sidebar.borrow_mut() = Some(view);
+            }
+        });
+        content_pane.add(&packets.root);
 
         Self {
             show_title_bar,
@@ -100,7 +132,7 @@ impl MainView {
             activity_pane,
             content_pane,
             packets,
-            sidebar: None
+            sidebar
         }
     }
 
@@ -133,14 +165,25 @@ impl MainView {
         activity_pane.set_child_resize(content_pane.upcast_ref::<Container>(), true);
 
         let show_title_bar = Box::new(show_title_bar(window, path.file_name().unwrap().to_str().unwrap(), pcap.get_data_link_type()));
-        //show_title_bar(true);
+
+        let sidebar = Rc::new(RefCell::new(None::<SidebarView>));
 
         let mut packets = PacketsView::from_pcap(pcap);
-        packets.connect_select(move |packet| {
-            println!("{:?}", packet);
+        packets.connect_select({
+            let content_pane = content_pane.clone();
+            let sidebar = sidebar.clone();
+            move |packet| {
+                if let Some(sidebar) = sidebar.borrow().as_ref() {
+                    content_pane.remove(&sidebar.root);
+                }
+
+                let view = SidebarView::from_packet(packet);
+                content_pane.add(&view.root);
+                content_pane.set_child_shrink(&view.root, false);
+                *sidebar.borrow_mut() = Some(view);
+            }
         });
         content_pane.add(&packets.root);
-
 
         Self {
             show_title_bar,
@@ -148,21 +191,7 @@ impl MainView {
             activity_pane,
             content_pane,
             packets,
-            sidebar: None
-        }
-    }
-
-    pub fn open_sidebar(&mut self) {
-        let sidebar = SidebarView::new();
-        self.content_pane.add(&sidebar.root);
-        self.content_pane.set_child_shrink(&sidebar.root, false);
-        self.sidebar = Some(sidebar);
-    }
-
-    pub fn close_sidebar(&mut self) {
-        if let Some(sidebar) = self.sidebar.as_ref() {
-            self.content_pane.remove(&sidebar.root);
-            self.sidebar = None;
+            sidebar
         }
     }
 
