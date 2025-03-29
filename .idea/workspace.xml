@@ -8,16 +8,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f0704e63-1929-42d3-83d7-8cbc904dc132" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/utils/ethernet_utils.rs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/utils/ip_utils.rs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/utils/mod.rs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/views/utils/mod.rs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/views/utils/sidebar_expanders.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/views/main_view.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/main_view.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/mod.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/mod.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/sidebar_view.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/sidebar_view.rs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

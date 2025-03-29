@@ -17,7 +17,7 @@ pub struct MainView {
     pub activity_pane: Paned,
     pub content_pane: Paned,
     pub packets: PacketsView,
-    pub sidebar: Rc<RefCell<Option<SidebarView>>>,
+    pub sidebar: Rc<RefCell<Option<SidebarView>>>
 }
 
 impl MainView {
