@@ -6,6 +6,8 @@ pub struct TitleBar {
     pub root: gtk::Box,
     pub navigation_menubar: MenuBar,
     pub navigation_buttons: gtk::Box,
+    pub back_button: Button,
+    pub next_button: Button,
     pub network_type_icon: Image,
     pub network_type_label: Label,
     pub app_options: gtk::Box,
@@ -40,6 +42,14 @@ impl TitleBar {
             }
         });
 
+        let back_button: Button = builder
+            .object("back_button")
+            .expect("Couldn't find 'back_button' in ethernaught_ui.xml");
+
+        let next_button: Button = builder
+            .object("next_button")
+            .expect("Couldn't find 'next_button' in ethernaught_ui.xml");
+
         let network_type_icon: Image = builder
             .object("network_type_icon")
             .expect("Couldn't find 'network_type_icon' in title_bar.ui");
@@ -71,6 +81,8 @@ impl TitleBar {
         Self {
             root,
             navigation_menubar,
+            back_button,
+            next_button,
             navigation_buttons,
             network_type_icon,
             network_type_label,

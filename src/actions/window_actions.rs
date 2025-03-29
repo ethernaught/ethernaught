@@ -1,7 +1,7 @@
 use std::env;
 use std::path::{Path, PathBuf};
 use gtk::gio::{SimpleAction, SimpleActionGroup};
-use gtk::prelude::{ActionMapExt, Cast, ContainerExt, DialogExt, FileChooserExt, GtkWindowExt, ProxyResolverExt, StackExt, ToVariant, WidgetExt};
+use gtk::prelude::{ActionMapExt, Cast, ContainerExt, DialogExt, FileChooserExt, GtkWindowExt, ProxyResolverExt, StackExt, StyleContextExt, ToVariant, WidgetExt};
 use gtk::glib::{PropertyGet, VariantDict, VariantTy};
 use gtk::{AboutDialog, FileChooserAction, FileChooserDialog, ResponseType, Window};
 use gtk::gdk_pixbuf::Pixbuf;
@@ -105,12 +105,15 @@ pub fn register_stack_actions(window: &MainWindow) {
     let action = SimpleAction::new("back", None);
     action.connect_activate({
         let stack = window.stack.clone();
+        let title_bar = window.title_bar.clone();
         move |_, _| {
             let children = stack.children();
             if let Some(current) = stack.visible_child() {
                 if let Some(pos) = children.iter().position(|child| child == &current) {
                     if pos > 0 {
                         stack.set_visible_child(&children[pos - 1]);
+                        title_bar.back_button.style_context().remove_class("active");
+                        title_bar.next_button.style_context().add_class("active");
                     }
                 }
             }
@@ -121,12 +124,15 @@ pub fn register_stack_actions(window: &MainWindow) {
     let action = SimpleAction::new("next", None);
     action.connect_activate({
         let stack = window.stack.clone();
+        let title_bar = window.title_bar.clone();
         move |_, _| {
             let children = stack.children();
             if let Some(current) = stack.visible_child() {
                 if let Some(pos) = children.iter().position(|child| child == &current) {
                     if pos < children.len() - 1 {
                         stack.set_visible_child(&children[pos + 1]);
+                        title_bar.next_button.style_context().remove_class("active");
+                        title_bar.back_button.style_context().add_class("active");
                     }
                 }
             }

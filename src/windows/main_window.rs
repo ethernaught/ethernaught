@@ -148,6 +148,9 @@ impl MainWindow {
             Some(child) => {
                 let pos = self.stack.child_position(&child) as usize;
 
+                self.title_bar.back_button.style_context().add_class("active");
+                self.title_bar.next_button.style_context().remove_class("active");
+
                 let children = self.stack.children();
                 for i in (pos..children.len()).rev() {
                     let name = self.stack.child_name(&children[i]).unwrap().to_string();
@@ -160,6 +163,9 @@ impl MainWindow {
                 let children = self.stack.children();
                 if let Some(current) = self.stack.visible_child() {
                     if let Some(pos) = children.iter().position(|child| child == &current) {
+                        self.title_bar.back_button.style_context().add_class("active");
+                        self.title_bar.next_button.style_context().remove_class("active");
+
                         for i in (pos + 1..children.len()).rev() {
                             let name = self.stack.child_name(&children[i]).unwrap().to_string();
                             self.views.borrow().get(&name).unwrap().on_destroy();
