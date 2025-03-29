@@ -194,10 +194,28 @@ impl MainView {
 
         let action = SimpleAction::new("start", None);
         action.connect_activate({
+            let title_bar = window.title_bar.clone();
+            let event_listener = event_listener.as_ref().unwrap().clone();
+            let packets = packets.clone();
+            move |_, _| {
+                title_bar.app_options.style_context().add_class("running");
+                title_bar.stop_button.show();
+                packets.clear();
+                resume_event("capture_event", event_listener.borrow().clone());
+            }
+        });
+        window.window.add_action(&action);
+        window.title_bar.start_button.show();
+
+
+        let action = SimpleAction::new("stop", None);
+        action.connect_activate({
+            let title_bar = window.title_bar.clone();
             let event_listener = event_listener.as_ref().unwrap().clone();
             move |_, _| {
-                println!("PLAY");
-                resume_event("capture_event", event_listener.borrow().clone());
+                title_bar.app_options.style_context().remove_class("running");
+                title_bar.stop_button.hide();
+                pause_event("capture_event", event_listener.borrow().clone());
             }
         });
         window.window.add_action(&action);
@@ -308,10 +326,6 @@ impl Stackable for MainView {
     }
 
     fn on_resume(&self) {
-        if let Some(event_listener) = &self.event_listener {
-            resume_event("capture_event", event_listener.borrow().clone());
-        }
-
         (self.show_title_bar)(true);
     }
 

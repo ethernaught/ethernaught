@@ -3,7 +3,7 @@ use std::rc::Rc;
 use gtk::{gdk, Builder, Button, CellRendererText, Container, CssProvider, Entry, Image, Label, ListBox, ListStore, ScrolledWindow, StyleContext, TreeView, TreeViewColumn};
 use gtk::glib::{ObjectExt, PropertyGet, ToValue, Type};
 use gtk::glib::Propagation::Proceed;
-use gtk::prelude::{AdjustmentExt, BuilderExtManual, CellLayoutExt, ContainerExt, CssProviderExt, GtkListStoreExtManual, LabelExt, ListBoxExt, ScrolledWindowExt, TreeModelExt, TreeViewColumnExt, TreeViewExt, WidgetExt};
+use gtk::prelude::{AdjustmentExt, BuilderExtManual, CellLayoutExt, ContainerExt, CssProviderExt, GtkListStoreExt, GtkListStoreExtManual, LabelExt, ListBoxExt, ScrolledWindowExt, TreeModelExt, TreeViewColumnExt, TreeViewExt, WidgetExt};
 use gtk::subclass::container::Callback;
 use pcap::packet::layers::ethernet_frame::ethernet_frame::EthernetFrame;
 use pcap::packet::layers::ethernet_frame::inter::ethernet_types::EthernetTypes;
@@ -298,6 +298,11 @@ impl PacketsView {
         let packet_length = packet.len().to_string();
 
         (frame_time, source, destination, protocol, packet_length)
+    }
+
+    pub fn clear(&self) {
+        self.model.clear();
+        self.packets.borrow_mut().clear();
     }
 
     pub fn connect_select<F>(&self, callback: F)
