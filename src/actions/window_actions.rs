@@ -145,10 +145,18 @@ pub fn open_file_selector(parent: &Window) -> Option<PathBuf> {
     dialog.add_button("Cancel", ResponseType::Cancel);
     dialog.add_button("Open", ResponseType::Accept);
 
+    /*
     if let Some(default_path) = env::var("HOME").ok() {
         let default_path = Path::new(&default_path);
         dialog.set_current_folder(default_path);
-    }
+    }*/
+    let default_path = if let Ok(sudo_user) = env::var("SUDO_USER") {
+        let user_home = format!("/home/{}", sudo_user);
+        Path::new(&user_home).to_path_buf()
+    } else {
+        env::var("HOME").map(PathBuf::from).unwrap_or_else(|_| PathBuf::from("/"))
+    };
+    dialog.set_current_folder(&default_path);
 
     if dialog.run() == ResponseType::Accept {
         dialog.close();
