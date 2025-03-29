@@ -7,7 +7,6 @@ use gtk::prelude::{ActionMapExt, BuilderExtManual, Cast, ContainerExt, CssProvid
 use pcap::devices::Device;
 use pcap::pcap::pcap::Pcap;
 use pcap::utils::data_link_types::DataLinkTypes;
-use crate::actions::window_actions::open_about_dialog;
 use crate::bus::event_bus::{pause_event, register_event, resume_event, unregister_event};
 use crate::bus::events::capture_event::CaptureEvent;
 use crate::views::inter::stackable::Stackable;
@@ -16,6 +15,7 @@ use crate::views::sidebar_view::SidebarView;
 use crate::windows::main_window::MainWindow;
 
 pub struct MainView {
+    pub show_capture_bar: Option<Rc<RefCell<dyn Fn(bool)>>>,
     pub show_title_bar: Box<dyn Fn(bool)>,
     pub root: gtk::Box,
     pub activity_pane: Paned,
@@ -101,8 +101,35 @@ impl MainView {
             }
         }, true)));
 
+        let show_capture_bar = Rc::new(RefCell::new(show_capture_bar(&window, &packets)));
+
+        let action = SimpleAction::new("start", None);
+        action.connect_activate({
+            let show_capture_bar = show_capture_bar.clone();
+            let event_listener = event_listener.as_ref().unwrap().clone();
+            move |_, _| {
+                show_capture_bar.borrow()(true);
+                resume_event("capture_event", event_listener.borrow().clone());
+            }
+        });
+        window.window.add_action(&action);
+        window.title_bar.start_button.show();
+
+
+        let action = SimpleAction::new("stop", None);
+        action.connect_activate({
+            let show_capture_bar = show_capture_bar.clone();
+            let event_listener = event_listener.as_ref().unwrap().clone();
+            move |_, _| {
+                show_capture_bar.borrow()(false);
+                pause_event("capture_event", event_listener.borrow().clone());
+            }
+        });
+        window.window.add_action(&action);
+
         Self {
             show_title_bar,
+            show_capture_bar: Some(show_capture_bar),
             root,
             activity_pane,
             content_pane,
@@ -190,17 +217,14 @@ impl MainView {
             }
         }, true)));
 
-
+        let show_capture_bar = Rc::new(RefCell::new(show_capture_bar(&window, &packets)));
 
         let action = SimpleAction::new("start", None);
         action.connect_activate({
-            let title_bar = window.title_bar.clone();
+            let show_capture_bar = show_capture_bar.clone();
             let event_listener = event_listener.as_ref().unwrap().clone();
-            let packets = packets.clone();
             move |_, _| {
-                title_bar.app_options.style_context().add_class("running");
-                title_bar.stop_button.show();
-                packets.clear();
+                show_capture_bar.borrow()(true);
                 resume_event("capture_event", event_listener.borrow().clone());
             }
         });
@@ -210,11 +234,10 @@ impl MainView {
 
         let action = SimpleAction::new("stop", None);
         action.connect_activate({
-            let title_bar = window.title_bar.clone();
+            let show_capture_bar = show_capture_bar.clone();
             let event_listener = event_listener.as_ref().unwrap().clone();
             move |_, _| {
-                title_bar.app_options.style_context().remove_class("running");
-                title_bar.stop_button.hide();
+                show_capture_bar.borrow()(false);
                 pause_event("capture_event", event_listener.borrow().clone());
             }
         });
@@ -222,6 +245,7 @@ impl MainView {
 
         Self {
             show_title_bar,
+            show_capture_bar: Some(show_capture_bar),
             root,
             activity_pane,
             content_pane,
@@ -301,6 +325,7 @@ impl MainView {
 
         Self {
             show_title_bar,
+            show_capture_bar: None,
             root,
             activity_pane,
             content_pane,
@@ -330,11 +355,15 @@ impl Stackable for MainView {
     }
 
     fn on_pause(&self) {
+        (self.show_title_bar)(false);
+
         if let Some(event_listener) = &self.event_listener {
             pause_event("capture_event", event_listener.borrow().clone());
         }
 
-        (self.show_title_bar)(false);
+        if let Some(show_capture_bar) = &self.show_capture_bar {
+            show_capture_bar.borrow()(false);
+        }
     }
 
     fn on_destroy(&self) {
@@ -409,5 +438,21 @@ fn show_title_bar(window: &MainWindow, name: &str, data_link_type: DataLinkTypes
         title_bar.network_type_label.hide();
 
         title_bar.app_options.hide();
+    }
+}
+
+fn show_capture_bar(window: &MainWindow, packets: &PacketsView) -> impl Fn(bool) {
+    let title_bar = window.title_bar.clone();
+    let packets = packets.clone();
+    move |shown| {
+        if shown {
+            title_bar.app_options.style_context().add_class("running");
+            title_bar.stop_button.show();
+            packets.clear();
+            return;
+        }
+
+        title_bar.app_options.style_context().remove_class("running");
+        title_bar.stop_button.hide();
     }
 }
