@@ -107,7 +107,7 @@ fn main() {
                 }
             }
             Err(_) => {
-                event_bus::send_event(Box::new(PermissionEvent::new(false)));
+                send_event(Box::new(PermissionEvent::new(false)));
             }
         }
     });

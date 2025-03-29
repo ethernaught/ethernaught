@@ -337,6 +337,8 @@ fn show_title_bar(window: &MainWindow, name: &str, data_link_type: DataLinkTypes
 
             title_bar.network_type_icon.show();
             title_bar.network_type_label.show();
+
+            title_bar.app_options.show();
             return;
         }
 
@@ -363,5 +365,7 @@ fn show_title_bar(window: &MainWindow, name: &str, data_link_type: DataLinkTypes
 
         title_bar.network_type_icon.hide();
         title_bar.network_type_label.hide();
+
+        title_bar.app_options.hide();
     }
 }
