@@ -53,6 +53,25 @@ impl MainView {
 
         let sidebar = Rc::new(RefCell::new(None::<SidebarView>));
 
+        let actions = SimpleActionGroup::new();
+
+        root.insert_action_group("dialog", Some(&actions));
+
+        let action = SimpleAction::new("dismiss", None);
+        action.connect_activate({
+            let content_pane = content_pane.clone();
+            let sidebar = sidebar.clone();
+            move |_, _| {
+                let view = sidebar.borrow().as_ref().map(|view| view.root.clone());
+
+                if let Some(view) = view {
+                    content_pane.remove(&view);
+                    *sidebar.borrow_mut() = None;
+                }
+            }
+        });
+        actions.add_action(&action);
+
         let packets = PacketsView::new();
         packets.connect_select({
             let content_pane = content_pane.clone();
@@ -109,6 +128,25 @@ impl MainView {
         let show_title_bar = Box::new(show_title_bar(window, &device.name, device.data_link_type));
 
         let sidebar = Rc::new(RefCell::new(None::<SidebarView>));
+
+        let actions = SimpleActionGroup::new();
+
+        root.insert_action_group("dialog", Some(&actions));
+
+        let action = SimpleAction::new("dismiss", None);
+        action.connect_activate({
+            let content_pane = content_pane.clone();
+            let sidebar = sidebar.clone();
+            move |_, _| {
+                let view = sidebar.borrow().as_ref().map(|view| view.root.clone());
+
+                if let Some(view) = view {
+                    content_pane.remove(&view);
+                    *sidebar.borrow_mut() = None;
+                }
+            }
+        });
+        actions.add_action(&action);
 
         let packets = PacketsView::new();
         packets.connect_select({
