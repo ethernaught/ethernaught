@@ -25,6 +25,7 @@ use crate::app::App;
 use crate::bus::events::permission_event::PermissionEvent;
 use crate::bus::event_bus::{register_event, send_event};
 use crate::bus::events::capture_event::CaptureEvent;
+use crate::bus::events::transmitted_event::TransmittedEvent;
 use crate::database::sqlite::Database;
 
 //SIDEBAR SHOULD BE A FRAGMENT...
@@ -49,10 +50,12 @@ rustup override set nightly
 //MacOS Font goes to /Library/fonts
 
 fn main() {
+    /*
     register_event("capture_event", |event| {
         let event = event.as_any().downcast_ref::<CaptureEvent>().unwrap();
         println!("{:?}", event.get_packet());
     });
+    */
 
     #[cfg(target_os = "linux")]
     thread::spawn(move || {
@@ -88,7 +91,7 @@ fn main() {
                             if now-time >= 1000 {
                                 time = now;
 
-                                //tx.send(Box::new(TransmittedEvent::new(if_bytes.clone()))).unwrap();
+                                send_event(Box::new(TransmittedEvent::new(if_bytes.clone())));
 
                                 if_bytes.clear();
                             }

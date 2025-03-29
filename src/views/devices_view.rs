@@ -2,6 +2,8 @@ use gtk::{gdk, gio, ApplicationWindow, Builder, Container, CssProvider, Label, L
 use gtk::glib::{Cast, Variant, VariantDict};
 use gtk::prelude::{ActionGroupExt, BuilderExtManual, ContainerExt, CssProviderExt, ListBoxExt, ListBoxRowExt, WidgetExt};
 use pcap::devices::Device;
+use crate::bus::event_bus::register_event;
+use crate::bus::events::transmitted_event::TransmittedEvent;
 use crate::pcap_ext::devices::Serialize;
 use crate::views::device_list_item::DeviceListItem;
 use crate::views::inter::stackable::Stackable;
@@ -66,6 +68,12 @@ impl DevicesView {
         devices.iter().for_each(|d| {
             let device_item = DeviceListItem::from_device(d);
             devices_list.add(&device_item.root);
+        });
+
+        register_event("transmitted_event", |event| {
+            let event = event.as_any().downcast_ref::<TransmittedEvent>().unwrap();
+            println!("{:?}", event);
+            devices_list.hide();
         });
 
         Self {

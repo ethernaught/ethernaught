@@ -1,7 +1,7 @@
 use std::any::Any;
 use crate::bus::events::inter::event::Event;
 
-#[derive(Clone)]
+#[derive(Debug, Clone)]
 pub struct PermissionEvent {
     prevent_default: bool,
     has_permission: bool

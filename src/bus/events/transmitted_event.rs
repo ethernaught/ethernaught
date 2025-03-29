@@ -2,7 +2,7 @@ use std::any::Any;
 use std::collections::HashMap;
 use crate::bus::events::inter::event::Event;
 
-#[derive(Clone)]
+#[derive(Debug, Clone)]
 pub struct TransmittedEvent {
     prevent_default: bool,
     pub(crate) if_bytes: HashMap<i32, usize>

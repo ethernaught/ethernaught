@@ -2,7 +2,7 @@ use std::any::Any;
 use pcap::packet::packet::Packet;
 use crate::bus::events::inter::event::Event;
 
-#[derive(Clone)]
+#[derive(Debug, Clone)]
 pub struct CaptureEvent {
     prevent_default: bool,
     if_index: i32,
