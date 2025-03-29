@@ -4,7 +4,7 @@ use gtk::glib::{Cast, Variant, VariantDict};
 use gtk::prelude::{ActionGroupExt, BuilderExtManual, ContainerExt, CssProviderExt, ListBoxExt, ListBoxRowExt, WidgetExt};
 use pcap::devices::Device;
 use pcap::utils::interface_flags::InterfaceFlags;
-use crate::bus::event_bus::{register_event, unregister_event};
+use crate::bus::event_bus::{pause_event, register_event, resume_event, unregister_event};
 use crate::bus::events::inter::event::Event;
 use crate::bus::events::transmitted_event::TransmittedEvent;
 use crate::pcap_ext::devices::Serialize;
@@ -86,7 +86,6 @@ impl DevicesView {
             device_views.push(device_item);
         });
 
-        /*
         let event_listener = RefCell::new(register_event("transmitted_event", move |event| {
             let event = event.as_any().downcast_ref::<TransmittedEvent>().unwrap();
 
@@ -98,10 +97,6 @@ impl DevicesView {
                 }
             });
         }));
-        */
-
-        let transmitted_event = transmitted_event(if_map, device_views);
-        let event_listener = RefCell::new(register_event("transmitted_event", transmitted_event));
 
         Self {
             root,
@@ -125,26 +120,14 @@ impl Stackable for DevicesView {
     }
 
     fn on_resume(&self) {
+        resume_event("transmitted_event", self.event_listener.borrow().clone());
     }
 
     fn on_pause(&self) {
-        unregister_event("transmitted_event", self.event_listener.borrow().clone());
+        pause_event("transmitted_event", self.event_listener.borrow().clone());
     }
 
     fn on_destroy(&self) {
-    }
-}
-
-pub fn transmitted_event(if_map: Vec<(usize, i32)>, device_views: Vec<DeviceListItem>) -> impl Fn(&Box<dyn Event>) + 'static {
-    move |event| {
-        let event = event.as_any().downcast_ref::<TransmittedEvent>().unwrap();
-
-        if_map.iter().for_each(|(pos, index)| {
-            if event.if_bytes.contains_key(index) {
-                device_views.get(*pos).unwrap().graph.add_point(event.if_bytes.get(index).unwrap().clone() as u32);
-            } else {
-                device_views.get(*pos).unwrap().graph.add_point(0);
-            }
-        });
+        unregister_event("transmitted_event", self.event_listener.borrow().clone());
     }
 }
