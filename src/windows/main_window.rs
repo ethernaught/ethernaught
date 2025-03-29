@@ -4,7 +4,7 @@ use std::process::exit;
 use std::rc::Rc;
 use gtk::{gdk, Application, ApplicationWindow, Builder, CssProvider, Stack, StyleContext, Window};
 use gtk::glib::Propagation::Proceed;
-use gtk::prelude::{ActionGroupExt, BuilderExtManual, ContainerExt, CssProviderExt, GtkWindowExt, StackExt, WidgetExt};
+use gtk::prelude::{ActionGroupExt, BuilderExtManual, ContainerExt, CssProviderExt, GtkWindowExt, StackExt, StyleContextExt, WidgetExt};
 use pcap::devices::Device;
 use pcap::utils::interface_flags::InterfaceFlags;
 use crate::actions::window_actions::{register_stack_actions, register_window_actions};

@@ -1,4 +1,5 @@
-use std::path::PathBuf;
+use std::env;
+use std::path::{Path, PathBuf};
 use gtk::gio::{SimpleAction, SimpleActionGroup};
 use gtk::prelude::{ActionMapExt, Cast, ContainerExt, DialogExt, FileChooserExt, GtkWindowExt, ProxyResolverExt, StackExt, ToVariant, WidgetExt};
 use gtk::glib::{PropertyGet, VariantDict, VariantTy};
@@ -134,8 +135,6 @@ pub fn register_stack_actions(window: &MainWindow) {
     window.window.add_action(&action);
 }
 
-
-
 pub fn open_file_selector(parent: &Window) -> Option<PathBuf> {
     let dialog = FileChooserDialog::new(
         Some("Open File"),
@@ -145,6 +144,11 @@ pub fn open_file_selector(parent: &Window) -> Option<PathBuf> {
 
     dialog.add_button("Cancel", ResponseType::Cancel);
     dialog.add_button("Open", ResponseType::Accept);
+
+    if let Some(default_path) = env::var("HOME").ok() {
+        let default_path = Path::new(&default_path);
+        dialog.set_current_folder(default_path);
+    }
 
     if dialog.run() == ResponseType::Accept {
         dialog.close();
