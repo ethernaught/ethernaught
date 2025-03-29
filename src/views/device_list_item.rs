@@ -6,6 +6,7 @@ use pcap::utils::interface_flags::InterfaceFlags;
 use crate::views::inter::stackable::Stackable;
 use crate::widgets::graph::Graph;
 
+#[derive(Clone)]
 pub struct DeviceListItem {
     pub root: ListBoxRow,
     pub icon: Image,

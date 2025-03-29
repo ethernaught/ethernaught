@@ -14,6 +14,8 @@ use crate::views::inter::stackable::Stackable;
 pub struct DevicesView {
     pub root: gtk::Box,
     pub devices_list: ListBox,
+    pub if_map: Vec<(usize, i32)>,
+    pub device_list_item: Vec<DeviceListItem>,
     pub event_listener: RefCell<u32>
 }
 
@@ -66,13 +68,13 @@ impl DevicesView {
             }
         });
 
-        let mut device_views = Vec::new();
+        let mut device_list_item = Vec::new();
         let mut if_map = Vec::new();
 
         let device_item = DeviceListItem::new();
         devices_list.add(&device_item.root);
         if_map.push((0, -1));
-        device_views.push(device_item);
+        device_list_item.push(device_item);
 
         let mut i = 1;
         devices.iter().for_each(|device| {
@@ -83,24 +85,30 @@ impl DevicesView {
 
             let device_item = DeviceListItem::from_device(device);
             devices_list.add(&device_item.root);
-            device_views.push(device_item);
+            device_list_item.push(device_item);
         });
 
-        let event_listener = RefCell::new(register_event("transmitted_event", move |event| {
-            let event = event.as_any().downcast_ref::<TransmittedEvent>().unwrap();
+        let event_listener = RefCell::new(register_event("transmitted_event", {
+            let if_map = if_map.clone();
+            let device_list_item = device_list_item.clone();
+            move |event| {
+                let event = event.as_any().downcast_ref::<TransmittedEvent>().unwrap();
 
-            if_map.iter().for_each(|(pos, index)| {
-                if event.if_bytes.contains_key(index) {
-                    device_views.get(*pos).unwrap().graph.add_point(event.if_bytes.get(index).unwrap().clone() as u32);
-                } else {
-                    device_views.get(*pos).unwrap().graph.add_point(0);
-                }
-            });
+                if_map.iter().for_each(|(pos, index)| {
+                    if event.if_bytes.contains_key(index) {
+                        device_list_item.get(*pos).unwrap().graph.add_point(event.if_bytes.get(index).unwrap().clone() as u32);
+                    } else {
+                        device_list_item.get(*pos).unwrap().graph.add_point(0);
+                    }
+                });
+            }
         }, false));
 
         Self {
             root,
             devices_list,
+            if_map,
+            device_list_item,
             event_listener
         }
     }
@@ -121,6 +129,10 @@ impl Stackable for DevicesView {
 
     fn on_resume(&self) {
         //clear all points on devices...
+
+        self.if_map.iter().for_each(|(pos, index)| {
+            self.device_list_item.get(*pos).unwrap().graph.clear_points();
+        });
 
         resume_event("transmitted_event", self.event_listener.borrow().clone());
     }
