@@ -8,7 +8,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f0704e63-1929-42d3-83d7-8cbc904dc132" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/bus/event_bus.rs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/bus/events/capture_event.rs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/bus/events/inter/event.rs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/bus/events/inter/mod.rs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/bus/events/mod.rs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/bus/events/permission_event.rs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/bus/events/transmitted_event.rs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/bus/mod.rs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/bus/test.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/views/main_view.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/main_view.rs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -45,7 +55,7 @@
     "RunOnceActivity.git.unshallow": "true",
     "RunOnceActivity.rust.reset.selective.auto.import": "true",
     "git-widget-placeholder": "v3",
-    "last_opened_file_path": "/home/brad/CLionProjects/ethernaught/src/views/utils",
+    "last_opened_file_path": "/home/brad/CLionProjects/ethernaught/src/bus",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -60,11 +70,11 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/bus" />
       <recent name="$PROJECT_DIR$/src/views/utils" />
       <recent name="$PROJECT_DIR$/src/views" />
       <recent name="$PROJECT_DIR$/src/ui" />
       <recent name="$PROJECT_DIR$/res/ui" />
-      <recent name="$PROJECT_DIR$/src/ui/handlers/events" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/utils" />

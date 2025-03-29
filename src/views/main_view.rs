@@ -252,14 +252,6 @@ impl MainView {
             sidebar
         }
     }
-
-    pub fn open_terminal(&mut self) {
-
-    }
-
-    pub fn close_terminal(&mut self) {
-
-    }
 }
 
 impl Stackable for MainView {
