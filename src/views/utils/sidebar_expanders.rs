@@ -288,8 +288,7 @@ pub fn create_ipv6_layer_expander(db: &Database, offset: usize, hex_editor: &Hex
     list_box.add(&create_row(format!("{}:", layer.get_title("version")).as_str(), layer.get_value("version")));
     list_box.add(&create_row(format!("{}:", layer.get_title("payload_length")).as_str(), layer.get_value("payload_length")));
     list_box.add(&create_row(format!("{}:", layer.get_title("next_header")).as_str(), layer.get_value("next_header")));
-    //list_box.add(&create_row("Next Header:", format!("{:?} ({})", layer.get_next_header(), layer.get_next_header().get_code())));
-    list_box.add(&create_row("Hop Limit:", layer.get_hop_limit().to_string()));
+    list_box.add(&create_row(format!("{}:", layer.get_title("hop_limit")).as_str(), layer.get_value("hop_limit")));
 
     match ip_to_icon(db, IpAddr::V6(layer.get_source_address())) {
         Some(icon) => {
