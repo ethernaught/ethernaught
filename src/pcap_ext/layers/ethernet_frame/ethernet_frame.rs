@@ -66,7 +66,7 @@ impl LayerExt for EthernetFrame {
                 self.get_source_mac().to_string()
             }
             "type" => {
-                format!("{:?} (0x{:04X})", self.get_type(), self.get_type().get_code())
+                format!("{} (0x{:04X})", self.get_type().to_string(), self.get_type().get_code())
             }
             _ => unimplemented!()
         }

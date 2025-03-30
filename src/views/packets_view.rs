@@ -319,7 +319,7 @@ impl PacketsView {
 
                     if let Some((Some(path), _column, _x, _y)) = path {
                         let model = tree_view.model().unwrap();
-                        let index = model.value(&model.iter(&path).unwrap(), 0).get::<u32>().unwrap() - 1;
+                        let index = model.value(&model.iter(&path).unwrap(), 0).get::<u32>().unwrap();
 
                         callback(packets.borrow().get(index as usize).unwrap());
                     }

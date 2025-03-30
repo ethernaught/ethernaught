@@ -105,7 +105,7 @@ impl LayerExt for Ipv6Layer {
     fn get_value(&self, variable: &str) -> String {
         match variable {
             "version" => {
-                self.get_version().get_code().to_string()
+                format!("{} ({})", self.get_version().to_string(), self.get_version().get_code())
             }
             "traffic_class" => {
                 self.get_traffic_class().to_string()
@@ -117,7 +117,7 @@ impl LayerExt for Ipv6Layer {
                 self.get_payload_length().to_string()
             }
             "next_header" => {
-                format!("{:?} ({})", self.get_next_header(), self.get_next_header().get_code())
+                format!("{} ({})", self.get_next_header().to_string(), self.get_next_header().get_code())
             }
             "hop_limit" => {
                 self.get_hop_limit().to_string()

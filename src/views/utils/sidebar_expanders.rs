@@ -283,10 +283,10 @@ pub fn create_ipv4_layer_expander(db: &Database, offset: usize, hex_editor: &Hex
 }
 
 pub fn create_ipv6_layer_expander(db: &Database, offset: usize, hex_editor: &HexEditor, layer: &Ipv6Layer) -> Container {
-    let (dropdown, list_box) = create_dropdown("Internet Protocol Version 6");
+    let (dropdown, list_box) = create_dropdown(&layer.get_title("frame"));
 
-    list_box.add(&create_row("Version:", layer.get_version().to_string()));
-    list_box.add(&create_row("Payload Length:", layer.get_payload_length().to_string()));
+    list_box.add(&create_row(format!("{}:", layer.get_title("version")).as_str(), layer.get_value("version")));
+    list_box.add(&create_row(format!("{}:", layer.get_title("payload_length")).as_str(), layer.get_value("payload_length")));
     list_box.add(&create_row("Next Header:", format!("{:?} ({})", layer.get_next_header(), layer.get_next_header().get_code())));
     list_box.add(&create_row("Hop Limit:", layer.get_hop_limit().to_string()));
 

@@ -138,7 +138,7 @@ impl LayerExt for Ipv4Layer {
     fn get_value(&self, variable: &str) -> String {
         match variable {
             "version" => {
-                self.get_version().get_code().to_string()
+                format!("{} ({})", self.get_version().to_string(), self.get_version().get_code())
             }
             "ihl" => {
                 todo!()
@@ -162,7 +162,7 @@ impl LayerExt for Ipv4Layer {
                 self.get_ttl().to_string()
             }
             "protocol" => {
-                format!("{:?} ({})", self.get_protocol(), self.get_protocol().get_code())
+                format!("{} ({})", self.get_protocol().to_string(), self.get_protocol().get_code())
             }
             "checksum" => {
                 format!("0x{:04X}", self.get_checksum())
