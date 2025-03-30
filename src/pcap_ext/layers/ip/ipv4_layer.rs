@@ -95,11 +95,11 @@ impl LayerExt for Ipv4Layer {
             "frame" => {
                 String::from("Internet Protocol Version 4")
             }
+            "version" => {
+                self.get_version().get_code().to_string()
+            }
             "ihl" => {
                 todo!()
-            }
-            "version" => {
-                self.get_version().to_string()
             }
             "tos" => {
                 self.get_tos().to_string()
@@ -132,7 +132,7 @@ impl LayerExt for Ipv4Layer {
                 self.get_destination_address().to_string()
             }
             _ => unimplemented!()
-        }.to_string()
+        }
     }
 
     fn get_description(&self, variable: &str) -> String {
@@ -140,11 +140,11 @@ impl LayerExt for Ipv4Layer {
             "frame" => {
                 self.get_value(variable)
             }
-            "ihl" => {
-                todo!()
-            }
             "version" => {
                 format!("Version: {}", self.get_value(variable))
+            }
+            "ihl" => {
+                todo!()
             }
             "tos" => {
                 format!("TOS: {}", self.get_value(variable))
@@ -177,7 +177,7 @@ impl LayerExt for Ipv4Layer {
                 format!("Destination Address: {}", self.get_value(variable))
             }
             _ => unimplemented!()
-        }.to_string()
+        }
     }
 
     fn get_value_as_bytes(&self, variable: &str) -> Vec<u8> {

@@ -37,15 +37,102 @@ impl LayerExt for Ipv6Layer {
     }
 
     fn get_field_name(&self, variable: &str) -> String {
-        todo!()
+        match variable {
+            "frame" => {
+                "ipv6"
+            }
+            "version" => {
+                "ipv6.version"
+            }
+            "traffic_class" => {
+                "ipv6.traffic-class"
+            }
+            "flow_label" => {
+                "ipv6.flow-label"
+            }
+            "payload_length" => {
+                "ipv6.payload-length"
+            }
+            "next_header" => {
+                "ipv6.next-header"
+            }
+            "hop_limit" => {
+                "ipv6.hop-limit"
+            }
+            "source_address" => {
+                "ipv6.source"
+            }
+            "destination_address" => {
+                "ipv6.destination"
+            }
+            _ => unimplemented!()
+        }.to_string()
     }
 
     fn get_value(&self, variable: &str) -> String {
-        todo!()
+        match variable {
+            "frame" => {
+                String::from("Internet Protocol Version 6")
+            }
+            "version" => {
+                self.get_version().get_code().to_string()
+            }
+            "traffic_class" => {
+                self.get_traffic_class().to_string()
+            }
+            "flow_label" => {
+                self.get_flow_label().to_string()
+            }
+            "payload_length" => {
+                self.get_payload_length().to_string()
+            }
+            "next_header" => {
+                format!("{:?} ({})", self.get_next_header(), self.get_next_header().get_code())
+            }
+            "hop_limit" => {
+                self.get_hop_limit().to_string()
+            }
+            "source_address" => {
+                self.get_source_address().to_string()
+            }
+            "destination_address" => {
+                self.get_destination_address().to_string()
+            }
+            _ => unimplemented!()
+        }
     }
 
     fn get_description(&self, variable: &str) -> String {
-        todo!()
+        match variable {
+            "frame" => {
+                self.get_value(variable)
+            }
+            "version" => {
+                format!("Version: {}", self.get_value(variable))
+            }
+            "traffic_class" => {
+                todo!()
+            }
+            "flow_label" => {
+                todo!()
+            }
+            "payload_length" => {
+                format!("Payload Length: {}", self.get_value(variable))
+            }
+            "next_header" => {
+                format!("Next Header: {}", self.get_value(variable))
+            }
+            "hop_limit" => {
+                format!("Hop Limit: {}", self.get_value(variable))
+            }
+            "source_address" => {
+                format!("Source Address: {}", self.get_value(variable))
+            }
+            "destination_address" => {
+                format!("Destination Address: {}", self.get_value(variable))
+            }
+            _ => unimplemented!()
+        }
     }
 
     fn get_value_as_bytes(&self, variable: &str) -> Vec<u8> {
