@@ -63,7 +63,7 @@ impl DeviceListItem {
             .object("icon")
             .expect("Couldn't find 'icon' in device_list_item.ui");
 
-        match device.data_link_type {
+        match device.get_data_link_type() {
             DataLinkTypes::En10mb | DataLinkTypes::En3mb => {
                 root.style_context().add_class("ethernet");
                 icon.set_resource(Some("/net/ethernaught/rust/res/icons/ic_ethernet.svg"));
@@ -88,14 +88,14 @@ impl DeviceListItem {
         let title: Label = builder
             .object("title")
             .expect("Couldn't find 'title' in device_list_item.ui");
-        title.set_label(format!("{}", device.name).as_str());
+        title.set_label(format!("{}", device.get_name()).as_str());
 
         let description: Label = builder
             .object("description")
             .expect("Couldn't find 'description' in device_list_item.ui");
-        description.set_label(format!("{:?}", device.flags).as_str());
+        description.set_label(format!("{:?}", device.get_flags()).as_str());
 
-        if !device.flags.contains(&InterfaceFlags::Running) {
+        if !device.get_flags().contains(&InterfaceFlags::Running) {
             root.style_context().add_class("down");
         }
 

@@ -196,7 +196,7 @@ impl PacketsView {
             scroll_layout,
             tree_view,
             model,
-            packets: Rc::new(RefCell::new(pcap.packets))
+            packets: Rc::new(RefCell::new(pcap.get_packets()))
         }
     }
 

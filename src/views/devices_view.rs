@@ -78,8 +78,8 @@ impl DevicesView {
 
         let mut i = 1;
         devices.iter().for_each(|device| {
-            if device.flags.contains(&InterfaceFlags::Running) {
-                if_map.push((i, device.index));
+            if device.get_flags().contains(&InterfaceFlags::Running) {
+                if_map.push((i, device.get_index()));
             }
             i += 1;
 

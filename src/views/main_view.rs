@@ -165,7 +165,7 @@ impl MainView {
         activity_pane.set_child_shrink(content_pane.upcast_ref::<Container>(), false);
         activity_pane.set_child_resize(content_pane.upcast_ref::<Container>(), true);
 
-        let show_title_bar = Box::new(show_title_bar(window, &device.name, device.data_link_type));
+        let show_title_bar = Box::new(show_title_bar(window, &device.get_name(), device.get_data_link_type()));
 
         let sidebar = Rc::new(RefCell::new(None::<SidebarView>));
 
@@ -206,7 +206,7 @@ impl MainView {
         content_pane.add(&packets.root);
 
         let event_listener = Some(RefCell::new(register_event("capture_event", {
-            let if_index = device.index;
+            let if_index = device.get_index();
             let packets = packets.clone();
             move |event| {
                 let event = event.as_any().downcast_ref::<CaptureEvent>().unwrap();
