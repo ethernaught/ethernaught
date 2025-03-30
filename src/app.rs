@@ -42,20 +42,26 @@ impl App {
             let resource = Resource::from_data(&Bytes::from(resource_data)).unwrap();
             resources_register(&resource);
 
-            let window = MainWindow::new(&app);
+            MainWindow::new(&app);
 
             register_app_actions(&app);
             //REGISTER ACTIONS
         });
 
-        /*
         self.app.connect_open(move |app, files, _hint| {
             for file in files {
                 if let Some(path) = file.path() {
+                    let resource_data = include_bytes!("../res/resources.gresources");
+
+                    let resource = Resource::from_data(&Bytes::from(resource_data)).unwrap();
+                    resources_register(&resource);
+
+                    MainWindow::from_file(&app, &path);
+
+                    register_app_actions(&app);
                 }
             }
         });
-        */
 
         self.app.run();
     }

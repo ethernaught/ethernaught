@@ -10,6 +10,7 @@ use crate::bus::events::transmitted_event::TransmittedEvent;
 use crate::pcap_ext::devices::Serialize;
 use crate::views::device_list_item::DeviceListItem;
 use crate::views::inter::stackable::Stackable;
+use crate::windows::main_window::MainWindow;
 
 pub struct DevicesView {
     pub root: gtk::Box,
@@ -21,7 +22,7 @@ pub struct DevicesView {
 
 impl DevicesView {
 
-    pub fn new(window: &ApplicationWindow, devices: Vec<Device>) -> Self {
+    pub fn new(window: &MainWindow, devices: Vec<Device>) -> Self {
         let builder = Builder::from_resource("/net/ethernaught/rust/res/ui/gtk3/devices_view.ui");
 
         let provider = CssProvider::new();
@@ -46,7 +47,7 @@ impl DevicesView {
 
 
         devices_list.connect_row_activated({
-            let window = window.clone();
+            let window = window.window.clone();
             let devices = devices.clone();
             move |_, row| {
                 let mut dict = VariantDict::new(None);
