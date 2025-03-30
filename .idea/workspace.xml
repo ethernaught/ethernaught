@@ -9,8 +9,23 @@
   <component name="ChangeListManager">
     <list default="true" id="f0704e63-1929-42d3-83d7-8cbc904dc132" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Cargo.lock" beforeDir="false" afterPath="$PROJECT_DIR$/Cargo.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/Cargo.toml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/actions/window_actions.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/actions/window_actions.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/title_bar.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/title_bar.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/app.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/bus/events/capture_event.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/bus/events/capture_event.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pcap_ext/devices.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/pcap_ext/devices.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pcap_ext/layers/ethernet_frame/ethernet_frame.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/pcap_ext/layers/ethernet_frame/ethernet_frame.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pcap_ext/layers/ethernet_frame/ip/ipv4_layer.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/pcap_ext/layers/ethernet_frame/ip/ipv4_layer.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pcap_ext/layers/ethernet_frame/ip/ipv6_layer.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/pcap_ext/layers/ethernet_frame/ip/ipv6_layer.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/ethernet_utils.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/ethernet_utils.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/device_list_item.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/device_list_item.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/devices_view.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/devices_view.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/main_view.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/main_view.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/packets_view.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/packets_view.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/sidebar_view.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/sidebar_view.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/utils/sidebar_expanders.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/utils/sidebar_expanders.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/windows/main_window.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/windows/main_window.rs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -121,7 +136,7 @@
       <workItem from="1742856271521" duration="779000" />
       <workItem from="1742862895673" duration="2038000" />
       <workItem from="1743101508758" duration="4207000" />
-      <workItem from="1743287386035" duration="1009000" />
+      <workItem from="1743287386035" duration="1834000" />
     </task>
     <servers />
   </component>

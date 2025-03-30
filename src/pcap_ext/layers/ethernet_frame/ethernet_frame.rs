@@ -1,4 +1,4 @@
-use pcap::packet::layers::ethernet_frame::ethernet_frame::EthernetFrame;
+use rlibpcap::packet::layers::ethernet_frame::ethernet_frame::EthernetFrame;
 use crate::pcap_ext::layers::inter::layer_ext::LayerExt;
 
 impl LayerExt for EthernetFrame {

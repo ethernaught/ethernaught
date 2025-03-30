@@ -83,7 +83,7 @@ name = "ethernaught"
 version = "0.1.0"
 dependencies = [
  "gtk",
- "pcap",
+ "rlibpcap",
 ]
 
 [[package]]
@@ -440,10 +440,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "pcap"
-version = "0.1.0"
-
-[[package]]
 name = "pin-project-lite"
 version = "0.2.16"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -522,6 +518,10 @@ checksum = "0e4dccaaaf89514f546c693ddc140f729f958c247918a13380cccc6078391acc"
 dependencies = [
  "proc-macro2",
 ]
+
+[[package]]
+name = "rlibpcap"
+version = "0.1.0"
 
 [[package]]
 name = "rustc_version"

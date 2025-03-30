@@ -1,5 +1,5 @@
 use std::any::Any;
-use pcap::packet::packet::Packet;
+use rlibpcap::packet::packet::Packet;
 use crate::bus::events::inter::event::Event;
 
 #[derive(Debug, Clone)]

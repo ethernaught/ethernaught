@@ -5,7 +5,7 @@ use gtk::prelude::{ActionMapExt, Cast, ContainerExt, DialogExt, FileChooserExt, 
 use gtk::glib::{PropertyGet, VariantDict, VariantTy};
 use gtk::{AboutDialog, FileChooserAction, FileChooserDialog, ResponseType, Window};
 use gtk::gdk_pixbuf::Pixbuf;
-use pcap::devices::Device;
+use rlibpcap::devices::Device;
 use crate::pcap_ext::devices::Serialize;
 use crate::views::main_view::MainView;
 use crate::windows::main_window::MainWindow;

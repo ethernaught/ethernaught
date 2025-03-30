@@ -1,7 +1,7 @@
 use std::net::{IpAddr, Ipv4Addr};
-use pcap::devices::Device;
-use pcap::packet::layers::ethernet_frame::inter::ethernet_address::EthernetAddress;
-use pcap::utils::data_link_types::DataLinkTypes;
+use rlibpcap::devices::Device;
+use rlibpcap::packet::layers::ethernet_frame::inter::ethernet_address::EthernetAddress;
+use rlibpcap::utils::data_link_types::DataLinkTypes;
 
 pub trait Serialize {
 

@@ -24,5 +24,5 @@ rustflags = ["--cfg", "profile=\"nightly\""]
 
 [dependencies]
 gtk = "0.18.1"
-pcap = { path = "../pcap" }
+rlibpcap = { path = "../rlibpcap" }
 #pcap = "2.2.0"

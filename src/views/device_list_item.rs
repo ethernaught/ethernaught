@@ -1,8 +1,8 @@
 use gtk::{gdk, Builder, Container, CssProvider, Image, Label, ListBoxRow, StyleContext};
 use gtk::prelude::{BuilderExtManual, CssProviderExt, ImageExt, LabelExt, StyleContextExt, WidgetExt};
-use pcap::devices::Device;
-use pcap::utils::data_link_types::DataLinkTypes;
-use pcap::utils::interface_flags::InterfaceFlags;
+use rlibpcap::devices::Device;
+use rlibpcap::utils::data_link_types::DataLinkTypes;
+use rlibpcap::utils::interface_flags::InterfaceFlags;
 use crate::views::inter::stackable::Stackable;
 use crate::widgets::graph::Graph;
 
