@@ -31,7 +31,7 @@
             </section>
             <section>
                 <item>
-                    <attribute name="action">win.exit</attribute>
+                    <attribute name="action">app.quit</attribute>
                     <attribute name="label" translatable="yes">E_xit</attribute>
                     <attribute name="accel">&lt;control&gt;X</attribute>
                 </item>
@@ -77,19 +77,19 @@
             <attribute name="label" translatable="true">_Tools</attribute>
             <section>
                 <item>
-                    <attribute name="action">win.packet-playground</attribute>
+                    <attribute name="action">app.packet-playground</attribute>
                     <attribute name="label" translatable="yes">Packet Playground</attribute>
                 </item>
                 <item>
-                    <attribute name="action">win.api</attribute>
+                    <attribute name="action">app.api</attribute>
                     <attribute name="label" translatable="yes">API</attribute>
                 </item>
                 <item>
-                    <attribute name="action">win.firewall</attribute>
+                    <attribute name="action">app.firewall</attribute>
                     <attribute name="label" translatable="yes">Firewall Rules</attribute>
                 </item>
                 <item>
-                    <attribute name="action">win.x</attribute>
+                    <attribute name="action">app.protocol-designer</attribute>
                     <attribute name="label" translatable="yes">Protocol Designer</attribute>
                 </item>
             </section>
@@ -98,25 +98,25 @@
                     <attribute name="label" translatable="true">_Protocol</attribute>
                     <section>
                         <item>
-                            <attribute name="action">win.x</attribute>
+                            <attribute name="action">app.upnp</attribute>
                             <attribute name="label" translatable="yes">UPnP</attribute>
                         </item>
                         <item>
-                            <attribute name="action">win.x</attribute>
+                            <attribute name="action">app.dns</attribute>
                             <attribute name="label" translatable="yes">DNS</attribute>
                         </item>
                         <item>
-                            <attribute name="action">win.x</attribute>
+                            <attribute name="action">app.trace-route</attribute>
                             <attribute name="label" translatable="yes">Trace Route</attribute>
                         </item>
                         <item>
-                            <attribute name="action">win.x</attribute>
+                            <attribute name="action">app.arp</attribute>
                             <attribute name="label" translatable="yes">ARP</attribute>
                         </item>
                     </section>
                 </submenu>
                 <item>
-                    <attribute name="action">win.x</attribute>
+                    <attribute name="action">app.port-report</attribute>
                     <attribute name="label" translatable="yes">Port Report</attribute>
                 </item>
             </section>
@@ -125,7 +125,7 @@
             <attribute name="label" translatable="true">_Help</attribute>
             <section>
                 <item>
-                    <attribute name="action">win.website</attribute>
+                    <attribute name="action">app.website</attribute>
                     <attribute name="label" translatable="yes">Website</attribute>
                 </item>
             </section>

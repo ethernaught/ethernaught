@@ -38,7 +38,7 @@ impl Activity for PacketPlaygroundActivity {
         let builder = Builder::from_resource("/net/ethernaught/rust/res/oldui/gtk3/packet_playground_activity.oldui");
 
         let provider = CssProvider::new();
-        provider.load_from_resource("/net/ethernaught/rust/res/oldui/gtk3/packet_playground_activity.css");
+        provider.load_from_resource("/net/ethernaught/rust/res/oldui/gtk3/packet_playground_view.css");
         //provider.load_from_path("res/oldui/gtk3/window.css").expect("Failed to load CSS file.");
 
         StyleContext::add_provider_for_screen(
