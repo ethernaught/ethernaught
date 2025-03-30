@@ -79,7 +79,7 @@ pub fn register_stack_actions(window: &MainWindow) {
                                 if let Some(_type) = dict.lookup::<String>("type").ok().unwrap() {
                                     match _type.as_str() {
                                         "device" => {
-                                            let device =  Device::unserialize(&dict.lookup::<Vec<u8>>("device").ok().unwrap().unwrap());
+                                            let device = Device::unserialize(&dict.lookup::<Vec<u8>>("device").ok().unwrap().unwrap());
                                             Box::new(MainView::from_device(&window, &device))
                                         }
                                         "any" => {
