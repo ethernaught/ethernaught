@@ -23,18 +23,18 @@ impl PacketPlaygroundView {
 
         let root: Paned = builder
             .object("root")
-            .expect("Couldn't find 'root' in packet_playground_window.oldui");
+            .expect("Couldn't find 'root' in packet_playground_view.ui");
 
         let hex_scroll_layout: ScrolledWindow = builder
             .object("hex_scroll_layout")
-            .expect("Couldn't find 'hex_scroll_layout' in packet_playground_window.oldui");
+            .expect("Couldn't find 'hex_scroll_layout' in packet_playground_view.ui");
 
         root.set_child_shrink(&hex_scroll_layout, false);
         root.set_child_resize(&hex_scroll_layout, true);
 
         let selection_scroll_layout: ScrolledWindow = builder
             .object("selection_scroll_layout")
-            .expect("Couldn't find 'selection_scroll_layout' in packet_playground_window.oldui");
+            .expect("Couldn't find 'selection_scroll_layout' in packet_playground_view.ui");
 
         root.set_child_shrink(&selection_scroll_layout, false);
 
@@ -48,7 +48,7 @@ impl PacketPlaygroundView {
 
         let hex_editor: HexEditor = builder
             .object("hex_editor")
-            .expect("Couldn't find 'hex_editor' in packet_playground_window.oldui");
+            .expect("Couldn't find 'hex_editor' in packet_playground_view.ui");
 
         hex_editor.set_data(hex_data);
         hex_editor.set_hexpand(true);
@@ -63,7 +63,7 @@ impl PacketPlaygroundView {
 
         let selection_layout: gtk::Box = builder
             .object("selection_layout")
-            .expect("Couldn't find 'selection_layout' in packet_playground_window.oldui");
+            .expect("Couldn't find 'selection_layout' in packet_playground_view.ui");
 
         let combo_box = ComboBoxText::new();
         combo_box.append_text("Data Link Type");
