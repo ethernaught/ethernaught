@@ -119,7 +119,7 @@ fn main() {
     thread::spawn(move || {
         let mut captures = Vec::new();
         devices.iter().for_each(|device| {
-            if device.flags.contains(&InterfaceFlags::Running) {
+            if device.get_flags().contains(&InterfaceFlags::Running) {
                 match Capture::from_device(device) {
                     Ok(cap) => {
                         cap.set_immediate_mode(true);
@@ -158,10 +158,10 @@ fn main() {
                     Ok((address, packet)) => {
                         let device = cap.get_device().unwrap();
                         *if_bytes.entry(-1).or_insert(0) += packet.len();
-                        *if_bytes.entry(device.index).or_insert(0) += packet.len();
+                        *if_bytes.entry(device.get_index()).or_insert(0) += packet.len();
                         //*if_bytes.entry(address.sll_ifindex).or_insert(0) += packet.len();
 
-                        send_event(Box::new(CaptureEvent::new(device.index, packet)));
+                        send_event(Box::new(CaptureEvent::new(device.get_index(), packet)));
                     }
                     _ => {}
                 }
