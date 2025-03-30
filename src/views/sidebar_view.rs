@@ -102,7 +102,7 @@ impl SidebarView {
                 match ethernet_frame.get_type() {
                     EthernetTypes::Ipv4 => {
                         let ipv4_layer = ethernet_frame.get_data().unwrap().as_any().downcast_ref::<Ipv4Layer>().unwrap();
-                        create_ipv4_details(&details_layout, &hex_editor, &db, &ipv4_layer, ethernet_frame.len());
+                        create_ipv4_details(&details_layout, &hex_editor, &db, &actions, &ipv4_layer, ethernet_frame.len());
                     }
                     EthernetTypes::Arp => {
                         let arp_layer = ethernet_frame.get_data().unwrap().as_any().downcast_ref::<ArpExtension>().unwrap();
@@ -123,7 +123,7 @@ impl SidebarView {
                 match sll2_frame.get_protocol() {
                     EthernetTypes::Ipv4 => {
                         let ipv4_layer = sll2_frame.get_data().unwrap().as_any().downcast_ref::<Ipv4Layer>().unwrap();
-                        create_ipv4_details(&details_layout, &hex_editor, &db, &ipv4_layer, sll2_frame.len());
+                        create_ipv4_details(&details_layout, &hex_editor, &db, &actions, &ipv4_layer, sll2_frame.len());
                     }
                     EthernetTypes::Ipv6 => {
                         let ipv6_layer = sll2_frame.get_data().unwrap().as_any().downcast_ref::<Ipv6Layer>().unwrap();
@@ -138,7 +138,7 @@ impl SidebarView {
                 match raw_frame.get_version() {
                     IpVersions::Ipv4 => {
                         let ipv4_layer = raw_frame.get_data().unwrap().as_any().downcast_ref::<Ipv4Layer>().unwrap();
-                        create_ipv4_details(&details_layout, &hex_editor, &db, &ipv4_layer, raw_frame.len());
+                        create_ipv4_details(&details_layout, &hex_editor, &db, &actions, &ipv4_layer, raw_frame.len());
                     }
                     IpVersions::Ipv6 => {
                         let ipv6_layer = raw_frame.get_data().unwrap().as_any().downcast_ref::<Ipv6Layer>().unwrap();
@@ -152,7 +152,7 @@ impl SidebarView {
                 match loop_frame.get_type() {
                     LoopTypes::Ipv4 => {
                         let ipv4_layer = loop_frame.get_data().unwrap().as_any().downcast_ref::<Ipv4Layer>().unwrap();
-                        create_ipv4_details(&details_layout, &hex_editor, &db, &ipv4_layer, loop_frame.len());
+                        create_ipv4_details(&details_layout, &hex_editor, &db, &actions, &ipv4_layer, loop_frame.len());
                     }
                     LoopTypes::Ipv6 | LoopTypes::Ipv6e2 | LoopTypes::Ipv6e3 => {
                         let ipv6_layer = loop_frame.get_data().unwrap().as_any().downcast_ref::<Ipv6Layer>().unwrap();
@@ -175,8 +175,8 @@ impl SidebarView {
 }
 
 
-fn create_ipv4_details(details_layout: &gtk::Box, hex_editor: &HexEditor, db: &Database, layer: &Ipv4Layer, offset: usize) {
-    details_layout.add(&create_ipv4_layer_expander(db, offset-layer.len(), hex_editor, layer));
+fn create_ipv4_details(details_layout: &gtk::Box, hex_editor: &HexEditor, db: &Database, actions: &SimpleActionGroup, layer: &Ipv4Layer, offset: usize) {
+    details_layout.add(&create_ipv4_layer_expander(db, offset-layer.len(), hex_editor, actions, layer));
 
     match layer.get_protocol() {
         IpProtocols::HopByHop => {}

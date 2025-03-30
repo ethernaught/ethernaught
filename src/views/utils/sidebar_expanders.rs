@@ -154,7 +154,7 @@ pub fn create_arp_layer_expander(layer: &ArpExtension) -> Container {
     dropdown.upcast()
 }
 
-pub fn create_ipv4_layer_expander(db: &Database, offset: usize, hex_editor: &HexEditor, layer: &Ipv4Layer) -> Container {
+pub fn create_ipv4_layer_expander(db: &Database, offset: usize, hex_editor: &HexEditor, actions: &SimpleActionGroup, layer: &Ipv4Layer) -> Container {
     let (dropdown, list_box) = create_dropdown("Internet Protocol Version 4");
 
     list_box.add(&create_row("Version:", layer.get_version().to_string()));
@@ -190,38 +190,91 @@ pub fn create_ipv4_layer_expander(db: &Database, offset: usize, hex_editor: &Hex
         let hex_editor = hex_editor.clone();
         let layer = layer.clone();
         move |_, row| {
-            let (x, w) = match row.index() {
+            let (x, w) = layer.get_selection(match row.index() {
                 0 => {
-                    layer.get_selection("version")
+                    "version"
                 }
                 1 => {
-                    layer.get_selection("tos")
+                    "tos"
                 }
                 2 => {
-                    layer.get_selection("total_length")
+                    "total_length"
                 }
                 3 => {
-                    layer.get_selection("identification")
+                    "identification"
                 }
                 4 => {
-                    layer.get_selection("ttl")
+                    "ttl"
                 }
                 5 => {
-                    layer.get_selection("protocol")
+                    "protocol"
                 }
                 6 => {
-                    layer.get_selection("checksum")
+                    "checksum"
                 }
                 7 => {
-                    layer.get_selection("source_address")
+                    "source_address"
                 }
                 8 => {
-                    layer.get_selection("destination_address")
+                    "destination_address"
                 }
                 _ => unimplemented!()
-            };
+            });
 
             hex_editor.set_selection(offset + x, w);
+        }
+    });
+
+    list_box.connect_button_press_event({
+        let hex_editor = hex_editor.clone();
+        let layer = layer.clone();
+        let actions = actions.clone();
+        move |list_box, event| {
+            if event.button() != 3 {
+                return Proceed;
+            }
+
+            let (_, y) = event.position();
+
+            if let Some(row) = list_box.row_at_y(y as i32) {
+                let variable = match row.index() {
+                    0 => {
+                        "version"
+                    }
+                    1 => {
+                        "tos"
+                    }
+                    2 => {
+                        "total_length"
+                    }
+                    3 => {
+                        "identification"
+                    }
+                    4 => {
+                        "ttl"
+                    }
+                    5 => {
+                        "protocol"
+                    }
+                    6 => {
+                        "checksum"
+                    }
+                    7 => {
+                        "source_address"
+                    }
+                    8 => {
+                        "destination_address"
+                    }
+                    _ => unimplemented!()
+                };
+
+                create_row_context_menu(&row, event, &actions, variable, &layer);
+
+                let (x, w) = layer.get_selection(variable);
+                hex_editor.set_selection(offset + x, w);
+            }
+
+            Proceed
         }
     });
 
@@ -259,27 +312,27 @@ pub fn create_ipv6_layer_expander(db: &Database, offset: usize, hex_editor: &Hex
         let hex_editor = hex_editor.clone();
         let layer = layer.clone();
         move |_, row| {
-            let (x, w) = match row.index() {
+            let (x, w) = layer.get_selection(match row.index() {
                 0 => {
-                    layer.get_selection("version")
+                    "version"
                 }
                 1 => {
-                    layer.get_selection("payload_length")
+                    "payload_length"
                 }
                 2 => {
-                    layer.get_selection("next_header")
+                    "next_header"
                 }
                 3 => {
-                    layer.get_selection("hop_limit")
+                    "hop_limit"
                 }
                 4 => {
-                    layer.get_selection("source_address")
+                    "source_address"
                 }
                 5 => {
-                    layer.get_selection("destination_address")
+                    "destination_address"
                 }
                 _ => unimplemented!()
-            };
+            });
 
             hex_editor.set_selection(offset + x, w);
         }

@@ -1,4 +1,4 @@
-use rlibpcap::packet::layers::ip::ipv4_layer::Ipv4Layer;
+use rlibpcap::packet::layers::ip::ipv4_layer::{Ipv4Layer, IPV4_HEADER_LEN};
 use crate::pcap_ext::layers::inter::layer_ext::LayerExt;
 
 impl LayerExt for Ipv4Layer {
@@ -53,6 +53,9 @@ impl LayerExt for Ipv4Layer {
             "version" => {
                 "ipv4.version"
             }
+            "ihl" => {
+                "ipv4.ihl"
+            }
             "tos" => {
                 "ipv4.tos"
             }
@@ -92,6 +95,9 @@ impl LayerExt for Ipv4Layer {
             "frame" => {
                 String::from("Internet Protocol Version 4")
             }
+            "ihl" => {
+                todo!()
+            }
             "version" => {
                 self.get_version().to_string()
             }
@@ -102,7 +108,7 @@ impl LayerExt for Ipv4Layer {
                 self.get_total_length().to_string()
             }
             "identification" => {
-                self.get_identification().to_string()
+                format!("0x{:04X} ({})", self.get_identification(), self.get_identification())
             }
             "flags" => {
                 todo!()
@@ -114,10 +120,10 @@ impl LayerExt for Ipv4Layer {
                 self.get_ttl().to_string()
             }
             "protocol" => {
-                self.get_protocol().to_string()
+                format!("{:?} ({})", self.get_protocol(), self.get_protocol().get_code())
             }
             "checksum" => {
-                self.get_checksum().to_string()
+                format!("0x{:04X}", self.get_checksum())
             }
             "source_address" => {
                 self.get_source_address().to_string()
@@ -130,11 +136,107 @@ impl LayerExt for Ipv4Layer {
     }
 
     fn get_description(&self, variable: &str) -> String {
-        todo!()
+        match variable {
+            "frame" => {
+                self.get_value(variable)
+            }
+            "ihl" => {
+                todo!()
+            }
+            "version" => {
+                format!("Version: {}", self.get_value(variable))
+            }
+            "tos" => {
+                format!("TOS: {}", self.get_value(variable))
+            }
+            "total_length" => {
+                format!("Total Length: {}", self.get_value(variable))
+            }
+            "identification" => {
+                format!("Identification: {}", self.get_value(variable))
+            }
+            "flags" => {
+                todo!()
+            }
+            "fragment_offset" => {
+                todo!()
+            }
+            "ttl" => {
+                format!("Time to Live: {}", self.get_value(variable))
+            }
+            "protocol" => {
+                format!("Protocol: {}", self.get_value(variable))
+            }
+            "checksum" => {
+                format!("Header Checksum: {}", self.get_value(variable))
+            }
+            "source_address" => {
+                format!("Source Address: {}", self.get_value(variable))
+            }
+            "destination_address" => {
+                format!("Destination Address: {}", self.get_value(variable))
+            }
+            _ => unimplemented!()
+        }.to_string()
     }
 
     fn get_value_as_bytes(&self, variable: &str) -> Vec<u8> {
-        todo!()
+        match variable {
+            "frame" => {
+                let mut buf = vec![0; IPV4_HEADER_LEN];
+
+                buf[0] = (self.get_version().get_code() << 4) | (self.get_ihl() & 0x0F);
+                buf[1] = self.get_tos();
+                buf.splice(2..4, self.get_total_length().to_be_bytes());
+                buf.splice(4..6, self.get_identification().to_be_bytes());
+                buf[6] = (self.get_flags() << 5) | ((self.get_fragment_offset() >> 8) as u8 & 0x1F);
+                buf[7] = (self.get_fragment_offset() & 0xFF) as u8;
+                buf[8] = self.get_ttl();
+                buf[9] = self.get_protocol().get_code();
+                buf.splice(10..12, self.get_checksum().to_be_bytes());
+                buf.splice(12..16, self.get_source_address().octets());
+                buf.splice(16..20, self.get_destination_address().octets());
+
+                buf
+            }
+            "ihl" => {
+                todo!()
+            }
+            "version" => {
+                vec![self.get_version().get_code() << 4]
+            }
+            "tos" => {
+                vec![self.get_tos()]
+            }
+            "total_length" => {
+                self.get_total_length().to_be_bytes().to_vec()
+            }
+            "identification" => {
+                self.get_identification().to_be_bytes().to_vec()
+            }
+            "flags" => {
+                todo!()
+            }
+            "fragment_offset" => {
+                todo!()
+            }
+            "ttl" => {
+                vec![self.get_ttl()]
+            }
+            "protocol" => {
+                vec![self.get_protocol().get_code()]
+            }
+            "checksum" => {
+                self.get_checksum().to_be_bytes().to_vec()
+            }
+            "source_address" => {
+                self.get_source_address().octets().to_vec()
+            }
+            "destination_address" => {
+                self.get_destination_address().octets().to_vec()
+            }
+            _ => unimplemented!()
+        }
     }
 
     fn to_string(&self) -> String {
