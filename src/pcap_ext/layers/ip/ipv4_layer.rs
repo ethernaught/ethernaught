@@ -90,11 +90,53 @@ impl LayerExt for Ipv4Layer {
         }.to_string()
     }
 
-    fn get_value(&self, variable: &str) -> String {
+    fn get_title(&self, variable: &str) -> String {
         match variable {
             "frame" => {
-                String::from("Internet Protocol Version 4")
+                "Internet Protocol Version 4"
             }
+            "version" => {
+                "Version"
+            }
+            "ihl" => {
+                todo!()
+            }
+            "tos" => {
+                "TOS"
+            }
+            "total_length" => {
+                "Total Length"
+            }
+            "identification" => {
+                "Identification"
+            }
+            "flags" => {
+                todo!()
+            }
+            "fragment_offset" => {
+                todo!()
+            }
+            "ttl" => {
+                "Time to Live"
+            }
+            "protocol" => {
+                "Protocol"
+            }
+            "checksum" => {
+                "Header Checksum"
+            }
+            "source_address" => {
+                "Source Address"
+            }
+            "destination_address" => {
+                "Destination Address"
+            }
+            _ => unimplemented!()
+        }.to_string()
+    }
+
+    fn get_value(&self, variable: &str) -> String {
+        match variable {
             "version" => {
                 self.get_version().get_code().to_string()
             }
@@ -138,45 +180,11 @@ impl LayerExt for Ipv4Layer {
     fn get_description(&self, variable: &str) -> String {
         match variable {
             "frame" => {
-                self.get_value(variable)
+                self.get_title(variable)
             }
-            "version" => {
-                format!("Version: {}", self.get_value(variable))
+            _ => {
+                format!("{}: {}", self.get_title(variable), self.get_value(variable))
             }
-            "ihl" => {
-                todo!()
-            }
-            "tos" => {
-                format!("TOS: {}", self.get_value(variable))
-            }
-            "total_length" => {
-                format!("Total Length: {}", self.get_value(variable))
-            }
-            "identification" => {
-                format!("Identification: {}", self.get_value(variable))
-            }
-            "flags" => {
-                todo!()
-            }
-            "fragment_offset" => {
-                todo!()
-            }
-            "ttl" => {
-                format!("Time to Live: {}", self.get_value(variable))
-            }
-            "protocol" => {
-                format!("Protocol: {}", self.get_value(variable))
-            }
-            "checksum" => {
-                format!("Header Checksum: {}", self.get_value(variable))
-            }
-            "source_address" => {
-                format!("Source Address: {}", self.get_value(variable))
-            }
-            "destination_address" => {
-                format!("Destination Address: {}", self.get_value(variable))
-            }
-            _ => unimplemented!()
         }
     }
 

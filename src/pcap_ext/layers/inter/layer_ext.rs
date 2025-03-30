@@ -4,6 +4,8 @@ pub trait LayerExt {
 
     fn get_field_name(&self, variable: &str) -> String;
 
+    fn get_title(&self, variable: &str) -> String;
+
     fn get_value(&self, variable: &str) -> String;
 
     fn get_description(&self, variable: &str) -> String;

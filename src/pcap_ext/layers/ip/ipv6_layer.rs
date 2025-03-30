@@ -69,11 +69,41 @@ impl LayerExt for Ipv6Layer {
         }.to_string()
     }
 
-    fn get_value(&self, variable: &str) -> String {
+    fn get_title(&self, variable: &str) -> String {
         match variable {
             "frame" => {
-                String::from("Internet Protocol Version 6")
+                "Internet Protocol Version 6"
             }
+            "version" => {
+                "Version"
+            }
+            "traffic_class" => {
+                todo!()
+            }
+            "flow_label" => {
+                todo!()
+            }
+            "payload_length" => {
+                "Payload Length"
+            }
+            "next_header" => {
+                "Next Header"
+            }
+            "hop_limit" => {
+                "Hop Limit"
+            }
+            "source_address" => {
+                "Source Address"
+            }
+            "destination_address" => {
+                "Destination Address"
+            }
+            _ => unimplemented!()
+        }.to_string()
+    }
+
+    fn get_value(&self, variable: &str) -> String {
+        match variable {
             "version" => {
                 self.get_version().get_code().to_string()
             }
@@ -105,33 +135,11 @@ impl LayerExt for Ipv6Layer {
     fn get_description(&self, variable: &str) -> String {
         match variable {
             "frame" => {
-                self.get_value(variable)
+                self.get_title(variable)
             }
-            "version" => {
-                format!("Version: {}", self.get_value(variable))
+            _ => {
+                format!("{}: {}", self.get_title(variable), self.get_value(variable))
             }
-            "traffic_class" => {
-                todo!()
-            }
-            "flow_label" => {
-                todo!()
-            }
-            "payload_length" => {
-                format!("Payload Length: {}", self.get_value(variable))
-            }
-            "next_header" => {
-                format!("Next Header: {}", self.get_value(variable))
-            }
-            "hop_limit" => {
-                format!("Hop Limit: {}", self.get_value(variable))
-            }
-            "source_address" => {
-                format!("Source Address: {}", self.get_value(variable))
-            }
-            "destination_address" => {
-                format!("Destination Address: {}", self.get_value(variable))
-            }
-            _ => unimplemented!()
         }
     }
 

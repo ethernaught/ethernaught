@@ -39,11 +39,26 @@ impl LayerExt for EthernetFrame {
         }.to_string()
     }
 
-    fn get_value(&self, variable: &str) -> String {
+    fn get_title(&self, variable: &str) -> String {
         match variable {
             "frame" => {
-                String::from("Ethernet")
+                "Ethernet"
             }
+            "destination" => {
+                "Destination"
+            }
+            "source" => {
+                "Source"
+            }
+            "type" => {
+                "Type"
+            }
+            _ => unimplemented!()
+        }.to_string()
+    }
+
+    fn get_value(&self, variable: &str) -> String {
+        match variable {
             "destination" => {
                 self.get_destination_mac().to_string()
             }
@@ -60,18 +75,11 @@ impl LayerExt for EthernetFrame {
     fn get_description(&self, variable: &str) -> String {
         match variable {
             "frame" => {
-                self.get_value(variable)
+                self.get_title(variable)
             }
-            "destination" => {
-                format!("Destination: {}", self.get_value(variable))
+            _ => {
+                format!("{}: {}", self.get_title(variable), self.get_value(variable))
             }
-            "source" => {
-                format!("Source: {}", self.get_value(variable))
-            }
-            "type" => {
-                format!("Type: {}", self.get_value(variable))
-            }
-            _ => unimplemented!()
         }
     }
 
