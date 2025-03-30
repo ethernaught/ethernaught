@@ -2,57 +2,47 @@
 <interface>
     <requires lib="gtk+" version="3.24"/>
 
-    <object class="GtkBox" id="root">
-        <property name="name">packet_playground_activity_layout</property>
+    <object class="GtkPaned" id="root">
+        <property name="name">window_content</property>
         <property name="visible">True</property>
-        <property name="hexpand">True</property>
-        <property name="vexpand">True</property>
         <property name="orientation">horizontal</property>
+        <property name="position">570</property>
 
         <child>
-            <object class="GtkPaned" id="window_content">
-                <property name="name">window_content</property>
+            <object class="GtkScrolledWindow" id="hex_scroll_layout">
                 <property name="visible">True</property>
-                <property name="orientation">horizontal</property>
-                <property name="position">570</property>
+                <property name="hexpand">True</property>
+                <property name="vexpand">True</property>
+                <property name="overlay-scrolling">false</property>
+                <property name="hscrollbar-policy">automatic</property>
+                <property name="vscrollbar-policy">automatic</property>
 
                 <child>
-                    <object class="GtkScrolledWindow" id="hex_scroll_layout">
+                    <object class="HexEditor" id="hex_editor">
                         <property name="visible">True</property>
                         <property name="hexpand">True</property>
                         <property name="vexpand">True</property>
-                        <property name="overlay-scrolling">false</property>
-                        <property name="hscrollbar-policy">automatic</property>
-                        <property name="vscrollbar-policy">automatic</property>
-
-                        <child>
-                            <object class="HexEditor" id="hex_editor">
-                                <property name="visible">True</property>
-                                <property name="hexpand">True</property>
-                                <property name="vexpand">True</property>
-                            </object>
-                        </child>
                     </object>
                 </child>
+            </object>
+        </child>
+
+        <child>
+            <object class="GtkScrolledWindow" id="selection_scroll_layout">
+                <property name="visible">True</property>
+                <property name="hexpand">True</property>
+                <property name="vexpand">True</property>
+                <property name="overlay-scrolling">false</property>
+                <property name="hscrollbar-policy">automatic</property>
+                <property name="vscrollbar-policy">automatic</property>
 
                 <child>
-                    <object class="GtkScrolledWindow" id="selection_scroll_layout">
+                    <object class="GtkBox" id="selection_layout">
+                        <property name="name">selection_layout</property>
                         <property name="visible">True</property>
                         <property name="hexpand">True</property>
                         <property name="vexpand">True</property>
-                        <property name="overlay-scrolling">false</property>
-                        <property name="hscrollbar-policy">automatic</property>
-                        <property name="vscrollbar-policy">automatic</property>
-
-                        <child>
-                            <object class="GtkBox" id="selection_layout">
-                                <property name="name">selection_layout</property>
-                                <property name="visible">True</property>
-                                <property name="hexpand">True</property>
-                                <property name="vexpand">True</property>
-                                <property name="orientation">vertical</property>
-                            </object>
-                        </child>
+                        <property name="orientation">vertical</property>
                     </object>
                 </child>
             </object>
