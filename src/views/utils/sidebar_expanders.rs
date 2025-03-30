@@ -106,7 +106,7 @@ pub fn create_ethernet_layer_expander(db: &Database, offset: usize, hex_editor: 
 }
 
 pub fn create_sll2_layer_expander(offset: usize, hex_editor: &HexEditor, layer: &Sll2Frame) -> Container {
-    let (dropdown, list_box) = create_dropdown("Linux cooked capture v2");
+    let (dropdown, list_box) = create_dropdown("Linux Cooked Capture v2");
 
     list_box.add(&create_row("Protocol:", format!("{} (0x{:04X})", layer.get_protocol().to_string(), layer.get_protocol().get_code())));
     list_box.add(&create_row("Interface Index:", layer.get_if_index().to_string()));

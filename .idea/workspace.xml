@@ -9,10 +9,8 @@
   <component name="ChangeListManager">
     <list default="true" id="f0704e63-1929-42d3-83d7-8cbc904dc132" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/ui/gtk3/window.ui" beforeDir="false" afterPath="$PROJECT_DIR$/res/ui/gtk3/window.ui" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/app.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/devices_view.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/devices_view.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/windows/main_window.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/windows/main_window.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/resources.gresources" beforeDir="false" afterPath="$PROJECT_DIR$/res/resources.gresources" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/utils/sidebar_expanders.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/utils/sidebar_expanders.rs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
