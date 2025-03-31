@@ -3,6 +3,21 @@ use crate::pcap_ext::layers::inter::layer_ext::LayerExt;
 
 impl LayerExt for Ipv4Layer {
 
+    fn get_variables(&self) -> Vec<&str> {
+        vec![
+            "version",
+            "tos",
+            "total_length",
+            "flags",
+            "fragment_offset",
+            "ttl",
+            "protocol",
+            "checksum",
+            "source_address",
+            "destination_address"
+        ]
+    }
+
     fn get_selection(&self, variable: &str) -> (usize, usize) {
         match variable {
             "frame" => {
@@ -249,5 +264,9 @@ impl LayerExt for Ipv4Layer {
 
     fn to_string(&self) -> String {
         todo!()
+    }
+
+    fn clone_ext(&self) -> Box<dyn LayerExt> {
+        Box::new(self.clone())
     }
 }

@@ -26,7 +26,7 @@ use rlibpcap::packet::packet::Packet;
 use rlibpcap::utils::data_link_types::DataLinkTypes;
 use crate::database::sqlite::Database;
 use crate::get_lib_path;
-use crate::views::utils::sidebar_expanders::{create_arp_layer_expander, create_dhcp_layer_expander, create_ethernet_layer_expander, create_icmp_layer_expander, create_icmpv6_layer_expander, create_ipv4_layer_expander, create_ipv6_layer_expander, create_sll2_layer_expander, create_tcp_layer_expander, create_udp_layer_expander};
+use crate::views::utils::sidebar_expanders::{create_ethernet_layer_expander, create_ipv4_layer_expander, create_ipv6_layer_expander};
 use crate::widgets::hex_editor::HexEditor;
 
 pub struct SidebarView {
@@ -102,15 +102,15 @@ impl SidebarView {
                 match ethernet_frame.get_type() {
                     EthernetTypes::Ipv4 => {
                         let ipv4_layer = ethernet_frame.get_data().unwrap().as_any().downcast_ref::<Ipv4Layer>().unwrap();
-                        create_ipv4_details(&details_layout, &hex_editor, &db, &actions, &ipv4_layer, ethernet_frame.len());
+                        create_ipv4_details(&details_layout, &db, ethernet_frame.len(), &hex_editor, &actions, &ipv4_layer);
                     }
                     EthernetTypes::Arp => {
                         let arp_layer = ethernet_frame.get_data().unwrap().as_any().downcast_ref::<ArpExtension>().unwrap();
-                        details_layout.add(&create_arp_layer_expander(&arp_layer));
+                        //details_layout.add(&create_arp_layer_expander(&arp_layer));
                     }
                     EthernetTypes::Ipv6 => {
                         let ipv6_layer = ethernet_frame.get_data().unwrap().as_any().downcast_ref::<Ipv6Layer>().unwrap();
-                        create_ipv6_details(&details_layout, &hex_editor, &db, &ipv6_layer, ethernet_frame.len());
+                        create_ipv6_details(&details_layout, &db, ethernet_frame.len(), &hex_editor, &actions, &ipv6_layer);
                     }
                     EthernetTypes::Broadcast => {
                     }
@@ -118,16 +118,16 @@ impl SidebarView {
             }
             DataLinkTypes::Sll2 => {
                 let sll2_frame = packet.get_frame().as_any().downcast_ref::<Sll2Frame>().unwrap();
-                details_layout.add(&create_sll2_layer_expander(0, &hex_editor, &sll2_frame));
+                //details_layout.add(&create_sll2_layer_expander(0, &hex_editor, &sll2_frame));
 
                 match sll2_frame.get_protocol() {
                     EthernetTypes::Ipv4 => {
                         let ipv4_layer = sll2_frame.get_data().unwrap().as_any().downcast_ref::<Ipv4Layer>().unwrap();
-                        create_ipv4_details(&details_layout, &hex_editor, &db, &actions, &ipv4_layer, sll2_frame.len());
+                        create_ipv4_details(&details_layout, &db, sll2_frame.len(), &hex_editor, &actions, &ipv4_layer);
                     }
                     EthernetTypes::Ipv6 => {
                         let ipv6_layer = sll2_frame.get_data().unwrap().as_any().downcast_ref::<Ipv6Layer>().unwrap();
-                        create_ipv6_details(&details_layout, &hex_editor, &db, &ipv6_layer, sll2_frame.len());
+                        create_ipv6_details(&details_layout, &db, sll2_frame.len(), &hex_editor, &actions, &ipv6_layer);
                     }
                     _ => {}
                 }
@@ -138,11 +138,11 @@ impl SidebarView {
                 match raw_frame.get_version() {
                     IpVersions::Ipv4 => {
                         let ipv4_layer = raw_frame.get_data().unwrap().as_any().downcast_ref::<Ipv4Layer>().unwrap();
-                        create_ipv4_details(&details_layout, &hex_editor, &db, &actions, &ipv4_layer, raw_frame.len());
+                        create_ipv4_details(&details_layout, &db, raw_frame.len(), &hex_editor, &actions, &ipv4_layer);
                     }
                     IpVersions::Ipv6 => {
                         let ipv6_layer = raw_frame.get_data().unwrap().as_any().downcast_ref::<Ipv6Layer>().unwrap();
-                        create_ipv6_details(&details_layout, &hex_editor, &db, &ipv6_layer, raw_frame.len());
+                        create_ipv6_details(&details_layout, &db, raw_frame.len(), &hex_editor, &actions, &ipv6_layer);
                     }
                 }
             }
@@ -152,11 +152,11 @@ impl SidebarView {
                 match loop_frame.get_type() {
                     LoopTypes::Ipv4 => {
                         let ipv4_layer = loop_frame.get_data().unwrap().as_any().downcast_ref::<Ipv4Layer>().unwrap();
-                        create_ipv4_details(&details_layout, &hex_editor, &db, &actions, &ipv4_layer, loop_frame.len());
+                        create_ipv4_details(&details_layout, &db, loop_frame.len(), &hex_editor, &actions, &ipv4_layer);
                     }
                     LoopTypes::Ipv6 | LoopTypes::Ipv6e2 | LoopTypes::Ipv6e3 => {
                         let ipv6_layer = loop_frame.get_data().unwrap().as_any().downcast_ref::<Ipv6Layer>().unwrap();
-                        create_ipv6_details(&details_layout, &hex_editor, &db, &ipv6_layer, loop_frame.len());
+                        create_ipv6_details(&details_layout, &db, loop_frame.len(), &hex_editor, &actions, &ipv6_layer);
                     }
                     _ => {}
                 }
@@ -175,30 +175,30 @@ impl SidebarView {
 }
 
 
-fn create_ipv4_details(details_layout: &gtk::Box, hex_editor: &HexEditor, db: &Database, actions: &SimpleActionGroup, layer: &Ipv4Layer, offset: usize) {
+fn create_ipv4_details(details_layout: &gtk::Box, db: &Database, offset: usize, hex_editor: &HexEditor, actions: &SimpleActionGroup, layer: &Ipv4Layer) {
     details_layout.add(&create_ipv4_layer_expander(db, offset-layer.len(), hex_editor, actions, layer));
 
     match layer.get_protocol() {
         IpProtocols::HopByHop => {}
         IpProtocols::Icmp => {
             let icmp_layer = layer.get_data().unwrap().as_any().downcast_ref::<IcmpLayer>().unwrap();
-            details_layout.add(&create_icmp_layer_expander(&icmp_layer));
+            //details_layout.add(&create_icmp_layer_expander(&icmp_layer));
         }
         IpProtocols::Igmp => {}
         IpProtocols::Tcp => {
             let tcp_layer = layer.get_data().unwrap().as_any().downcast_ref::<TcpLayer>().unwrap();
-            details_layout.add(&create_tcp_layer_expander(&tcp_layer));
+            //details_layout.add(&create_tcp_layer_expander(&tcp_layer));
         }
         IpProtocols::Udp => {
             let udp_layer = layer.get_data().unwrap().as_any().downcast_ref::<UdpLayer>().unwrap();
-            details_layout.add(&create_udp_layer_expander(&udp_layer, IpAddr::V4(layer.get_source_address()), IpAddr::V4(layer.get_destination_address())));
+            //details_layout.add(&create_udp_layer_expander(&udp_layer, IpAddr::V4(layer.get_source_address()), IpAddr::V4(layer.get_destination_address())));
 
             match udp_layer.get_payload() {
                 UdpPayloads::Known(_type, payload) => {
                     match _type {
                         UdpTypes::Dhcp => {
                             let dhcp_layer = payload.as_any().downcast_ref::<DhcpLayer>().unwrap();
-                            details_layout.add(&create_dhcp_layer_expander(&dhcp_layer));
+                            //details_layout.add(&create_dhcp_layer_expander(&dhcp_layer));
                         }
                         UdpTypes::Dns => {}
                         UdpTypes::Quick => {}
@@ -218,8 +218,8 @@ fn create_ipv4_details(details_layout: &gtk::Box, hex_editor: &HexEditor, db: &D
     }
 }
 
-fn create_ipv6_details(details_layout: &gtk::Box, hex_editor: &HexEditor, db: &Database, layer: &Ipv6Layer, offset: usize) {
-    details_layout.add(&create_ipv6_layer_expander(db, offset-layer.len(), hex_editor, layer));
+fn create_ipv6_details(details_layout: &gtk::Box, db: &Database, offset: usize, hex_editor: &HexEditor, actions: &SimpleActionGroup, layer: &Ipv6Layer) {
+    details_layout.add(&create_ipv6_layer_expander(db, offset-layer.len(), hex_editor, actions, layer));
 
     match layer.get_next_header() {
         IpProtocols::HopByHop => {}
@@ -227,18 +227,18 @@ fn create_ipv6_details(details_layout: &gtk::Box, hex_editor: &HexEditor, db: &D
         IpProtocols::Igmp => {}
         IpProtocols::Tcp => {
             let tcp_layer = layer.get_data().unwrap().as_any().downcast_ref::<TcpLayer>().unwrap();
-            details_layout.add(&create_tcp_layer_expander(&tcp_layer));
+            //details_layout.add(&create_tcp_layer_expander(&tcp_layer));
         }
         IpProtocols::Udp => {
             let udp_layer = layer.get_data().unwrap().as_any().downcast_ref::<UdpLayer>().unwrap();
-            details_layout.add(&create_udp_layer_expander(&udp_layer, IpAddr::V6(layer.get_source_address()), IpAddr::V6(layer.get_destination_address())));
+            //details_layout.add(&create_udp_layer_expander(&udp_layer, IpAddr::V6(layer.get_source_address()), IpAddr::V6(layer.get_destination_address())));
 
             match udp_layer.get_payload() {
                 UdpPayloads::Known(_type, payload) => {
                     match _type {
                         UdpTypes::Dhcp => {
                             let dhcp_layer = payload.as_any().downcast_ref::<DhcpLayer>().unwrap();
-                            details_layout.add(&create_dhcp_layer_expander(&dhcp_layer));
+                            //details_layout.add(&create_dhcp_layer_expander(&dhcp_layer));
                         }
                         UdpTypes::Dns => {}
                         UdpTypes::Quick => {}
@@ -254,7 +254,7 @@ fn create_ipv6_details(details_layout: &gtk::Box, hex_editor: &HexEditor, db: &D
         IpProtocols::Gre => {}
         IpProtocols::Icmpv6 => {
             let icmpv6_layer = layer.get_data().unwrap().as_any().downcast_ref::<Icmpv6Layer>().unwrap();
-            details_layout.add(&create_icmpv6_layer_expander(&icmpv6_layer));
+            //details_layout.add(&create_icmpv6_layer_expander(&icmpv6_layer));
         }
         IpProtocols::Ospf => {}
         IpProtocols::Sps => {}

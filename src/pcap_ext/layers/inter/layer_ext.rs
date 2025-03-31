@@ -1,4 +1,6 @@
-pub trait LayerExt {
+pub trait LayerExt: Send {
+
+    fn get_variables(&self) -> Vec<&str>;
 
     fn get_selection(&self, variable: &str) -> (usize, usize);
 
@@ -13,4 +15,6 @@ pub trait LayerExt {
     fn get_value_as_bytes(&self, variable: &str) -> Vec<u8>;
 
     fn to_string(&self) -> String;
+
+    fn clone_ext(&self) -> Box<dyn LayerExt>;
 }

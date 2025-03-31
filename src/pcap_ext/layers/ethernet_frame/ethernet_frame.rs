@@ -3,6 +3,14 @@ use crate::pcap_ext::layers::inter::layer_ext::LayerExt;
 
 impl LayerExt for EthernetFrame {
 
+    fn get_variables(&self) -> Vec<&str> {
+        vec![
+            "destination",
+            "source",
+            "type"
+        ]
+    }
+
     fn get_selection(&self, variable: &str) -> (usize, usize) {
         match variable {
             "frame" => {
@@ -107,5 +115,9 @@ impl LayerExt for EthernetFrame {
 
     fn to_string(&self) -> String {
         todo!()
+    }
+
+    fn clone_ext(&self) -> Box<dyn LayerExt> {
+        Box::new(self.clone())
     }
 }

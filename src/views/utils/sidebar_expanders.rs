@@ -24,7 +24,7 @@ use crate::utils::ip_utils::ip_to_icon;
 use crate::widgets::hex_editor::HexEditor;
 
 pub fn create_ethernet_layer_expander(db: &Database, offset: usize, hex_editor: &HexEditor, actions: &SimpleActionGroup, layer: &EthernetFrame) -> Container {
-    let (dropdown, list_box) = create_dropdown("Ethernet II");
+    let (dropdown, list_box) = create_dropdown("Ethernet II", offset, hex_editor, actions, layer);
 
     match ethernet_to_company(db, layer.get_destination_mac()) {
         Some(company) => {
@@ -45,66 +45,10 @@ pub fn create_ethernet_layer_expander(db: &Database, offset: usize, hex_editor: 
     }
     list_box.add(&create_row("Type:", format!("{:?} (0x{:04X})", layer.get_type(), layer.get_type().get_code())));
 
-    list_box.connect_row_activated({
-        let hex_editor = hex_editor.clone();
-        let layer = layer.clone();
-        move |_, row| {
-            let (x, w) = layer.get_selection(match row.index() {
-                0 => {
-                    "destination"
-                }
-                1 => {
-                    "source"
-                }
-                2 => {
-                    "type"
-                }
-                _ => unimplemented!()
-            });
-
-            hex_editor.set_selection(offset + x, w);
-        }
-    });
-
-    list_box.connect_button_press_event({
-        let hex_editor = hex_editor.clone();
-        let layer = layer.clone();
-        let actions = actions.clone();
-        move |list_box, event| {
-            if event.button() != 3 {
-                return Proceed;
-            }
-
-            let (_, y) = event.position();
-
-            if let Some(row) = list_box.row_at_y(y as i32) {
-                let variable = match row.index() {
-                    0 => {
-                        "destination"
-                    }
-                    1 => {
-                        "source"
-                    }
-                    2 => {
-                        "type"
-                    }
-                    _ => unimplemented!()
-                };
-
-                create_row_context_menu(&row, event, &actions, variable, &layer);
-
-                let (x, w) = layer.get_selection(variable);
-                hex_editor.set_selection(offset + x, w);
-            }
-
-            Proceed
-        }
-    });
-
     dropdown.add(&list_box);
     dropdown.upcast()
 }
-
+/*
 pub fn create_sll2_layer_expander(offset: usize, hex_editor: &HexEditor, layer: &Sll2Frame) -> Container {
     let (dropdown, list_box) = create_dropdown("Linux Cooked Capture v2");
 
@@ -153,9 +97,9 @@ pub fn create_arp_layer_expander(layer: &ArpExtension) -> Container {
 
     dropdown.upcast()
 }
-
+*/
 pub fn create_ipv4_layer_expander(db: &Database, offset: usize, hex_editor: &HexEditor, actions: &SimpleActionGroup, layer: &Ipv4Layer) -> Container {
-    let (dropdown, list_box) = create_dropdown("Internet Protocol Version 4");
+    let (dropdown, list_box) = create_dropdown("Internet Protocol Version 4", offset, hex_editor, actions, layer);
 
     list_box.add(&create_row("Version:", layer.get_version().to_string()));
     list_box.add(&create_row("TOS:", layer.get_tos().to_string())); // SHOULD BE - Differentiated Services Field
@@ -186,104 +130,12 @@ pub fn create_ipv4_layer_expander(db: &Database, offset: usize, hex_editor: &Hex
         }
     }
 
-    list_box.connect_row_activated({
-        let hex_editor = hex_editor.clone();
-        let layer = layer.clone();
-        move |_, row| {
-            let (x, w) = layer.get_selection(match row.index() {
-                0 => {
-                    "version"
-                }
-                1 => {
-                    "tos"
-                }
-                2 => {
-                    "total_length"
-                }
-                3 => {
-                    "identification"
-                }
-                4 => {
-                    "ttl"
-                }
-                5 => {
-                    "protocol"
-                }
-                6 => {
-                    "checksum"
-                }
-                7 => {
-                    "source_address"
-                }
-                8 => {
-                    "destination_address"
-                }
-                _ => unimplemented!()
-            });
-
-            hex_editor.set_selection(offset + x, w);
-        }
-    });
-
-    list_box.connect_button_press_event({
-        let hex_editor = hex_editor.clone();
-        let layer = layer.clone();
-        let actions = actions.clone();
-        move |list_box, event| {
-            if event.button() != 3 {
-                return Proceed;
-            }
-
-            let (_, y) = event.position();
-
-            if let Some(row) = list_box.row_at_y(y as i32) {
-                let variable = match row.index() {
-                    0 => {
-                        "version"
-                    }
-                    1 => {
-                        "tos"
-                    }
-                    2 => {
-                        "total_length"
-                    }
-                    3 => {
-                        "identification"
-                    }
-                    4 => {
-                        "ttl"
-                    }
-                    5 => {
-                        "protocol"
-                    }
-                    6 => {
-                        "checksum"
-                    }
-                    7 => {
-                        "source_address"
-                    }
-                    8 => {
-                        "destination_address"
-                    }
-                    _ => unimplemented!()
-                };
-
-                create_row_context_menu(&row, event, &actions, variable, &layer);
-
-                let (x, w) = layer.get_selection(variable);
-                hex_editor.set_selection(offset + x, w);
-            }
-
-            Proceed
-        }
-    });
-
     dropdown.add(&list_box);
     dropdown.upcast()
 }
 
-pub fn create_ipv6_layer_expander(db: &Database, offset: usize, hex_editor: &HexEditor, layer: &Ipv6Layer) -> Container {
-    let (dropdown, list_box) = create_dropdown(&layer.get_title("frame"));
+pub fn create_ipv6_layer_expander(db: &Database, offset: usize, hex_editor: &HexEditor, actions: &SimpleActionGroup, layer: &Ipv6Layer) -> Container {
+    let (dropdown, list_box) = create_dropdown(&layer.get_title("frame"), offset, hex_editor, actions, layer);
 
     list_box.add(&create_row(format!("{}:", layer.get_title("version")).as_str(), layer.get_value("version")));
     list_box.add(&create_row(format!("{}:", layer.get_title("payload_length")).as_str(), layer.get_value("payload_length")));
@@ -308,40 +160,10 @@ pub fn create_ipv6_layer_expander(db: &Database, offset: usize, hex_editor: &Hex
         }
     }
 
-    list_box.connect_row_activated({
-        let hex_editor = hex_editor.clone();
-        let layer = layer.clone();
-        move |_, row| {
-            let (x, w) = layer.get_selection(match row.index() {
-                0 => {
-                    "version"
-                }
-                1 => {
-                    "payload_length"
-                }
-                2 => {
-                    "next_header"
-                }
-                3 => {
-                    "hop_limit"
-                }
-                4 => {
-                    "source_address"
-                }
-                5 => {
-                    "destination_address"
-                }
-                _ => unimplemented!()
-            });
-
-            hex_editor.set_selection(offset + x, w);
-        }
-    });
-
     dropdown.add(&list_box);
     dropdown.upcast()
 }
-
+/*
 pub fn create_icmp_layer_expander(layer: &IcmpLayer) -> Container {
     let (dropdown, list_box) = create_dropdown("Internet Control Message Protocol");
 
@@ -437,8 +259,8 @@ pub fn create_tcp_layer_expander(layer: &TcpLayer) -> Container {
 
     dropdown.upcast()
 }
-
-fn create_dropdown(title: &str) -> (Container, ListBox) {
+*/
+fn create_dropdown(title: &str, offset: usize, hex_editor: &HexEditor, actions: &SimpleActionGroup, layer: &dyn LayerExt) -> (Container, ListBox) {
     let dropdown = gtk::Box::new(Orientation::Vertical, 0);
     dropdown.set_widget_name("dropdown");
     dropdown.show();
@@ -456,6 +278,39 @@ fn create_dropdown(title: &str) -> (Container, ListBox) {
     button.set_child(Some(&hbox));
 
     let list_box = ListBox::new();
+
+    list_box.connect_row_activated({
+        let hex_editor = hex_editor.clone();
+        let layer = layer.clone_ext();
+        move |_, row| {
+            let (x, w) = layer.get_selection(layer.get_variables().get(row.index() as usize).unwrap().clone());
+            hex_editor.set_selection(offset + x, w);
+        }
+    });
+
+    list_box.connect_button_press_event({
+        let hex_editor = hex_editor.clone();
+        let layer = layer.clone_ext();
+        let actions = actions.clone();
+        move |list_box, event| {
+            if event.button() != 3 {
+                return Proceed;
+            }
+
+            let (_, y) = event.position();
+
+            if let Some(row) = list_box.row_at_y(y as i32) {
+                let variable = layer.get_variables().get(row.index() as usize).unwrap().clone();
+
+                create_row_context_menu(&row, event, &actions, variable, layer.as_ref());
+
+                let (x, w) = layer.get_selection(variable);
+                hex_editor.set_selection(offset + x, w);
+            }
+
+            Proceed
+        }
+    });
 
     let list_box_clone = list_box.clone();
     button.connect_clicked(move |_| {
