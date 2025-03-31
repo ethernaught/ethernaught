@@ -26,6 +26,8 @@ use rlibpcap::packet::packet::Packet;
 use rlibpcap::utils::data_link_types::DataLinkTypes;
 use crate::database::sqlite::Database;
 use crate::get_lib_path;
+use crate::views::sidebar::dropdown::Dropdown;
+use crate::views::sidebar::ipv4_dropdown::Ipv4Dropdown;
 use crate::views::utils::sidebar_expanders::{create_ethernet_layer_expander, create_ipv4_layer_expander, create_ipv6_layer_expander};
 use crate::widgets::hex_editor::HexEditor;
 
@@ -94,6 +96,8 @@ impl SidebarView {
             .expect("Couldn't find 'details_layout' in sidebar_view.ui");
 
 
+
+        /*
         match packet.get_data_link_type() {
             DataLinkTypes::En10mb => {
                 let ethernet_frame = packet.get_frame().as_any().downcast_ref::<EthernetFrame>().unwrap();
@@ -163,14 +167,24 @@ impl SidebarView {
             }
             _ => {}
         };
+        */
 
         
 
 
-        Self {
+        let _self = Self {
             root,
             hex_editor
-        }
+        };
+
+        let ethernet_frame = packet.get_frame().as_any().downcast_ref::<EthernetFrame>().unwrap();
+        let view = Dropdown::from_layer(&_self, ethernet_frame, 0);
+        details_layout.add(&view.root);
+
+
+
+
+        _self
     }
 }
 
