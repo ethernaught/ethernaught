@@ -8,20 +8,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f0704e63-1929-42d3-83d7-8cbc904dc132" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/pcap_ext/layers/ethernet_frame/arp/arp_extension.rs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/pcap_ext/layers/ethernet_frame/arp/mod.rs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/views/sidebar/arp_dropdown.rs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/views/sidebar/ipv6_dropdown.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pcap_ext/layers/ethernet_frame/ethernet_frame.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/pcap_ext/layers/ethernet_frame/ethernet_frame.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pcap_ext/layers/ethernet_frame/mod.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/pcap_ext/layers/ethernet_frame/mod.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pcap_ext/layers/inter/layer_ext.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/pcap_ext/layers/inter/layer_ext.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pcap_ext/layers/ip/ipv4_layer.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/pcap_ext/layers/ip/ipv4_layer.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pcap_ext/layers/ip/ipv6_layer.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/pcap_ext/layers/ip/ipv6_layer.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/sidebar/ethernet_dropdown.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/sidebar/ethernet_dropdown.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/sidebar/ipv4_dropdown.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/sidebar/ipv4_dropdown.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/sidebar/mod.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/sidebar/mod.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/sidebar_view.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/sidebar_view.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/ethernet_utils.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/ethernet_utils.rs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
