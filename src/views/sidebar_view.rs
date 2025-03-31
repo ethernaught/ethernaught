@@ -11,8 +11,8 @@ use rlibpcap::packet::layers::ip::icmp::icmp_layer::IcmpLayer;
 use rlibpcap::packet::layers::ip::icmpv6::icmpv6_layer::Icmpv6Layer;
 use rlibpcap::packet::layers::ip::inter::ip_protocols::IpProtocols;
 use rlibpcap::packet::layers::ip::inter::ip_versions::IpVersions;
-use rlibpcap::packet::layers::ip::ipv4_layer::Ipv4Layer;
-use rlibpcap::packet::layers::ip::ipv6_layer::Ipv6Layer;
+use rlibpcap::packet::layers::ip::ipv4_layer::{Ipv4Layer, IPV4_HEADER_LEN};
+use rlibpcap::packet::layers::ip::ipv6_layer::{Ipv6Layer, IPV6_HEADER_LEN};
 use rlibpcap::packet::layers::ip::tcp::tcp_layer::TcpLayer;
 use rlibpcap::packet::layers::ip::udp::dhcp::dhcp_layer::DhcpLayer;
 use rlibpcap::packet::layers::ip::udp::inter::udp_payloads::UdpPayloads;
@@ -32,6 +32,7 @@ use crate::views::dropdown::ethernet_dropdown::EthernetDropdown;
 use crate::views::dropdown::ipv4_dropdown::Ipv4Dropdown;
 use crate::views::dropdown::ipv6_dropdown::Ipv6Dropdown;
 use crate::views::dropdown::sll2_dropdown::Sll2Dropdown;
+use crate::views::dropdown::udp_dropdown::UdpDropdown;
 use crate::views::utils::sidebar_expanders::{create_ethernet_layer_expander, create_ipv4_layer_expander, create_ipv6_layer_expander};
 use crate::widgets::hex_editor::HexEditor;
 
@@ -186,8 +187,7 @@ impl SidebarView {
                 match ethernet_frame.get_type() {
                     EthernetTypes::Ipv4 => {
                         let ipv4_layer = ethernet_frame.get_data().unwrap().as_any().downcast_ref::<Ipv4Layer>().unwrap();
-                        //create_ipv4_details(&details_layout, &db, ethernet_frame.len(), &hex_editor, &actions, &ipv4_layer);
-                        details_layout.add(&Dropdown::from_ipv4_layer(&db, &hex_editor, &actions, ipv4_layer, offset).root);
+                        create_ipv4_details(&details_layout, &db, &hex_editor, &actions, &ipv4_layer, offset);
                     }
                     EthernetTypes::Arp => {
                         let arp_layer = ethernet_frame.get_data().unwrap().as_any().downcast_ref::<ArpExtension>().unwrap();
@@ -196,8 +196,7 @@ impl SidebarView {
                     }
                     EthernetTypes::Ipv6 => {
                         let ipv6_layer = ethernet_frame.get_data().unwrap().as_any().downcast_ref::<Ipv6Layer>().unwrap();
-                        details_layout.add(&Dropdown::from_ipv6_layer(&db, &hex_editor, &actions, ipv6_layer, offset).root);
-                        //create_ipv6_details(&details_layout, &db, ethernet_frame.len(), &hex_editor, &actions, &ipv6_layer);
+                        create_ipv6_details(&details_layout, &db, &hex_editor, &actions, &ipv6_layer, offset);
                     }
                     EthernetTypes::Broadcast => {
                     }
@@ -211,11 +210,11 @@ impl SidebarView {
                 match sll2_frame.get_protocol() {
                     EthernetTypes::Ipv4 => {
                         let ipv4_layer = sll2_frame.get_data().unwrap().as_any().downcast_ref::<Ipv4Layer>().unwrap();
-                        details_layout.add(&Dropdown::from_ipv4_layer(&db, &hex_editor, &actions, ipv4_layer, offset).root);
+                        create_ipv4_details(&details_layout, &db, &hex_editor, &actions, &ipv4_layer, offset);
                     }
                     EthernetTypes::Ipv6 => {
                         let ipv6_layer = sll2_frame.get_data().unwrap().as_any().downcast_ref::<Ipv6Layer>().unwrap();
-                        details_layout.add(&Dropdown::from_ipv6_layer(&db, &hex_editor, &actions, ipv6_layer, offset).root);
+                        create_ipv6_details(&details_layout, &db, &hex_editor, &actions, &ipv6_layer, offset);
                     }
                     _ => {}
                 }
@@ -231,8 +230,9 @@ impl SidebarView {
 }
 
 
-fn create_ipv4_details(details_layout: &gtk::Box, db: &Database, offset: usize, hex_editor: &HexEditor, actions: &SimpleActionGroup, layer: &Ipv4Layer) {
-    details_layout.add(&create_ipv4_layer_expander(db, offset-layer.len(), hex_editor, actions, layer));
+fn create_ipv4_details(details_layout: &gtk::Box, db: &Database, hex_editor: &HexEditor, actions: &SimpleActionGroup, layer: &Ipv4Layer, offset: usize) {
+    details_layout.add(&Dropdown::from_ipv4_layer(db, hex_editor, actions, layer, offset).root);
+    let mut offset = offset + IPV4_HEADER_LEN;
 
     match layer.get_protocol() {
         IpProtocols::HopByHop => {}
@@ -247,7 +247,7 @@ fn create_ipv4_details(details_layout: &gtk::Box, db: &Database, offset: usize, 
         }
         IpProtocols::Udp => {
             let udp_layer = layer.get_data().unwrap().as_any().downcast_ref::<UdpLayer>().unwrap();
-            //details_layout.add(&create_udp_layer_expander(&udp_layer, IpAddr::V4(layer.get_source_address()), IpAddr::V4(layer.get_destination_address())));
+            details_layout.add(&Dropdown::from_udp_layer(IpAddr::V4(layer.get_source_address()), IpAddr::V4(layer.get_destination_address()), hex_editor, actions, udp_layer, offset).root);
 
             match udp_layer.get_payload() {
                 UdpPayloads::Known(_type, payload) => {
@@ -274,8 +274,9 @@ fn create_ipv4_details(details_layout: &gtk::Box, db: &Database, offset: usize, 
     }
 }
 
-fn create_ipv6_details(details_layout: &gtk::Box, db: &Database, offset: usize, hex_editor: &HexEditor, actions: &SimpleActionGroup, layer: &Ipv6Layer) {
-    details_layout.add(&create_ipv6_layer_expander(db, offset-layer.len(), hex_editor, actions, layer));
+fn create_ipv6_details(details_layout: &gtk::Box, db: &Database, hex_editor: &HexEditor, actions: &SimpleActionGroup, layer: &Ipv6Layer, offset: usize) {
+    details_layout.add(&Dropdown::from_ipv6_layer(db, hex_editor, actions, layer, offset).root);
+    let mut offset = offset + IPV6_HEADER_LEN;
 
     match layer.get_next_header() {
         IpProtocols::HopByHop => {}
@@ -288,6 +289,7 @@ fn create_ipv6_details(details_layout: &gtk::Box, db: &Database, offset: usize, 
         IpProtocols::Udp => {
             let udp_layer = layer.get_data().unwrap().as_any().downcast_ref::<UdpLayer>().unwrap();
             //details_layout.add(&create_udp_layer_expander(&udp_layer, IpAddr::V6(layer.get_source_address()), IpAddr::V6(layer.get_destination_address())));
+            details_layout.add(&Dropdown::from_udp_layer(IpAddr::V6(layer.get_source_address()), IpAddr::V6(layer.get_destination_address()), hex_editor, actions, udp_layer, offset).root);
 
             match udp_layer.get_payload() {
                 UdpPayloads::Known(_type, payload) => {

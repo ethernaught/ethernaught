@@ -87,10 +87,7 @@ impl LayerExt for Ipv4Layer {
             "fragment_offset" => todo!(),
             "ttl" => self.get_ttl().to_string(),
             "protocol" => format!("{} ({})", self.get_protocol().to_string(), self.get_protocol().get_code()),
-            "checksum" => {
-                let checksum_string = if self.validate_checksum() { "correct" } else { "incorrect" };
-                format!("0x{:04X} [{}]", self.get_checksum(), checksum_string)
-            },
+            "checksum" => format!("0x{:04X}", self.get_checksum()),
             "source_address" => self.get_source_address().to_string(),
             "destination_address" => self.get_destination_address().to_string(),
             _ => unimplemented!()

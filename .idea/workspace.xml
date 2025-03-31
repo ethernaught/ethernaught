@@ -8,10 +8,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f0704e63-1929-42d3-83d7-8cbc904dc132" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/pcap_ext/layers/ip/tcp/mod.rs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pcap_ext/layers/ip/tcp/tcp_layer.rs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pcap_ext/layers/ip/udp/mod.rs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pcap_ext/layers/ip/udp/udp_layer.rs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/views/dropdown/udp_dropdown.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/ui/ethernaught_ui.xml" beforeDir="false" afterPath="$PROJECT_DIR$/res/ui/ethernaught_ui.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pcap_ext/layers/sll2_frame/sll2_frame.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/pcap_ext/layers/sll2_frame/sll2_frame.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pcap_ext/layers/ip/ipv4_layer.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/pcap_ext/layers/ip/ipv4_layer.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pcap_ext/layers/ip/mod.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/pcap_ext/layers/ip/mod.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/dropdown/ipv4_dropdown.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/dropdown/ipv4_dropdown.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/dropdown/mod.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/dropdown/mod.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/sidebar_view.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/sidebar_view.rs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -47,7 +54,7 @@
     "RunOnceActivity.git.unshallow": "true",
     "RunOnceActivity.rust.reset.selective.auto.import": "true",
     "git-widget-placeholder": "main",
-    "last_opened_file_path": "/home/brad/CLionProjects/ethernaught/src/views/dropdown",
+    "last_opened_file_path": "/Users/brad/CLionProjects/ethernaught/src/views/dropdown",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",

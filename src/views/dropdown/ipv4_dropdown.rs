@@ -32,7 +32,9 @@ impl Ipv4Dropdown for Dropdown {
         _self.list_box.add(&create_row(format!("{}:", layer.get_title("identification")), layer.get_value("identification")));
         _self.list_box.add(&create_row(format!("{}:", layer.get_title("ttl")), layer.get_value("ttl")));
         _self.list_box.add(&create_row(format!("{}:", layer.get_title("protocol")), layer.get_value("protocol")));
-        _self.list_box.add(&create_row(format!("{}:", layer.get_title("checksum")), layer.get_value("checksum")));
+
+        let checksum_string = if layer.validate_checksum() { "correct" } else { "incorrect" };
+        _self.list_box.add(&create_row(format!("{}:", layer.get_title("checksum")), format!("{} [{}]", layer.get_value("checksum"), checksum_string)));
 
         match ip_to_icon(db, IpAddr::V4(layer.get_source_address())) {
             Some(icon) => {
