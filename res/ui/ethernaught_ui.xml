@@ -31,6 +31,13 @@
             </section>
             <section>
                 <item>
+                    <attribute name="action">app.settings</attribute>
+                    <attribute name="label" translatable="yes">Se_ttings</attribute>
+                    <attribute name="accel">&lt;control&gt;&lt;alt&gt;X</attribute>
+                </item>
+            </section>
+            <section>
+                <item>
                     <attribute name="action">app.quit</attribute>
                     <attribute name="label" translatable="yes">E_xit</attribute>
                     <attribute name="accel">&lt;control&gt;X</attribute>

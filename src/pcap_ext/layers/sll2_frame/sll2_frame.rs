@@ -1,5 +1,6 @@
 use rlibpcap::packet::layers::sll2_frame::sll2_frame::{Sll2Frame, SLL2_FRAME_LEN};
 use crate::pcap_ext::layers::inter::layer_ext::LayerExt;
+use crate::views::dropdown::dropdown::create_row;
 
 impl LayerExt for Sll2Frame {
 
@@ -11,7 +12,8 @@ impl LayerExt for Sll2Frame {
             "data_link_type",
             "packet_type",
             "address_length",
-            "address"
+            "address",
+            "unused"
         ]
     }
 
@@ -24,7 +26,8 @@ impl LayerExt for Sll2Frame {
             "data_link_type" => (8, 2),
             "packet_type" => (10, 1),
             "address_length" => (11, 1),
-            "address" => (12, 8),
+            "address" => (12, self.get_address_length() as usize),
+            "unused" => (12 + self.get_address_length() as usize, 8 - self.get_address_length() as usize),
             _ => unimplemented!()
         }
     }
@@ -39,6 +42,7 @@ impl LayerExt for Sll2Frame {
             "packet_type" => "sll2.packet_type",
             "address_length" => "sll2.address_length",
             "address" => "sll2.address",
+            "unused" => "sll2.unused",
             _ => unimplemented!()
         }.to_string()
     }
@@ -53,6 +57,7 @@ impl LayerExt for Sll2Frame {
             "packet_type" => "Packet Type",
             "address_length" => "Link-Layer Address Length",
             "address" => "Source",
+            "unused" => "Unused",
             _ => unimplemented!()
         }.to_string()
     }
@@ -71,6 +76,13 @@ impl LayerExt for Sll2Frame {
                     .map(|b| format!("{:02X}", b))
                     .collect::<Vec<String>>()
                     .join(":")
+            },
+            "unused" => {
+                self.get_address().iter()
+                    .skip(self.get_address_length() as usize)
+                    .map(|b| format!("{:02X}", b))
+                    .collect::<Vec<String>>()
+                    .concat()
             }
             _ => unimplemented!()
         }
@@ -96,7 +108,8 @@ impl LayerExt for Sll2Frame {
             "data_link_type" => self.get_data_link_type().get_code().to_be_bytes().to_vec(),
             "packet_type" => vec![self.get_packet_type().get_code()],
             "address_length" => vec![self.get_address_length()],
-            "address" => self.get_address().to_vec(),
+            "address" => self.get_address()[..self.get_address_length() as usize].to_vec(),
+            "unused" => self.get_address()[self.get_address_length() as usize..].to_vec(),
             _ => unimplemented!()
         }
     }
