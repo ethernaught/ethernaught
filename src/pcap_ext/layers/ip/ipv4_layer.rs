@@ -22,7 +22,7 @@ impl LayerExt for Ipv4Layer {
 
     fn get_selection(&self, key: &str) -> (usize, usize) {
         match key {
-            "frame" => (0, 20),
+            "frame" => (0, IPV4_HEADER_LEN),
             "version" => (0, 1),
             "tos" => (1, 1),
             "total_length" => (2, 2),

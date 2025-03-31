@@ -1,4 +1,4 @@
-use rlibpcap::packet::layers::ip::ipv6_layer::Ipv6Layer;
+use rlibpcap::packet::layers::ip::ipv6_layer::{Ipv6Layer, IPV6_HEADER_LEN};
 use crate::pcap_ext::layers::inter::layer_ext::LayerExt;
 
 impl LayerExt for Ipv6Layer {
@@ -16,7 +16,7 @@ impl LayerExt for Ipv6Layer {
 
     fn get_selection(&self, key: &str) -> (usize, usize) {
         match key {
-            "frame" => (0, 40),
+            "frame" => (0, IPV6_HEADER_LEN),
             "version" => (0, 1),
             "traffic_class" => (1, 1),
             "flow_label" => (1, 4),

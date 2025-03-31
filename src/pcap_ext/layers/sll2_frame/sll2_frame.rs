@@ -19,7 +19,7 @@ impl LayerExt for Sll2Frame {
 
     fn get_selection(&self, key: &str) -> (usize, usize) {
         match key {
-            "frame" => (0, 20),
+            "frame" => (0, SLL2_FRAME_LEN),
             "protocol" => (0, 2),
             //"reserved" => (2, 2),
             "if_index" => (4, 4),

@@ -13,7 +13,7 @@ impl LayerExt for EthernetFrame {
 
     fn get_selection(&self, key: &str) -> (usize, usize) {
         match key {
-            "frame" => (0, 14),
+            "frame" => (0, ETHERNET_FRAME_LEN),
             "destination" => (0, 6),
             "source" => (6, 6),
             "type" => (12, 2),

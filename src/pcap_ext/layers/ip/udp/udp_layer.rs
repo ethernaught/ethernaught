@@ -8,7 +8,7 @@ impl LayerExt for UdpLayer {
             "source_port",
             "destination_port",
             "length",
-            "checksum",
+            "checksum"
         ]
     }
 
