@@ -19,7 +19,7 @@ use rlibpcap::packet::layers::ip::udp::inter::udp_payloads::UdpPayloads;
 use rlibpcap::packet::layers::ip::udp::inter::udp_types::UdpTypes;
 use rlibpcap::packet::layers::ip::udp::udp_layer::UdpLayer;
 use rlibpcap::packet::layers::loop_frame::inter::loop_types::LoopTypes;
-use rlibpcap::packet::layers::loop_frame::loop_frame::LoopFrame;
+use rlibpcap::packet::layers::loop_frame::loop_frame::{LoopFrame, LOOP_FRAME_LENGTH};
 use rlibpcap::packet::layers::raw_frame::raw_frame::RawFrame;
 use rlibpcap::packet::layers::sll2_frame::sll2_frame::{Sll2Frame, SLL2_FRAME_LEN};
 use rlibpcap::packet::packet::Packet;
@@ -32,6 +32,7 @@ use crate::views::dropdown::ethernet_dropdown::EthernetDropdown;
 use crate::views::dropdown::ipv4_dropdown::Ipv4Dropdown;
 use crate::views::dropdown::ipv6_dropdown::Ipv6Dropdown;
 use crate::views::dropdown::sll2_dropdown::Sll2Dropdown;
+use crate::views::dropdown::tcp_dropdown::TcpDropdown;
 use crate::views::dropdown::udp_dropdown::UdpDropdown;
 use crate::views::utils::sidebar_expanders::{create_ethernet_layer_expander, create_ipv4_layer_expander, create_ipv6_layer_expander};
 use crate::widgets::hex_editor::HexEditor;
@@ -219,6 +220,36 @@ impl SidebarView {
                     _ => {}
                 }
             }
+            DataLinkTypes::Raw => {
+                let raw_frame = packet.get_frame().as_any().downcast_ref::<RawFrame>().unwrap();
+
+                match raw_frame.get_version() {
+                    IpVersions::Ipv4 => {
+                        let ipv4_layer = raw_frame.get_data().unwrap().as_any().downcast_ref::<Ipv4Layer>().unwrap();
+                        create_ipv4_details(&details_layout, &db, &hex_editor, &actions, &ipv4_layer, offset);
+                    }
+                    IpVersions::Ipv6 => {
+                        let ipv6_layer = raw_frame.get_data().unwrap().as_any().downcast_ref::<Ipv6Layer>().unwrap();
+                        create_ipv6_details(&details_layout, &db, &hex_editor, &actions, &ipv6_layer, offset);
+                    }
+                }
+            }
+            DataLinkTypes::Loop => {
+                let loop_frame = packet.get_frame().as_any().downcast_ref::<LoopFrame>().unwrap();
+                offset += LOOP_FRAME_LENGTH;
+
+                match loop_frame.get_type() {
+                    LoopTypes::Ipv4 => {
+                        let ipv4_layer = loop_frame.get_data().unwrap().as_any().downcast_ref::<Ipv4Layer>().unwrap();
+                        create_ipv4_details(&details_layout, &db, &hex_editor, &actions, &ipv4_layer, offset);
+                    }
+                    LoopTypes::Ipv6 | LoopTypes::Ipv6e2 | LoopTypes::Ipv6e3 => {
+                        let ipv6_layer = loop_frame.get_data().unwrap().as_any().downcast_ref::<Ipv6Layer>().unwrap();
+                        create_ipv6_details(&details_layout, &db, &hex_editor, &actions, &ipv6_layer, offset);
+                    }
+                    _ => {}
+                }
+            }
             _ => {}
         }
 
@@ -243,7 +274,7 @@ fn create_ipv4_details(details_layout: &gtk::Box, db: &Database, hex_editor: &He
         IpProtocols::Igmp => {}
         IpProtocols::Tcp => {
             let tcp_layer = layer.get_data().unwrap().as_any().downcast_ref::<TcpLayer>().unwrap();
-            //details_layout.add(&create_tcp_layer_expander(&tcp_layer));
+            details_layout.add(&Dropdown::from_tcp_layer(hex_editor, actions, tcp_layer, offset).root);
         }
         IpProtocols::Udp => {
             let udp_layer = layer.get_data().unwrap().as_any().downcast_ref::<UdpLayer>().unwrap();
@@ -284,7 +315,7 @@ fn create_ipv6_details(details_layout: &gtk::Box, db: &Database, hex_editor: &He
         IpProtocols::Igmp => {}
         IpProtocols::Tcp => {
             let tcp_layer = layer.get_data().unwrap().as_any().downcast_ref::<TcpLayer>().unwrap();
-            //details_layout.add(&create_tcp_layer_expander(&tcp_layer));
+            details_layout.add(&Dropdown::from_tcp_layer(hex_editor, actions, tcp_layer, offset).root);
         }
         IpProtocols::Udp => {
             let udp_layer = layer.get_data().unwrap().as_any().downcast_ref::<UdpLayer>().unwrap();

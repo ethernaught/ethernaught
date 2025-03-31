@@ -9,8 +9,8 @@ impl LayerExt for TcpLayer {
             "destination_port",
             "sequence_number",
             "acknowledgment_number",
-            "data_offset",
-            "flags",
+            //"data_offset",
+            //"flags",
             "window_size",
             "checksum",
             "urgent_pointer"
@@ -52,13 +52,30 @@ impl LayerExt for TcpLayer {
     fn get_title(&self, key: &str) -> String {
         match key {
             "frame" => "Transmission Control Protocol",
+            "source_port" => "Source Port",
+            "destination_port" => "Destination Port",
+            "sequence_number" => "Sequence Number",
+            "acknowledgment_number" => "Acknowledgment Number",
+            //"data_offset" => ,
+            //"flags" => ,
+            "window_size" => "Window",
+            "checksum" => "Checksum",
+            "urgent_pointer" => "Urgent Pointer",
             _ => unimplemented!()
         }.to_string()
     }
 
     fn get_value(&self, key: &str) -> String {
         match key {
-            //NO FRAME...
+            "source_port" => self.get_source_port().to_string(),
+            "destination_port" => self.get_destination_port().to_string(),
+            "sequence_number" => self.get_sequence_number().to_string(),
+            "acknowledgment_number" => self.get_acknowledgment_number().to_string(),
+            //"data_offset" => ,
+            //"flags" => ,
+            "window_size" => self.get_window_size().to_string(),
+            "checksum" => format!("0x{:04X}", self.get_checksum()),
+            "urgent_pointer" => self.get_urgent_pointer().to_string(),
             _ => unimplemented!()
         }
     }
@@ -81,6 +98,15 @@ impl LayerExt for TcpLayer {
 
                 buf
             }
+            "source_port" => self.get_source_port().to_be_bytes().to_vec(),
+            "destination_port" => self.get_destination_port().to_be_bytes().to_vec(),
+            "sequence_number" => self.get_sequence_number().to_be_bytes().to_vec(),
+            "acknowledgment_number" => self.get_acknowledgment_number().to_be_bytes().to_vec(),
+            //"data_offset" => ,
+            //"flags" => ,
+            "window_size" => self.get_window_size().to_be_bytes().to_vec(),
+            "checksum" => self.get_checksum().to_be_bytes().to_vec(),
+            "urgent_pointer" => self.get_urgent_pointer().to_be_bytes().to_vec(),
             _ => unimplemented!()
         }
     }
