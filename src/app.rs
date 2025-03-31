@@ -45,7 +45,6 @@ impl App {
             MainWindow::new(&app);
 
             register_app_actions(&app);
-            //REGISTER ACTIONS
         });
 
         self.app.connect_open(move |app, files, _hint| {

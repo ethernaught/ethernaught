@@ -1,11 +1,13 @@
 use std::cell::RefCell;
 use gtk::{gdk, gio, ApplicationWindow, Builder, Container, CssProvider, Label, ListBox, StyleContext, Window};
 use gtk::glib::{Cast, Variant, VariantDict};
-use gtk::prelude::{ActionGroupExt, BuilderExtManual, ContainerExt, CssProviderExt, ListBoxExt, ListBoxRowExt, WidgetExt};
+use gtk::prelude::{ActionGroupExt, BuilderExtManual, ContainerExt, CssProviderExt, ListBoxExt, ListBoxRowExt, StyleContextExt, WidgetExt};
 use rlibpcap::devices::Device;
 use rlibpcap::utils::interface_flags::InterfaceFlags;
 use crate::bus::event_bus::{pause_event, register_event, resume_event, unregister_event};
+use crate::bus::event_bus::EventPropagation::{Continue, Stop};
 use crate::bus::events::inter::event::Event;
+use crate::bus::events::permission_event::PermissionEvent;
 use crate::bus::events::transmitted_event::TransmittedEvent;
 use crate::pcap_ext::devices::Serialize;
 use crate::views::device_list_item::DeviceListItem;
@@ -89,6 +91,23 @@ impl DevicesView {
             device_list_item.push(device_item);
         });
 
+        register_event("permission_event", {
+            let if_map = if_map.clone();
+            let device_list_item = device_list_item.clone();
+            move |event| {
+                let event = event.as_any().downcast_ref::<PermissionEvent>().unwrap();
+                if event.has_permission() {
+                    return Stop;
+                }
+
+                if_map.iter().for_each(|(pos, _)| {
+                    device_list_item.get(*pos).unwrap().root.style_context().add_class("error");
+                });
+
+                Stop
+            }
+        }, false);
+
         let event_listener = RefCell::new(register_event("transmitted_event", {
             let if_map = if_map.clone();
             let device_list_item = device_list_item.clone();
@@ -102,6 +121,8 @@ impl DevicesView {
                         device_list_item.get(*pos).unwrap().graph.add_point(0);
                     }
                 });
+
+                Continue
             }
         }, false));
 

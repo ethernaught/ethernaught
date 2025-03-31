@@ -4,7 +4,13 @@ use gtk::glib;
 use crate::bus::events::inter::event::Event;
 use crate::utils::random;
 
-type EventCallback = Box<dyn Fn(&Box<dyn Event>)>;
+type EventCallback = Box<dyn Fn(&Box<dyn Event>) -> EventPropagation>;
+
+#[derive(Clone, Copy, Eq, PartialEq, Debug)]
+pub enum EventPropagation {
+    Continue,
+    Stop
+}
 
 struct CallbackState {
     callback: EventCallback,
@@ -17,7 +23,7 @@ thread_local! {
 
 pub fn register_event<F>(event: &str, callback: F, paused: bool) -> u32
 where
-    F: Fn(&Box<dyn Event>) + 'static,
+    F: Fn(&Box<dyn Event>) -> EventPropagation + 'static,
 {
     let callback_id = random::gen::<u32>();
 
@@ -81,12 +87,20 @@ pub fn resume_event(event: &str, callback_id: u32) -> bool {
 pub fn send_event(data: Box<dyn Event>) {
     glib::MainContext::default().invoke(move || {
         EVENT_BUS.with(|subs| {
-            let subs = subs.borrow();
-            if let Some(callbacks) = subs.get(&data.get_name()) {
-                for callback_state in callbacks.values() {
+            let mut subs = subs.borrow_mut();
+            if let Some(callbacks) = subs.get_mut(&data.get_name()) {
+                let mut keys_to_remove = Vec::new();
+
+                for (key, callback_state) in callbacks.iter() {
                     if !callback_state.paused {
-                        (callback_state.callback)(&data);
+                        if !(callback_state.callback)(&data).eq(&EventPropagation::Continue) {
+                            keys_to_remove.push(key.clone());
+                        }
                     }
+                }
+
+                for key in keys_to_remove {
+                    callbacks.remove(&key);
                 }
             }
         });

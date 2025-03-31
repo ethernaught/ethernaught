@@ -9,6 +9,10 @@ use gtk::prelude::{ActionGroupExt, BuilderExtManual, ContainerExt, CssProviderEx
 use rlibpcap::devices::Device;
 use rlibpcap::utils::interface_flags::InterfaceFlags;
 use crate::actions::window_actions::{register_stack_actions, register_window_actions};
+use crate::bus::event_bus::register_event;
+use crate::bus::events::permission_event::PermissionEvent;
+use crate::bus::events::transmitted_event::TransmittedEvent;
+use crate::sniffer::Sniffer;
 use crate::views::bottom_bar::BottomBar;
 use crate::views::devices_view::DevicesView;
 use crate::views::inter::stackable::Stackable;
@@ -140,6 +144,10 @@ impl MainWindow {
         register_window_actions(&_self);
         register_stack_actions(&_self);
 
+
+        let sniffer = Sniffer::new();
+        sniffer.run();
+
         _self
     }
 
@@ -256,6 +264,10 @@ impl MainWindow {
 
         register_window_actions(&_self);
         register_stack_actions(&_self);
+
+
+        let sniffer = Sniffer::new();
+        sniffer.run();
 
         _self
     }

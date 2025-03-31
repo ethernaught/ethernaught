@@ -8,6 +8,7 @@ use rlibpcap::devices::Device;
 use rlibpcap::pcap::pcap::Pcap;
 use rlibpcap::utils::data_link_types::DataLinkTypes;
 use crate::bus::event_bus::{pause_event, register_event, resume_event, unregister_event};
+use crate::bus::event_bus::EventPropagation::Continue;
 use crate::bus::events::capture_event::CaptureEvent;
 use crate::views::inter::stackable::Stackable;
 use crate::views::packets_view::PacketsView;
@@ -98,6 +99,7 @@ impl MainView {
             move |event| {
                 let event = event.as_any().downcast_ref::<CaptureEvent>().unwrap();
                 packets.add(event.get_packet().clone());
+                Continue
             }
         }, true)));
 
@@ -214,6 +216,7 @@ impl MainView {
                 if event.get_if_index() == if_index {
                     packets.add(event.get_packet().clone());
                 }
+                Continue
             }
         }, true)));
 
