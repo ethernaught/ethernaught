@@ -27,7 +27,7 @@ use rlibpcap::utils::data_link_types::DataLinkTypes;
 use crate::database::sqlite::Database;
 use crate::get_lib_path;
 use crate::views::sidebar::dropdown::Dropdown;
-use crate::views::sidebar::ipv4_dropdown::Ipv4Dropdown;
+use crate::views::sidebar::ethernet_dropdown::EthernetDropdown;
 use crate::views::utils::sidebar_expanders::{create_ethernet_layer_expander, create_ipv4_layer_expander, create_ipv6_layer_expander};
 use crate::widgets::hex_editor::HexEditor;
 
@@ -178,7 +178,7 @@ impl SidebarView {
         };
 
         let ethernet_frame = packet.get_frame().as_any().downcast_ref::<EthernetFrame>().unwrap();
-        let view = Dropdown::from_layer(&_self, ethernet_frame, 0);
+        let view = Dropdown::from_ethernet_frame(&db, &_self, &actions, ethernet_frame, 0);
         details_layout.add(&view.root);
 
 
