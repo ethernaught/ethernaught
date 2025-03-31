@@ -133,6 +133,7 @@ pub enum UdpPorts {
     Pop3s,
     WakeOnLan,
     TorparkControl,
+
     Pointcast,
     CentroErp,
     CupsAdmin,
@@ -285,6 +286,7 @@ impl UdpPorts {
             Self::Pop3s,
             Self::WakeOnLan,
             Self::TorparkControl,
+
             Self::Pointcast,
             Self::CentroErp,
             Self::CupsAdmin,
@@ -443,6 +445,7 @@ impl UdpPorts {
             Self::Pop3s => (861, 0),
             Self::WakeOnLan => (862, 0),
             Self::TorparkControl => (989, 0),
+
             Self::Pointcast => (990, 0),
             Self::CentroErp => (991, 0),
             Self::CupsAdmin => (992, 0),
@@ -594,19 +597,20 @@ impl UdpPorts {
             Self::Pop3s => "POP3S",
             Self::WakeOnLan => "Wake on LAN",
             Self::TorparkControl => "Torpark Control",
-            Self::Pointcast => "PointCast",
-            Self::CentroErp => "Centro ERP",
-            Self::CupsAdmin => "CUPS Admin",
-            Self::KerberosMaster => "Kerberos Master",
-            Self::PasswdServer => "Password Server",
-            Self::UserregServer => "User Registration Server",
-            Self::Krbupdate => "Kerberos Update",
-            Self::Msx => "MSX",
-            Self::BrocadeSmiSRpc => "Brocade SMI-S RPC",
-            Self::BrocadeSmiSRpcSsl => "Brocade SMI-S RPC SSL",
-            Self::VmwareEsxi => "VMware ESXi",
-            Self::PsWakeOnLan => "PS Wake on LAN",
-            Self::ZosNfs => "z/OS NFS"
+
+            Self::Pointcast => "[UO] PointCast",
+            Self::CentroErp => "[UO] Centro ERP",
+            Self::CupsAdmin => "[UO] CUPS Admin",
+            Self::KerberosMaster => "[UO] Kerberos Master",
+            Self::PasswdServer => "[UO] Password Server",
+            Self::UserregServer => "[UO] User Registration Server",
+            Self::Krbupdate => "[UO] Kerberos Update",
+            Self::Msx => "[UO] MSX",
+            Self::BrocadeSmiSRpc => "[UO] Brocade SMI-S RPC",
+            Self::BrocadeSmiSRpcSsl => "[UO] Brocade SMI-S RPC SSL",
+            Self::VmwareEsxi => "[UO] VMware ESXi",
+            Self::PsWakeOnLan => "[UO] PS Wake on LAN",
+            Self::ZosNfs => "[UO] z/OS NFS"
         }.to_string()
     }
 }

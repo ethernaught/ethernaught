@@ -175,6 +175,7 @@ pub enum TcpPorts {
     Iscsi,
     Rsync,
     BindRndc,
+
     Pointcast,
     CentroErp,
     CupsAdmin,
@@ -207,7 +208,8 @@ pub enum TcpPorts {
     Vpn1Https,
     RemoteWebWorkplace,
     Lustre,
-    ThinlincAdmin
+    ThinlincAdmin,
+    MineCraft
 }
 
 impl TcpPorts {
@@ -389,6 +391,7 @@ impl TcpPorts {
             Self::Iscsi,
             Self::Rsync,
             Self::BindRndc,
+
             Self::Pointcast,
             Self::CentroErp,
             Self::CupsAdmin,
@@ -421,7 +424,8 @@ impl TcpPorts {
             Self::Vpn1Https,
             Self::RemoteWebWorkplace,
             Self::Lustre,
-            Self::ThinlincAdmin
+            Self::ThinlincAdmin,
+            Self::MineCraft
         ] {
             let (x, w) = c.get_code();
             if x >= code && x + w <= code {
@@ -609,6 +613,7 @@ impl TcpPorts {
             Self::Iscsi => (860, 0),
             Self::Rsync => (873, 0),
             Self::BindRndc => (953, 0),
+
             Self::Pointcast => (90, 0),
             Self::CentroErp => (476, 14),
             Self::CupsAdmin => (631, 0),
@@ -642,6 +647,7 @@ impl TcpPorts {
             Self::RemoteWebWorkplace => (987, 0),
             Self::Lustre => (988, 0),
             Self::ThinlincAdmin => (1010, 0),
+            Self::MineCraft => (25565, 0)
         }
     }
 
@@ -822,39 +828,41 @@ impl TcpPorts {
             Self::Iscsi => "iSCSI",
             Self::Rsync => "Rsync",
             Self::BindRndc => "BIND RNDC",
-            Self::Pointcast => "Pointcast",
-            Self::CentroErp => "Centro ERP",
-            Self::CupsAdmin => "CUPS Admin",
-            Self::KerberosMaster => "Kerberos Master",
-            Self::KrbUpdate => "KRB Update",
-            Self::Msx => "MSX",
-            Self::BrocadeSmisRpc => "Brocade SMIS RPC",
-            Self::BrocadeSmisSsl => "Brocade SMIS over SSL",
-            Self::VmwareEsxi => "VMware ESXi",
-            Self::ZosNfs => "ZOS NFS",
-            Self::Netstat => "Netstat",
-            Self::MacosPwdServer => "macOS Password Server",
-            Self::XsanAdmin => "Xsan Admin",
-            Self::OdProxy => "OD Proxy",
-            Self::PanoramaHaSync => "Panorama HA Sync",
-            Self::Torpark => "Torpark",
-            Self::ThinlincWeb => "ThinLinc Web",
-            Self::GoGlobal => "GoGlobal",
-            Self::Rsh => "RSH",
-            Self::Plan9 => "Plan 9",
-            Self::AirservNg => "Airserv NG",
-            Self::Krb5Prop => "Krb5Prop",
-            Self::Conserver => "Conserver",
-            Self::Spamd => "SPAMD",
-            Self::NetTcpShare => "NetTCP Share",
-            Self::Flash => "Flash",
-            Self::Cddbp => "CDDBP",
-            Self::IbmRemoteCtrl => "IBM Remote Control",
-            Self::EsxiMgmt => "ESXi Management",
-            Self::Vpn1Https => "VPN-1 HTTPS",
-            Self::RemoteWebWorkplace => "Remote Web Workplace",
-            Self::Lustre => "Lustre File System",
-            Self::ThinlincAdmin => "ThinLinc Admin",
+
+            Self::Pointcast => "[UO] Pointcast",
+            Self::CentroErp => "[UO] Centro ERP",
+            Self::CupsAdmin => "[UO] CUPS Admin",
+            Self::KerberosMaster => "[UO] Kerberos Master",
+            Self::KrbUpdate => "[UO] KRB Update",
+            Self::Msx => "[UO] MSX",
+            Self::BrocadeSmisRpc => "[UO] Brocade SMIS RPC",
+            Self::BrocadeSmisSsl => "[UO] Brocade SMIS over SSL",
+            Self::VmwareEsxi => "[UO] VMware ESXi",
+            Self::ZosNfs => "[UO] ZOS NFS",
+            Self::Netstat => "[UO] Netstat",
+            Self::MacosPwdServer => "[UO] macOS Password Server",
+            Self::XsanAdmin => "[UO] Xsan Admin",
+            Self::OdProxy => "[UO] OD Proxy",
+            Self::PanoramaHaSync => "[UO] Panorama HA Sync",
+            Self::Torpark => "[UO] Torpark",
+            Self::ThinlincWeb => "[UO] ThinLinc Web",
+            Self::GoGlobal => "[UO] GoGlobal",
+            Self::Rsh => "[UO] RSH",
+            Self::Plan9 => "[UO] Plan 9",
+            Self::AirservNg => "[UO] Airserv NG",
+            Self::Krb5Prop => "[UO] Krb5Prop",
+            Self::Conserver => "[UO] Conserver",
+            Self::Spamd => "[UO] SPAMD",
+            Self::NetTcpShare => "[UO] NetTCP Share",
+            Self::Flash => "[UO] Flash",
+            Self::Cddbp => "[UO] CDDBP",
+            Self::IbmRemoteCtrl => "[UO] IBM Remote Control",
+            Self::EsxiMgmt => "[UO] ESXi Management",
+            Self::Vpn1Https => "[UO] VPN-1 HTTPS",
+            Self::RemoteWebWorkplace => "[UO] Remote Web Workplace",
+            Self::Lustre => "[UO] Lustre File System",
+            Self::ThinlincAdmin => "[UO] ThinLinc Admin",
+            Self::MineCraft => "[UO] MineCraft"
         }.to_string()
     }
 }
