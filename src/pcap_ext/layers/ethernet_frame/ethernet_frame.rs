@@ -50,20 +50,15 @@ impl LayerExt for EthernetFrame {
         }
     }
 
-    fn get_description(&self, key: &str) -> String {
-        match key {
-            "frame" => self.get_title(key),
-            _ => format!("{}: {}", self.get_title(key), self.get_value(key))
-        }
-    }
-
     fn get_value_as_bytes(&self, key: &str) -> Vec<u8> {
         match key {
             "frame" => {
                 let mut buf = vec![0; ETHERNET_FRAME_LEN];
+
                 buf.splice(0..6, self.get_destination_mac().to_bytes());
                 buf.splice(6..12, self.get_source_mac().to_bytes());
                 buf.splice(12..14, self.get_type().get_code().to_be_bytes());
+
                 buf
             }
             "destination" => self.get_destination_mac().to_bytes().to_vec(),

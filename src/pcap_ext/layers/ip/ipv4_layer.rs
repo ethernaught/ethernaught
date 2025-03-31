@@ -44,7 +44,7 @@ impl LayerExt for Ipv4Layer {
             "version" => "ipv4.version",
             "ihl" => "ipv4.ihl",
             "tos" => "ipv4.tos",
-            "total_length" => "ipv4.total-length",
+            "total_length" => "ipv4.total_length",
             "identification" => "ipv4.identification",
             "flags" => "ipv4.flags",
             "fragment_offset" => "ipv4.offset",
@@ -94,13 +94,6 @@ impl LayerExt for Ipv4Layer {
             "source_address" => self.get_source_address().to_string(),
             "destination_address" => self.get_destination_address().to_string(),
             _ => unimplemented!()
-        }
-    }
-
-    fn get_description(&self, key: &str) -> String {
-        match key {
-            "frame" => self.get_title(key),
-            _ => format!("{}: {}", self.get_title(key), self.get_value(key)),
         }
     }
 

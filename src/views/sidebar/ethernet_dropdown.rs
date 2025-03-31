@@ -49,4 +49,3 @@ impl EthernetDropdown for Dropdown {
         _self
     }
 }
-

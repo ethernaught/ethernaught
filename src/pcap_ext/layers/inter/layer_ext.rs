@@ -10,7 +10,12 @@ pub trait LayerExt: Send {
 
     fn get_value(&self, key: &str) -> String;
 
-    fn get_description(&self, key: &str) -> String;
+    fn get_description(&self, key: &str) -> String {
+        match key {
+            "frame" => self.get_title(key),
+            _ => format!("{}: {}", self.get_title(key), self.get_value(key)),
+        }
+    }
 
     fn get_value_as_bytes(&self, key: &str) -> Vec<u8>;
 

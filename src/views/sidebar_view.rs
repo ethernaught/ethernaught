@@ -26,9 +26,11 @@ use rlibpcap::packet::packet::Packet;
 use rlibpcap::utils::data_link_types::DataLinkTypes;
 use crate::database::sqlite::Database;
 use crate::get_lib_path;
+use crate::views::sidebar::arp_dropdown::ArpDropdown;
 use crate::views::sidebar::dropdown::Dropdown;
 use crate::views::sidebar::ethernet_dropdown::EthernetDropdown;
 use crate::views::sidebar::ipv4_dropdown::Ipv4Dropdown;
+use crate::views::sidebar::ipv6_dropdown::Ipv6Dropdown;
 use crate::views::utils::sidebar_expanders::{create_ethernet_layer_expander, create_ipv4_layer_expander, create_ipv6_layer_expander};
 use crate::widgets::hex_editor::HexEditor;
 
@@ -177,7 +179,6 @@ impl SidebarView {
         match packet.get_data_link_type() {
             DataLinkTypes::En10mb => {
                 let ethernet_frame = packet.get_frame().as_any().downcast_ref::<EthernetFrame>().unwrap();
-                println!("{}", ethernet_frame.len());
                 details_layout.add(&Dropdown::from_ethernet_frame(&db, &hex_editor, &actions, ethernet_frame, offset).root);
                 offset += ETHERNET_FRAME_LEN;
 
@@ -190,9 +191,11 @@ impl SidebarView {
                     EthernetTypes::Arp => {
                         let arp_layer = ethernet_frame.get_data().unwrap().as_any().downcast_ref::<ArpExtension>().unwrap();
                         //details_layout.add(&create_arp_layer_expander(&arp_layer));
+                        details_layout.add(&Dropdown::from_arp_extension(&db, &hex_editor, &actions, arp_layer, offset).root);
                     }
                     EthernetTypes::Ipv6 => {
                         let ipv6_layer = ethernet_frame.get_data().unwrap().as_any().downcast_ref::<Ipv6Layer>().unwrap();
+                        details_layout.add(&Dropdown::from_ipv6_layer(&db, &hex_editor, &actions, ipv6_layer, offset).root);
                         //create_ipv6_details(&details_layout, &db, ethernet_frame.len(), &hex_editor, &actions, &ipv6_layer);
                     }
                     EthernetTypes::Broadcast => {

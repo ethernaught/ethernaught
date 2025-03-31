@@ -6,6 +6,11 @@ impl LayerExt for Ipv6Layer {
     fn get_fields(&self) -> Vec<&str> {
         vec![
             "version",
+            "payload_length",
+            "next_header",
+            "hop_limit",
+            "source_address",
+            "destination_address",
         ]
     }
 
@@ -28,11 +33,11 @@ impl LayerExt for Ipv6Layer {
         match key {
             "frame" => "ipv6",
             "version" => "ipv6.version",
-            "traffic_class" => "ipv6.traffic-class",
-            "flow_label" => "ipv6.flow-label",
-            "payload_length" => "ipv6.payload-length",
-            "next_header" => "ipv6.next-header",
-            "hop_limit" => "ipv6.hop-limit",
+            "traffic_class" => "ipv6.traffic_class",
+            "flow_label" => "ipv6.flow_label",
+            "payload_length" => "ipv6.payload_length",
+            "next_header" => "ipv6.next_header",
+            "hop_limit" => "ipv6.hop_limit",
             "source_address" => "ipv6.source",
             "destination_address" => "ipv6.destination",
             _ => unimplemented!()
@@ -65,13 +70,6 @@ impl LayerExt for Ipv6Layer {
             "source_address" => self.get_source_address().to_string(),
             "destination_address" => self.get_destination_address().to_string(),
             _ => unimplemented!()
-        }
-    }
-
-    fn get_description(&self, key: &str) -> String {
-        match key {
-            "frame" => self.get_title(key),
-            _ => format!("{}: {}", self.get_title(key), self.get_value(key)),
         }
     }
 
