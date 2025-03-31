@@ -1,5 +1,6 @@
 use rlibpcap::packet::layers::ip::udp::udp_layer::{UdpLayer, UDP_HEADER_LEN};
 use crate::pcap_ext::layers::inter::layer_ext::LayerExt;
+use crate::pcap_ext::layers::ip::udp::inter::udp_ports::UdpPorts;
 
 impl LayerExt for UdpLayer {
 
@@ -47,8 +48,26 @@ impl LayerExt for UdpLayer {
 
     fn get_value(&self, key: &str) -> String {
         match key {
-            "source_port" => self.get_source_port().to_string(),
-            "destination_port" => self.get_destination_port().to_string(),
+            "source_port" => {
+                match UdpPorts::from_code(self.get_source_port()) {
+                    Ok(port) => {
+                        format!("{} ({})", port.to_string(), self.get_source_port())
+                    }
+                    Err(_) => {
+                        self.get_source_port().to_string()
+                    }
+                }
+            },
+            "destination_port" => {
+                match UdpPorts::from_code(self.get_destination_port()) {
+                    Ok(port) => {
+                        format!("{} ({})", port.to_string(), self.get_destination_port())
+                    }
+                    Err(_) => {
+                        self.get_destination_port().to_string()
+                    }
+                }
+            },
             "length" => self.get_length().to_string(),
             "checksum" => format!("0x{:04X}", self.get_checksum()),
             _ => unimplemented!()
