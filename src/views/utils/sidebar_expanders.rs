@@ -283,7 +283,7 @@ fn create_dropdown(title: &str, offset: usize, hex_editor: &HexEditor, actions: 
         let hex_editor = hex_editor.clone();
         let layer = layer.clone_ext();
         move |_, row| {
-            let (x, w) = layer.get_selection(layer.get_variables().get(row.index() as usize).unwrap().clone());
+            let (x, w) = layer.get_selection(layer.get_fields().get(row.index() as usize).unwrap().clone());
             hex_editor.set_selection(offset + x, w);
         }
     });
@@ -300,7 +300,7 @@ fn create_dropdown(title: &str, offset: usize, hex_editor: &HexEditor, actions: 
             let (_, y) = event.position();
 
             if let Some(row) = list_box.row_at_y(y as i32) {
-                let variable = layer.get_variables().get(row.index() as usize).unwrap().clone();
+                let variable = layer.get_fields().get(row.index() as usize).unwrap().clone();
 
                 create_row_context_menu(&row, event, &actions, variable, layer.as_ref());
 

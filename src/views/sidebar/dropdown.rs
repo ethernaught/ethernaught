@@ -1,6 +1,7 @@
 use std::net::IpAddr;
 use gtk::{gdk, gio, glib, Builder, Button, Container, CssProvider, Image, Label, ListBox, ListBoxRow, Menu, Orientation, StyleContext};
 use gtk::gdk::{Display, EventButton};
+use gtk::gdk_pixbuf::Pixbuf;
 use gtk::gio::{ActionGroup, SimpleAction, SimpleActionGroup};
 use gtk::glib::Cast;
 use gtk::glib::Propagation::Proceed;
@@ -21,9 +22,9 @@ pub struct Dropdown {
     pub list_box: ListBox
 }
 
-impl Default for Dropdown {
+impl Dropdown {
 
-    fn default() -> Self {
+    pub fn new(title: &str) -> Self {
         let builder = Builder::from_resource("/net/ethernaught/rust/res/ui/gtk3/layer_dropdown.ui");
 
         let root: gtk::Box = builder
@@ -41,6 +42,7 @@ impl Default for Dropdown {
         let label: Label = builder
             .object("label")
             .expect("Couldn't find 'label' in layer_dropdown.ui");
+        label.set_label(title);
 
         let list_box: ListBox = builder
             .object("list_box")
@@ -73,7 +75,7 @@ pub fn set_selection(hex_editor: &HexEditor, layer: &dyn LayerExt, offset: usize
     let hex_editor = hex_editor.clone();
     let layer = layer.clone_ext();
     move |_, row| {
-        let (x, w) = layer.get_selection(layer.get_variables().get(row.index() as usize).unwrap().clone());
+        let (x, w) = layer.get_selection(layer.get_fields().get(row.index() as usize).unwrap().clone());
         hex_editor.set_selection(offset + x, w);
     }
 }
@@ -90,7 +92,7 @@ pub fn context_menu(hex_editor: &HexEditor, actions: &SimpleActionGroup, layer: 
         let (_, y) = event.position();
 
         if let Some(row) = list_box.row_at_y(y as i32) {
-            let variable = layer.get_variables().get(row.index() as usize).unwrap().clone();
+            let variable = layer.get_fields().get(row.index() as usize).unwrap().clone();
 
             row.style_context().add_class("selected");
 
@@ -247,6 +249,31 @@ pub fn create_row(key: String, value: String) -> ListBoxRow {
     label.set_widget_name("key");
     label.set_xalign(0.0);
     hbox.add(&label);
+
+    let label = Label::new(Some(value.as_str()));
+    label.set_widget_name("value");
+    label.set_xalign(0.0);
+    hbox.add(&label);
+
+    row.add(&hbox);
+    row.show_all();
+
+    row
+}
+
+pub fn create_row_with_icon(key: String, icon: Pixbuf, value: String) -> ListBoxRow {
+    let row = ListBoxRow::new();
+
+    let hbox = gtk::Box::new(Orientation::Horizontal, 10);
+
+    let label = Label::new(Some(&key));
+    label.set_widget_name("key");
+    label.set_xalign(0.0);
+    hbox.add(&label);
+
+    let image = Image::from_pixbuf(Some(&icon));
+    image.set_size_request(24, 24);
+    hbox.add(&image);
 
     let label = Label::new(Some(value.as_str()));
     label.set_widget_name("value");

@@ -16,16 +16,15 @@ use crate::widgets::hex_editor::HexEditor;
 
 pub trait EthernetDropdown {
 
-    fn from_ethernet_frame(db: &Database, sidebar_view: &SidebarView, actions: &SimpleActionGroup, layer: &EthernetFrame, offset: usize) -> Self;
+    fn from_ethernet_frame(db: &Database, hex_editor: &HexEditor, actions: &SimpleActionGroup, layer: &EthernetFrame, offset: usize) -> Self;
 }
 
 impl EthernetDropdown for Dropdown {
 
-    fn from_ethernet_frame(db: &Database, sidebar_view: &SidebarView, actions: &SimpleActionGroup, layer: &EthernetFrame, offset: usize) -> Self {
-        let _self = Self::default();
-        _self.label.set_text(&layer.get_title("frame"));
-        _self.list_box.connect_row_activated(set_selection(&sidebar_view.hex_editor, layer, offset));
-        _self.list_box.connect_button_press_event(context_menu(&sidebar_view.hex_editor, actions, layer, offset));
+    fn from_ethernet_frame(db: &Database, hex_editor: &HexEditor, actions: &SimpleActionGroup, layer: &EthernetFrame, offset: usize) -> Self {
+        let _self = Self::new(&layer.get_title("frame"));
+        _self.list_box.connect_row_activated(set_selection(&hex_editor, layer, offset));
+        _self.list_box.connect_button_press_event(context_menu(&hex_editor, actions, layer, offset));
 
         match ethernet_to_company(db, layer.get_destination_mac()) {
             Some(company) => {
