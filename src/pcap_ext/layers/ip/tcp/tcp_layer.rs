@@ -1,5 +1,6 @@
 use rlibpcap::packet::layers::ip::tcp::tcp_layer::{TcpLayer, TCP_HEADER_LEN};
 use crate::pcap_ext::layers::inter::layer_ext::LayerExt;
+use crate::pcap_ext::layers::ip::tcp::inter::tcp_ports::TcpPorts;
 
 impl LayerExt for TcpLayer {
 
@@ -67,8 +68,26 @@ impl LayerExt for TcpLayer {
 
     fn get_value(&self, key: &str) -> String {
         match key {
-            "source_port" => self.get_source_port().to_string(),
-            "destination_port" => self.get_destination_port().to_string(),
+            "source_port" => {
+                match TcpPorts::from_code(self.get_source_port()) {
+                    Ok(port) => {
+                        format!("{} ({})", port.to_string(), self.get_source_port())
+                    }
+                    Err(_) => {
+                        self.get_source_port().to_string()
+                    }
+                }
+            },
+            "destination_port" => {
+                match TcpPorts::from_code(self.get_destination_port()) {
+                    Ok(port) => {
+                        format!("{} ({})", port.to_string(), self.get_destination_port())
+                    }
+                    Err(_) => {
+                        self.get_destination_port().to_string()
+                    }
+                }
+            },
             "sequence_number" => self.get_sequence_number().to_string(),
             "acknowledgment_number" => self.get_acknowledgment_number().to_string(),
             //"data_offset" => ,
