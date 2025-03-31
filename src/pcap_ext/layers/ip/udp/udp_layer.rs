@@ -15,7 +15,7 @@ impl LayerExt for UdpLayer {
 
     fn get_selection(&self, key: &str) -> (usize, usize) {
         match key {
-            "frame" => (0, 14),
+            "frame" => (0, UDP_HEADER_LEN),
             "source_port" => (0, 2),
             "destination_port" => (2, 2),
             "length" => (4, 2),

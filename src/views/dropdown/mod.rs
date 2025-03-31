@@ -6,3 +6,5 @@ pub mod ipv6_dropdown;
 pub mod arp_dropdown;
 pub mod udp_dropdown;
 pub mod tcp_dropdown;
+pub mod icmp_dropdown;
+pub mod icmpv6_dropdown;

@@ -29,6 +29,8 @@ use crate::get_lib_path;
 use crate::views::dropdown::arp_dropdown::ArpDropdown;
 use crate::views::dropdown::dropdown::Dropdown;
 use crate::views::dropdown::ethernet_dropdown::EthernetDropdown;
+use crate::views::dropdown::icmp_dropdown::IcmpDropdown;
+use crate::views::dropdown::icmpv6_dropdown::Icmpv6Dropdown;
 use crate::views::dropdown::ipv4_dropdown::Ipv4Dropdown;
 use crate::views::dropdown::ipv6_dropdown::Ipv6Dropdown;
 use crate::views::dropdown::sll2_dropdown::Sll2Dropdown;
@@ -192,7 +194,6 @@ impl SidebarView {
                     }
                     EthernetTypes::Arp => {
                         let arp_layer = ethernet_frame.get_data().unwrap().as_any().downcast_ref::<ArpExtension>().unwrap();
-                        //details_layout.add(&create_arp_layer_expander(&arp_layer));
                         details_layout.add(&Dropdown::from_arp_extension(&db, &hex_editor, &actions, arp_layer, offset).root);
                     }
                     EthernetTypes::Ipv6 => {
@@ -269,7 +270,7 @@ fn create_ipv4_details(details_layout: &gtk::Box, db: &Database, hex_editor: &He
         IpProtocols::HopByHop => {}
         IpProtocols::Icmp => {
             let icmp_layer = layer.get_data().unwrap().as_any().downcast_ref::<IcmpLayer>().unwrap();
-            //details_layout.add(&create_icmp_layer_expander(&icmp_layer));
+            details_layout.add(&Dropdown::from_icmp_layer(hex_editor, actions, icmp_layer, offset).root);
         }
         IpProtocols::Igmp => {}
         IpProtocols::Tcp => {
@@ -343,7 +344,7 @@ fn create_ipv6_details(details_layout: &gtk::Box, db: &Database, hex_editor: &He
         IpProtocols::Gre => {}
         IpProtocols::Icmpv6 => {
             let icmpv6_layer = layer.get_data().unwrap().as_any().downcast_ref::<Icmpv6Layer>().unwrap();
-            //details_layout.add(&create_icmpv6_layer_expander(&icmpv6_layer));
+            details_layout.add(&Dropdown::from_icmpv6_layer(hex_editor, actions, icmpv6_layer, offset).root);
         }
         IpProtocols::Ospf => {}
         IpProtocols::Sps => {}
