@@ -1,3 +1,4 @@
 pub mod inter;
 pub mod ethernet_frame;
-mod ip;
+pub mod sll2_frame;
+pub mod ip;

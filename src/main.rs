@@ -40,9 +40,9 @@ rustup install nightly
 rustup override set nightly
 */
 
-//re-implement sidebar replay...
+//re-implement dropdown replay...
 //save fragments so we can clear adapter
-//redo sidebar - doesnt look quite right on drop downs...
+//redo dropdown - doesnt look quite right on drop downs...
 
 //FIND A BETTER METHOD WITHIN PCAP LIB TO SEND ADDRESS DETAILS AS IT WOND BE THE SAME STRUCT PER OS
 // - not to mention we will need the data when saving, so might want to add to the packet - MAINLY FOR PROMISCUOUS MODE...
@@ -50,6 +50,8 @@ rustup override set nightly
 //DPI the padding for hex editor
 
 //MacOS Font goes to /Library/fonts
+
+//PCAP - SLL2 we need to be using SLL2 types not DataLinkTypes...
 
 fn main() {
     /*

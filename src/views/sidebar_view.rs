@@ -21,16 +21,17 @@ use rlibpcap::packet::layers::ip::udp::udp_layer::UdpLayer;
 use rlibpcap::packet::layers::loop_frame::inter::loop_types::LoopTypes;
 use rlibpcap::packet::layers::loop_frame::loop_frame::LoopFrame;
 use rlibpcap::packet::layers::raw_frame::raw_frame::RawFrame;
-use rlibpcap::packet::layers::sll2_frame::sll2_frame::Sll2Frame;
+use rlibpcap::packet::layers::sll2_frame::sll2_frame::{Sll2Frame, SLL2_FRAME_LEN};
 use rlibpcap::packet::packet::Packet;
 use rlibpcap::utils::data_link_types::DataLinkTypes;
 use crate::database::sqlite::Database;
 use crate::get_lib_path;
-use crate::views::sidebar::arp_dropdown::ArpDropdown;
-use crate::views::sidebar::dropdown::Dropdown;
-use crate::views::sidebar::ethernet_dropdown::EthernetDropdown;
-use crate::views::sidebar::ipv4_dropdown::Ipv4Dropdown;
-use crate::views::sidebar::ipv6_dropdown::Ipv6Dropdown;
+use crate::views::dropdown::arp_dropdown::ArpDropdown;
+use crate::views::dropdown::dropdown::Dropdown;
+use crate::views::dropdown::ethernet_dropdown::EthernetDropdown;
+use crate::views::dropdown::ipv4_dropdown::Ipv4Dropdown;
+use crate::views::dropdown::ipv6_dropdown::Ipv6Dropdown;
+use crate::views::dropdown::sll2_dropdown::Sll2Dropdown;
 use crate::views::utils::sidebar_expanders::{create_ethernet_layer_expander, create_ipv4_layer_expander, create_ipv6_layer_expander};
 use crate::widgets::hex_editor::HexEditor;
 
@@ -200,6 +201,23 @@ impl SidebarView {
                     }
                     EthernetTypes::Broadcast => {
                     }
+                }
+            }
+            DataLinkTypes::Sll2 => {
+                let sll2_frame = packet.get_frame().as_any().downcast_ref::<Sll2Frame>().unwrap();
+                details_layout.add(&Dropdown::from_sll2_frame(&hex_editor, &actions, sll2_frame, offset).root);
+                offset += SLL2_FRAME_LEN;
+
+                match sll2_frame.get_protocol() {
+                    EthernetTypes::Ipv4 => {
+                        let ipv4_layer = sll2_frame.get_data().unwrap().as_any().downcast_ref::<Ipv4Layer>().unwrap();
+                        details_layout.add(&Dropdown::from_ipv4_layer(&db, &hex_editor, &actions, ipv4_layer, offset).root);
+                    }
+                    EthernetTypes::Ipv6 => {
+                        let ipv6_layer = sll2_frame.get_data().unwrap().as_any().downcast_ref::<Ipv6Layer>().unwrap();
+                        details_layout.add(&Dropdown::from_ipv6_layer(&db, &hex_editor, &actions, ipv6_layer, offset).root);
+                    }
+                    _ => {}
                 }
             }
             _ => {}

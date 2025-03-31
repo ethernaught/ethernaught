@@ -9,7 +9,7 @@ use crate::database::sqlite::Database;
 use crate::pcap_ext::layers::inter::layer_ext::LayerExt;
 use crate::utils::ethernet_utils::ethernet_to_company;
 use crate::utils::ip_utils::ip_to_icon;
-use crate::views::sidebar::dropdown::{context_menu, create_row, create_row_with_icon, set_selection, Dropdown};
+use crate::views::dropdown::dropdown::{context_menu, create_row, create_row_with_icon, set_selection, Dropdown};
 use crate::widgets::hex_editor::HexEditor;
 
 pub trait ArpDropdown {
