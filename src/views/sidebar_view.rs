@@ -36,7 +36,6 @@ use crate::views::dropdown::ipv6_dropdown::Ipv6Dropdown;
 use crate::views::dropdown::sll2_dropdown::Sll2Dropdown;
 use crate::views::dropdown::tcp_dropdown::TcpDropdown;
 use crate::views::dropdown::udp_dropdown::UdpDropdown;
-use crate::views::utils::sidebar_expanders::{create_ethernet_layer_expander, create_ipv4_layer_expander, create_ipv6_layer_expander};
 use crate::widgets::hex_editor::HexEditor;
 
 pub struct SidebarView {

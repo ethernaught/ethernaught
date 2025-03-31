@@ -117,7 +117,6 @@ impl MainView {
         window.window.add_action(&action);
         window.title_bar.start_button.show();
 
-
         let action = SimpleAction::new("stop", None);
         action.connect_activate({
             let show_capture_bar = show_capture_bar.clone();

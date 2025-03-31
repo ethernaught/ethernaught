@@ -13,6 +13,7 @@ use crate::bus::event_bus::register_event;
 use crate::bus::events::permission_event::PermissionEvent;
 use crate::bus::events::transmitted_event::TransmittedEvent;
 use crate::sniffer::Sniffer;
+use crate::views::alert_view::AlertView;
 use crate::views::bottom_bar::BottomBar;
 use crate::views::devices_view::DevicesView;
 use crate::views::inter::stackable::Stackable;
@@ -23,6 +24,7 @@ use crate::views::title_bar::TitleBar;
 pub struct MainWindow {
     pub window: ApplicationWindow,
     pub title_bar: TitleBar,
+    pub root: gtk::Box,
     pub stack: Stack,
     pub bottom_bar: BottomBar,
     pub views: Rc<RefCell<HashMap<String, Box<dyn Stackable>>>>
@@ -63,9 +65,9 @@ impl MainWindow {
         let title_bar = TitleBar::new();
         window.set_titlebar(Some(&title_bar.root));
 
-        let window_content: gtk::Box = builder
-            .object("window_content")
-            .expect("Failed to get the 'window_content' from window.ui");
+        let root: gtk::Box = builder
+            .object("root")
+            .expect("Failed to get the 'root' from window.ui");
 
         //window_content.add(&create_alertbar());
 
@@ -99,7 +101,7 @@ impl MainWindow {
         stack.show();
 
         let bottom_bar = BottomBar::new();
-        window_content.add(&bottom_bar.root);
+        root.add(&bottom_bar.root);
 
 
         let mut devices = Device::list().expect("Failed to get device list");
@@ -133,6 +135,7 @@ impl MainWindow {
         let _self = Self {
             window,
             title_bar,
+            root,
             stack,
             bottom_bar,
             views
@@ -184,9 +187,9 @@ impl MainWindow {
         let title_bar = TitleBar::new();
         window.set_titlebar(Some(&title_bar.root));
 
-        let window_content: gtk::Box = builder
-            .object("window_content")
-            .expect("Failed to get the 'window_content' from window.ui");
+        let root: gtk::Box = builder
+            .object("root")
+            .expect("Failed to get the 'root' from window.ui");
 
         //window_content.add(&create_alertbar());
 
@@ -220,7 +223,7 @@ impl MainWindow {
         stack.show();
 
         let bottom_bar = BottomBar::new();
-        window_content.add(&bottom_bar.root);
+        root.add(&bottom_bar.root);
 
 
         let mut devices = Device::list().expect("Failed to get device list");
@@ -254,6 +257,7 @@ impl MainWindow {
         let _self = Self {
             window,
             title_bar,
+            root,
             stack,
             bottom_bar,
             views
@@ -311,5 +315,10 @@ impl MainWindow {
         self.stack.set_visible_child_name(&name);
         view.on_create();
         self.views.borrow_mut().insert(name, view);
+    }
+
+    pub fn alert(&self, message: &str) {
+        let alert = AlertView::new(message);
+        self.root.add(&alert.root);
     }
 }

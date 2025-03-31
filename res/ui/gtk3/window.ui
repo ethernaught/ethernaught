@@ -11,7 +11,7 @@
         <property name="role">tr-main</property>
 
         <child>
-            <object class="GtkBox" id="window_content">
+            <object class="GtkBox" id="root">
                 <property name="visible">True</property>
                 <property name="hexpand">True</property>
                 <property name="vexpand">True</property>

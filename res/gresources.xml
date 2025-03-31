@@ -4,7 +4,7 @@
         <file preprocess="xml-stripblanks">res/ui/ethernaught_ui.xml</file>
         <file preprocess="xml-stripblanks">res/ui/gtk3/title_bar.ui</file>
         <file preprocess="xml-stripblanks">res/ui/gtk3/bottom_bar.ui</file>
-        <file preprocess="xml-stripblanks">res/ui/alertbar_ui.xml</file>
+        <file preprocess="xml-stripblanks">res/ui/gtk3/alert_view.ui</file>
 
 
         <file preprocess="xml-stripblanks">res/ui/gtk3/window.ui</file>
