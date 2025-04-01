@@ -346,6 +346,5 @@ impl MainWindow {
     pub fn notify(&self, title: &str, description: &str) {
         let alert = NotificationView::new(title, description);
         self.notifications.add(&alert.root);
-        //<property name="action-name">notification.dismiss</property>
     }
 }
