@@ -1,5 +1,4 @@
 use gtk::{AboutDialog, ApplicationWindow, Builder, Image, Application, TreeViewColumn, CellRendererText, ScrolledWindow, Button, ListBoxRow, Label, CssProvider, StyleContext, gdk, Stack, Container, TreeView, Widget, Window, gio, MenuBar, MenuItem, Menu, Align};
-use gtk::pango::WrapMode;
 use gtk::prelude::*;
 
 #[derive(Copy, Clone, Eq, PartialEq, Hash, Debug)]
@@ -50,6 +49,21 @@ impl NotificationView {
             .expect("Couldn't find 'description' in notification_view.ui");
         description_label.set_wrap(true);
         description_label.set_text(description);
+
+        let close: Button = builder
+            .object("close")
+            .expect("Couldn't find 'close' in notification_view.ui");
+
+        close.connect_clicked({
+            let root = root.clone();
+            move |button| {
+                if let Some(parent) = root.parent() {
+                    if let Some(container) = parent.downcast_ref::<Container>() {
+                        container.remove(&root);
+                    }
+                }
+            }
+        });
 
         Self {
             root,

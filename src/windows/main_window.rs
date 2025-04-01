@@ -3,16 +3,13 @@ use std::collections::HashMap;
 use std::path::PathBuf;
 use std::process::exit;
 use std::rc::Rc;
-use gtk::{gdk, Application, ApplicationWindow, Builder, CssProvider, Stack, StyleContext, Window};
+use gtk::{gdk, Application, ApplicationWindow, Builder, CssProvider, Stack, StyleContext};
 use gtk::gdk::{Geometry, WindowHints};
 use gtk::glib::Propagation::Proceed;
 use gtk::prelude::{ActionGroupExt, BuilderExtManual, ContainerExt, CssProviderExt, GtkWindowExt, StackExt, StyleContextExt, WidgetExt};
 use rlibpcap::devices::Device;
 use rlibpcap::utils::interface_flags::InterfaceFlags;
 use crate::actions::window_actions::{register_stack_actions, register_window_actions};
-use crate::bus::event_bus::register_event;
-use crate::bus::events::permission_event::PermissionEvent;
-use crate::bus::events::transmitted_event::TransmittedEvent;
 use crate::sniffer::Sniffer;
 use crate::views::notification_view::{NotificationTypes, NotificationView};
 use crate::views::bottom_bar::BottomBar;
@@ -92,10 +89,6 @@ impl MainWindow {
             .object("stack")
             .expect("Failed to get the 'stack' from window.ui");
 
-        let notifications: gtk::Box = builder
-            .object("notifications")
-            .expect("Failed to get the 'notifications' from window.ui");
-
         let views: Rc<RefCell<HashMap<String, Box<dyn Stackable>>>> = Rc::new(RefCell::new(HashMap::new()));
 
         stack.connect_visible_child_name_notify({
@@ -121,19 +114,17 @@ impl MainWindow {
 
         stack.show();
 
+        let notifications: gtk::Box = builder
+            .object("notifications")
+            .expect("Failed to get the 'notifications' from window.ui");
+
         let bottom_bar = BottomBar::new();
         root.add(&bottom_bar.root);
-
 
         let mut devices = Device::list().expect("Failed to get device list");
         devices.sort_by(|a, b| {
             b.get_flags().contains(&InterfaceFlags::Running).cmp(&a.get_flags().contains(&InterfaceFlags::Running))
         });
-
-
-
-
-
 
         window.connect_button_press_event({
             let window = window.clone();
@@ -219,10 +210,6 @@ impl MainWindow {
             .object("stack")
             .expect("Failed to get the 'stack' from window.ui");
 
-        let notifications: gtk::Box = builder
-            .object("notifications")
-            .expect("Failed to get the 'notifications' from window.ui");
-
         let views: Rc<RefCell<HashMap<String, Box<dyn Stackable>>>> = Rc::new(RefCell::new(HashMap::new()));
 
         stack.connect_visible_child_name_notify({
@@ -248,18 +235,17 @@ impl MainWindow {
 
         stack.show();
 
+        let notifications: gtk::Box = builder
+            .object("notifications")
+            .expect("Failed to get the 'notifications' from window.ui");
+
         let bottom_bar = BottomBar::new();
         root.add(&bottom_bar.root);
-
 
         let mut devices = Device::list().expect("Failed to get device list");
         devices.sort_by(|a, b| {
             b.get_flags().contains(&InterfaceFlags::Running).cmp(&a.get_flags().contains(&InterfaceFlags::Running))
         });
-
-
-
-
 
         window.connect_button_press_event({
             let window = window.clone();
