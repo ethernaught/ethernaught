@@ -2,11 +2,11 @@ use std::cell::RefCell;
 use std::collections::HashMap;
 use std::rc::Rc;
 use gtk::gdk::{EventMask, WindowAttr, WindowType, WindowWindowClass, RGBA};
-use gtk::{gdk, glib, Allocation, Buildable, Container, Misc, StateFlags, Widget};
+use gtk::{gdk, glib, Align, Allocation, Buildable, Container, Misc, StateFlags, Widget};
 use gtk::cairo::Context;
-use gtk::glib::{Cast, Propagation};
+use gtk::glib::{Cast, Propagation, StaticType};
 use gtk::glib::Propagation::Proceed;
-use gtk::prelude::{StyleContextExt, WidgetExt};
+use gtk::prelude::{SettingsExt, StyleContextExt, WidgetExt};
 use gtk::subclass::container::{Callback, ContainerImplExt};
 use gtk::subclass::prelude::{ContainerImpl, ObjectImpl, ObjectSubclass, ObjectSubclassExt, ObjectSubclassIsExt, WidgetClassSubclassExt, WidgetImpl, WidgetImplExt};
 
@@ -26,10 +26,47 @@ impl ObjectSubclass for ViewStackImpl {
 
     fn class_init(class: &mut Self::Class) {
         class.set_css_name("viewstack");
+
+        /*
+        class.install_property(
+            "child-alignment",
+            |pspec| {
+                glib::ParamSpec::new(
+                    "child-alignment",
+                    "Child Alignment",
+                    "Alignment for child widgets",
+                    Align::static_type(),
+                    Align::Start as i32,
+                    glib::ParamFlags::READWRITE,
+                )
+            },
+        );
+        */
     }
 }
 
-impl ObjectImpl for ViewStackImpl {}
+impl ObjectImpl for ViewStackImpl {
+/*
+    fn set_property(&self, _obj: &Self::Type, id: usize, value: &glib::Value) {
+        match id {
+            1 => {
+                let align = value.get().unwrap_or(Align::Start);
+                self.child_alignment.replace(align);
+            }
+            _ => unimplemented!(),
+        }
+    }
+
+    fn get_property(&self, _obj: &Self::Type, id: usize) -> glib::Value {
+        match id {
+            1 => self.child_alignment.borrow().to_value(),
+            _ => unimplemented!(),
+        }
+    }
+
+    <property name="child-alignment">2</property> <!-- Align::End -->
+    */
+}
 
 impl WidgetImpl for ViewStackImpl {
 
