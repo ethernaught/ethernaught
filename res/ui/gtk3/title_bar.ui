@@ -142,7 +142,7 @@
                 <property name="name">window_controls</property>
                 <property name="visible">True</property>
                 <property name="orientation">horizontal</property>
-                <property name="spacing">10</property>
+                <property name="spacing">14</property>
 
                 <child>
                     <object class="GtkButton" id="minimize">
@@ -152,6 +152,13 @@
                         <property name="width-request">16</property>
                         <property name="height-request">16</property>
                         <property name="action-name">win.minimize</property>
+
+                        <child>
+                            <object class="GtkImage">
+                                <property name="visible">True</property>
+                                <property name="icon-name">window-minimize-symbolic</property>
+                            </object>
+                        </child>
                     </object>
                 </child>
 
@@ -163,6 +170,13 @@
                         <property name="width-request">16</property>
                         <property name="height-request">16</property>
                         <property name="action-name">win.maximize</property>
+
+                        <child>
+                            <object class="GtkImage">
+                                <property name="visible">True</property>
+                                <property name="icon-name">window-maximize-symbolic</property>
+                            </object>
+                        </child>
                     </object>
                 </child>
 
@@ -174,6 +188,13 @@
                         <property name="width-request">16</property>
                         <property name="height-request">16</property>
                         <property name="action-name">app.quit</property>
+
+                        <child>
+                            <object class="GtkImage">
+                                <property name="visible">True</property>
+                                <property name="icon-name">window-close-symbolic</property>
+                            </object>
+                        </child>
                     </object>
                 </child>
             </object>

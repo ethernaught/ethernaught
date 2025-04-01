@@ -224,8 +224,9 @@ button:focus, button:checked {
 
 #window_controls button {
     border-radius: 100%;
+    background: transparent;
 }
-
+/*
 #window_controls #minimize {
     background-image: url('../../icons/ic_minimize.svg');
 }
@@ -241,7 +242,7 @@ window.maximized #window_controls #maximize {
 #window_controls #close {
     background-image: url('../../icons/ic_close.svg');
 }
-
+*/
 
 
 menuitem {
