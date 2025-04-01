@@ -343,11 +343,9 @@ impl MainWindow {
         self.views.borrow_mut().insert(name, view);
     }
 
-    pub fn alert(&self, message: &str) {
-        let alert = NotificationView::new(message);
+    pub fn notify(&self, title: &str, description: &str) {
+        let alert = NotificationView::new(title, description);
         self.notifications.add(&alert.root);
-
-        let alert = NotificationView::new(message);
-        self.notifications.add(&alert.root);
+        //<property name="action-name">notification.dismiss</property>
     }
 }

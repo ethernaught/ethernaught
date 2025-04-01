@@ -12,7 +12,7 @@ pub struct NotificationView {
 
 impl NotificationView {
 
-    pub fn new(message: &str) -> Self {
+    pub fn new(title: &str, description: &str) -> Self {
         let builder = Builder::from_resource("/net/ethernaught/rust/res/ui/gtk3/notification_view.ui");
 
         let root: gtk::Box = builder
@@ -23,22 +23,22 @@ impl NotificationView {
             .object("icon")
             .expect("Couldn't find 'icon' in notification_view.ui");
 
-        let title: Label = builder
+        let title_label: Label = builder
             .object("title")
             .expect("Couldn't find 'title' in notification_view.ui");
-        title.set_text("Permissions");
+        title_label.set_text(title);
 
-        let description: Label = builder
+        let description_label: Label = builder
             .object("description")
             .expect("Couldn't find 'description' in notification_view.ui");
-        description.set_wrap(true);
-        description.set_text(message);
+        description_label.set_wrap(true);
+        description_label.set_text(description);
 
         Self {
             root,
             icon,
-            title,
-            description
+            title: title_label,
+            description: description_label
         }
     }
 }

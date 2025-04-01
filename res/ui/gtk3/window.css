@@ -355,6 +355,28 @@ window.release #bottom_bar #license {
     font-weight: bold;
 }
 
+#notification #close {
+    border: 4px;
+    border-radius: 100%;
+    background-image: url('../../icons/ic_close.svg');
+}
+
+#notification button {
+    min-height: 0;
+    padding: 4px;
+    border-radius: 6px;
+    background-color: transparent;
+    background-size: auto;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#notification button:hover {
+    background-color: @ripple;
+}
+
+
+
 
 
 

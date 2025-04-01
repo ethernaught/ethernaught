@@ -101,7 +101,7 @@ impl DevicesView {
                     return Stop;
                 }
 
-                window.alert("You don't have permission to capture network interfaces.");
+                window.notify("Permission", "You don't have permission to capture network interfaces.");
 
                 if_map.iter().for_each(|(pos, _)| {
                     device_list_item.get(*pos).unwrap().root.style_context().add_class("error");
