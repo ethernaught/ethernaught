@@ -59,6 +59,7 @@ rustup override set nightly
 //WINDOW_CONTROLS UPDATE PER OS
 // - USE SYSTEM BUTTONS NOT WHAT WE DEFINE
 // - NOTIFICATIONS CLOSE BUTTON TOO LARGE...
+// - fix time in list
 
 fn main() {
     /*

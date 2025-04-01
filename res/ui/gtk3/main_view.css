@@ -18,13 +18,13 @@
     outline: none;
 }
 
-#packet_view #tree_view {
+#packet_view treeview {
     color: @text_secondary;
     background-color: @background_secondary;
     outline: none;
 }
 
-#packet_view #tree_view button {
+#packet_view treeview header button {
     padding: 8px 4px;
     font-size: 14px;
     border: none;
@@ -34,16 +34,9 @@
     background-color: @background_secondary;
 }
 
-#packet_view #tree_view *:hover {
-    background-color: @primary;
+#packet_view treeview *:selected {
+    background: @primary;
 }
-/*
-list row:active,
-        list row:active box {
-    background-color: #26282e;
-}
-*/
-
 
 #main_view #side_navbar {
     padding: 4px;

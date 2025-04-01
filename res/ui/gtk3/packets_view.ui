@@ -32,7 +32,6 @@
 
                 <child>
                     <object class="GtkTreeView" id="tree_view">
-                        <property name="name">tree_view</property>
                         <property name="visible">True</property>
                         <property name="hexpand">True</property>
                         <property name="vexpand">True</property>

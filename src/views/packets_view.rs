@@ -1,9 +1,9 @@
 use std::cell::RefCell;
 use std::rc::Rc;
-use gtk::{gdk, Builder, Button, CellRendererText, Container, CssProvider, Entry, Image, Label, ListBox, ListStore, ScrolledWindow, StyleContext, TreeView, TreeViewColumn};
+use gtk::{gdk, Builder, Button, CellRendererState, CellRendererText, Container, CssProvider, Entry, Image, Label, ListBox, ListStore, ScrolledWindow, StyleContext, TreeView, TreeViewColumn, Widget};
 use gtk::glib::{ObjectExt, PropertyGet, ToValue, Type};
 use gtk::glib::Propagation::Proceed;
-use gtk::prelude::{AdjustmentExt, BuilderExtManual, CellLayoutExt, ContainerExt, CssProviderExt, GtkListStoreExt, GtkListStoreExtManual, LabelExt, ListBoxExt, ScrolledWindowExt, TreeModelExt, TreeViewColumnExt, TreeViewExt, WidgetExt};
+use gtk::prelude::{AdjustmentExt, BuilderExtManual, CellLayoutExt, CellRendererExt, ContainerExt, CssProviderExt, GtkListStoreExt, GtkListStoreExtManual, LabelExt, ListBoxExt, ScrolledWindowExt, TreeModelExt, TreeViewColumnExt, TreeViewExt, WidgetExt};
 use gtk::subclass::container::Callback;
 use rlibpcap::packet::layers::ethernet_frame::ethernet_frame::EthernetFrame;
 use rlibpcap::packet::layers::ethernet_frame::inter::ethernet_types::EthernetTypes;
@@ -339,36 +339,22 @@ fn init_column(tree: &TreeView, title: &str, col_id: i32, min_width: i32) {
     CellLayoutExt::pack_start(&column, &renderer, true);
     CellLayoutExt::add_attribute(&column, &renderer, "text", col_id);
 
-    /*
     CellLayoutExt::set_cell_data_func(&column, &renderer, Some(Box::new(move |_, cell, model, iter| {
         let protocol: String = model.value(iter, 4).get().unwrap_or_default();
 
         let color = match protocol.as_str() {
-            "ARP" => {
-                "#05211b"
-            }
-            "Broadcast" => {
-                "#000000"
-            }
-            "TCP" => {
-                "#1e0926"
-            }
-            "UDP" => {
-                "#070c1f"
-            }
-            "ICMP" => {
-                "#260d07"
-            }
-            "GRE" => {
-                "#122407"
-            }
-            _ => {
-                "#1e1f22"
-            }
+            "ARP" => "#05211b",
+            "Broadcast" => "#000000",
+            "TCP" => "#1e0926",
+            "UDP" => "#070c1f",
+            "ICMP" => "#260d07",
+            "GRE" => "#122407",
+            _ => "#1e1f22",
         };
 
         cell.set_property("cell-background", &color);
-    })));*/
+        cell.set_property("cell-background-set", &true); // Let GTK handle selection color
+    })));
 
     tree.append_column(&column);
 }
