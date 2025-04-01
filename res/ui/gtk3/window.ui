@@ -28,7 +28,11 @@
                                 <property name="visible">True</property>
                                 <property name="hexpand">True</property>
                                 <property name="vexpand">True</property>
+                                <property name="halign">Center</property>
                             </object>
+                            <packing>
+                                <property name="alignment">True</property>
+                            </packing>
                         </child>
 
 
@@ -38,7 +42,11 @@
                                 <property name="visible">True</property>
                                 <property name="width-request">100</property>
                                 <property name="vexpand">True</property>
+                                <property name="halign">End</property>
                             </object>
+                            <packing>
+                                <property name="alignment">True</property>
+                            </packing>
                         </child>
 
                     </object>

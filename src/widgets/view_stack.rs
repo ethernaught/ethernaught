@@ -4,7 +4,8 @@ use std::rc::Rc;
 use gtk::gdk::{EventMask, WindowAttr, WindowType, WindowWindowClass, RGBA};
 use gtk::{gdk, glib, Align, Allocation, Buildable, Container, Misc, StateFlags, Widget};
 use gtk::cairo::Context;
-use gtk::glib::{Cast, Propagation, StaticType};
+use gtk::glib::{Cast, ObjectExt, ParamFlags, ParamSpec, ParamSpecBuilderExt, ParamSpecString, Propagation, StaticType, ToValue, Value};
+use gtk::glib::once_cell::sync::Lazy;
 use gtk::glib::Propagation::Proceed;
 use gtk::prelude::{SettingsExt, StyleContextExt, WidgetExt};
 use gtk::subclass::container::{Callback, ContainerImplExt};
@@ -14,6 +15,7 @@ use gtk::subclass::prelude::{ContainerImpl, ObjectImpl, ObjectSubclass, ObjectSu
 pub struct ViewStackImpl {
     names: RefCell<Vec<String>>,
     children: RefCell<Vec<Widget>>,
+    alignment: RefCell<String>
     //event_listeners: Rc<RefCell<Vec<String, Box<dyn Fn(Box<dyn Event>)>>>>
 }
 
@@ -47,25 +49,39 @@ impl ObjectSubclass for ViewStackImpl {
 
 impl ObjectImpl for ViewStackImpl {
 /*
-    fn set_property(&self, _obj: &Self::Type, id: usize, value: &glib::Value) {
-        match id {
-            1 => {
-                let align = value.get().unwrap_or(Align::Start);
-                self.child_alignment.replace(align);
+    fn properties() -> &'static [ParamSpec] {
+        static PROPERTIES: Lazy<[ParamSpec; 1]> = Lazy::new(|| [
+            ParamSpecString::builder("alignment").nick("Alignment").blurb("The alignment").flags(ParamFlags::READWRITE).build()
+        ]);
+
+        &*PROPERTIES
+    }
+
+    fn set_property(&self, id: usize, value: &Value, pspec: &ParamSpec) {
+        match pspec.name() {
+            "alignment" => {
+                println!("A");
+                if let Ok(alignment) = value.get::<String>() {
+                    self.alignment.replace(alignment);
+                    println!("Alignment set to: {}", self.alignment.borrow());
+                }
+                //self.label.replace(label);
             }
             _ => unimplemented!(),
         }
     }
 
-    fn get_property(&self, _obj: &Self::Type, id: usize) -> glib::Value {
-        match id {
-            1 => self.child_alignment.borrow().to_value(),
+    fn property(&self, id: usize, pspec: &ParamSpec) -> Value {
+        match pspec.name() {
+            "alignment" => {
+                println!("V");
+                self.alignment.borrow().to_value()
+                //self.label.borrow().clone().to_value(),
+            }
             _ => unimplemented!(),
         }
     }
-
-    <property name="child-alignment">2</property> <!-- Align::End -->
-    */
+*/
 }
 
 impl WidgetImpl for ViewStackImpl {
@@ -130,6 +146,9 @@ impl WidgetImpl for ViewStackImpl {
 
             //let mut width = child.width_request();
             //let mut height = child.height_request();
+
+            //println!("asdasd {:?}", child.property_value("fill"));
+            println!("{} {}", child.halign(), child.valign());
 
             child.size_allocate(&Allocation::new(
                 0,
