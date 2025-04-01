@@ -2,23 +2,23 @@ use gtk::{AboutDialog, ApplicationWindow, Builder, Image, Application, TreeViewC
 use gtk::prelude::*;
 
 #[derive(Clone)]
-pub struct AlertView {
+pub struct NotificationView {
     pub root: gtk::Box,
     pub label: Label
 }
 
-impl AlertView {
+impl NotificationView {
 
     pub fn new(message: &str) -> Self {
-        let builder = Builder::from_resource("/net/ethernaught/rust/res/ui/gtk3/alert_view.ui");
+        let builder = Builder::from_resource("/net/ethernaught/rust/res/ui/gtk3/notification_view.ui");
 
         let root: gtk::Box = builder
             .object("root")
-            .expect("Couldn't find 'root' in alert_view.ui");
+            .expect("Couldn't find 'root' in notification_view.ui");
 
         let label: Label = builder
             .object("label")
-            .expect("Couldn't find 'label' in alert_view.ui");
+            .expect("Couldn't find 'label' in notification_view.ui");
         label.set_text(message);
 
         Self {

@@ -14,7 +14,7 @@ use crate::bus::event_bus::register_event;
 use crate::bus::events::permission_event::PermissionEvent;
 use crate::bus::events::transmitted_event::TransmittedEvent;
 use crate::sniffer::Sniffer;
-use crate::views::alert_view::AlertView;
+use crate::views::notification_view::NotificationView;
 use crate::views::bottom_bar::BottomBar;
 use crate::views::devices_view::DevicesView;
 use crate::views::inter::stackable::Stackable;
@@ -25,8 +25,8 @@ use crate::views::title_bar::TitleBar;
 pub struct MainWindow {
     pub window: ApplicationWindow,
     pub title_bar: TitleBar,
-    pub root: gtk::Box,
     pub stack: Stack,
+    pub notifications: gtk::Box,
     pub bottom_bar: BottomBar,
     pub views: Rc<RefCell<HashMap<String, Box<dyn Stackable>>>>
 }
@@ -92,6 +92,10 @@ impl MainWindow {
             .object("stack")
             .expect("Failed to get the 'stack' from window.ui");
 
+        let notifications: gtk::Box = builder
+            .object("notifications")
+            .expect("Failed to get the 'notifications' from window.ui");
+
         let views: Rc<RefCell<HashMap<String, Box<dyn Stackable>>>> = Rc::new(RefCell::new(HashMap::new()));
 
         stack.connect_visible_child_name_notify({
@@ -130,6 +134,7 @@ impl MainWindow {
 
 
 
+
         window.connect_button_press_event({
             let window = window.clone();
             move |_, event| {
@@ -152,8 +157,8 @@ impl MainWindow {
         let _self = Self {
             window,
             title_bar,
-            root,
             stack,
+            notifications,
             bottom_bar,
             views
         };
@@ -214,6 +219,10 @@ impl MainWindow {
             .object("stack")
             .expect("Failed to get the 'stack' from window.ui");
 
+        let notifications: gtk::Box = builder
+            .object("notifications")
+            .expect("Failed to get the 'notifications' from window.ui");
+
         let views: Rc<RefCell<HashMap<String, Box<dyn Stackable>>>> = Rc::new(RefCell::new(HashMap::new()));
 
         stack.connect_visible_child_name_notify({
@@ -274,8 +283,8 @@ impl MainWindow {
         let _self = Self {
             window,
             title_bar,
-            root,
             stack,
+            notifications,
             bottom_bar,
             views
         };
@@ -335,7 +344,7 @@ impl MainWindow {
     }
 
     pub fn alert(&self, message: &str) {
-        let alert = AlertView::new(message);
-        self.root.add(&alert.root);
+        let alert = NotificationView::new(message);
+        self.notifications.add(&alert.root);
     }
 }
