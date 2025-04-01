@@ -112,8 +112,8 @@ pub fn register_stack_actions(window: &MainWindow) {
                 if let Some(pos) = children.iter().position(|child| child == &current) {
                     if pos > 0 {
                         stack.set_visible_child(&children[pos - 1]);
-                        title_bar.back_button.style_context().remove_class("active");
-                        title_bar.next_button.style_context().add_class("active");
+                        title_bar.back.style_context().remove_class("active");
+                        title_bar.next.style_context().add_class("active");
                     }
                 }
             }
@@ -131,8 +131,8 @@ pub fn register_stack_actions(window: &MainWindow) {
                 if let Some(pos) = children.iter().position(|child| child == &current) {
                     if pos < children.len() - 1 {
                         stack.set_visible_child(&children[pos + 1]);
-                        title_bar.next_button.style_context().remove_class("active");
-                        title_bar.back_button.style_context().add_class("active");
+                        title_bar.next.style_context().remove_class("active");
+                        title_bar.back.style_context().add_class("active");
                     }
                 }
             }

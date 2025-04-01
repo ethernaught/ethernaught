@@ -11,8 +11,8 @@
         <property name="height-request">30</property>
 
         <child>
-            <object class="GtkButton" id="warning_button">
-                <property name="name">warning_button</property>
+            <object class="GtkButton" id="warning">
+                <property name="name">warning</property>
                 <property name="tooltip-text">Warnings</property>
                 <property name="visible">True</property>
                 <property name="width-request">22</property>

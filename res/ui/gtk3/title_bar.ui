@@ -3,7 +3,7 @@
     <requires lib="gtk+" version="3.24"/>
 
     <object class="GtkBox" id="root">
-        <property name="name">titlebar</property>
+        <property name="name">title_bar</property>
         <property name="visible">True</property>
         <property name="hexpand">True</property>
         <property name="orientation">horizontal</property>
@@ -34,8 +34,8 @@
                         <property name="spacing">8</property>
 
                         <child>
-                            <object class="GtkButton" id="menu_button">
-                                <property name="name">menu_button</property>
+                            <object class="GtkButton" id="menu">
+                                <property name="name">menu</property>
                                 <property name="tooltip-text">Main Menu</property>
                                 <property name="visible">True</property>
                                 <property name="width-request">24</property>
@@ -51,8 +51,8 @@
                                 <property name="spacing">6</property>
 
                                 <child>
-                                    <object class="GtkButton" id="back_button">
-                                        <property name="name">back_button</property>
+                                    <object class="GtkButton" id="back">
+                                        <property name="name">back</property>
                                         <property name="tooltip-text">Back</property>
                                         <property name="visible">True</property>
                                         <property name="width-request">24</property>
@@ -62,8 +62,8 @@
                                 </child>
 
                                 <child>
-                                    <object class="GtkButton" id="next_button">
-                                        <property name="name">next_button</property>
+                                    <object class="GtkButton" id="next">
+                                        <property name="name">next</property>
                                         <property name="tooltip-text">Forward</property>
                                         <property name="visible">True</property>
                                         <property name="width-request">24</property>
@@ -94,8 +94,8 @@
                 </child>
 
                 <child>
-                    <object class="GtkMenuBar" id="navigation_menubar">
-                        <property name="name">navigation_menubar</property>
+                    <object class="GtkMenuBar" id="menubar">
+                        <property name="name">menubar</property>
                         <property name="visible">False</property>
                         <property name="hexpand">True</property>
                         <property name="height-request">40</property>
@@ -112,8 +112,8 @@
                 <property name="spacing">10</property>
 
                 <child>
-                    <object class="GtkButton" id="start_button">
-                        <property name="name">start_button</property>
+                    <object class="GtkButton" id="start">
+                        <property name="name">start</property>
                         <property name="tooltip-text">Run</property>
                         <property name="visible">True</property>
                         <property name="width-request">24</property>
@@ -123,8 +123,8 @@
                 </child>
 
                 <child>
-                    <object class="GtkButton" id="stop_button">
-                        <property name="name">stop_button</property>
+                    <object class="GtkButton" id="stop">
+                        <property name="name">stop</property>
                         <property name="tooltip-text">Stop</property>
                         <property name="visible">False</property>
                         <property name="width-request">24</property>
@@ -145,8 +145,8 @@
                 <property name="spacing">10</property>
 
                 <child>
-                    <object class="GtkButton" id="minimize_button">
-                        <property name="name">window_minimize</property>
+                    <object class="GtkButton" id="minimize">
+                        <property name="name">minimize</property>
                         <property name="tooltip-text">Minimize</property>
                         <property name="visible">True</property>
                         <property name="width-request">16</property>
@@ -156,8 +156,8 @@
                 </child>
 
                 <child>
-                    <object class="GtkButton" id="maximize_button">
-                        <property name="name">window_maximize</property>
+                    <object class="GtkButton" id="maximize">
+                        <property name="name">maximize</property>
                         <property name="tooltip-text">Maximize</property>
                         <property name="visible">True</property>
                         <property name="width-request">16</property>
@@ -167,8 +167,8 @@
                 </child>
 
                 <child>
-                    <object class="GtkButton" id="close_button">
-                        <property name="name">window_close</property>
+                    <object class="GtkButton" id="close">
+                        <property name="name">close</property>
                         <property name="tooltip-text">Close</property>
                         <property name="visible">True</property>
                         <property name="width-request">16</property>

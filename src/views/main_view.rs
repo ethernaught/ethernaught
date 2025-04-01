@@ -115,7 +115,7 @@ impl MainView {
             }
         });
         window.window.add_action(&action);
-        window.title_bar.start_button.show();
+        window.title_bar.start.show();
 
         let action = SimpleAction::new("stop", None);
         action.connect_activate({
@@ -231,7 +231,7 @@ impl MainView {
             }
         });
         window.window.add_action(&action);
-        window.title_bar.start_button.show();
+        window.title_bar.start.show();
 
 
         let action = SimpleAction::new("stop", None);
@@ -449,12 +449,12 @@ fn show_capture_bar(window: &MainWindow, packets: &PacketsView) -> impl Fn(bool)
     move |shown| {
         if shown {
             title_bar.app_options.style_context().add_class("running");
-            title_bar.stop_button.show();
+            title_bar.stop.show();
             packets.clear();
             return;
         }
 
         title_bar.app_options.style_context().remove_class("running");
-        title_bar.stop_button.hide();
+        title_bar.stop.hide();
     }
 }

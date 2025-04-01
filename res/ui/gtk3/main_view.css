@@ -1,10 +1,10 @@
-#main_activity_pane {
+#main_view {
     border-left: solid 1px @background_secondary;
 }
 
 
 
-entry {
+#main_view entry {
     padding: 4px 8px;
     border: none;
     border-radius: 0;
@@ -14,17 +14,17 @@ entry {
     font-size: 14px;
 }
 
-entry:focus {
+#main_view entry:focus {
     outline: none;
 }
 
-#tree_view {
+#main_view #tree_view {
     color: @text_secondary;
     background-color: @background_secondary;
     outline: none;
 }
 
-#tree_view button {
+#main_view #tree_view button {
     padding: 8px 4px;
     font-size: 14px;
     border: none;
@@ -34,7 +34,7 @@ entry:focus {
     background-color: @background_secondary;
 }
 
-#tree_view *:hover {
+#main_view #tree_view *:hover {
     background-color: @primary;
 }
 /*
@@ -45,11 +45,11 @@ list row:active,
 */
 
 
-#side_navbar_layout {
+#main_view #side_navbar {
     padding: 4px;
 }
 
-#side_navbar_layout button {
+#main_view #side_navbar button {
     min-width: 0;
     padding: 4px;
     border-radius: 6px;
@@ -60,16 +60,16 @@ list row:active,
     background-position: center;
 }
 
-#side_navbar_layout button.selected,
-        #side_navbar_layout button:hover {
+#main_view #side_navbar button.selected,
+        #main_view #side_navbar button:hover {
     background-color: @ripple;
 }
 
-#side_navbar_layout #terminal_button {
+#main_view #side_navbar #terminal_button {
     background-image: url('../../icons/ic_terminal.svg');
 }
 
-#side_navbar_layout #plugins_button {
+#main_view #side_navbar #plugins_button {
     background-image: url('../../icons/ic_plugins.svg');
 }
 
@@ -83,17 +83,17 @@ list row:active,
 
 
 
-#terminal_layout {
+#main_view #terminal_layout {
     border-top: solid 1px @background_secondary;
 }
 
-#terminal_title label {
+#main_view #terminal_title label {
     padding: 0 10px;
     color: @text_primary;
     font-size: 14px;
 }
 
-terminal {
+#main_view terminal {
     padding: 4px;
     font-family: "Ethernaught Mono", monospace;
     font-size: 18px;
@@ -107,12 +107,12 @@ terminal {
 
 
 
-#sidebar #header {
+#sidebar_view #header {
     padding: 4px 4px 3px 4px;
     border-bottom: solid 1px @background_shimmer;
 }
 
-#sidebar #header button {
+#sidebar_view #header button {
     min-height: 0;
     padding: 8px;
     border-radius: 6px;
@@ -123,15 +123,15 @@ terminal {
     background-position: center;
 }
 
-#sidebar #header #dismiss {
+#sidebar_view #header #dismiss {
     background-image: url('../../icons/ic_dismiss.svg');
 }
 
-#sidebar #header #replay {
+#sidebar_view #header #replay {
     background-image: url('../../icons/ic_replay.svg');
 }
 
-#sidebar #header button:hover {
+#sidebar_view #header button:hover {
     background-color: @ripple;
 }
 
@@ -142,7 +142,7 @@ terminal {
 
 
 
-#sidebar hexeditor {
+#sidebar_view hexeditor {
     padding: 10px;
     font-family: "Ethernaught Mono", monospace;
     font-size: 20px;
@@ -152,11 +152,11 @@ terminal {
 
 
 
-#sidebar #details {
+#sidebar_view #details {
     padding: 5px 0;
 }
 
-#sidebar #dropdown button {
+#sidebar_view #dropdown button {
     padding: 10px;
     border: 0;
     margin: 0 5px;
@@ -167,16 +167,16 @@ terminal {
     background: transparent;
 }
 
-#sidebar #dropdown button:hover {
+#sidebar_view #dropdown button:hover {
     background: @ripple;
 }
 
-#sidebar #dropdown list {
+#sidebar_view #dropdown list {
     padding-left: 32px;
     background-color: @background;
 }
 
-#sidebar #dropdown list row {
+#sidebar_view #dropdown list row {
     background-color: @background;
     outline: none;
     border: none;
@@ -184,23 +184,23 @@ terminal {
     border-radius: 5px;
 }
 
-#sidebar #dropdown list row label {
+#sidebar_view #dropdown list row label {
     padding: 10px;
     font-size: 12px;
     color: @text_secondary;
 }
 
-#sidebar #dropdown list row:hover,
-        #sidebar #dropdown list row.selected {
+#sidebar_view #dropdown list row:hover,
+        #sidebar_view #dropdown list row.selected {
     background-color: @ripple;
 }
 
-#sidebar #dropdown list #key {
+#sidebar_view #dropdown list #key {
     font-weight: bold;
     min-width: 160px;
 }
 
-#sidebar #dropdown list #value {
+#sidebar_view #dropdown list #value {
     font-family: "Ethernaught Mono", monospace;
 }
 
