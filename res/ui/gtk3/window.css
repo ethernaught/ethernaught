@@ -244,18 +244,6 @@ window.maximized #window_controls #window_maximize {
 
 
 
-#alert {
-    background-color: #2d2412;
-    border-bottom: solid 1px #9e6a03;
-}
-
-#alert label {
-    color: @text_primary;
-    font-size: 14px;
-}
-
-
-
 menuitem {
     border: none;
     color: @text_primary;
@@ -345,6 +333,32 @@ window.release #bottom_bar #license {
 
 
 
+
+
+
+
+#notifications {
+    background-color: rgba(0, 0, 30, 0.2);
+    margin: 0 10px 10px 0;
+}
+
+#notification {
+    padding: 10px;
+    background-color: @background_shimmer;
+}
+
+#notification label {
+    color: @text_primary;
+    font-size: 14px;
+}
+
+#notification #title {
+    font-weight: bold;
+}
+
+
+
+
 scrollbar {
     border: none;
 }
@@ -373,8 +387,4 @@ overshoot {
 
 paned > separator {
     background-image: linear-gradient(@background, @background);
-}
-
-#notifications {
-    background-color: rgba(0, 0, 30, 0.2);
 }
