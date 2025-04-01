@@ -189,6 +189,22 @@ impl MainWindow {
         //window.set_decorated(false);
         window.set_border_width(1);
 
+        let (width, height) = window.default_size();
+
+        let hints = Geometry::new(
+            width,
+            height,
+            -1,
+            -1,
+            0,
+            0,
+            0,
+            0,
+            0.0,
+            0.0,
+            gdk::Gravity::NorthWest);
+        window.set_geometry_hints(None::<&gtk::Widget>, Some(&hints), WindowHints::MIN_SIZE);
+
         #[cfg(profile = "nightly")]
         window.style_context().add_class("nightly");
 
