@@ -12,91 +12,29 @@ use gtk::subclass::container::{Callback, ContainerImplExt};
 use gtk::subclass::prelude::{ContainerImpl, ObjectImpl, ObjectSubclass, ObjectSubclassExt, ObjectSubclassIsExt, WidgetClassSubclassExt, WidgetImpl, WidgetImplExt};
 
 #[derive(Default)]
-pub struct ViewStackImpl {
+pub struct OverlayImpl {
     names: RefCell<Vec<String>>,
-    children: RefCell<Vec<Widget>>,
-    alignment: RefCell<String>
-    //event_listeners: Rc<RefCell<Vec<String, Box<dyn Fn(Box<dyn Event>)>>>>
+    children: RefCell<Vec<Widget>>
 }
 
 #[glib::object_subclass]
-impl ObjectSubclass for ViewStackImpl {
+impl ObjectSubclass for OverlayImpl {
 
-    const NAME: &'static str = "ViewStack";
+    const NAME: &'static str = "Overlay";
     type ParentType = Container;
-    type Type = ViewStack;
+    type Type = Overlay;
 
     fn class_init(class: &mut Self::Class) {
-        class.set_css_name("viewstack");
-
-        /*
-        class.install_property(
-            "child-alignment",
-            |pspec| {
-                glib::ParamSpec::new(
-                    "child-alignment",
-                    "Child Alignment",
-                    "Alignment for child widgets",
-                    Align::static_type(),
-                    Align::Start as i32,
-                    glib::ParamFlags::READWRITE,
-                )
-            },
-        );
-        */
+        class.set_css_name("overlay");
     }
 }
 
-impl ObjectImpl for ViewStackImpl {
-/*
-    fn properties() -> &'static [ParamSpec] {
-        static PROPERTIES: Lazy<[ParamSpec; 1]> = Lazy::new(|| [
-            ParamSpecString::builder("alignment").nick("Alignment").blurb("The alignment").flags(ParamFlags::READWRITE).build()
-        ]);
+impl ObjectImpl for OverlayImpl {}
 
-        &*PROPERTIES
-    }
-
-    fn set_property(&self, id: usize, value: &Value, pspec: &ParamSpec) {
-        match pspec.name() {
-            "alignment" => {
-                println!("A");
-                if let Ok(alignment) = value.get::<String>() {
-                    self.alignment.replace(alignment);
-                    println!("Alignment set to: {}", self.alignment.borrow());
-                }
-                //self.label.replace(label);
-            }
-            _ => unimplemented!(),
-        }
-    }
-
-    fn property(&self, id: usize, pspec: &ParamSpec) -> Value {
-        match pspec.name() {
-            "alignment" => {
-                println!("V");
-                self.alignment.borrow().to_value()
-                //self.label.borrow().clone().to_value(),
-            }
-            _ => unimplemented!(),
-        }
-    }
-*/
-}
-
-impl WidgetImpl for ViewStackImpl {
+impl WidgetImpl for OverlayImpl {
 
     fn draw(&self, cr: &Context) -> Propagation {
-        //cr.set_source_rgba(0.2, 0.0, 0.0, 1.0);
-        //cr.paint();
-
         self.parent_draw(cr);
-
-        /*
-        for child in self.children.borrow().iter() {
-            child.draw(cr);
-        }*/
-
         Proceed
     }
 
@@ -182,7 +120,7 @@ impl WidgetImpl for ViewStackImpl {
     }
 }
 
-impl ContainerImpl for ViewStackImpl {
+impl ContainerImpl for OverlayImpl {
 
     fn add(&self, widget: &Widget) {
         let container = self.obj();
@@ -215,37 +153,13 @@ impl ContainerImpl for ViewStackImpl {
 }
 
 glib::wrapper! {
-    pub struct ViewStack(ObjectSubclass<ViewStackImpl>)
+    pub struct Overlay(ObjectSubclass<OverlayImpl>)
          @extends Container, Widget, @implements Buildable;
 }
 
-impl ViewStack {
+impl Overlay {
 
     pub fn new() -> Self {
         glib::Object::builder().build()
-    }
-
-    pub fn select(&self, name: &str) {
-        //self.imp().names.borrow_mut().push(name.into());
-    }
-
-    pub fn get_by_name(&self, name: &str) -> Option<Widget> {
-        todo!()
-    }
-
-    pub fn get_selected_widget(&self) -> Option<Widget> {
-        todo!()
-    }
-
-    pub fn get_selected_index(&self) -> usize {
-        self.imp().children.borrow().len()
-    }
-
-    pub fn connect_stack_change(&self) {
-
-    }
-
-    pub fn connect_(&self) {
-
     }
 }

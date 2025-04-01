@@ -56,7 +56,7 @@ impl WidgetImpl for GraphImpl {
         cr.set_source_rgba(color.red(), color.green(), color.blue(), color.alpha());
 
         let points = self.points.borrow();
-        if points.is_empty() {
+        if points.len() < 2 {
             cr.move_to(0.0, height);
             cr.line_to(width, height);
             cr.stroke().unwrap();
@@ -76,11 +76,6 @@ impl WidgetImpl for GraphImpl {
             let x = i as f64 * distance;
             let y = height - ((point as f64 - min) / range) * height;
             cr.line_to(x, y);
-        }
-
-        if points.len() as f64 <= width / distance {
-            cr.line_to(points.len() as f64 * distance, height);
-            cr.line_to(width, height);
         }
 
         cr.stroke().unwrap();
@@ -177,9 +172,7 @@ impl Graph {
         }
 
         self.imp().points.borrow_mut().push(point);
-        if point > 0 || self.imp().points.borrow().len() >= width as usize / distance as usize {
-            self.queue_draw();
-        }
+        self.queue_draw();
     }
 
     pub fn get_points(&self) -> Vec<u32> {

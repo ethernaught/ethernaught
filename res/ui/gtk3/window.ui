@@ -18,7 +18,7 @@
                 <property name="orientation">vertical</property>
 
                 <child>
-                    <object class="ViewStack">
+                    <object class="Overlay">
                         <property name="visible">True</property>
                         <property name="hexpand">True</property>
                         <property name="vexpand">True</property>

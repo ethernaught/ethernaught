@@ -1,4 +1,4 @@
 pub mod graph;
 pub mod hex_editor;
 pub mod terminal;
-pub mod view_stack;
+pub mod overlay;
