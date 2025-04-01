@@ -344,7 +344,6 @@ impl MainWindow {
     }
 
     pub fn notify(&self, title: &str, description: &str) {
-        let alert = NotificationView::new(title, description);
-        self.notifications.add(&alert.root);
+        self.notifications.add(&NotificationView::new(title, description).root);
     }
 }
