@@ -107,12 +107,12 @@ terminal {
 
 
 
-#sidebar_title {
+#sidebar #header {
     padding: 4px 4px 3px 4px;
     border-bottom: solid 1px @background_shimmer;
 }
 
-#sidebar_title button {
+#sidebar #header button {
     min-height: 0;
     padding: 8px;
     border-radius: 6px;
@@ -123,15 +123,15 @@ terminal {
     background-position: center;
 }
 
-#sidebar_title #dismiss_button {
+#sidebar #header #dismiss {
     background-image: url('../../icons/ic_dismiss.svg');
 }
 
-#sidebar_title #replay_button {
+#sidebar #header #replay {
     background-image: url('../../icons/ic_replay.svg');
 }
 
-#sidebar_title button:hover {
+#sidebar #header button:hover {
     background-color: @ripple;
 }
 
@@ -142,7 +142,7 @@ terminal {
 
 
 
-hexeditor {
+#sidebar hexeditor {
     padding: 10px;
     font-family: "Ethernaught Mono", monospace;
     font-size: 20px;
@@ -152,11 +152,11 @@ hexeditor {
 
 
 
-#details_layout {
+#sidebar #details {
     padding: 5px 0;
 }
 
-#dropdown button {
+#sidebar #dropdown button {
     padding: 10px;
     border: 0;
     margin: 0 5px;
@@ -167,16 +167,16 @@ hexeditor {
     background: transparent;
 }
 
-#dropdown button:hover {
+#sidebar #dropdown button:hover {
     background: @ripple;
 }
 
-#dropdown list {
+#sidebar #dropdown list {
     padding-left: 32px;
     background-color: @background;
 }
 
-#dropdown list row {
+#sidebar #dropdown list row {
     background-color: @background;
     outline: none;
     border: none;
@@ -184,23 +184,23 @@ hexeditor {
     border-radius: 5px;
 }
 
-#dropdown list row label {
+#sidebar #dropdown list row label {
     padding: 10px;
     font-size: 12px;
     color: @text_secondary;
 }
 
-#dropdown list row:hover,
-        #dropdown list row.selected {
+#sidebar #dropdown list row:hover,
+        #sidebar #dropdown list row.selected {
     background-color: @ripple;
 }
 
-#dropdown list #key {
+#sidebar #dropdown list #key {
     font-weight: bold;
     min-width: 160px;
 }
 
-#dropdown list #value {
+#sidebar #dropdown list #value {
     font-family: "Ethernaught Mono", monospace;
 }
 

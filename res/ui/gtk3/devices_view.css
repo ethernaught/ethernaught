@@ -1,8 +1,8 @@
-#devices_activity_layout {
+#devices {
     padding: 20px 160px;
 }
 
-#device_titlebar #title {
+#devices #header #title {
     padding: 10px 15px;
     border-radius: 40px;
     font-weight: bold;
@@ -10,11 +10,11 @@
     background-color: @primary;
 }
 
-#devices_list {
+#devices list {
     background-color: @background;
 }
 
-#devices_list row {
+#devices list row {
     background-color: @background;
     outline: none;
     border: none;
@@ -24,56 +24,56 @@
     font-size: 12px;
 }
 
-#devices_list row:hover {
+#devices list row:hover {
     background-color: @ripple;
 }
 
-#devices_list row #icon {
+#devices list row #icon {
     border-radius: 6px;
 }
 
 
-#devices_list row.any #icon {
+#devices list row.any #icon {
     background-color: @device_any;
 }
 
-#devices_list row.ethernet #icon {
+#devices list row.ethernet #icon {
     background-color: @device_ethernet;
 }
 
-#devices_list row.lan #icon {
+#devices list row.lan #icon {
     background-color: @device_lan;
 }
 
-#devices_list row.wifi #icon {
+#devices list row.wifi #icon {
     background-color: @device_wifi;
 }
 
-#devices_list row.vpn #icon {
+#devices list row.vpn #icon {
     background-color: @device_vpn;
 }
 
-#devices_list row.bluetooth #icon {
+#devices list row.bluetooth #icon {
     background-color: @device_bluetooth;
 }
 
-#devices_list row #title {
+#devices list row #title {
     font-size: 14px;
     color: @text_primary;
 }
 
-#devices_list row label {
+#devices list row label {
     color: @text_secondary;
 }
 
-#devices_list row graph {
+#devices list row graph {
     color: @green;
 }
 
-#devices_list row.down graph {
+#devices list row.down graph {
     color: @red;
 }
 
-#devices_list row.error graph {
+#devices list row.error graph {
     color: @yellow;
 }

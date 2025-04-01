@@ -45,5 +45,17 @@
                 </child>
             </object>
         </child>
+
+        <child>
+            <object class="GtkButton" id="close">
+                <property name="name">notification_close</property>
+                <property name="tooltip-text">Close</property>
+                <property name="visible">True</property>
+                <property name="width-request">16</property>
+                <property name="height-request">16</property>
+                <property name="action-name">notification.dismiss</property>
+                <property name="valign">start</property>
+            </object>
+        </child>
     </object>
 </interface>
