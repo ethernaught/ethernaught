@@ -34,14 +34,15 @@ impl ObjectImpl for ViewStackImpl {}
 impl WidgetImpl for ViewStackImpl {
 
     fn draw(&self, cr: &Context) -> Propagation {
-        cr.set_source_rgba(0.2, 0.0, 0.0, 1.0);
-        cr.paint();
+        //cr.set_source_rgba(0.2, 0.0, 0.0, 1.0);
+        //cr.paint();
 
         self.parent_draw(cr);
 
+        /*
         for child in self.children.borrow().iter() {
             child.draw(cr);
-        }
+        }*/
 
         Proceed
     }
@@ -77,20 +78,34 @@ impl WidgetImpl for ViewStackImpl {
 
     fn size_allocate(&self, allocation: &Allocation) {
         let widget = self.obj();
-        widget.set_allocation(allocation);
 
+        //let allocation2 = Allocation::new(0, 0, allocation.width(), allocation.height());
         for child in self.children.borrow().iter() {
-            child.size_allocate(allocation);
+            let mut width = allocation.width();
+            if !child.is_hexpand_set() {
+                width = child.width_request();
+            }
+
+            let mut height = allocation.height();
+            if !child.is_vexpand_set() {
+                height = child.height_request();
+            }
+
+            //let mut width = child.width_request();
+            //let mut height = child.height_request();
+
+            child.size_allocate(&Allocation::new(
+                0,
+                0,
+                width,
+                height
+            ));
         }
 
+        widget.set_allocation(allocation);
         if widget.is_realized() {
             if let Some(window) = widget.window() {
-                window.move_resize(
-                    allocation.x(),
-                    allocation.y(),
-                    allocation.width(),
-                    allocation.height(),
-                );
+                window.move_resize(allocation.x(), allocation.y(), allocation.width(), allocation.height());
             }
         }
     }

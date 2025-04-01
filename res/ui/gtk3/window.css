@@ -375,4 +375,6 @@ paned > separator {
     background-image: linear-gradient(@background, @background);
 }
 
-
+#asd {
+    background-color: rgba(0, 0, 30, 0.2);
+}

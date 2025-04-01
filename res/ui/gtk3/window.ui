@@ -18,10 +18,29 @@
                 <property name="orientation">vertical</property>
 
                 <child>
-                    <object class="GtkStack" id="stack">
+                    <object class="ViewStack">
                         <property name="visible">True</property>
                         <property name="hexpand">True</property>
                         <property name="vexpand">True</property>
+
+                        <child>
+                            <object class="GtkStack" id="stack">
+                                <property name="visible">True</property>
+                                <property name="hexpand">True</property>
+                                <property name="vexpand">True</property>
+                            </object>
+                        </child>
+
+
+                        <child>
+                            <object class="GtkBox">
+                                <property name="name">asd</property>
+                                <property name="visible">True</property>
+                                <property name="width-request">100</property>
+                                <property name="vexpand">True</property>
+                            </object>
+                        </child>
+
                     </object>
                 </child>
             </object>
