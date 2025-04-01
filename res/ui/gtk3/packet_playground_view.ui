@@ -3,7 +3,7 @@
     <requires lib="gtk+" version="3.24"/>
 
     <object class="GtkPaned" id="root">
-        <property name="name">window_content</property>
+        <property name="name">packet_playground_view</property>
         <property name="visible">True</property>
         <property name="orientation">horizontal</property>
         <property name="position">570</property>
@@ -37,8 +37,8 @@
                 <property name="vscrollbar-policy">automatic</property>
 
                 <child>
-                    <object class="GtkBox" id="selection_layout">
-                        <property name="name">selection_layout</property>
+                    <object class="GtkBox" id="selection">
+                        <property name="name">selection</property>
                         <property name="visible">True</property>
                         <property name="hexpand">True</property>
                         <property name="vexpand">True</property>

@@ -4,7 +4,7 @@
 
 
 
-#main_view entry {
+#packet_view entry {
     padding: 4px 8px;
     border: none;
     border-radius: 0;
@@ -14,17 +14,17 @@
     font-size: 14px;
 }
 
-#main_view entry:focus {
+#packet_view entry:focus {
     outline: none;
 }
 
-#main_view #tree_view {
+#packet_view #tree_view {
     color: @text_secondary;
     background-color: @background_secondary;
     outline: none;
 }
 
-#main_view #tree_view button {
+#packet_view #tree_view button {
     padding: 8px 4px;
     font-size: 14px;
     border: none;
@@ -34,7 +34,7 @@
     background-color: @background_secondary;
 }
 
-#main_view #tree_view *:hover {
+#packet_view #tree_view *:hover {
     background-color: @primary;
 }
 /*
@@ -65,11 +65,11 @@ list row:active,
     background-color: @ripple;
 }
 
-#main_view #side_navbar #terminal_button {
+#main_view #side_navbar #terminal {
     background-image: url('../../icons/ic_terminal.svg');
 }
 
-#main_view #side_navbar #plugins_button {
+#main_view #side_navbar #plugins {
     background-image: url('../../icons/ic_plugins.svg');
 }
 

@@ -3,7 +3,7 @@
     <requires lib="gtk+" version="3.24"/>
 
     <object class="GtkBox" id="root">
-        <property name="name">content_layout</property>
+        <property name="name">packet_view</property>
         <property name="visible">True</property>
         <property name="hexpand">True</property>
         <property name="vexpand">True</property>

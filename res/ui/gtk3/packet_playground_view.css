@@ -1,8 +1,8 @@
-#selection_scroll_layout {
+#packet_playground_view {
     border-left: solid 1px @background_secondary;
 }
 
-hexeditor {
+#packet_playground_view hexeditor {
     padding: 10px;
     font-family: "Ethernaught Mono", monospace;
     font-size: 20px;
@@ -10,22 +10,22 @@ hexeditor {
     background-color: @background_secondary;
 }
 
-#selection_layout {
+#packet_playground_view #selection {
     padding: 20px;
 }
 
-combobox button {
+#packet_playground_view combobox button {
     border-radius: 6px;
     color: @text_primary;
     background: @background_shimmer;
     border: solid 1px @border_light;
 }
 
-combobox > window.popup menuitem {
+#packet_playground_view combobox > window.popup menuitem {
     margin: 0 5px;
     border-radius: 6px;
 }
 
-combobox > window.popup *:hover {
+#packet_playground_view combobox > window.popup *:hover {
     background: @primary;
 }

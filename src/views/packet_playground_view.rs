@@ -61,9 +61,9 @@ impl PacketPlaygroundView {
 
 
 
-        let selection_layout: gtk::Box = builder
-            .object("selection_layout")
-            .expect("Couldn't find 'selection_layout' in packet_playground_view.ui");
+        let selection: gtk::Box = builder
+            .object("selection")
+            .expect("Couldn't find 'selection' in packet_playground_view.ui");
 
         let combo_box = ComboBoxText::new();
         combo_box.append_text("Data Link Type");
@@ -76,7 +76,7 @@ impl PacketPlaygroundView {
 
 
 
-        selection_layout.add(&combo_box);
+        selection.add(&combo_box);
 
         combo_box.show_all();
 
