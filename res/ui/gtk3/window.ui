@@ -38,7 +38,9 @@
                                 <property name="width-request">380</property>
                                 <property name="vexpand">True</property>
                                 <property name="halign">end</property>
+                                <property name="orientation">vertical</property>
                                 <property name="valign">end</property>
+                                <property name="spacing">10</property>
                             </object>
                         </child>
                     </object>
