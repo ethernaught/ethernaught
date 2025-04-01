@@ -120,13 +120,47 @@ impl WidgetImpl for GraphImpl {
 
         widget.set_can_focus(true);
 
+        /*
         let (calculated_width, calculated_height) = self.calculate_size();
 
         let width = max(calculated_width, allocation.width());
         let height = max(calculated_height, allocation.height());
 
         widget.set_size_request(width, height);
-        self.size_allocate(&Allocation::new(allocation.x(), allocation.y(), width, height));
+        self.size_allocate(&Allocation::new(allocation.x(), allocation.y(), width, height));*/
+    }
+
+    fn size_allocate(&self, allocation: &Allocation) {
+        let widget = self.obj();
+        println!("{:?}", allocation);
+        widget.set_allocation(allocation);
+
+
+        /*
+        let (min_width, natural_width) = widget.preferred_width();
+        let (min_height, natural_height) = widget.preferred_height();
+
+        let mut width = natural_width.min(allocation.width());
+        let mut height = natural_height.min(allocation.height());
+
+
+        // Adjust the width if the widget is set to expand horizontally (hexpand)
+        if child.get_hexpand() {
+            width = allocation.width(); // Expand to the full width
+        }
+
+        // Adjust the height if the widget is set to expand vertically (vexpand)
+        if child.get_vexpand() {
+            height = allocation.height(); // Expand to the full height
+        }
+        */
+
+
+        if widget.is_realized() {
+            if let Some(window) = widget.window() {
+                window.move_resize(allocation.x(), allocation.y(), allocation.width(), allocation.height());
+            }
+        }
     }
 }
 
