@@ -132,27 +132,42 @@ impl WidgetImpl for ViewStackImpl {
     fn size_allocate(&self, allocation: &Allocation) {
         let widget = self.obj();
 
-        //let allocation2 = Allocation::new(0, 0, allocation.width(), allocation.height());
         for child in self.children.borrow().iter() {
             let mut width = allocation.width();
             if !child.is_hexpand_set() {
                 width = child.width_request();
+
+                if width < 0 {
+                    width = 0;
+                }
             }
 
             let mut height = allocation.height();
             if !child.is_vexpand_set() {
                 height = child.height_request();
+
+                if height < 0 {
+                    height = 0;
+                }
             }
 
-            //let mut width = child.width_request();
-            //let mut height = child.height_request();
+            let x = match child.halign() {
+                Align::Fill | Align::Start => 0,
+                Align::End => allocation.width() - width,
+                Align::Center => (allocation.width() - width) / 2,
+                _ => 0
+            };
 
-            //println!("asdasd {:?}", child.property_value("fill"));
-            println!("{} {}", child.halign(), child.valign());
+            let y = match child.valign() {
+                Align::Fill | Align::Start => 0,
+                Align::End => allocation.height() - height,
+                Align::Center => (allocation.height() - height) / 2,
+                _ => 0
+            };
 
             child.size_allocate(&Allocation::new(
-                0,
-                0,
+                x,
+                y,
                 width,
                 height
             ));

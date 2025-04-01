@@ -4,6 +4,7 @@ use std::path::PathBuf;
 use std::process::exit;
 use std::rc::Rc;
 use gtk::{gdk, Application, ApplicationWindow, Builder, CssProvider, Stack, StyleContext, Window};
+use gtk::gdk::{Geometry, WindowHints};
 use gtk::glib::Propagation::Proceed;
 use gtk::prelude::{ActionGroupExt, BuilderExtManual, ContainerExt, CssProviderExt, GtkWindowExt, StackExt, StyleContextExt, WidgetExt};
 use rlibpcap::devices::Device;
@@ -53,6 +54,22 @@ impl MainWindow {
         window.connect_destroy(|_| exit(0));
         //window.set_decorated(false);
         window.set_border_width(1);
+
+        let (width, height) = window.default_size();
+
+        let hints = Geometry::new(
+            width,
+            height,
+            -1,
+            -1,
+            0,
+            0,
+            0,
+            0,
+            0.0,
+            0.0,
+            gdk::Gravity::NorthWest);
+        window.set_geometry_hints(None::<&gtk::Widget>, Some(&hints), WindowHints::MIN_SIZE);
 
         #[cfg(profile = "nightly")]
         window.style_context().add_class("nightly");
