@@ -13,8 +13,9 @@
         <child>
             <object class="GtkImage" id="icon">
                 <property name="visible">True</property>
+                <property name="width-request">24</property>
+                <property name="height-request">24</property>
                 <property name="icon-name">notification-icon</property>
-                <property name="resource">/net/ethernaught/rust/res/icons/ic_notification.svg</property>
                 <property name="valign">start</property>
             </object>
         </child>

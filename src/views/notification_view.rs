@@ -2,17 +2,23 @@ use gtk::{AboutDialog, ApplicationWindow, Builder, Image, Application, TreeViewC
 use gtk::pango::WrapMode;
 use gtk::prelude::*;
 
+#[derive(Copy, Clone, Eq, PartialEq, Hash, Debug)]
+pub enum NotificationTypes {
+    Info,
+    Warning,
+    Error
+}
+
 #[derive(Clone)]
 pub struct NotificationView {
     pub root: gtk::Box,
-    icon: Image,
     pub title: Label,
     pub description: Label
 }
 
 impl NotificationView {
 
-    pub fn new(title: &str, description: &str) -> Self {
+    pub fn new(_type: NotificationTypes, title: &str, description: &str) -> Self {
         let builder = Builder::from_resource("/net/ethernaught/rust/res/ui/gtk3/notification_view.ui");
 
         let root: gtk::Box = builder
@@ -22,6 +28,17 @@ impl NotificationView {
         let icon: Image = builder
             .object("icon")
             .expect("Couldn't find 'icon' in notification_view.ui");
+        match _type {
+            NotificationTypes::Info => {
+                icon.set_resource(Some("/net/ethernaught/rust/res/icons/if_notification_info.svg"));
+            }
+            NotificationTypes::Warning => {
+                icon.set_resource(Some("/net/ethernaught/rust/res/icons/ic_notification_warning.svg"));
+            }
+            NotificationTypes::Error => {
+                icon.set_resource(Some("/net/ethernaught/rust/res/icons/ic_notification_error.svg"));
+            }
+        }
 
         let title_label: Label = builder
             .object("title")
@@ -36,7 +53,6 @@ impl NotificationView {
 
         Self {
             root,
-            icon,
             title: title_label,
             description: description_label
         }

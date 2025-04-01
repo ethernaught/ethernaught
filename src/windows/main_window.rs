@@ -14,7 +14,7 @@ use crate::bus::event_bus::register_event;
 use crate::bus::events::permission_event::PermissionEvent;
 use crate::bus::events::transmitted_event::TransmittedEvent;
 use crate::sniffer::Sniffer;
-use crate::views::notification_view::NotificationView;
+use crate::views::notification_view::{NotificationTypes, NotificationView};
 use crate::views::bottom_bar::BottomBar;
 use crate::views::devices_view::DevicesView;
 use crate::views::inter::stackable::Stackable;
@@ -343,7 +343,7 @@ impl MainWindow {
         self.views.borrow_mut().insert(name, view);
     }
 
-    pub fn notify(&self, title: &str, description: &str) {
-        self.notifications.add(&NotificationView::new(title, description).root);
+    pub fn notify(&self, _type: NotificationTypes, title: &str, description: &str) {
+        self.notifications.add(&NotificationView::new(_type, title, description).root);
     }
 }

@@ -12,6 +12,7 @@ use crate::bus::events::transmitted_event::TransmittedEvent;
 use crate::pcap_ext::devices::Serialize;
 use crate::views::device_list_item::DeviceListItem;
 use crate::views::inter::stackable::Stackable;
+use crate::views::notification_view::NotificationTypes;
 use crate::windows::main_window::MainWindow;
 
 pub struct DevicesView {
@@ -101,7 +102,7 @@ impl DevicesView {
                     return Stop;
                 }
 
-                window.notify("Permission", "You don't have permission to capture network interfaces.");
+                window.notify(NotificationTypes::Warning, "Permission", "You don't have permission to capture network interfaces.");
 
                 if_map.iter().for_each(|(pos, _)| {
                     device_list_item.get(*pos).unwrap().root.style_context().add_class("error");

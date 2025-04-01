@@ -71,8 +71,9 @@
         <file preprocess="xml-stripblanks">res/icons/ic_any.svg</file>
         <file preprocess="xml-stripblanks">res/icons/ic_bluetooth.svg</file>
 
-        <file preprocess="xml-stripblanks">res/icons/ic_notification.svg</file>
-        <file preprocess="xml-stripblanks">res/icons/ic_warning.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/ic_notification_info.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/ic_notification_warning.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/ic_notification_error.svg</file>
 
 
         <file preprocess="xml-stripblanks">res/icons/ic_plugins.svg</file>
