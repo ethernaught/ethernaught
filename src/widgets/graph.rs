@@ -1,23 +1,19 @@
 use std::cell::RefCell;
 use std::cmp::max;
 use gtk::gdk::{EventMask, WindowAttr, WindowType, WindowWindowClass, RGBA};
-use gtk::{gdk, glib, Allocation, Buildable, Misc, StateFlags, Widget};
+use gtk::{gdk, glib, Allocation, Buildable, Misc, Orientation, StateFlags, Widget};
 use gtk::cairo::Context;
 use gtk::glib::Propagation;
 use gtk::glib::Propagation::Proceed;
 use gtk::prelude::{StyleContextExt, WidgetExt};
-use gtk::subclass::prelude::{ObjectImpl, ObjectSubclass, ObjectSubclassExt, ObjectSubclassIsExt, WidgetClassSubclassExt, WidgetImpl};
+use gtk::subclass::prelude::{ClassStruct, ObjectImpl, ObjectSubclass, ObjectSubclassExt, ObjectSubclassIsExt, WidgetClassSubclassExt, WidgetImpl, WidgetImplExt};
+
+const MIN_WIDTH: i32 = 20;
+const MIN_HEIGHT: i32 = 20;
 
 #[derive(Default)]
 pub struct GraphImpl {
     points: RefCell<Vec<u32>>
-}
-
-impl GraphImpl {
-
-    fn calculate_size(&self) -> (i32, i32) {
-        (100 as i32, 20 as i32)
-    }
 }
 
 #[glib::object_subclass]
@@ -119,43 +115,32 @@ impl WidgetImpl for GraphImpl {
         widget.set_realized(true);
 
         widget.set_can_focus(true);
+    }
 
-        /*
-        let (calculated_width, calculated_height) = self.calculate_size();
+    fn adjust_size_request(&self, orientation: Orientation, minimum_size: &mut i32, natural_size: &mut i32) {
+        match orientation {
+            Orientation::Horizontal => {
+                *minimum_size = MIN_WIDTH;
+                if *natural_size < MIN_WIDTH {
+                    *natural_size = MIN_WIDTH;
+                }
+            }
+            Orientation::Vertical => {
+                *minimum_size = MIN_HEIGHT;
+                if *natural_size < MIN_HEIGHT {
+                    *natural_size = MIN_HEIGHT;
+                }
+            }
+            _ => unimplemented!()
+        }
 
-        let width = max(calculated_width, allocation.width());
-        let height = max(calculated_height, allocation.height());
-
-        widget.set_size_request(width, height);
-        self.size_allocate(&Allocation::new(allocation.x(), allocation.y(), width, height));*/
+        self.parent_adjust_size_request(orientation, minimum_size, natural_size);
     }
 
     fn size_allocate(&self, allocation: &Allocation) {
         let widget = self.obj();
-        println!("{:?}", allocation);
+
         widget.set_allocation(allocation);
-
-
-        /*
-        let (min_width, natural_width) = widget.preferred_width();
-        let (min_height, natural_height) = widget.preferred_height();
-
-        let mut width = natural_width.min(allocation.width());
-        let mut height = natural_height.min(allocation.height());
-
-
-        // Adjust the width if the widget is set to expand horizontally (hexpand)
-        if child.get_hexpand() {
-            width = allocation.width(); // Expand to the full width
-        }
-
-        // Adjust the height if the widget is set to expand vertically (vexpand)
-        if child.get_vexpand() {
-            height = allocation.height(); // Expand to the full height
-        }
-        */
-
-
         if widget.is_realized() {
             if let Some(window) = widget.window() {
                 window.move_resize(allocation.x(), allocation.y(), allocation.width(), allocation.height());

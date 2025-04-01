@@ -1,13 +1,13 @@
 use std::cell::RefCell;
 use std::cmp::max;
 use gtk::gdk::{EventMask, EventMotion, WindowAttr, WindowType, WindowWindowClass, RGBA};
-use gtk::{gdk, glib, pango, Allocation, Buildable, Misc, StateFlags, Widget};
+use gtk::{gdk, glib, pango, Allocation, Buildable, Misc, Orientation, StateFlags, Widget};
 use gtk::cairo::{Content, Context, FontSlant, FontWeight, Format, ImageSurface, RecordingSurface};
 use gtk::glib::Propagation;
 use gtk::glib::Propagation::Proceed;
 use gtk::pango::Weight;
 use gtk::prelude::{CellRendererExt, StyleContextExt, StyleContextExtManual, WidgetExt};
-use gtk::subclass::prelude::{ObjectImpl, ObjectSubclass, ObjectSubclassExt, ObjectSubclassIsExt, WidgetClassSubclassExt, WidgetImpl};
+use gtk::subclass::prelude::{ObjectImpl, ObjectSubclass, ObjectSubclassExt, ObjectSubclassIsExt, WidgetClassSubclassExt, WidgetImpl, WidgetImplExt};
 
 const BYTES_PER_ROW: usize = 16;
 
@@ -215,14 +215,38 @@ impl WidgetImpl for HexEditorImpl {
         widget.register_window(&window);
         widget.set_window(window);
         widget.set_realized(true);
+    }
 
-        let (calculated_width, calculated_height) = self.calculate_size();
+    fn adjust_size_request(&self, orientation: Orientation, minimum_size: &mut i32, natural_size: &mut i32) {
+        let (width, height) = self.calculate_size();
+        match orientation {
+            Orientation::Horizontal => {
+                *minimum_size = width;
+                if *natural_size < width {
+                    *natural_size = width;
+                }
+            }
+            Orientation::Vertical => {
+                *minimum_size = height;
+                if *natural_size < height {
+                    *natural_size = height;
+                }
+            }
+            _ => unimplemented!()
+        }
 
-        let width = max(calculated_width, allocation.width());
-        let height = max(calculated_height, allocation.height());
+        self.parent_adjust_size_request(orientation, minimum_size, natural_size);
+    }
 
-        widget.set_size_request(width, height);
-        self.size_allocate(&Allocation::new(allocation.x(), allocation.y(), width, height));
+    fn size_allocate(&self, allocation: &Allocation) {
+        let widget = self.obj();
+
+        widget.set_allocation(allocation);
+        if widget.is_realized() {
+            if let Some(window) = widget.window() {
+                window.move_resize(allocation.x(), allocation.y(), allocation.width(), allocation.height());
+            }
+        }
     }
 
     fn motion_notify_event(&self, event: &EventMotion) -> Propagation {
