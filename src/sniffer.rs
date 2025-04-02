@@ -1,5 +1,5 @@
 use std::collections::HashMap;
-use std::thread;
+use std::{io, thread};
 use std::thread::sleep;
 use std::time::{Duration, SystemTime, UNIX_EPOCH};
 use rlibpcap::capture::Capture;
@@ -44,7 +44,15 @@ impl Sniffer {
 
                                         send_event(Box::new(CaptureEvent::new(address.sll_ifindex, packet)));
                                     }
-                                    _ => {}
+                                    Err(e) => {
+                                        match e.kind() {
+                                            io::ErrorKind::WouldBlock => {
+                                            }
+                                            _ => {
+                                                println!("BAD PACKET TYPE....");
+                                            }
+                                        }
+                                    }
                                 }
 
                                 let now = SystemTime::now()
@@ -125,7 +133,15 @@ impl Sniffer {
 
                             send_event(Box::new(CaptureEvent::new(device.get_index(), packet)));
                         }
-                        _ => {}
+                        Err(e) => {
+                            match e.kind() {
+                                io::ErrorKind::WouldBlock => {
+                                }
+                                _ => {
+                                    println!("BAD PACKET TYPE....");
+                                }
+                            }
+                        }
                     }
                 }
 
