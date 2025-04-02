@@ -67,7 +67,7 @@ fn main() {
         println!("{:?}", event.get_packet());
     });
     */
-    unsafe { env::set_var("GTK_THEME", "Adwaita:dark") };
+    //unsafe { env::set_var("GTK_THEME", "Adwaita:dark") };
 
     let app = App::new();
     app.run();
