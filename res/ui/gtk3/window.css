@@ -93,7 +93,7 @@ button:focus, button:checked {
 }
 
 #navigation_options button,
-#app_options button {
+        #app_options button {
     min-width: 24px;
     min-height: 24px;
     padding: 4px;
@@ -105,7 +105,7 @@ button:focus, button:checked {
 }
 
 #navigation_options button:hover,
-#app_options button:hover {
+        #app_options button:hover {
     background-color: @ripple;
 }
 
