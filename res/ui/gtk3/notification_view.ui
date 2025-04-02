@@ -52,8 +52,8 @@
                 <property name="name">close</property>
                 <property name="tooltip-text">Close</property>
                 <property name="visible">True</property>
-                <property name="width-request">24</property>
-                <property name="height-request">24</property>
+                <property name="width-request">20</property>
+                <property name="height-request">20</property>
                 <property name="valign">start</property>
             </object>
         </child>

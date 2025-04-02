@@ -62,6 +62,8 @@
         <file alias="res/icons/ic_close.svg" preprocess="xml-stripblanks">res/icons/macos/ic_close.svg</file>
         <file alias="res/icons/ic_close_active.svg" preprocess="xml-stripblanks">res/icons/macos/ic_close_active.svg</file>
 
+        <file preprocess="xml-stripblanks">res/icons/ic_dialog_close.svg</file>
+
         <file preprocess="xml-stripblanks">res/icons/ic_status_good.svg</file>
         <file preprocess="xml-stripblanks">res/icons/ic_status_warning.svg</file>
         <file preprocess="xml-stripblanks">res/icons/ic_status_severe.svg</file>

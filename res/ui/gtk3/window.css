@@ -85,6 +85,7 @@ button:focus, button:checked {
 }
 
 #title_bar button {
+    /*min-width: 0;*/
     min-height: 0;
     padding: 4px;
     border-radius: 6px;
@@ -371,10 +372,11 @@ window.release #bottom_bar #license {
 #notification #close {
     border: 4px;
     border-radius: 100%;
-    background-image: url('../../icons/ic_close.svg');
+    background-image: url('../../icons/ic_dialog_close.svg');
 }
 
 #notification button {
+    min-width: 0;
     min-height: 0;
     padding: 4px;
     border-radius: 6px;

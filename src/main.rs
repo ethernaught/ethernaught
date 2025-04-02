@@ -56,9 +56,6 @@ rustup override set nightly
 
 //Setting to change programming language of choice...
 
-//WINDOW_CONTROLS UPDATE PER OS
-// - USE SYSTEM BUTTONS NOT WHAT WE DEFINE
-// - NOTIFICATIONS CLOSE BUTTON TOO LARGE...
 // - fix time in list
 
 fn main() {
