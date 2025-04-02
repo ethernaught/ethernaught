@@ -2,7 +2,7 @@
 <gresources>
     <gresource prefix="/net/ethernaught/rust">
         <file preprocess="xml-stripblanks">res/ui/ethernaught_ui.xml</file>
-        <file preprocess="xml-stripblanks">res/ui/gtk3/title_bar.ui</file>
+        <file alias="res/ui/gtk3/title_bar.ui" preprocess="xml-stripblanks">res/ui/gtk3/linux/title_bar.ui</file>
         <file preprocess="xml-stripblanks">res/ui/gtk3/bottom_bar.ui</file>
         <file preprocess="xml-stripblanks">res/ui/gtk3/notification_view.ui</file>
 
@@ -55,10 +55,10 @@
         <file preprocess="xml-stripblanks">res/icons/ic_stop.svg</file>
         <file preprocess="xml-stripblanks">res/icons/ic_restart.svg</file>
 
-        <file preprocess="xml-stripblanks">res/icons/ic_minimize.svg</file>
-        <file preprocess="xml-stripblanks">res/icons/ic_maximize.svg</file>
-        <file preprocess="xml-stripblanks">res/icons/ic_maximize_active.svg</file>
-        <file preprocess="xml-stripblanks">res/icons/ic_close.svg</file>
+        <file alias="res/icons/ic_minimize.svg" preprocess="xml-stripblanks">res/icons/linux/ic_minimize.svg</file>
+        <file alias="res/icons/ic_maximize.svg" preprocess="xml-stripblanks">res/icons/linux/ic_maximize.svg</file>
+        <file alias="res/icons/ic_maximize_active.svg" preprocess="xml-stripblanks">res/icons/linux/ic_maximize_active.svg</file>
+        <file alias="res/icons/ic_close.svg" preprocess="xml-stripblanks">res/icons/linux/ic_close.svg</file>
 
         <file preprocess="xml-stripblanks">res/icons/ic_status_good.svg</file>
         <file preprocess="xml-stripblanks">res/icons/ic_status_warning.svg</file>

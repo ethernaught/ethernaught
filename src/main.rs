@@ -34,7 +34,7 @@ use crate::database::sqlite::Database;
 //SIDEBAR SHOULD BE A FRAGMENT...
 //export GTK_DEBUG=interactive
 
-//glib-compile-resources res/gresources.xml --target=res/resources.gresources
+//glib-compile-resources res/linux.gresources.xml --target=res/resources.gresources
 
 /*
 rustup install nightly

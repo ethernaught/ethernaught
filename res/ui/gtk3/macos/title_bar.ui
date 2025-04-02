@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+    <requires lib="gtk+" version="3.24"/>
+
+    <object class="GtkBox" id="root">
+        <property name="name">title_bar</property>
+        <property name="visible">True</property>
+        <property name="hexpand">True</property>
+        <property name="orientation">horizontal</property>
+        <property name="spacing">10</property>
+
+        <child>
+            <object class="GtkBox">
+                <property name="name">window_controls</property>
+                <property name="visible">True</property>
+                <property name="orientation">horizontal</property>
+                <property name="spacing">4</property>
+
+                <child>
+                    <object class="GtkButton" id="close">
+                        <property name="name">close</property>
+                        <property name="tooltip-text">Close</property>
+                        <property name="visible">True</property>
+                        <property name="width-request">16</property>
+                        <property name="height-request">16</property>
+                        <property name="action-name">app.quit</property>
+                    </object>
+                </child>
+
+                <child>
+                    <object class="GtkButton" id="minimize">
+                        <property name="name">minimize</property>
+                        <property name="tooltip-text">Minimize</property>
+                        <property name="visible">True</property>
+                        <property name="width-request">16</property>
+                        <property name="height-request">16</property>
+                        <property name="action-name">win.minimize</property>
+                    </object>
+                </child>
+
+                <child>
+                    <object class="GtkButton" id="maximize">
+                        <property name="name">maximize</property>
+                        <property name="tooltip-text">Maximize</property>
+                        <property name="visible">True</property>
+                        <property name="width-request">16</property>
+                        <property name="height-request">16</property>
+                        <property name="action-name">win.maximize</property>
+                    </object>
+                </child>
+            </object>
+        </child>
+
+        <child>
+            <object class="GtkBox" id="navigation_options">
+                <property name="name">navigation_options</property>
+                <property name="visible">True</property>
+                <property name="hexpand">True</property>
+                <property name="orientation">horizontal</property>
+                <property name="spacing">10</property>
+
+                <child>
+                    <object class="GtkBox" id="navigation_buttons">
+                        <property name="name">navigation_buttons</property>
+                        <property name="visible">True</property>
+                        <property name="hexpand">True</property>
+                        <property name="orientation">horizontal</property>
+                        <property name="spacing">8</property>
+
+                        <child>
+                            <object class="GtkButton" id="menu">
+                                <property name="name">menu</property>
+                                <property name="tooltip-text">Main Menu</property>
+                                <property name="visible">True</property>
+                                <property name="width-request">24</property>
+                                <property name="height-request">24</property>
+                                <property name="action-name">win.menu</property>
+                            </object>
+                        </child>
+
+                        <child>
+                            <object class="GtkBox">
+                                <property name="visible">True</property>
+                                <property name="orientation">horizontal</property>
+                                <property name="spacing">6</property>
+
+                                <child>
+                                    <object class="GtkButton" id="back">
+                                        <property name="name">back</property>
+                                        <property name="tooltip-text">Back</property>
+                                        <property name="visible">True</property>
+                                        <property name="width-request">24</property>
+                                        <property name="height-request">24</property>
+                                        <property name="action-name">win.back</property>
+                                    </object>
+                                </child>
+
+                                <child>
+                                    <object class="GtkButton" id="next">
+                                        <property name="name">next</property>
+                                        <property name="tooltip-text">Forward</property>
+                                        <property name="visible">True</property>
+                                        <property name="width-request">24</property>
+                                        <property name="height-request">24</property>
+                                        <property name="action-name">win.next</property>
+                                    </object>
+                                </child>
+                            </object>
+                        </child>
+
+                        <child>
+                            <object class="GtkImage" id="network_type_icon">
+                                <property name="name">network_type_icon</property>
+                                <property name="visible">False</property>
+                                <property name="width-request">24</property>
+                                <property name="height-request">24</property>
+                                <property name="icon-name">network-type</property>
+                            </object>
+                        </child>
+
+                        <child>
+                            <object class="GtkLabel" id="network_type_label">
+                                <property name="name">network_type_label</property>
+                                <property name="visible">False</property>
+                            </object>
+                        </child>
+                    </object>
+                </child>
+
+                <child>
+                    <object class="GtkMenuBar" id="menubar">
+                        <property name="name">menubar</property>
+                        <property name="visible">False</property>
+                        <property name="hexpand">True</property>
+                    </object>
+                </child>
+            </object>
+        </child>
+
+        <child>
+            <object class="GtkBox" id="app_options">
+                <property name="name">app_options</property>
+                <property name="visible">False</property>
+                <property name="orientation">horizontal</property>
+                <property name="spacing">10</property>
+
+                <child>
+                    <object class="GtkButton" id="start">
+                        <property name="name">start</property>
+                        <property name="tooltip-text">Run</property>
+                        <property name="visible">True</property>
+                        <property name="width-request">24</property>
+                        <property name="height-request">24</property>
+                        <property name="action-name">win.start</property>
+                    </object>
+                </child>
+
+                <child>
+                    <object class="GtkButton" id="stop">
+                        <property name="name">stop</property>
+                        <property name="tooltip-text">Stop</property>
+                        <property name="visible">False</property>
+                        <property name="width-request">24</property>
+                        <property name="height-request">24</property>
+                        <property name="action-name">win.stop</property>
+                    </object>
+                </child>
+            </object>
+        </child>
+    </object>
+</interface>
