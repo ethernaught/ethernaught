@@ -23,7 +23,6 @@
                         <child>
                             <object class="GtkImage" id="expander_icon">
                                 <property name="visible">True</property>
-                                <property name="icon-name">expander-icon</property>
                                 <property name="resource">/net/ethernaught/rust/res/icons/ic_expand_less.svg</property>
                             </object>
                         </child>

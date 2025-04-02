@@ -14,7 +14,7 @@
                 <property name="name">window_controls</property>
                 <property name="visible">True</property>
                 <property name="orientation">horizontal</property>
-                <property name="spacing">4</property>
+                <property name="spacing">8</property>
 
                 <child>
                     <object class="GtkButton" id="close">
@@ -72,8 +72,6 @@
                                 <property name="name">menu</property>
                                 <property name="tooltip-text">Main Menu</property>
                                 <property name="visible">True</property>
-                                <property name="width-request">24</property>
-                                <property name="height-request">24</property>
                                 <property name="action-name">win.menu</property>
                             </object>
                         </child>
@@ -89,8 +87,6 @@
                                         <property name="name">back</property>
                                         <property name="tooltip-text">Back</property>
                                         <property name="visible">True</property>
-                                        <property name="width-request">24</property>
-                                        <property name="height-request">24</property>
                                         <property name="action-name">win.back</property>
                                     </object>
                                 </child>
@@ -100,8 +96,6 @@
                                         <property name="name">next</property>
                                         <property name="tooltip-text">Forward</property>
                                         <property name="visible">True</property>
-                                        <property name="width-request">24</property>
-                                        <property name="height-request">24</property>
                                         <property name="action-name">win.next</property>
                                     </object>
                                 </child>
@@ -112,9 +106,6 @@
                             <object class="GtkImage" id="network_type_icon">
                                 <property name="name">network_type_icon</property>
                                 <property name="visible">False</property>
-                                <property name="width-request">24</property>
-                                <property name="height-request">24</property>
-                                <property name="icon-name">network-type</property>
                             </object>
                         </child>
 
@@ -149,8 +140,6 @@
                         <property name="name">start</property>
                         <property name="tooltip-text">Run</property>
                         <property name="visible">True</property>
-                        <property name="width-request">24</property>
-                        <property name="height-request">24</property>
                         <property name="action-name">win.start</property>
                     </object>
                 </child>
@@ -160,8 +149,6 @@
                         <property name="name">stop</property>
                         <property name="tooltip-text">Stop</property>
                         <property name="visible">False</property>
-                        <property name="width-request">24</property>
-                        <property name="height-request">24</property>
                         <property name="action-name">win.stop</property>
                     </object>
                 </child>

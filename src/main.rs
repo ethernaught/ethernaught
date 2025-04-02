@@ -58,6 +58,8 @@ rustup override set nightly
 
 // - fix time in list
 
+//look into switching from CSS for handling all icons...
+
 fn main() {
     /*
     register_event("capture_event", |event| {

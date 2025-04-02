@@ -9,6 +9,7 @@
 
         <file preprocess="xml-stripblanks">res/ui/gtk3/window.ui</file>
         <file>res/ui/gtk3/window.css</file>
+        <file alias="res/ui/gtk3/theme.css">res/ui/gtk3/linux/theme.css</file>
 
 
 

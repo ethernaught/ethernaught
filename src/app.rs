@@ -42,6 +42,15 @@ impl App {
             let resource = Resource::from_data(&Bytes::from(resource_data)).unwrap();
             resources_register(&resource);
 
+            let provider = CssProvider::new();
+            provider.load_from_resource("/net/ethernaught/rust/res/ui/gtk3/theme.css");
+
+            StyleContext::add_provider_for_screen(
+                &gdk::Screen::default().expect("Failed to get default screen."),
+                &provider,
+                gtk::STYLE_PROVIDER_PRIORITY_APPLICATION,
+            );
+
             MainWindow::new(&app);
 
             register_app_actions(&app);
@@ -54,6 +63,15 @@ impl App {
 
                     let resource = Resource::from_data(&Bytes::from(resource_data)).unwrap();
                     resources_register(&resource);
+
+                    let provider = CssProvider::new();
+                    provider.load_from_resource("/net/ethernaught/rust/res/ui/gtk3/theme.css");
+
+                    StyleContext::add_provider_for_screen(
+                        &gdk::Screen::default().expect("Failed to get default screen."),
+                        &provider,
+                        gtk::STYLE_PROVIDER_PRIORITY_APPLICATION,
+                    );
 
                     MainWindow::from_file(&app, &path);
 
