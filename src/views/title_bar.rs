@@ -1,11 +1,12 @@
 use gtk::{AboutDialog, ApplicationWindow, Builder, Image, Application, TreeViewColumn, CellRendererText, ScrolledWindow, Button, ListBoxRow, Label, CssProvider, StyleContext, gdk, Stack, Container, TreeView, Widget, Window, gio, MenuBar, MenuItem, Menu};
+use gtk::gio::SimpleAction;
 use gtk::prelude::*;
 
 #[derive(Clone)]
 pub struct TitleBar {
     pub root: gtk::Box,
-    pub menubar: MenuBar,
-    pub navigation_buttons: gtk::Box,
+    //pub menubar: MenuBar,
+    //pub navigation_buttons: gtk::Box,
     pub back: Button,
     pub next: Button,
     pub network_type_icon: Image,
@@ -17,30 +18,51 @@ pub struct TitleBar {
 
 impl TitleBar {
 
-    pub fn new() -> Self {
+    pub fn new(window: &ApplicationWindow) -> Self {
         let builder = Builder::from_resource("/net/ethernaught/rust/res/ui/gtk3/title_bar.ui");
 
         let root: gtk::Box = builder
             .object("root")
             .expect("Couldn't find 'root' in title_bar.ui");
 
-        let menubar: MenuBar = builder
-            .object("menubar")
-            .expect("Couldn't find 'menubar' in title_bar.ui");
+        #[cfg(target_os = "linux")]
+        {
+            let menubar: MenuBar = builder
+                .object("menubar")
+                .expect("Couldn't find 'menubar' in title_bar.ui");
 
+            let navigation_buttons: gtk::Box = builder
+                .object("navigation_buttons")
+                .expect("Couldn't find 'navigation_buttons' in ethernaught_ui.xml");
 
-        let navigation_buttons: gtk::Box = builder
-            .object("navigation_buttons")
-            .expect("Couldn't find 'navigation_buttons' in ethernaught_ui.xml");
+            menubar.connect_deactivate({
+                let navigation_menubar = menubar.clone();
+                let navigation_buttons = navigation_buttons.clone();
+                move |_| {
+                    navigation_menubar.hide();
+                    navigation_buttons.show();
+                }
+            });
 
-        menubar.connect_deactivate({
-            let navigation_menubar = menubar.clone();
-            let navigation_buttons = navigation_buttons.clone();
-            move |_| {
-                navigation_menubar.hide();
-                navigation_buttons.show();
-            }
-        });
+            let builder = Builder::from_resource("/net/ethernaught/rust/res/ui/ethernaught_ui.xml");
+            let model: gio::MenuModel = builder
+                .object("main_window_menu")
+                .expect("Couldn't find 'main_window_menu' in ethernaught_ui.xml");
+            menubar.bind_model(Some(&model), None, false);
+            menubar.show_all();
+            menubar.hide();
+
+            let action = SimpleAction::new("menu", None);
+            action.connect_activate({
+                let navigation_buttons = navigation_buttons.clone();
+                move |_, _| {
+                    navigation_buttons.hide();
+                    menubar.show_all();
+                    menubar.select_first(true);
+                }
+            });
+            window.add_action(&action);
+        }
 
         let back: Button = builder
             .object("back")
@@ -70,36 +92,15 @@ impl TitleBar {
             .object("stop")
             .expect("Couldn't find 'stop' in title_bar.ui");
 
-        let builder = Builder::from_resource("/net/ethernaught/rust/res/ui/ethernaught_ui.xml");
-        let model: gio::MenuModel = builder
-            .object("main_window_menu")
-            .expect("Couldn't find 'main_window_menu' in ethernaught_ui.xml");
-        menubar.bind_model(Some(&model), None, false);
-        menubar.show_all();
-        menubar.hide();
-
         Self {
             root,
-            menubar,
             back,
             next,
-            navigation_buttons,
             network_type_icon,
             network_type_label,
             app_options,
             start,
             stop
         }
-    }
-
-    pub fn open_menubar(&self) {
-        self.navigation_buttons.hide();
-        self.menubar.show_all();
-        self.menubar.select_first(true);
-    }
-
-    pub fn close_menubar(&self) {
-        self.menubar.hide();
-        self.navigation_buttons.show();
     }
 }

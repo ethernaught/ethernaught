@@ -8,20 +8,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f0704e63-1929-42d3-83d7-8cbc904dc132" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/res/ui/gtk3/linux/theme.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/res/ui/gtk3/macos/theme.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/res/icons/macos/ic_backgrounded.svg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/linux.gresources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/res/linux.gresources.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/icons/macos/ic_close_active.svg" beforeDir="false" afterPath="$PROJECT_DIR$/res/icons/macos/ic_close_active.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/icons/macos/ic_maximize_active.svg" beforeDir="false" afterPath="$PROJECT_DIR$/res/icons/macos/ic_maximize_active.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/icons/macos/ic_minimize_active.svg" beforeDir="false" afterPath="$PROJECT_DIR$/res/icons/macos/ic_minimize_active.svg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/res/macos.gresources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/res/macos.gresources.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/res/resources.gresources" beforeDir="false" afterPath="$PROJECT_DIR$/res/resources.gresources" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/ui/gtk3/device_list_item.ui" beforeDir="false" afterPath="$PROJECT_DIR$/res/ui/gtk3/device_list_item.ui" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/ui/gtk3/layer_dropdown.ui" beforeDir="false" afterPath="$PROJECT_DIR$/res/ui/gtk3/layer_dropdown.ui" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/ui/gtk3/linux/title_bar.ui" beforeDir="false" afterPath="$PROJECT_DIR$/res/ui/gtk3/linux/title_bar.ui" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/ui/gtk3/macos/theme.css" beforeDir="false" afterPath="$PROJECT_DIR$/res/ui/gtk3/macos/theme.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/res/ui/gtk3/macos/title_bar.ui" beforeDir="false" afterPath="$PROJECT_DIR$/res/ui/gtk3/macos/title_bar.ui" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/ui/gtk3/notification_view.ui" beforeDir="false" afterPath="$PROJECT_DIR$/res/ui/gtk3/notification_view.ui" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/ui/gtk3/window.css" beforeDir="false" afterPath="$PROJECT_DIR$/res/ui/gtk3/window.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/actions/window_actions.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/actions/window_actions.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/app.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/title_bar.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/title_bar.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/windows/main_window.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/windows/main_window.rs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -57,7 +56,7 @@
     "RunOnceActivity.git.unshallow": "true",
     "RunOnceActivity.rust.reset.selective.auto.import": "true",
     "git-widget-placeholder": "main",
-    "last_opened_file_path": "/Users/brad/CLionProjects/ethernaught/res/ui/gtk3/linux",
+    "last_opened_file_path": "/Users/brad/CLionProjects/ethernaught/res/icons/macos",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -72,8 +71,8 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/res/ui/gtk3/linux" />
       <recent name="$PROJECT_DIR$/res/icons/macos" />
+      <recent name="$PROJECT_DIR$/res/ui/gtk3/linux" />
       <recent name="$PROJECT_DIR$/res/ui" />
       <recent name="$PROJECT_DIR$/res/ui/gtk3" />
       <recent name="$PROJECT_DIR$/res/icons" />

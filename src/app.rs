@@ -1,9 +1,9 @@
 use std::process::exit;
-use gtk::{gdk, Application, ApplicationWindow, Builder, CssProvider, Stack, StyleContext};
+use gtk::{gdk, gio, Application, ApplicationWindow, Builder, CssProvider, Stack, StyleContext};
 use gtk::gio::{resources_register, ApplicationFlags, Resource};
 use gtk::glib::{Bytes, StaticType};
 use gtk::glib::Propagation::Proceed;
-use gtk::prelude::{ApplicationExt, ApplicationExtManual, BuilderExtManual, ContainerExt, CssProviderExt, FileExt, GtkWindowExt, StackExt, WidgetExt};
+use gtk::prelude::{ApplicationExt, ApplicationExtManual, BuilderExtManual, ContainerExt, CssProviderExt, FileExt, GtkApplicationExt, GtkWindowExt, StackExt, WidgetExt};
 use rlibpcap::devices::Device;
 use rlibpcap::utils::interface_flags::InterfaceFlags;
 use crate::actions::app_actions::register_app_actions;
@@ -51,6 +51,16 @@ impl App {
                 gtk::STYLE_PROVIDER_PRIORITY_APPLICATION,
             );
 
+            #[cfg(target_os = "macos")]
+            {
+                let builder = Builder::from_resource("/net/ethernaught/rust/res/ui/ethernaught_ui.xml");
+                let model: gio::MenuModel = builder
+                    .object("main_window_menu")
+                    .expect("Couldn't find 'main_window_menu' in ethernaught_ui.xml");
+
+                app.set_menubar(Some(&model));
+            }
+
             MainWindow::new(&app);
 
             register_app_actions(&app);
@@ -72,6 +82,16 @@ impl App {
                         &provider,
                         gtk::STYLE_PROVIDER_PRIORITY_APPLICATION,
                     );
+
+                    #[cfg(target_os = "macos")]
+                    {
+                        let builder = Builder::from_resource("/net/ethernaught/rust/res/ui/ethernaught_ui.xml");
+                        let model: gio::MenuModel = builder
+                            .object("main_window_menu")
+                            .expect("Couldn't find 'main_window_menu' in ethernaught_ui.xml");
+
+                        app.set_menubar(Some(&model));
+                    }
 
                     MainWindow::from_file(&app, &path);
 

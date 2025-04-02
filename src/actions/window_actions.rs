@@ -54,15 +54,6 @@ pub fn register_window_actions(window: &MainWindow) {
         }
     });
     window.window.add_action(&action);
-
-    let action = SimpleAction::new("menu", None);
-    action.connect_activate({
-        let title_bar = window.title_bar.clone();
-        move |_, _| {
-            title_bar.open_menubar();
-        }
-    });
-    window.window.add_action(&action);
 }
 
 pub fn register_stack_actions(window: &MainWindow) {

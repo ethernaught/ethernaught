@@ -68,15 +68,6 @@
                         <property name="spacing">8</property>
 
                         <child>
-                            <object class="GtkButton" id="menu">
-                                <property name="name">menu</property>
-                                <property name="tooltip-text">Main Menu</property>
-                                <property name="visible">True</property>
-                                <property name="action-name">win.menu</property>
-                            </object>
-                        </child>
-
-                        <child>
                             <object class="GtkBox">
                                 <property name="visible">True</property>
                                 <property name="orientation">horizontal</property>
@@ -115,14 +106,6 @@
                                 <property name="visible">False</property>
                             </object>
                         </child>
-                    </object>
-                </child>
-
-                <child>
-                    <object class="GtkMenuBar" id="menubar">
-                        <property name="name">menubar</property>
-                        <property name="visible">False</property>
-                        <property name="hexpand">True</property>
                     </object>
                 </child>
             </object>

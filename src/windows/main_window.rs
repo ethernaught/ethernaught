@@ -3,10 +3,10 @@ use std::collections::HashMap;
 use std::path::PathBuf;
 use std::process::exit;
 use std::rc::Rc;
-use gtk::{gdk, Application, ApplicationWindow, Builder, CssProvider, Stack, StyleContext};
+use gtk::{gdk, gio, Application, ApplicationWindow, Builder, CssProvider, Stack, StyleContext};
 use gtk::gdk::{Geometry, WindowHints};
 use gtk::glib::Propagation::Proceed;
-use gtk::prelude::{ActionGroupExt, BuilderExtManual, ContainerExt, CssProviderExt, GtkWindowExt, StackExt, StyleContextExt, WidgetExt};
+use gtk::prelude::{ActionGroupExt, BuilderExtManual, ContainerExt, CssProviderExt, GtkApplicationExt, GtkWindowExt, StackExt, StyleContextExt, WidgetExt};
 use rlibpcap::devices::Device;
 use rlibpcap::utils::interface_flags::InterfaceFlags;
 use crate::actions::window_actions::{register_stack_actions, register_window_actions};
@@ -76,7 +76,7 @@ impl MainWindow {
 
         //window.set_icon_from_file("res/icons/ic_launcher.svg").expect("Failed to load icon");
 
-        let title_bar = TitleBar::new();
+        let title_bar = TitleBar::new(&window);
         window.set_titlebar(Some(&title_bar.root));
 
         let root: gtk::Box = builder
@@ -213,7 +213,7 @@ impl MainWindow {
 
         //window.set_icon_from_file("res/icons/ic_launcher.svg").expect("Failed to load icon");
 
-        let title_bar = TitleBar::new();
+        let title_bar = TitleBar::new(&window);
         window.set_titlebar(Some(&title_bar.root));
 
         let root: gtk::Box = builder
