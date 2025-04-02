@@ -1,5 +1,8 @@
-use gtk::{AboutDialog, ApplicationWindow, Builder, Image, Application, TreeViewColumn, CellRendererText, ScrolledWindow, Button, ListBoxRow, Label, CssProvider, StyleContext, gdk, Stack, Container, TreeView, Widget, Window, gio, MenuBar, MenuItem, Menu};
+use std::cell::RefCell;
+use gtk::{AboutDialog, ApplicationWindow, Builder, Image, Application, TreeViewColumn, CellRendererText, ScrolledWindow, Button, ListBoxRow, Label, CssProvider, StyleContext, gdk, Stack, Container, TreeView, Widget, Window, gio, MenuBar, MenuItem, Menu, EventBox, StateFlags};
+use gtk::gdk::EventMask;
 use gtk::gio::SimpleAction;
+use gtk::glib::Propagation::Proceed;
 use gtk::prelude::*;
 
 #[derive(Clone)]
@@ -63,6 +66,43 @@ impl TitleBar {
             });
             window.add_action(&action);
         }
+
+
+        let window_controls_events: EventBox = builder
+            .object("window_controls_events")
+            .expect("Couldn't find 'window_controls_events' in ethernaught_ui.xml");
+        window_controls_events.set_sensitive(true);
+        window_controls_events.set_can_focus(true);
+
+        let window_controls: gtk::Box = builder
+            .object("window_controls")
+            .expect("Couldn't find 'window_controls' in ethernaught_ui.xml");
+
+        window_controls_events.connect_enter_notify_event({
+            let window_controls = window_controls.clone();
+            move |_, _| {
+                let ctx = window_controls.style_context();
+                if !ctx.state().contains(StateFlags::PRELIGHT) {
+                    ctx.set_state(ctx.state() | StateFlags::PRELIGHT);
+                }
+                Proceed
+            }
+        });
+
+        window_controls_events.connect_leave_notify_event({
+            let window_controls = window_controls.clone();
+            move |event_box, e| {
+                let ctx = window_controls.style_context();
+                if ctx.state().contains(StateFlags::PRELIGHT) {
+                    ctx.set_state(ctx.state() & !StateFlags::PRELIGHT);
+                }
+                Proceed
+            }
+        });
+
+
+
+
 
         let back: Button = builder
             .object("back")
