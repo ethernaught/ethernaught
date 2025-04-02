@@ -112,8 +112,6 @@ impl MainWindow {
             }
         });
 
-        stack.show();
-
         let notifications: gtk::Box = builder
             .object("notifications")
             .expect("Failed to get the 'notifications' from window.ui");
@@ -248,8 +246,6 @@ impl MainWindow {
                 *previous.borrow_mut() = current;
             }
         });
-
-        stack.show();
 
         let notifications: gtk::Box = builder
             .object("notifications")
