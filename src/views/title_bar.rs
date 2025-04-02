@@ -67,45 +67,47 @@ impl TitleBar {
             window.add_action(&action);
         }
 
+        #[cfg(target_os = "macos")]
+        {
+            let window_controls_events: EventBox = builder
+                .object("window_controls_events")
+                .expect("Couldn't find 'window_controls_events' in ethernaught_ui.xml");
+            window_controls_events.set_sensitive(true);
 
-        let window_controls_events: EventBox = builder
-            .object("window_controls_events")
-            .expect("Couldn't find 'window_controls_events' in ethernaught_ui.xml");
-        window_controls_events.set_sensitive(true);
+            let window_controls: gtk::Box = builder
+                .object("window_controls")
+                .expect("Couldn't find 'window_controls' in ethernaught_ui.xml");
 
-        let window_controls: gtk::Box = builder
-            .object("window_controls")
-            .expect("Couldn't find 'window_controls' in ethernaught_ui.xml");
-
-        window_controls_events.connect_enter_notify_event({
-            let window_controls = window_controls.clone();
-            move |_, _| {
-                let ctx = window_controls.style_context();
-                if !ctx.state().contains(StateFlags::PRELIGHT) {
-                    ctx.set_state(ctx.state() | StateFlags::PRELIGHT);
-                }
-                Proceed
-            }
-        });
-
-        window_controls_events.connect_leave_notify_event({
-            let window_controls = window_controls.clone();
-            move |event_box, event| {
-                let (pointer_x, pointer_y) = event.position();
-                let width = window_controls.allocated_width();
-                let height = window_controls.allocated_height();
-
-                if (pointer_x <= 0.0 || pointer_x >= width as f64) ||
-                        (pointer_y <= 0.0 || pointer_y >= height as f64) {
+            window_controls_events.connect_enter_notify_event({
+                let window_controls = window_controls.clone();
+                move |_, _| {
                     let ctx = window_controls.style_context();
-                    if ctx.state().contains(StateFlags::PRELIGHT) {
-                        ctx.set_state(ctx.state() & !StateFlags::PRELIGHT);
+                    if !ctx.state().contains(StateFlags::PRELIGHT) {
+                        ctx.set_state(ctx.state() | StateFlags::PRELIGHT);
                     }
+                    Proceed
                 }
+            });
 
-                Proceed
-            }
-        });
+            window_controls_events.connect_leave_notify_event({
+                let window_controls = window_controls.clone();
+                move |event_box, event| {
+                    let (pointer_x, pointer_y) = event.position();
+                    let width = window_controls.allocated_width();
+                    let height = window_controls.allocated_height();
+
+                    if (pointer_x <= 0.0 || pointer_x >= width as f64) ||
+                        (pointer_y <= 0.0 || pointer_y >= height as f64) {
+                        let ctx = window_controls.style_context();
+                        if ctx.state().contains(StateFlags::PRELIGHT) {
+                            ctx.set_state(ctx.state() & !StateFlags::PRELIGHT);
+                        }
+                    }
+
+                    Proceed
+                }
+            });
+        }
 
 
         let back: Button = builder

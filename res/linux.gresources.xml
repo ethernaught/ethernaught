@@ -46,7 +46,7 @@
         <file preprocess="xml-stripblanks">res/icons/ic_launcher.svg</file>
         <file preprocess="xml-stripblanks">res/icons/ic_launcher_small.svg</file>
 
-        <file preprocess="xml-stripblanks">res/icons/ic_menu.svg</file>
+        <file alias="res/icons/ic_menu.svg" preprocess="xml-stripblanks">res/icons/linux/ic_menu.svg</file>
         <file preprocess="xml-stripblanks">res/icons/ic_back.svg</file>
         <file preprocess="xml-stripblanks">res/icons/ic_back_active.svg</file>
         <file preprocess="xml-stripblanks">res/icons/ic_next.svg</file>
