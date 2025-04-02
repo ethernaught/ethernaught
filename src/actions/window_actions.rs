@@ -51,6 +51,8 @@ pub fn register_window_actions(window: &MainWindow) {
             }
 
             window.maximize();
+            //window.unfullscreen();
+            //window.fullscreen();
         }
     });
     window.window.add_action(&action);
