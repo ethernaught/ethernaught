@@ -9,7 +9,12 @@
   <component name="ChangeListManager">
     <list default="true" id="f0704e63-1929-42d3-83d7-8cbc904dc132" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/title_bar.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/title_bar.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/icons/macos/ic_close.svg" beforeDir="false" afterPath="$PROJECT_DIR$/res/icons/macos/ic_close.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/icons/macos/ic_close_active.svg" beforeDir="false" afterPath="$PROJECT_DIR$/res/icons/macos/ic_close_active.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/icons/macos/ic_maximize.svg" beforeDir="false" afterPath="$PROJECT_DIR$/res/icons/macos/ic_maximize.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/icons/macos/ic_maximize_active.svg" beforeDir="false" afterPath="$PROJECT_DIR$/res/icons/macos/ic_maximize_active.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/icons/macos/ic_minimize.svg" beforeDir="false" afterPath="$PROJECT_DIR$/res/icons/macos/ic_minimize.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/icons/macos/ic_minimize_active.svg" beforeDir="false" afterPath="$PROJECT_DIR$/res/icons/macos/ic_minimize_active.svg" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
