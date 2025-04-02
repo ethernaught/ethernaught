@@ -93,8 +93,8 @@ impl TitleBar {
                 let window_controls = window_controls.clone();
                 move |event_box, event| {
                     let (pointer_x, pointer_y) = event.position();
-                    let width = window_controls.allocated_width();
-                    let height = window_controls.allocated_height();
+                    let width = event_box.allocated_width();
+                    let height = event_box.allocated_height();
 
                     if (pointer_x <= 0.0 || pointer_x >= width as f64) ||
                         (pointer_y <= 0.0 || pointer_y >= height as f64) {

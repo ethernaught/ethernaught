@@ -7,10 +7,12 @@
         <property name="visible">True</property>
         <property name="hexpand">True</property>
         <property name="orientation">horizontal</property>
-        <property name="spacing">14</property>
+        <property name="spacing">18</property>
 
         <child>
             <object class="GtkEventBox" id="window_controls_events">
+                <property name="name">window_controls_events</property>
+                <property name="valign">center</property>
                 <property name="visible">True</property>
 
                 <child>

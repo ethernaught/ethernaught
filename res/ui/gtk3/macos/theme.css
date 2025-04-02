@@ -34,7 +34,7 @@ tooltip {
     border-right: solid 1px @border;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
-    padding: 0 8px;
+    padding: 0 12px;
     background: linear-gradient(90deg, @background 0%, @primary 20%, @background 40%);
 }
 
@@ -60,8 +60,8 @@ tooltip {
 
 
 
-#window_controls {
-    padding: 8px 4px;
+#window_controls_events {
+    margin: 12px 0;
 }
 
 #window_controls button {
