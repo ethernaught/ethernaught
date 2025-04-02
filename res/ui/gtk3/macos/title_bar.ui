@@ -21,8 +21,8 @@
                         <property name="name">close</property>
                         <property name="tooltip-text">Close</property>
                         <property name="visible">True</property>
-                        <property name="width-request">16</property>
-                        <property name="height-request">16</property>
+                        <property name="width-request">12</property>
+                        <property name="height-request">12</property>
                         <property name="action-name">app.quit</property>
                     </object>
                 </child>
@@ -32,8 +32,8 @@
                         <property name="name">minimize</property>
                         <property name="tooltip-text">Minimize</property>
                         <property name="visible">True</property>
-                        <property name="width-request">16</property>
-                        <property name="height-request">16</property>
+                        <property name="width-request">12</property>
+                        <property name="height-request">12</property>
                         <property name="action-name">win.minimize</property>
                     </object>
                 </child>
@@ -43,8 +43,8 @@
                         <property name="name">maximize</property>
                         <property name="tooltip-text">Maximize</property>
                         <property name="visible">True</property>
-                        <property name="width-request">16</property>
-                        <property name="height-request">16</property>
+                        <property name="width-request">12</property>
+                        <property name="height-request">12</property>
                         <property name="action-name">win.maximize</property>
                     </object>
                 </child>
