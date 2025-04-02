@@ -264,10 +264,6 @@ window.release #bottom_bar #license {
     background-image: url('../../icons/ic_status_severe.svg');
 }
 
-#main_window:backdrop button {
-    background-color: transparent;
-}
-
 
 
 

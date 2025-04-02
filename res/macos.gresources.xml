@@ -56,12 +56,9 @@
         <file preprocess="xml-stripblanks">res/icons/ic_restart.svg</file>
 
         <file alias="res/icons/ic_minimize.svg" preprocess="xml-stripblanks">res/icons/macos/ic_minimize.svg</file>
-        <file alias="res/icons/ic_minimize_active.svg" preprocess="xml-stripblanks">res/icons/macos/ic_minimize_active.svg</file>
         <file alias="res/icons/ic_maximize.svg" preprocess="xml-stripblanks">res/icons/macos/ic_maximize.svg</file>
-        <file alias="res/icons/ic_maximize_active.svg" preprocess="xml-stripblanks">res/icons/macos/ic_maximize_active.svg</file>
+        <file alias="res/icons/ic_unmaximize.svg" preprocess="xml-stripblanks">res/icons/macos/ic_unmaximize.svg</file>
         <file alias="res/icons/ic_close.svg" preprocess="xml-stripblanks">res/icons/macos/ic_close.svg</file>
-        <file alias="res/icons/ic_close_active.svg" preprocess="xml-stripblanks">res/icons/macos/ic_close_active.svg</file>
-        <file alias="res/icons/ic_backgrounded.svg" preprocess="xml-stripblanks">res/icons/macos/ic_backgrounded.svg</file>
 
         <file preprocess="xml-stripblanks">res/icons/ic_dialog_close.svg</file>
 
