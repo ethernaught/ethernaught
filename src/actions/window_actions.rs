@@ -3,7 +3,7 @@ use std::path::{Path, PathBuf};
 use gtk::gio::{SimpleAction, SimpleActionGroup};
 use gtk::prelude::{ActionMapExt, Cast, ContainerExt, DialogExt, FileChooserExt, GtkWindowExt, ProxyResolverExt, StackExt, StyleContextExt, ToVariant, WidgetExt};
 use gtk::glib::{PropertyGet, VariantDict, VariantTy};
-use gtk::{AboutDialog, FileChooserAction, FileChooserDialog, ResponseType, Window};
+use gtk::{AboutDialog, FileChooserAction, FileChooserDialog, FileFilter, ResponseType, Window};
 use gtk::gdk_pixbuf::Pixbuf;
 use rlibpcap::devices::Device;
 use crate::pcap_ext::devices::Serialize;
@@ -156,6 +156,27 @@ pub fn open_file_selector(parent: &Window) -> Option<PathBuf> {
         env::var("HOME").map(PathBuf::from).unwrap_or_else(|_| PathBuf::from("/"))
     };
     dialog.set_current_folder(&default_path);
+
+    let filter = FileFilter::new();
+
+    filter.add_mime_type("application/vnd.tcpdump.pcap\r\napplication/x-pcapng");
+    filter.add_mime_type("application/x-snoop");
+    filter.add_mime_type("application/x-iptrace");
+    filter.add_mime_type("application/x-lanalyzer");
+    filter.add_mime_type("application/x-nettl");
+    filter.add_mime_type("application/x-radcom");
+    filter.add_mime_type("application/x-etherpeek");
+    filter.add_mime_type("application/x-visualnetworks");
+    filter.add_mime_type("application/x-netinstobserver");
+    filter.add_mime_type("application/x-5view");
+    filter.add_mime_type("application/x-tektronix-rf5");
+    filter.add_mime_type("application/x-micropross-mplog");
+    filter.add_mime_type("application/x-apple-packetlogger");
+    filter.add_mime_type("application/x-endace-erf");
+    filter.add_mime_type("application/ipfix");
+    filter.add_mime_type("application/x-ixia-vwr");
+    filter.set_name(Some("Pcap and Dump files"));
+    dialog.add_filter(filter);
 
     if dialog.run() == ResponseType::Accept {
         dialog.close();
