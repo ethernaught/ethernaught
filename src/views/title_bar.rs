@@ -72,7 +72,6 @@ impl TitleBar {
             .object("window_controls_events")
             .expect("Couldn't find 'window_controls_events' in ethernaught_ui.xml");
         window_controls_events.set_sensitive(true);
-        window_controls_events.set_can_focus(true);
 
         let window_controls: gtk::Box = builder
             .object("window_controls")
@@ -91,17 +90,22 @@ impl TitleBar {
 
         window_controls_events.connect_leave_notify_event({
             let window_controls = window_controls.clone();
-            move |event_box, e| {
-                let ctx = window_controls.style_context();
-                if ctx.state().contains(StateFlags::PRELIGHT) {
-                    ctx.set_state(ctx.state() & !StateFlags::PRELIGHT);
+            move |event_box, event| {
+                let (pointer_x, pointer_y) = event.position();
+                let width = window_controls.allocated_width();
+                let height = window_controls.allocated_height();
+
+                if (pointer_x <= 0.0 || pointer_x >= width as f64) ||
+                        (pointer_y <= 0.0 || pointer_y >= height as f64) {
+                    let ctx = window_controls.style_context();
+                    if ctx.state().contains(StateFlags::PRELIGHT) {
+                        ctx.set_state(ctx.state() & !StateFlags::PRELIGHT);
+                    }
                 }
+
                 Proceed
             }
         });
-
-
-
 
 
         let back: Button = builder
