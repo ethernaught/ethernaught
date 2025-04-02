@@ -91,7 +91,7 @@ tooltip {
 }
 /*
 window.maximized #window_controls #maximize {
-    background-image: url('../../icons/ic_maximize_active.svg');
+    background-image: url('../../icons/ic_unmaximize.svg');
 }
 */
 #window_controls #close {
@@ -108,6 +108,23 @@ window.maximized #window_controls #maximize {
 
 #main_window:backdrop #window_controls #close {
     background-image: url('../../icons/ic_backgrounded.svg');
+}
+
+
+#window_controls:hover #minimize {
+    background-image: url('../../icons/ic_minimize_active.svg');
+}
+
+#window_controls:hover #maximize {
+    background-image: url('../../icons/ic_maximize_active.svg');
+}
+/*
+window.maximized #window_controls #maximize {
+    background-image: url('../../icons/ic_unmaximize.svg');
+}
+*/
+#window_controls:hover #close {
+    background-image: url('../../icons/ic_close_active.svg');
 }
 
 

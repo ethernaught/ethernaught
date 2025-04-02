@@ -10,7 +10,7 @@
         <property name="spacing">14</property>
 
         <child>
-            <object class="GtkBox">
+            <object class="GtkBox" id="window_controls">
                 <property name="name">window_controls</property>
                 <property name="visible">True</property>
                 <property name="orientation">horizontal</property>

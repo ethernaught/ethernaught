@@ -75,7 +75,7 @@ tooltip {
 }
 
 window.maximized #window_controls #maximize {
-    background-image: url('../../icons/ic_maximize_active.svg');
+    background-image: url('../../icons/ic_unmaximize.svg');
 }
 
 #window_controls #close {
