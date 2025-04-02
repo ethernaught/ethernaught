@@ -9,18 +9,8 @@
   <component name="ChangeListManager">
     <list default="true" id="f0704e63-1929-42d3-83d7-8cbc904dc132" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/icons/macos/ic_backgrounded.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/icons/macos/ic_close.svg" beforeDir="false" afterPath="$PROJECT_DIR$/res/icons/macos/ic_close.svg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/icons/macos/ic_close_active.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/icons/macos/ic_maximize.svg" beforeDir="false" afterPath="$PROJECT_DIR$/res/icons/macos/ic_maximize.svg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/icons/macos/ic_maximize_active.svg" beforeDir="false" afterPath="$PROJECT_DIR$/res/icons/macos/ic_unmaximize.svg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/icons/macos/ic_minimize.svg" beforeDir="false" afterPath="$PROJECT_DIR$/res/icons/macos/ic_minimize.svg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/icons/macos/ic_minimize_active.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/macos.gresources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/res/macos.gresources.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/res/resources.gresources" beforeDir="false" afterPath="$PROJECT_DIR$/res/resources.gresources" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/res/ui/gtk3/linux/theme.css" beforeDir="false" afterPath="$PROJECT_DIR$/res/ui/gtk3/linux/theme.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/ui/gtk3/macos/theme.css" beforeDir="false" afterPath="$PROJECT_DIR$/res/ui/gtk3/macos/theme.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/ui/gtk3/window.css" beforeDir="false" afterPath="$PROJECT_DIR$/res/ui/gtk3/window.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
