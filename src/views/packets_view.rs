@@ -627,3 +627,48 @@ fn query_layer(query: &str, layer: &dyn LayerExt) -> bool {
 
     false
 }
+
+
+
+#[derive(Debug, Clone)]
+enum QueryCondition {
+    LayerField {
+        layer: String,
+        field: String,
+        value: String
+    },
+    Protocol(String)
+}
+
+fn parse_query(query: &str) -> Vec<(QueryCondition, bool)> {
+    let mut conditions = Vec::new();
+    let parts = query.split_whitespace().collect::<Vec<_>>();
+
+    let mut is_and = true;
+
+    for part in parts {
+        match part {
+            "&" => is_and = true,
+            "|" => is_and = false,
+            _ => {
+                if part.contains('=') {
+                    let split: Vec<&str> = part.splitn(2, '=').collect();
+                    let (key, value) = (split[0], split[1].trim_matches('"'));
+
+                    if let Some((layer, field)) = key.rsplit_once('.') {
+                        conditions.push((QueryCondition::LayerField {
+                            layer: layer.to_string(),
+                            field: field.to_string(),
+                            value: value.to_string(),
+                        }, is_and));
+                    }
+                } else {
+                    conditions.push((QueryCondition::Protocol(part.to_string()), is_and));
+                }
+            }
+        }
+    }
+    conditions
+}
+
+
