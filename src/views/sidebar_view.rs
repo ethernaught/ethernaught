@@ -1,3 +1,4 @@
+use std::io;
 use std::net::IpAddr;
 use gtk::{Builder, Paned, ScrolledWindow};
 use gtk::gdk::RGBA;
@@ -85,8 +86,7 @@ impl SidebarView {
 
 
 
-        let db = Database::open(get_lib_path("database.db").to_str().unwrap()).expect("Couldn't open database.db");
-
+        let db = Database::open(get_lib_path("database.db").to_str().unwrap());
 
         let actions = SimpleActionGroup::new();
 
@@ -158,7 +158,7 @@ impl SidebarView {
 }
 
 
-fn create_ipv4_details(details: &gtk::Box, db: &Database, hex_editor: &HexEditor, actions: &SimpleActionGroup, layer: &Ipv4Layer, offset: usize) {
+fn create_ipv4_details(details: &gtk::Box, db: &io::Result<Database>, hex_editor: &HexEditor, actions: &SimpleActionGroup, layer: &Ipv4Layer, offset: usize) {
     details.add(&Dropdown::from_ipv4_layer(db, hex_editor, actions, layer, offset).root);
     let mut offset = offset + IPV4_HEADER_LEN;
 
@@ -202,7 +202,7 @@ fn create_ipv4_details(details: &gtk::Box, db: &Database, hex_editor: &HexEditor
     }
 }
 
-fn create_ipv6_details(details: &gtk::Box, db: &Database, hex_editor: &HexEditor, actions: &SimpleActionGroup, layer: &Ipv6Layer, offset: usize) {
+fn create_ipv6_details(details: &gtk::Box, db: &io::Result<Database>, hex_editor: &HexEditor, actions: &SimpleActionGroup, layer: &Ipv6Layer, offset: usize) {
     details.add(&Dropdown::from_ipv6_layer(db, hex_editor, actions, layer, offset).root);
     let mut offset = offset + IPV6_HEADER_LEN;
 
