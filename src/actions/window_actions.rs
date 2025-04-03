@@ -157,7 +157,6 @@ pub fn open_file_selector(parent: &Window) -> Option<PathBuf> {
     };
     dialog.set_current_folder(&default_path);
 
-    /*
     let filter = FileFilter::new();
 
     filter.add_mime_type("application/vnd.tcpdump.pcap");
@@ -178,7 +177,7 @@ pub fn open_file_selector(parent: &Window) -> Option<PathBuf> {
     filter.add_mime_type("application/ipfix");
     filter.add_mime_type("application/x-ixia-vwr");
     filter.set_name(Some("Pcap and Dump files"));
-    dialog.add_filter(filter);*/
+    dialog.add_filter(filter);
 
     if dialog.run() == ResponseType::Accept {
         dialog.close();
