@@ -25,8 +25,6 @@ pub trait PacketExt {
 impl PacketExt for Packet {
 
     fn matches(&self, query: &Vec<PacketQuery>) -> bool {
-        let query = query.get(0).unwrap();
-
         match self.get_data_link_type() {
             DataLinkTypes::En10mb => {
                 let layer = self.get_frame::<EthernetFrame>();
@@ -35,17 +33,13 @@ impl PacketExt for Packet {
                 }
 
                 match layer.get_type() {
-                    EthernetTypes::Ipv4 => {
-                        return match_ipv4_layer(&query, layer.get_data::<Ipv4Layer>().unwrap());
-                    }
+                    EthernetTypes::Ipv4 => return match_ipv4_layer(&query, layer.get_data::<Ipv4Layer>().unwrap()),
                     EthernetTypes::Arp => {
                         if match_layer(query, layer.get_data::<ArpExtension>().unwrap()) {
                             return true;
                         }
                     }
-                    EthernetTypes::Ipv6 => {
-                        return match_ipv6_layer(&query, layer.get_data::<Ipv6Layer>().unwrap());
-                    }
+                    EthernetTypes::Ipv6 => return match_ipv6_layer(&query, layer.get_data::<Ipv6Layer>().unwrap()),
                     EthernetTypes::Broadcast => {}
                 }
             }
@@ -56,17 +50,13 @@ impl PacketExt for Packet {
                 }
 
                 match layer.get_protocol() {
-                    EthernetTypes::Ipv4 => {
-                        return match_ipv4_layer(&query, layer.get_data::<Ipv4Layer>().unwrap());
-                    }
+                    EthernetTypes::Ipv4 => return match_ipv4_layer(&query, layer.get_data::<Ipv4Layer>().unwrap()),
                     EthernetTypes::Arp => {
                         if match_layer(query, layer.get_data::<ArpExtension>().unwrap()) {
                             return true;
                         }
                     }
-                    EthernetTypes::Ipv6 => {
-                        return match_ipv6_layer(&query, layer.get_data::<Ipv6Layer>().unwrap());
-                    }
+                    EthernetTypes::Ipv6 => return match_ipv6_layer(&query, layer.get_data::<Ipv6Layer>().unwrap()),
                     EthernetTypes::Broadcast => {}
                 }
             }
@@ -74,24 +64,16 @@ impl PacketExt for Packet {
                 let layer = self.get_frame::<RawFrame>();
 
                 match layer.get_version() {
-                    IpVersions::Ipv4 => {
-                        return match_ipv4_layer(&query, layer.get_data::<Ipv4Layer>().unwrap());
-                    }
-                    IpVersions::Ipv6 => {
-                        return match_ipv6_layer(&query, layer.get_data::<Ipv6Layer>().unwrap());
-                    }
+                    IpVersions::Ipv4 => return match_ipv4_layer(&query, layer.get_data::<Ipv4Layer>().unwrap()),
+                    IpVersions::Ipv6 => return match_ipv6_layer(&query, layer.get_data::<Ipv6Layer>().unwrap())
                 }
             }
             DataLinkTypes::Loop => {
                 let layer = self.get_frame::<LoopFrame>();
 
                 match layer.get_type() {
-                    LoopTypes::Ipv4 => {
-                        return match_ipv4_layer(&query, layer.get_data::<Ipv4Layer>().unwrap());
-                    }
-                    LoopTypes::Ipv6 | LoopTypes::Ipv6e2 | LoopTypes::Ipv6e3 => {
-                        return match_ipv6_layer(&query, layer.get_data::<Ipv6Layer>().unwrap());
-                    }
+                    LoopTypes::Ipv4 => return match_ipv4_layer(&query, layer.get_data::<Ipv4Layer>().unwrap()),
+                    LoopTypes::Ipv6 | LoopTypes::Ipv6e2 | LoopTypes::Ipv6e3 => return match_ipv6_layer(&query, layer.get_data::<Ipv6Layer>().unwrap()),
                     _ => {
                         unimplemented!()
                     }
@@ -104,29 +86,31 @@ impl PacketExt for Packet {
     }
 }
 
-pub fn match_layer(query: &PacketQuery, layer: &dyn LayerExt) -> bool {
-    if !layer.get_field_name("frame").unwrap().eq(&query.layer) {
-        return false;
-    }
-
-    match query.field {
-        Some(ref field) => {
-            match layer.get_value(&field.name) {
-                Some(value) => {
-                    if value.eq(&field.value) {
-                        return true;
-                    }
-                }
-                None => return false
-            }
-
-            false
+pub fn match_layer(query: &Vec<PacketQuery>, layer: &dyn LayerExt) -> bool {
+    for q in query.iter() {
+        if !layer.get_field_name("frame").unwrap().eq(&q.layer) {
+            continue;
         }
-        None => true
+
+        match q.field {
+            Some(ref field) => {
+                match layer.get_value(&field.name) {
+                    Some(value) => {
+                        if value.eq(&field.value) {
+                            return true;
+                        }
+                    }
+                    None => return false
+                }
+            }
+            None => return true
+        }
     }
+
+    false
 }
 
-pub fn match_ipv4_layer(query: &PacketQuery, layer: &Ipv4Layer) -> bool {
+pub fn match_ipv4_layer(query: &Vec<PacketQuery>, layer: &Ipv4Layer) -> bool {
     if match_layer(query, layer) {
         return true;
     }
@@ -159,7 +143,7 @@ pub fn match_ipv4_layer(query: &PacketQuery, layer: &Ipv4Layer) -> bool {
     false
 }
 
-pub fn match_ipv6_layer(query: &PacketQuery, layer: &Ipv6Layer) -> bool {
+pub fn match_ipv6_layer(query: &Vec<PacketQuery>, layer: &Ipv6Layer) -> bool {
     if match_layer(query, layer) {
         return true;
     }

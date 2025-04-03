@@ -297,32 +297,18 @@ impl PacketsView {
                 let ethernet_frame = packet.get_frame::<EthernetFrame>();//.as_any().downcast_ref::<EthernetFrame>().unwrap();
 
                 match ethernet_frame.get_type() {
-                    EthernetTypes::Ipv4 => {
-                        get_data_from_ipv4_frame(ethernet_frame.get_data::<Ipv4Layer>().unwrap())
-                    }
-                    EthernetTypes::Ipv6 => {
-                        get_data_from_ipv6_frame(ethernet_frame.get_data::<Ipv6Layer>().unwrap())
-                    }
-                    EthernetTypes::Broadcast => {
-                        //source_label.set_label(&ethernet_layer.get_source().to_string());
-                        //destination_label.set_label(&ethernet_layer.get_destination().to_string());
-                        (ethernet_frame.get_source_mac().to_string(), ethernet_frame.get_destination_mac().to_string(), ethernet_frame.get_type().to_string())
-                    }
-                    _ => {
-                        (ethernet_frame.get_source_mac().to_string(), ethernet_frame.get_destination_mac().to_string(), ethernet_frame.get_type().to_string())
-                    }
+                    EthernetTypes::Ipv4 => get_data_from_ipv4_frame(ethernet_frame.get_data::<Ipv4Layer>().unwrap()),
+                    EthernetTypes::Ipv6 => get_data_from_ipv6_frame(ethernet_frame.get_data::<Ipv6Layer>().unwrap()),
+                    EthernetTypes::Broadcast => (ethernet_frame.get_source_mac().to_string(), ethernet_frame.get_destination_mac().to_string(), ethernet_frame.get_type().to_string()),
+                    _ => (ethernet_frame.get_source_mac().to_string(), ethernet_frame.get_destination_mac().to_string(), ethernet_frame.get_type().to_string())
                 }
             }
             DataLinkTypes::Sll2 => {
                 let sll2_frame = packet.get_frame::<Sll2Frame>();//.as_any().downcast_ref::<Sll2Frame>().unwrap();
 
                 match sll2_frame.get_protocol() {
-                    EthernetTypes::Ipv4 => {
-                        get_data_from_ipv4_frame(sll2_frame.get_data::<Ipv4Layer>().unwrap())
-                    }
-                    EthernetTypes::Ipv6 => {
-                        get_data_from_ipv6_frame(sll2_frame.get_data::<Ipv6Layer>().unwrap())
-                    }
+                    EthernetTypes::Ipv4 => get_data_from_ipv4_frame(sll2_frame.get_data::<Ipv4Layer>().unwrap()),
+                    EthernetTypes::Ipv6 => get_data_from_ipv6_frame(sll2_frame.get_data::<Ipv6Layer>().unwrap()),
                     _ => {
                         unimplemented!()
                     }
@@ -332,12 +318,8 @@ impl PacketsView {
                 let raw_frame = packet.get_frame::<RawFrame>();//.as_any().downcast_ref::<RawFrame>().unwrap();
 
                 match raw_frame.get_version() {
-                    IpVersions::Ipv4 => {
-                        get_data_from_ipv4_frame(raw_frame.get_data::<Ipv4Layer>().unwrap())
-                    }
-                    IpVersions::Ipv6 => {
-                        get_data_from_ipv6_frame(raw_frame.get_data::<Ipv6Layer>().unwrap())
-                    }
+                    IpVersions::Ipv4 => get_data_from_ipv4_frame(raw_frame.get_data::<Ipv4Layer>().unwrap()),
+                    IpVersions::Ipv6 => get_data_from_ipv6_frame(raw_frame.get_data::<Ipv6Layer>().unwrap()),
                     _ => {
                         unimplemented!()
                     }
@@ -347,12 +329,8 @@ impl PacketsView {
                 let loop_frame = packet.get_frame::<LoopFrame>();//.as_any().downcast_ref::<LoopFrame>().unwrap();
 
                 match loop_frame.get_type() {
-                    LoopTypes::Ipv4 => {
-                        get_data_from_ipv4_frame(loop_frame.get_data::<Ipv4Layer>().unwrap())
-                    }
-                    LoopTypes::Ipv6 | LoopTypes::Ipv6e2 | LoopTypes::Ipv6e3 => {
-                        get_data_from_ipv6_frame(loop_frame.get_data::<Ipv6Layer>().unwrap())
-                    }
+                    LoopTypes::Ipv4 => get_data_from_ipv4_frame(loop_frame.get_data::<Ipv4Layer>().unwrap()),
+                    LoopTypes::Ipv6 | LoopTypes::Ipv6e2 | LoopTypes::Ipv6e3 => get_data_from_ipv6_frame(loop_frame.get_data::<Ipv6Layer>().unwrap()),
                     _ => {
                         unimplemented!()
                     }
