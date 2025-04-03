@@ -22,29 +22,29 @@ pub trait EthernetDropdown {
 impl EthernetDropdown for Dropdown {
 
     fn from_ethernet_frame(db: &Database, hex_editor: &HexEditor, actions: &SimpleActionGroup, layer: &EthernetFrame, offset: usize) -> Self {
-        let _self = Self::new(&layer.get_title("frame"));
+        let _self = Self::new(&layer.get_title("frame").unwrap());
         _self.list_box.connect_row_activated(set_selection(&hex_editor, layer, offset));
         _self.list_box.connect_button_press_event(context_menu(&hex_editor, actions, layer, offset));
 
         match ethernet_to_company(db, layer.get_destination_mac()) {
             Some(company) => {
-                _self.list_box.add(&create_row(format!("{}:", layer.get_title("destination")), format!("{} ({})", company, layer.get_value("destination"))));
+                _self.list_box.add(&create_row(format!("{}:", layer.get_title("destination").unwrap()), format!("{} ({})", company, layer.get_value("destination").unwrap())));
             }
             None => {
-                _self.list_box.add(&create_row(format!("{}:", layer.get_title("destination")), format!("({})", layer.get_value("destination"))));
+                _self.list_box.add(&create_row(format!("{}:", layer.get_title("destination").unwrap()), format!("({})", layer.get_value("destination").unwrap())));
             }
         }
 
         match ethernet_to_company(db, layer.get_source_mac()) {
             Some(company) => {
-                _self.list_box.add(&create_row(format!("{}:", layer.get_title("source")), format!("{} ({})", company, layer.get_value("source"))));
+                _self.list_box.add(&create_row(format!("{}:", layer.get_title("source").unwrap()), format!("{} ({})", company, layer.get_value("source").unwrap())));
             }
             None => {
-                _self.list_box.add(&create_row(format!("{}:", layer.get_title("source")), format!("({})", layer.get_value("source"))));
+                _self.list_box.add(&create_row(format!("{}:", layer.get_title("source").unwrap()), format!("({})", layer.get_value("source").unwrap())));
             }
         }
 
-        _self.list_box.add(&create_row(format!("{}:", layer.get_title("type")), layer.get_value("type")));
+        _self.list_box.add(&create_row(format!("{}:", layer.get_title("type").unwrap()), layer.get_value("type").unwrap()));
 
         _self
     }

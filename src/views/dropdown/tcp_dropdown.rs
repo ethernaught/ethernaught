@@ -24,17 +24,17 @@ pub trait TcpDropdown {
 impl TcpDropdown for Dropdown {
 
     fn from_tcp_layer(hex_editor: &HexEditor, actions: &SimpleActionGroup, layer: &TcpLayer, offset: usize) -> Self {
-        let _self = Self::new(&layer.get_title("frame"));
+        let _self = Self::new(&layer.get_title("frame").unwrap());
         _self.list_box.connect_row_activated(set_selection(&hex_editor, layer, offset));
         _self.list_box.connect_button_press_event(context_menu(&hex_editor, actions, layer, offset));
 
-        _self.list_box.add(&create_row(format!("{}:", layer.get_title("source_port")), layer.get_value("source_port")));
-        _self.list_box.add(&create_row(format!("{}:", layer.get_title("destination_port")), layer.get_value("destination_port")));
-        _self.list_box.add(&create_row(format!("{}:", layer.get_title("sequence_number")), layer.get_value("sequence_number")));
-        _self.list_box.add(&create_row(format!("{}:", layer.get_title("acknowledgment_number")), layer.get_value("acknowledgment_number")));
-        _self.list_box.add(&create_row(format!("{}:", layer.get_title("window_size")), layer.get_value("window_size")));
-        _self.list_box.add(&create_row(format!("{}:", layer.get_title("checksum")), layer.get_value("checksum")));
-        _self.list_box.add(&create_row(format!("{}:", layer.get_title("urgent_pointer")), layer.get_value("urgent_pointer")));
+        _self.list_box.add(&create_row(format!("{}:", layer.get_title("source_port").unwrap()), layer.get_value("source_port").unwrap()));
+        _self.list_box.add(&create_row(format!("{}:", layer.get_title("destination_port").unwrap()), layer.get_value("destination_port").unwrap()));
+        _self.list_box.add(&create_row(format!("{}:", layer.get_title("sequence_number").unwrap()), layer.get_value("sequence_number").unwrap()));
+        _self.list_box.add(&create_row(format!("{}:", layer.get_title("acknowledgment_number").unwrap()), layer.get_value("acknowledgment_number").unwrap()));
+        _self.list_box.add(&create_row(format!("{}:", layer.get_title("window_size").unwrap()), layer.get_value("window_size").unwrap()));
+        _self.list_box.add(&create_row(format!("{}:", layer.get_title("checksum").unwrap()), layer.get_value("checksum").unwrap()));
+        _self.list_box.add(&create_row(format!("{}:", layer.get_title("urgent_pointer").unwrap()), layer.get_value("urgent_pointer").unwrap()));
 
         _self
     }

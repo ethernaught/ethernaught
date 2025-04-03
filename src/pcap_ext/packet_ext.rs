@@ -105,14 +105,19 @@ impl PacketExt for Packet {
 }
 
 pub fn match_layer(query: &PacketQuery, layer: &dyn LayerExt) -> bool {
-    if !layer.get_field_name("frame").eq(&query.layer) {
+    if !layer.get_field_name("frame").unwrap().eq(&query.layer) {
         return false;
     }
 
     match query.field {
         Some(ref field) => {
-            if layer.get_value(&field.name).eq(&field.value) {
-                return true;
+            match layer.get_value(&field.name) {
+                Some(value) => {
+                    if value.eq(&field.value) {
+                        return true;
+                    }
+                }
+                None => return false
             }
 
             false

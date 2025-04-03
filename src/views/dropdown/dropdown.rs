@@ -75,7 +75,7 @@ pub fn set_selection(hex_editor: &HexEditor, layer: &dyn LayerExt, offset: usize
     let hex_editor = hex_editor.clone();
     let layer = layer.clone_ext();
     move |_, row| {
-        let (x, w) = layer.get_selection(layer.get_fields().get(row.index() as usize).unwrap().clone());
+        let (x, w) = layer.get_selection(layer.get_fields().get(row.index() as usize).unwrap().clone()).unwrap();
         hex_editor.set_selection(offset + x, w);
     }
 }
@@ -106,7 +106,7 @@ pub fn context_menu(hex_editor: &HexEditor, actions: &SimpleActionGroup, layer: 
 
             let action = SimpleAction::new("copy-field-name", None);
             action.connect_activate({
-                let value = layer.get_field_name(variable);
+                let value = layer.get_field_name(variable).unwrap();
                 move |_, _| {
                     let display = Display::default().expect("No display available");
                     let clipboard = gtk::Clipboard::default(&display).expect("Failed to get clipboard");
@@ -117,7 +117,7 @@ pub fn context_menu(hex_editor: &HexEditor, actions: &SimpleActionGroup, layer: 
 
             let action = SimpleAction::new("copy-value", None);
             action.connect_activate({
-                let value = layer.get_value(variable);
+                let value = layer.get_value(variable).unwrap();
                 move |_, _| {
                     let display = Display::default().expect("No display available");
                     let clipboard = gtk::Clipboard::default(&display).expect("Failed to get clipboard");
@@ -128,7 +128,7 @@ pub fn context_menu(hex_editor: &HexEditor, actions: &SimpleActionGroup, layer: 
 
             let action = SimpleAction::new("copy-description", None);
             action.connect_activate({
-                let value = layer.get_description(variable);
+                let value = layer.get_description(variable).unwrap();
                 move |_, _| {
                     let display = Display::default().expect("No display available");
                     let clipboard = gtk::Clipboard::default(&display).expect("Failed to get clipboard");
@@ -139,7 +139,7 @@ pub fn context_menu(hex_editor: &HexEditor, actions: &SimpleActionGroup, layer: 
 
             let action = SimpleAction::new("copy-byte-array", None);
             action.connect_activate({
-                let value = format!("let buf = [{}];", layer.get_value_as_bytes(variable)
+                let value = format!("let buf = [{}];", layer.get_value_as_bytes(variable).unwrap()
                     .chunks(16)
                     .map(|chunk| {
                         chunk
@@ -160,7 +160,8 @@ pub fn context_menu(hex_editor: &HexEditor, actions: &SimpleActionGroup, layer: 
 
             let action = SimpleAction::new("copy-hex", None);
             action.connect_activate({
-                let value = layer.get_value_as_bytes(variable).chunks(16)
+                let value = layer.get_value_as_bytes(variable).unwrap()
+                    .chunks(16)
                     .enumerate()
                     .map(|(i, chunk)| {
                         let line_number = format!("{:08X}", i * 16);
@@ -182,7 +183,8 @@ pub fn context_menu(hex_editor: &HexEditor, actions: &SimpleActionGroup, layer: 
 
             let action = SimpleAction::new("copy-ascii", None);
             action.connect_activate({
-                let value = layer.get_value_as_bytes(variable).chunks(16)
+                let value = layer.get_value_as_bytes(variable).unwrap()
+                    .chunks(16)
                     .enumerate()
                     .map(|(i, chunk)| {
                         let line_number = format!("{:08X}", i * 16);
@@ -208,7 +210,7 @@ pub fn context_menu(hex_editor: &HexEditor, actions: &SimpleActionGroup, layer: 
 
             let action = SimpleAction::new("copy-binary", None);
             action.connect_activate({
-                let value = layer.get_value_as_bytes(variable)
+                let value = layer.get_value_as_bytes(variable).unwrap()
                     .iter()
                     .map(|byte| format!("{:08b}", byte))
                     .collect::<Vec<_>>()
@@ -232,7 +234,7 @@ pub fn context_menu(hex_editor: &HexEditor, actions: &SimpleActionGroup, layer: 
 
             menu.popup_at_pointer(Some(event));
 
-            let (x, w) = layer.get_selection(variable);
+            let (x, w) = layer.get_selection(variable).unwrap();
             hex_editor.set_selection(offset + x, w);
         }
 

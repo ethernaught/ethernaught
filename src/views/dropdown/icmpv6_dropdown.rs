@@ -25,17 +25,17 @@ pub trait Icmpv6Dropdown {
 impl Icmpv6Dropdown for Dropdown {
 
     fn from_icmpv6_layer(hex_editor: &HexEditor, actions: &SimpleActionGroup, layer: &Icmpv6Layer, offset: usize) -> Self {
-        let _self = Self::new(&layer.get_title("frame"));
+        let _self = Self::new(&layer.get_title("frame").unwrap());
         _self.list_box.connect_row_activated(set_selection(&hex_editor, layer, offset));
         _self.list_box.connect_button_press_event(context_menu(&hex_editor, actions, layer, offset));
 
-        _self.list_box.add(&create_row(format!("{}:", layer.get_title("type")), layer.get_value("type")));
-        _self.list_box.add(&create_row(format!("{}:", layer.get_title("code")), layer.get_value("code")));
-        _self.list_box.add(&create_row(format!("{}:", layer.get_title("checksum")), layer.get_value("checksum")));
-        _self.list_box.add(&create_row(format!("{}:", layer.get_title("identifier_be")), layer.get_value("identifier_be")));
-        _self.list_box.add(&create_row(format!("{}:", layer.get_title("identifier_le")), layer.get_value("identifier_le")));
-        _self.list_box.add(&create_row(format!("{}:", layer.get_title("sequence_number_be")), layer.get_value("sequence_number_be")));
-        _self.list_box.add(&create_row(format!("{}:", layer.get_title("sequence_number_le")), layer.get_value("sequence_number_le")));
+        _self.list_box.add(&create_row(format!("{}:", layer.get_title("type").unwrap()), layer.get_value("type").unwrap()));
+        _self.list_box.add(&create_row(format!("{}:", layer.get_title("code").unwrap()), layer.get_value("code").unwrap()));
+        _self.list_box.add(&create_row(format!("{}:", layer.get_title("checksum").unwrap()), layer.get_value("checksum").unwrap()));
+        _self.list_box.add(&create_row(format!("{}:", layer.get_title("identifier_be").unwrap()), layer.get_value("identifier_be").unwrap()));
+        _self.list_box.add(&create_row(format!("{}:", layer.get_title("identifier_le").unwrap()), layer.get_value("identifier_le").unwrap()));
+        _self.list_box.add(&create_row(format!("{}:", layer.get_title("sequence_number_be").unwrap()), layer.get_value("sequence_number_be").unwrap()));
+        _self.list_box.add(&create_row(format!("{}:", layer.get_title("sequence_number_le").unwrap()), layer.get_value("sequence_number_le").unwrap()));
 
         _self
     }

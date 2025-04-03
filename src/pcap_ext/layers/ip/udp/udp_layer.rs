@@ -13,41 +13,41 @@ impl LayerExt for UdpLayer {
         ]
     }
 
-    fn get_selection(&self, key: &str) -> (usize, usize) {
-        match key {
+    fn get_selection(&self, key: &str) -> Option<(usize, usize)> {
+        Some(match key {
             "frame" => (0, UDP_HEADER_LEN),
             "source_port" => (0, 2),
             "destination_port" => (2, 2),
             "length" => (4, 2),
             "checksum" => (6, 2),
-            _ => unimplemented!()
-        }
+            _ => return None
+        })
     }
 
-    fn get_field_name(&self, key: &str) -> String {
-        match key {
+    fn get_field_name(&self, key: &str) -> Option<String> {
+        Some(match key {
             "frame" => "udp",
             "source_port" => "udp.source_port",
             "destination_port" => "udp.destination_port",
             "length" => "udp.length",
             "checksum" => "udp.checksum",
-            _ => unimplemented!()
-        }.to_string()
+            _ => return None
+        }.to_string())
     }
 
-    fn get_title(&self, key: &str) -> String {
-        match key {
+    fn get_title(&self, key: &str) -> Option<String> {
+        Some(match key {
             "frame" => "User Datagram Protocol",
             "source_port" => "Source Port",
             "destination_port" => "Destination Port",
             "length" => "Length",
             "checksum" => "Checksum",
-            _ => unimplemented!()
-        }.to_string()
+            _ => return None
+        }.to_string())
     }
 
-    fn get_value(&self, key: &str) -> String {
-        match key {
+    fn get_value(&self, key: &str) -> Option<String> {
+        Some(match key {
             "source_port" => {
                 match UdpPorts::from_code(self.get_source_port()) {
                     Ok(port) => {
@@ -70,12 +70,12 @@ impl LayerExt for UdpLayer {
             },
             "length" => self.get_length().to_string(),
             "checksum" => format!("0x{:04X}", self.get_checksum()),
-            _ => unimplemented!()
-        }
+            _ => return None
+        })
     }
 
-    fn get_value_as_bytes(&self, key: &str) -> Vec<u8> {
-        match key {
+    fn get_value_as_bytes(&self, key: &str) -> Option<Vec<u8>> {
+        Some(match key {
             "frame" => {
                 let mut buf = vec![0; UDP_HEADER_LEN];
 
@@ -90,8 +90,8 @@ impl LayerExt for UdpLayer {
             "destination_port" => self.get_destination_port().to_be_bytes().to_vec(),
             "length" => self.get_length().to_be_bytes().to_vec(),
             "checksum" => self.get_checksum().to_be_bytes().to_vec(),
-            _ => unimplemented!()
-        }
+            _ => return None
+        })
     }
 
     fn to_string(&self) -> String {

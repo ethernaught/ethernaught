@@ -23,16 +23,16 @@ pub trait UdpDropdown {
 impl UdpDropdown for Dropdown {
 
     fn from_udp_layer(source_address: IpAddr, destination_address: IpAddr, hex_editor: &HexEditor, actions: &SimpleActionGroup, layer: &UdpLayer, offset: usize) -> Self {
-        let _self = Self::new(&layer.get_title("frame"));
+        let _self = Self::new(&layer.get_title("frame").unwrap());
         _self.list_box.connect_row_activated(set_selection(&hex_editor, layer, offset));
         _self.list_box.connect_button_press_event(context_menu(&hex_editor, actions, layer, offset));
 
-        _self.list_box.add(&create_row(format!("{}:", layer.get_title("source_port")), layer.get_value("source_port")));
-        _self.list_box.add(&create_row(format!("{}:", layer.get_title("destination_port")), layer.get_value("destination_port")));
-        _self.list_box.add(&create_row(format!("{}:", layer.get_title("length")), layer.get_value("length")));
+        _self.list_box.add(&create_row(format!("{}:", layer.get_title("source_port").unwrap()), layer.get_value("source_port").unwrap()));
+        _self.list_box.add(&create_row(format!("{}:", layer.get_title("destination_port").unwrap()), layer.get_value("destination_port").unwrap()));
+        _self.list_box.add(&create_row(format!("{}:", layer.get_title("length").unwrap()), layer.get_value("length").unwrap()));
 
         let checksum_string = if layer.validate_checksum(source_address, destination_address) { "correct" } else { "incorrect" };
-        _self.list_box.add(&create_row(format!("{}:", layer.get_title("checksum")), format!("{} [{}]", layer.get_value("checksum"), checksum_string)));
+        _self.list_box.add(&create_row(format!("{}:", layer.get_title("checksum").unwrap()), format!("{} [{}]", layer.get_value("checksum").unwrap(), checksum_string)));
 
         _self
     }

@@ -22,35 +22,35 @@ pub trait Ipv4Dropdown {
 impl Ipv4Dropdown for Dropdown {
 
     fn from_ipv4_layer(db: &Database, hex_editor: &HexEditor, actions: &SimpleActionGroup, layer: &Ipv4Layer, offset: usize) -> Self {
-        let _self = Self::new(&layer.get_title("frame"));
+        let _self = Self::new(&layer.get_title("frame").unwrap());
         _self.list_box.connect_row_activated(set_selection(&hex_editor, layer, offset));
         _self.list_box.connect_button_press_event(context_menu(&hex_editor, actions, layer, offset));
 
-        _self.list_box.add(&create_row(format!("{}:", layer.get_title("version")), layer.get_value("version")));
-        _self.list_box.add(&create_row(format!("{}:", layer.get_title("tos")), layer.get_value("tos")));
-        _self.list_box.add(&create_row(format!("{}:", layer.get_title("total_length")), layer.get_value("total_length")));
-        _self.list_box.add(&create_row(format!("{}:", layer.get_title("identification")), layer.get_value("identification")));
-        _self.list_box.add(&create_row(format!("{}:", layer.get_title("ttl")), layer.get_value("ttl")));
-        _self.list_box.add(&create_row(format!("{}:", layer.get_title("protocol")), layer.get_value("protocol")));
+        _self.list_box.add(&create_row(format!("{}:", layer.get_title("version").unwrap()), layer.get_value("version").unwrap()));
+        _self.list_box.add(&create_row(format!("{}:", layer.get_title("tos").unwrap()), layer.get_value("tos").unwrap()));
+        _self.list_box.add(&create_row(format!("{}:", layer.get_title("total_length").unwrap()), layer.get_value("total_length").unwrap()));
+        _self.list_box.add(&create_row(format!("{}:", layer.get_title("identification").unwrap()), layer.get_value("identification").unwrap()));
+        _self.list_box.add(&create_row(format!("{}:", layer.get_title("ttl").unwrap()), layer.get_value("ttl").unwrap()));
+        _self.list_box.add(&create_row(format!("{}:", layer.get_title("protocol").unwrap()), layer.get_value("protocol").unwrap()));
 
         let checksum_string = if layer.validate_checksum() { "correct" } else { "incorrect" };
-        _self.list_box.add(&create_row(format!("{}:", layer.get_title("checksum")), format!("{} [{}]", layer.get_value("checksum"), checksum_string)));
+        _self.list_box.add(&create_row(format!("{}:", layer.get_title("checksum").unwrap()), format!("{} [{}]", layer.get_value("checksum").unwrap(), checksum_string)));
 
         match ip_to_icon(db, IpAddr::V4(layer.get_source_address())) {
             Some(icon) => {
-                _self.list_box.add(&create_row_with_icon(format!("{}:", layer.get_title("source_address")), icon, layer.get_value("source_address")));
+                _self.list_box.add(&create_row_with_icon(format!("{}:", layer.get_title("source_address").unwrap()), icon, layer.get_value("source_address").unwrap()));
             }
             None => {
-                _self.list_box.add(&create_row(format!("{}:", layer.get_title("source_address")), layer.get_value("source_address")));
+                _self.list_box.add(&create_row(format!("{}:", layer.get_title("source_address").unwrap()), layer.get_value("source_address").unwrap()));
             }
         }
 
         match ip_to_icon(db, IpAddr::V4(layer.get_destination_address())) {
             Some(icon) => {
-                _self.list_box.add(&create_row_with_icon(format!("{}:", layer.get_title("destination_address")), icon, layer.get_value("destination_address")));
+                _self.list_box.add(&create_row_with_icon(format!("{}:", layer.get_title("destination_address").unwrap()), icon, layer.get_value("destination_address").unwrap()));
             }
             None => {
-                _self.list_box.add(&create_row(format!("{}:", layer.get_title("destination_address")), layer.get_value("destination_address")));
+                _self.list_box.add(&create_row(format!("{}:", layer.get_title("destination_address").unwrap()), layer.get_value("destination_address").unwrap()));
             }
         }
 

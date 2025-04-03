@@ -20,49 +20,49 @@ pub trait ArpDropdown {
 impl ArpDropdown for Dropdown {
 
     fn from_arp_extension(db: &Database, hex_editor: &HexEditor, actions: &SimpleActionGroup, layer: &ArpExtension, offset: usize) -> Self {
-        let _self = Self::new(&layer.get_title("frame"));
+        let _self = Self::new(&layer.get_title("frame").unwrap());
         _self.list_box.connect_row_activated(set_selection(&hex_editor, layer, offset));
         _self.list_box.connect_button_press_event(context_menu(&hex_editor, actions, layer, offset));
 
-        _self.list_box.add(&create_row(format!("{}:", layer.get_title("hardware_type")), layer.get_value("hardware_type")));
-        _self.list_box.add(&create_row(format!("{}:", layer.get_title("protocol_type")), layer.get_value("protocol_type")));
-        _self.list_box.add(&create_row(format!("{}:", layer.get_title("hardware_size")), layer.get_value("hardware_size")));
-        _self.list_box.add(&create_row(format!("{}:", layer.get_title("protocol_size")), layer.get_value("protocol_size")));
-        _self.list_box.add(&create_row(format!("{}:", layer.get_title("opcode")), layer.get_value("opcode")));
+        _self.list_box.add(&create_row(format!("{}:", layer.get_title("hardware_type").unwrap()), layer.get_value("hardware_type").unwrap()));
+        _self.list_box.add(&create_row(format!("{}:", layer.get_title("protocol_type").unwrap()), layer.get_value("protocol_type").unwrap()));
+        _self.list_box.add(&create_row(format!("{}:", layer.get_title("hardware_size").unwrap()), layer.get_value("hardware_size").unwrap()));
+        _self.list_box.add(&create_row(format!("{}:", layer.get_title("protocol_size").unwrap()), layer.get_value("protocol_size").unwrap()));
+        _self.list_box.add(&create_row(format!("{}:", layer.get_title("opcode").unwrap()), layer.get_value("opcode").unwrap()));
 
         match ethernet_to_company(db, layer.get_sender_mac()) {
             Some(company) => {
-                _self.list_box.add(&create_row(format!("{}:", layer.get_title("sender_mac")), format!("{} ({})", company, layer.get_value("sender_mac"))));
+                _self.list_box.add(&create_row(format!("{}:", layer.get_title("sender_mac").unwrap()), format!("{} ({})", company, layer.get_value("sender_mac").unwrap())));
             }
             None => {
-                _self.list_box.add(&create_row(format!("{}:", layer.get_title("sender_mac")), format!("({})", layer.get_value("sender_mac"))));
+                _self.list_box.add(&create_row(format!("{}:", layer.get_title("sender_mac").unwrap()), format!("({})", layer.get_value("sender_mac").unwrap())));
             }
         }
 
         match ip_to_icon(db, IpAddr::V4(layer.get_sender_address())) {
             Some(icon) => {
-                _self.list_box.add(&create_row_with_icon(format!("{}:", layer.get_title("sender_address")), icon, layer.get_value("sender_address")));
+                _self.list_box.add(&create_row_with_icon(format!("{}:", layer.get_title("sender_address").unwrap()), icon, layer.get_value("sender_address").unwrap()));
             }
             None => {
-                _self.list_box.add(&create_row(format!("{}:", layer.get_title("sender_address")), layer.get_value("sender_address")));
+                _self.list_box.add(&create_row(format!("{}:", layer.get_title("sender_address").unwrap()), layer.get_value("sender_address").unwrap()));
             }
         }
 
         match ethernet_to_company(db, layer.get_target_mac()) {
             Some(company) => {
-                _self.list_box.add(&create_row(format!("{}:", layer.get_title("target_mac")), format!("{} ({})", company, layer.get_value("target_mac"))));
+                _self.list_box.add(&create_row(format!("{}:", layer.get_title("target_mac").unwrap()), format!("{} ({})", company, layer.get_value("target_mac").unwrap())));
             }
             None => {
-                _self.list_box.add(&create_row(format!("{}:", layer.get_title("target_mac")), format!("({})", layer.get_value("target_mac"))));
+                _self.list_box.add(&create_row(format!("{}:", layer.get_title("target_mac").unwrap()), format!("({})", layer.get_value("target_mac").unwrap())));
             }
         }
 
         match ip_to_icon(db, IpAddr::V4(layer.get_target_address())) {
             Some(icon) => {
-                _self.list_box.add(&create_row_with_icon(format!("{}:", layer.get_title("target_address")), icon, layer.get_value("target_address")));
+                _self.list_box.add(&create_row_with_icon(format!("{}:", layer.get_title("target_address").unwrap()), icon, layer.get_value("target_address").unwrap()));
             }
             None => {
-                _self.list_box.add(&create_row(format!("{}:", layer.get_title("target_address")), layer.get_value("target_address")));
+                _self.list_box.add(&create_row(format!("{}:", layer.get_title("target_address").unwrap()), layer.get_value("target_address").unwrap()));
             }
         }
 

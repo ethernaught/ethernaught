@@ -17,8 +17,8 @@ impl LayerExt for Sll2Frame {
         ]
     }
 
-    fn get_selection(&self, key: &str) -> (usize, usize) {
-        match key {
+    fn get_selection(&self, key: &str) -> Option<(usize, usize)> {
+        Some(match key {
             "frame" => (0, SLL2_FRAME_LEN),
             "protocol" => (0, 2),
             //"reserved" => (2, 2),
@@ -28,12 +28,12 @@ impl LayerExt for Sll2Frame {
             "address_length" => (11, 1),
             "address" => (12, self.get_address_length() as usize),
             "unused" => (12 + self.get_address_length() as usize, 8 - self.get_address_length() as usize),
-            _ => unimplemented!()
-        }
+            _ => return None
+        })
     }
 
-    fn get_field_name(&self, key: &str) -> String {
-        match key {
+    fn get_field_name(&self, key: &str) -> Option<String> {
+        Some(match key {
             "frame" => "sll2",
             "protocol" => "sll2.protocol",
             //"reserved" => "sll2.reserved",
@@ -43,12 +43,12 @@ impl LayerExt for Sll2Frame {
             "address_length" => "sll2.address_length",
             "address" => "sll2.address",
             "unused" => "sll2.unused",
-            _ => unimplemented!()
-        }.to_string()
+            _ => return None
+        }.to_string())
     }
 
-    fn get_title(&self, key: &str) -> String {
-        match key {
+    fn get_title(&self, key: &str) -> Option<String> {
+        Some(match key {
             "frame" => "Linux Cooked Capture v2",
             "protocol" => "Protocol",
             //"reserved" => "",
@@ -59,11 +59,11 @@ impl LayerExt for Sll2Frame {
             "address" => "Source",
             "unused" => "Unused",
             _ => unimplemented!()
-        }.to_string()
+        }.to_string())
     }
 
-    fn get_value(&self, key: &str) -> String {
-        match key {
+    fn get_value(&self, key: &str) -> Option<String> {
+        Some(match key {
             "protocol" => format!("{} (0x{:04X})", self.get_protocol().to_string(), self.get_protocol().get_code()),
             //"reserved" => ,
             "if_index" => self.get_if_index().to_string(),
@@ -84,12 +84,12 @@ impl LayerExt for Sll2Frame {
                     .collect::<Vec<String>>()
                     .concat()
             }
-            _ => unimplemented!()
-        }
+            _ => return None
+        })
     }
 
-    fn get_value_as_bytes(&self, key: &str) -> Vec<u8> {
-        match key {
+    fn get_value_as_bytes(&self, key: &str) -> Option<Vec<u8>> {
+        Some(match key {
             "frame" => {
                 let mut buf = vec![0; SLL2_FRAME_LEN];
 
@@ -110,8 +110,8 @@ impl LayerExt for Sll2Frame {
             "address_length" => vec![self.get_address_length()],
             "address" => self.get_address()[..self.get_address_length() as usize].to_vec(),
             "unused" => self.get_address()[self.get_address_length() as usize..].to_vec(),
-            _ => unimplemented!()
-        }
+            _ => return None
+        })
     }
 
     fn to_string(&self) -> String {

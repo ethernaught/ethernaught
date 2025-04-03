@@ -17,8 +17,8 @@ impl LayerExt for ArpExtension {
         ]
     }
 
-    fn get_selection(&self, key: &str) -> (usize, usize) {
-        match key {
+    fn get_selection(&self, key: &str) -> Option<(usize, usize)> {
+        Some(match key {
             "frame" => (0, 28),
             "hardware_type" => (0, 2),
             "protocol_type" => (2, 2),
@@ -29,12 +29,12 @@ impl LayerExt for ArpExtension {
             "sender_address" => (14, 4),
             "target_mac" => (18, 6),
             "target_address" => (24, 4),
-            _ => unimplemented!()
-        }
+            _ => return None
+        })
     }
 
-    fn get_field_name(&self, key: &str) -> String {
-        match key {
+    fn get_field_name(&self, key: &str) -> Option<String> {
+        Some(match key {
             "frame" => "arp",
             "hardware_type" => "arp.hardware_type",
             "protocol_type" => "arp.protocol_type",
@@ -45,12 +45,12 @@ impl LayerExt for ArpExtension {
             "sender_address" => "arp.sender_address",
             "target_mac" => "arp.target_mac",
             "target_address" => "arp.target_address",
-            _ => unimplemented!()
-        }.to_string()
+            _ => return None
+        }.to_string())
     }
 
-    fn get_title(&self, key: &str) -> String {
-        match key {
+    fn get_title(&self, key: &str) -> Option<String> {
+        Some(match key {
             "frame" => "Address Resolution Protocol",
             "hardware_type" => "Hardware Type",
             "protocol_type" => "Protocol Type",
@@ -61,12 +61,12 @@ impl LayerExt for ArpExtension {
             "sender_address" => "Sender IP Address",
             "target_mac" => "Target MAC Address",
             "target_address" => "Target IP Address",
-            _ => unimplemented!()
-        }.to_string()
+            _ => return None
+        }.to_string())
     }
 
-    fn get_value(&self, key: &str) -> String {
-        match key {
+    fn get_value(&self, key: &str) -> Option<String> {
+        Some(match key {
             "hardware_type" => format!("{} ({})", self.get_hardware_type().to_string(), self.get_hardware_type()),
             "protocol_type" => self.get_protocol_type().to_string(),
             "hardware_size" => self.get_hardware_size().to_string(),
@@ -76,12 +76,12 @@ impl LayerExt for ArpExtension {
             "sender_address" => self.get_sender_address().to_string(),
             "target_mac" => self.get_target_mac().to_string(),
             "target_address" => self.get_target_address().to_string(),
-            _ => unimplemented!()
-        }
+            _ => return None
+        })
     }
 
-    fn get_value_as_bytes(&self, key: &str) -> Vec<u8> {
-        match key {
+    fn get_value_as_bytes(&self, key: &str) -> Option<Vec<u8>> {
+        Some(match key {
             "frame" => {
                 let mut buf = vec![0; ARP_HEADER_LEN];
 
@@ -106,8 +106,8 @@ impl LayerExt for ArpExtension {
             "sender_address" => self.get_sender_address().octets().to_vec(),
             "target_mac" => self.get_target_mac().to_bytes().to_vec(),
             "target_address" => self.get_target_address().octets().to_vec(),
-            _ => unimplemented!()
-        }
+            _ => return None
+        })
     }
 
     fn to_string(&self) -> String {

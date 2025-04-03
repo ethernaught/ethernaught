@@ -23,30 +23,30 @@ pub trait Ipv6Dropdown {
 impl Ipv6Dropdown for Dropdown {
 
     fn from_ipv6_layer(db: &Database, hex_editor: &HexEditor, actions: &SimpleActionGroup, layer: &Ipv6Layer, offset: usize) -> Self {
-        let _self = Self::new(&layer.get_title("frame"));
+        let _self = Self::new(&layer.get_title("frame").unwrap());
         _self.list_box.connect_row_activated(set_selection(&hex_editor, layer, offset));
         _self.list_box.connect_button_press_event(context_menu(&hex_editor, actions, layer, offset));
 
-        _self.list_box.add(&create_row(format!("{}:", layer.get_title("version")), layer.get_value("version")));
-        _self.list_box.add(&create_row(format!("{}:", layer.get_title("payload_length")), layer.get_value("payload_length")));
-        _self.list_box.add(&create_row(format!("{}:", layer.get_title("next_header")), layer.get_value("next_header")));
-        _self.list_box.add(&create_row(format!("{}:", layer.get_title("hop_limit")), layer.get_value("hop_limit")));
+        _self.list_box.add(&create_row(format!("{}:", layer.get_title("version").unwrap()), layer.get_value("version").unwrap()));
+        _self.list_box.add(&create_row(format!("{}:", layer.get_title("payload_length").unwrap()), layer.get_value("payload_length").unwrap()));
+        _self.list_box.add(&create_row(format!("{}:", layer.get_title("next_header").unwrap()), layer.get_value("next_header").unwrap()));
+        _self.list_box.add(&create_row(format!("{}:", layer.get_title("hop_limit").unwrap()), layer.get_value("hop_limit").unwrap()));
 
         match ip_to_icon(db, IpAddr::V6(layer.get_source_address())) {
             Some(icon) => {
-                _self.list_box.add(&create_row_with_icon(format!("{}:", layer.get_title("source_address")), icon, layer.get_value("source_address")));
+                _self.list_box.add(&create_row_with_icon(format!("{}:", layer.get_title("source_address").unwrap()), icon, layer.get_value("source_address").unwrap()));
             }
             None => {
-                _self.list_box.add(&create_row(format!("{}:", layer.get_title("source_address")), layer.get_value("source_address")));
+                _self.list_box.add(&create_row(format!("{}:", layer.get_title("source_address").unwrap()), layer.get_value("source_address").unwrap()));
             }
         }
 
         match ip_to_icon(db, IpAddr::V6(layer.get_destination_address())) {
             Some(icon) => {
-                _self.list_box.add(&create_row_with_icon(format!("{}:", layer.get_title("destination_address")), icon, layer.get_value("destination_address")));
+                _self.list_box.add(&create_row_with_icon(format!("{}:", layer.get_title("destination_address").unwrap()), icon, layer.get_value("destination_address").unwrap()));
             }
             None => {
-                _self.list_box.add(&create_row(format!("{}:", layer.get_title("destination_address")), layer.get_value("destination_address")));
+                _self.list_box.add(&create_row(format!("{}:", layer.get_title("destination_address").unwrap()), layer.get_value("destination_address").unwrap()));
             }
         }
 

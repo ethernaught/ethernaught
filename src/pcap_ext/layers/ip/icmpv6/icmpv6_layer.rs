@@ -16,8 +16,8 @@ impl LayerExt for Icmpv6Layer {
         ]
     }
 
-    fn get_selection(&self, key: &str) -> (usize, usize) {
-        match key {
+    fn get_selection(&self, key: &str) -> Option<(usize, usize)> {
+        Some(match key {
             "frame" => (0, ICMP_HEADER_LEN),
             "type" => (0, 1),
             "code" => (1, 1),
@@ -26,12 +26,12 @@ impl LayerExt for Icmpv6Layer {
             "identifier_le" => (4, 2),
             "sequence_number_be" => (6, 2),
             "sequence_number_le" => (6, 2),
-            _ => unimplemented!()
-        }
+            _ => return None
+        })
     }
 
-    fn get_field_name(&self, key: &str) -> String {
-        match key {
+    fn get_field_name(&self, key: &str) -> Option<String> {
+        Some(match key {
             "frame" => "icmp",
             "type" => "icmp.type",
             "code" => "icmp.code",
@@ -40,12 +40,12 @@ impl LayerExt for Icmpv6Layer {
             "identifier_le" => "icmp.identifier_le",
             "sequence_number_be" => "icmp.sequence_number_be",
             "sequence_number_le" => "icmp.sequence_number_le",
-            _ => unimplemented!()
-        }.to_string()
+            _ => return None
+        }.to_string())
     }
 
-    fn get_title(&self, key: &str) -> String {
-        match key {
+    fn get_title(&self, key: &str) -> Option<String> {
+        Some(match key {
             "frame" => "Internet Control Message Protocol Version 6",
             "type" => "Type",
             "code" => "Code",
@@ -54,12 +54,12 @@ impl LayerExt for Icmpv6Layer {
             "identifier_le" => "Identifier (LE)",
             "sequence_number_be" => "Sequence Number (BE)",
             "sequence_number_le" => "Sequence Number (LE)",
-            _ => unimplemented!()
-        }.to_string()
+            _ => return None
+        }.to_string())
     }
 
-    fn get_value(&self, key: &str) -> String {
-        match key {
+    fn get_value(&self, key: &str) -> Option<String> {
+        Some(match key {
             "type" => format!("{} ({})", self.get_type(), self.get_type().to_string()),
             "code" => self.get_code().to_string(),
             "checksum" => format!("0x{:04X}", self.get_checksum()),
@@ -79,12 +79,12 @@ impl LayerExt for Icmpv6Layer {
                 let le = self.get_sequence_number().to_le();
                 format!("{} (0x{:04X})", le, le)
             }
-            _ => unimplemented!()
-        }
+            _ => return None
+        })
     }
 
-    fn get_value_as_bytes(&self, key: &str) -> Vec<u8> {
-        match key {
+    fn get_value_as_bytes(&self, key: &str) -> Option<Vec<u8>> {
+        Some(match key {
             "frame" => {
                 let mut buf = vec![0; ICMP_HEADER_LEN];
 
@@ -101,8 +101,8 @@ impl LayerExt for Icmpv6Layer {
             "checksum" => self.get_checksum().to_be_bytes().to_vec(),
             "identifier" => self.get_identifier().to_be_bytes().to_vec(),
             "sequence_number" => self.get_sequence_number().to_be_bytes().to_vec(),
-            _ => unimplemented!()
-        }
+            _ => return None
+        })
     }
 
     fn to_string(&self) -> String {

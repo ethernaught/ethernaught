@@ -14,8 +14,8 @@ impl LayerExt for Ipv6Layer {
         ]
     }
 
-    fn get_selection(&self, key: &str) -> (usize, usize) {
-        match key {
+    fn get_selection(&self, key: &str) -> Option<(usize, usize)> {
+        Some(match key {
             "frame" => (0, IPV6_HEADER_LEN),
             "version" => (0, 1),
             "traffic_class" => (1, 1),
@@ -25,12 +25,12 @@ impl LayerExt for Ipv6Layer {
             "hop_limit" => (7, 1),
             "source_address" => (8, 16),
             "destination_address" => (24, 16),
-            _ => unimplemented!()
-        }
+            _ => return None
+        })
     }
 
-    fn get_field_name(&self, key: &str) -> String {
-        match key {
+    fn get_field_name(&self, key: &str) -> Option<String> {
+        Some(match key {
             "frame" => "ipv6",
             "version" => "ipv6.version",
             "traffic_class" => "ipv6.traffic_class",
@@ -40,12 +40,12 @@ impl LayerExt for Ipv6Layer {
             "hop_limit" => "ipv6.hop_limit",
             "source_address" => "ipv6.source",
             "destination_address" => "ipv6.destination",
-            _ => unimplemented!()
-        }.to_string()
+            _ => return None
+        }.to_string())
     }
 
-    fn get_title(&self, key: &str) -> String {
-        match key {
+    fn get_title(&self, key: &str) -> Option<String> {
+        Some(match key {
             "frame" => "Internet Protocol Version 6",
             "version" => "Version",
             "traffic_class" => todo!(),
@@ -55,12 +55,12 @@ impl LayerExt for Ipv6Layer {
             "hop_limit" => "Hop Limit",
             "source_address" => "Source Address",
             "destination_address" => "Destination Address",
-            _ => unimplemented!()
-        }.to_string()
+            _ => return None
+        }.to_string())
     }
 
-    fn get_value(&self, key: &str) -> String {
-        match key {
+    fn get_value(&self, key: &str) -> Option<String> {
+        Some(match key {
             "version" => format!("{} ({})", self.get_version().to_string(), self.get_version().get_code()),
             "traffic_class" => self.get_traffic_class().to_string(),
             "flow_label" => self.get_flow_label().to_string(),
@@ -69,11 +69,11 @@ impl LayerExt for Ipv6Layer {
             "hop_limit" => self.get_hop_limit().to_string(),
             "source_address" => self.get_source_address().to_string(),
             "destination_address" => self.get_destination_address().to_string(),
-            _ => unimplemented!()
-        }
+            _ => return None
+        })
     }
 
-    fn get_value_as_bytes(&self, key: &str) -> Vec<u8> {
+    fn get_value_as_bytes(&self, key: &str) -> Option<Vec<u8>> {
         todo!()
     }
 

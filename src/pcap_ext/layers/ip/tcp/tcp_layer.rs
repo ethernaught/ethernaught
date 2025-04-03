@@ -18,8 +18,8 @@ impl LayerExt for TcpLayer {
         ]
     }
 
-    fn get_selection(&self, key: &str) -> (usize, usize) {
-        match key {
+    fn get_selection(&self, key: &str) -> Option<(usize, usize)> {
+        Some(match key {
             "frame" => (0, TCP_HEADER_LEN),
             "source_port" => (0, 2),
             "destination_port" => (2, 2),
@@ -30,12 +30,12 @@ impl LayerExt for TcpLayer {
             "window_size" => (14, 2),
             "checksum" => (16, 2),
             "urgent_pointer" => (18, 2),
-            _ => unimplemented!()
-        }
+            _ => return None
+        })
     }
 
-    fn get_field_name(&self, key: &str) -> String {
-        match key {
+    fn get_field_name(&self, key: &str) -> Option<String> {
+        Some(match key {
             "frame" => "tcp",
             "source_port" => "tcp.source_port",
             "destination_port" => "tcp.destination_port",
@@ -46,12 +46,12 @@ impl LayerExt for TcpLayer {
             "window_size" => "tcp.window_size",
             "checksum" => "tcp.checksum",
             "urgent_pointer" => "tcp.urgent_pointer",
-            _ => unimplemented!()
-        }.to_string()
+            _ => return None
+        }.to_string())
     }
 
-    fn get_title(&self, key: &str) -> String {
-        match key {
+    fn get_title(&self, key: &str) -> Option<String> {
+        Some(match key {
             "frame" => "Transmission Control Protocol",
             "source_port" => "Source Port",
             "destination_port" => "Destination Port",
@@ -62,12 +62,12 @@ impl LayerExt for TcpLayer {
             "window_size" => "Window",
             "checksum" => "Checksum",
             "urgent_pointer" => "Urgent Pointer",
-            _ => unimplemented!()
-        }.to_string()
+            _ => return None
+        }.to_string())
     }
 
-    fn get_value(&self, key: &str) -> String {
-        match key {
+    fn get_value(&self, key: &str) -> Option<String> {
+        Some(match key {
             "source_port" => {
                 match TcpPorts::from_code(self.get_source_port()) {
                     Ok(port) => {
@@ -95,12 +95,12 @@ impl LayerExt for TcpLayer {
             "window_size" => self.get_window_size().to_string(),
             "checksum" => format!("0x{:04X}", self.get_checksum()),
             "urgent_pointer" => self.get_urgent_pointer().to_string(),
-            _ => unimplemented!()
-        }
+            _ => return None
+        })
     }
 
-    fn get_value_as_bytes(&self, key: &str) -> Vec<u8> {
-        match key {
+    fn get_value_as_bytes(&self, key: &str) -> Option<Vec<u8>> {
+        Some(match key {
             "frame" => {
                 let mut buf = vec![0; TCP_HEADER_LEN];
 
@@ -126,8 +126,8 @@ impl LayerExt for TcpLayer {
             "window_size" => self.get_window_size().to_be_bytes().to_vec(),
             "checksum" => self.get_checksum().to_be_bytes().to_vec(),
             "urgent_pointer" => self.get_urgent_pointer().to_be_bytes().to_vec(),
-            _ => unimplemented!()
-        }
+            _ => return None
+        })
     }
 
     fn to_string(&self) -> String {

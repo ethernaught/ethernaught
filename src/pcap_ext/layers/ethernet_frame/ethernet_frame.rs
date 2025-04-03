@@ -11,47 +11,47 @@ impl LayerExt for EthernetFrame {
         ]
     }
 
-    fn get_selection(&self, key: &str) -> (usize, usize) {
-        match key {
+    fn get_selection(&self, key: &str) -> Option<(usize, usize)> {
+        Some(match key {
             "frame" => (0, ETHERNET_FRAME_LEN),
             "destination" => (0, 6),
             "source" => (6, 6),
             "type" => (12, 2),
-            _ => unimplemented!()
-        }
+            _ => return None
+        })
     }
 
-    fn get_field_name(&self, key: &str) -> String {
-        match key {
+    fn get_field_name(&self, key: &str) -> Option<String> {
+        Some(match key {
             "frame" => "ethernet",
             "destination" => "ethernet.destination",
             "source" => "ethernet.source",
             "type" => "ethernet.type",
-            _ => unimplemented!()
-        }.to_string()
+            _ => return None
+        }.to_string())
     }
 
-    fn get_title(&self, key: &str) -> String {
-        match key {
+    fn get_title(&self, key: &str) -> Option<String> {
+        Some(match key {
             "frame" => "Ethernet",
             "destination" => "Destination",
             "source" => "Source",
             "type" => "Type",
-            _ => unimplemented!()
-        }.to_string()
+            _ => return None
+        }.to_string())
     }
 
-    fn get_value(&self, key: &str) -> String {
-        match key {
+    fn get_value(&self, key: &str) -> Option<String> {
+        Some(match key {
             "destination" => self.get_destination_mac().to_string(),
             "source" => self.get_source_mac().to_string(),
             "type" => format!("{} (0x{:04X})", self.get_type().to_string(), self.get_type().get_code()),
-            _ => unimplemented!()
-        }
+            _ => return None
+        })
     }
 
-    fn get_value_as_bytes(&self, key: &str) -> Vec<u8> {
-        match key {
+    fn get_value_as_bytes(&self, key: &str) -> Option<Vec<u8>> {
+        Some(match key {
             "frame" => {
                 let mut buf = vec![0; ETHERNET_FRAME_LEN];
 
@@ -64,8 +64,8 @@ impl LayerExt for EthernetFrame {
             "destination" => self.get_destination_mac().to_bytes().to_vec(),
             "source" => self.get_source_mac().to_bytes().to_vec(),
             "type" => self.get_type().get_code().to_be_bytes().to_vec(),
-            _ => unimplemented!()
-        }
+            _ => return None
+        })
     }
 
     fn to_string(&self) -> String {

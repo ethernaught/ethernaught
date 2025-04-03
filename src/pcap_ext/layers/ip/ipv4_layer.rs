@@ -20,8 +20,8 @@ impl LayerExt for Ipv4Layer {
         ]
     }
 
-    fn get_selection(&self, key: &str) -> (usize, usize) {
-        match key {
+    fn get_selection(&self, key: &str) -> Option<(usize, usize)> {
+        Some(match key {
             "frame" => (0, IPV4_HEADER_LEN),
             "version" => (0, 1),
             "tos" => (1, 1),
@@ -34,12 +34,12 @@ impl LayerExt for Ipv4Layer {
             "checksum" => (10, 2),
             "source_address" => (12, 4),
             "destination_address" => (16, 4),
-            _ => unimplemented!()
-        }
+            _ => return None
+        })
     }
 
-    fn get_field_name(&self, key: &str) -> String {
-        match key {
+    fn get_field_name(&self, key: &str) -> Option<String> {
+        Some(match key {
             "frame" => "ipv4",
             "version" => "ipv4.version",
             "ihl" => "ipv4.ihl",
@@ -53,12 +53,12 @@ impl LayerExt for Ipv4Layer {
             "checksum" => "ipv4.checksum",
             "source_address" => "ipv4.source",
             "destination_address" => "ipv4.destination",
-            _ => unimplemented!()
-        }.to_string()
+            _ => return None
+        }.to_string())
     }
 
-    fn get_title(&self, key: &str) -> String {
-        match key {
+    fn get_title(&self, key: &str) -> Option<String> {
+        Some(match key {
             "frame" => "Internet Protocol Version 4",
             "version" => "Version",
             "ihl" => todo!(),
@@ -72,12 +72,12 @@ impl LayerExt for Ipv4Layer {
             "checksum" => "Header Checksum",
             "source_address" => "Source Address",
             "destination_address" => "Destination Address",
-            _ => unimplemented!()
-        }.to_string()
+            _ => return None
+        }.to_string())
     }
 
-    fn get_value(&self, key: &str) -> String {
-        match key {
+    fn get_value(&self, key: &str) -> Option<String> {
+        Some(match key {
             "version" => format!("{} ({})", self.get_version().to_string(), self.get_version().get_code()),
             "ihl" => todo!(),
             "tos" => self.get_tos().to_string(),
@@ -90,12 +90,12 @@ impl LayerExt for Ipv4Layer {
             "checksum" => format!("0x{:04X}", self.get_checksum()),
             "source_address" => self.get_source_address().to_string(),
             "destination_address" => self.get_destination_address().to_string(),
-            _ => unimplemented!()
-        }
+            _ => return None
+        })
     }
 
-    fn get_value_as_bytes(&self, key: &str) -> Vec<u8> {
-        match key {
+    fn get_value_as_bytes(&self, key: &str) -> Option<Vec<u8>> {
+        Some(match key {
             "frame" => {
                 let mut buf = vec![0; IPV4_HEADER_LEN];
 
@@ -125,8 +125,8 @@ impl LayerExt for Ipv4Layer {
             "checksum" => self.get_checksum().to_be_bytes().to_vec(),
             "source_address" => self.get_source_address().octets().to_vec(),
             "destination_address" => self.get_destination_address().octets().to_vec(),
-            _ => unimplemented!()
-        }
+            _ => return None
+        })
     }
 
     fn to_string(&self) -> String {
