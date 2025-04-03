@@ -112,16 +112,13 @@ impl SidebarView {
 
                 match ethernet_frame.get_type() {
                     EthernetTypes::Ipv4 => {
-                        let ipv4_layer = ethernet_frame.get_data::<Ipv4Layer>().unwrap();
-                        create_ipv4_details(&details, &db, &hex_editor, &actions, &ipv4_layer, offset);
+                        create_ipv4_details(&details, &db, &hex_editor, &actions, &ethernet_frame.get_data::<Ipv4Layer>().unwrap(), offset);
                     }
                     EthernetTypes::Arp => {
-                        let arp_layer = ethernet_frame.get_data::<ArpExtension>().unwrap();
-                        details.add(&Dropdown::from_arp_extension(&db, &hex_editor, &actions, arp_layer, offset).root);
+                        details.add(&Dropdown::from_arp_extension(&db, &hex_editor, &actions, ethernet_frame.get_data::<ArpExtension>().unwrap(), offset).root);
                     }
                     EthernetTypes::Ipv6 => {
-                        let ipv6_layer = ethernet_frame.get_data::<Ipv6Layer>().unwrap();
-                        create_ipv6_details(&details, &db, &hex_editor, &actions, &ipv6_layer, offset);
+                        create_ipv6_details(&details, &db, &hex_editor, &actions, &ethernet_frame.get_data::<Ipv6Layer>().unwrap(), offset);
                     }
                     EthernetTypes::Broadcast => {
                     }
@@ -134,12 +131,10 @@ impl SidebarView {
 
                 match sll2_frame.get_protocol() {
                     EthernetTypes::Ipv4 => {
-                        let ipv4_layer = sll2_frame.get_data::<Ipv4Layer>().unwrap();
-                        create_ipv4_details(&details, &db, &hex_editor, &actions, &ipv4_layer, offset);
+                        create_ipv4_details(&details, &db, &hex_editor, &actions, &sll2_frame.get_data::<Ipv4Layer>().unwrap(), offset);
                     }
                     EthernetTypes::Ipv6 => {
-                        let ipv6_layer = sll2_frame.get_data::<Ipv6Layer>().unwrap();
-                        create_ipv6_details(&details, &db, &hex_editor, &actions, &ipv6_layer, offset);
+                        create_ipv6_details(&details, &db, &hex_editor, &actions, &sll2_frame.get_data::<Ipv6Layer>().unwrap(), offset);
                     }
                     _ => {}
                 }
@@ -149,12 +144,10 @@ impl SidebarView {
 
                 match raw_frame.get_version() {
                     IpVersions::Ipv4 => {
-                        let ipv4_layer = raw_frame.get_data::<Ipv4Layer>().unwrap();
-                        create_ipv4_details(&details, &db, &hex_editor, &actions, &ipv4_layer, offset);
+                        create_ipv4_details(&details, &db, &hex_editor, &actions, &raw_frame.get_data::<Ipv4Layer>().unwrap(), offset);
                     }
                     IpVersions::Ipv6 => {
-                        let ipv6_layer = raw_frame.get_data::<Ipv6Layer>().unwrap();
-                        create_ipv6_details(&details, &db, &hex_editor, &actions, &ipv6_layer, offset);
+                        create_ipv6_details(&details, &db, &hex_editor, &actions, &raw_frame.get_data::<Ipv6Layer>().unwrap(), offset);
                     }
                 }
             }
@@ -164,12 +157,10 @@ impl SidebarView {
 
                 match loop_frame.get_type() {
                     LoopTypes::Ipv4 => {
-                        let ipv4_layer = loop_frame.get_data::<Ipv4Layer>().unwrap();
-                        create_ipv4_details(&details, &db, &hex_editor, &actions, &ipv4_layer, offset);
+                        create_ipv4_details(&details, &db, &hex_editor, &actions, &loop_frame.get_data::<Ipv4Layer>().unwrap(), offset);
                     }
                     LoopTypes::Ipv6 | LoopTypes::Ipv6e2 | LoopTypes::Ipv6e3 => {
-                        let ipv6_layer = loop_frame.get_data::<Ipv6Layer>().unwrap();
-                        create_ipv6_details(&details, &db, &hex_editor, &actions, &ipv6_layer, offset);
+                        create_ipv6_details(&details, &db, &hex_editor, &actions, &loop_frame.get_data::<Ipv6Layer>().unwrap(), offset);
                     }
                     _ => {}
                 }

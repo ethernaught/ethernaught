@@ -27,6 +27,8 @@ use rlibpcap::packet::packet::Packet;
 use rlibpcap::pcap::pcap::Pcap;
 use rlibpcap::utils::data_link_types::DataLinkTypes;
 use crate::pcap_ext::layers::inter::layer_ext::LayerExt;
+use crate::pcap_ext::packet_ext::PacketExt;
+use crate::pcap_ext::packet_query::PacketQuery;
 use crate::views::dropdown::dropdown::Dropdown;
 
 #[derive(Clone)]
@@ -203,20 +205,26 @@ impl PacketsView {
         }
 
 
-        let query = Rc::new(RefCell::new(String::new()));
+        let query = Rc::new(RefCell::new(PacketQuery::from("")));
         let packets = Rc::new(RefCell::new(pcap.get_packets()));
-        tree_filter.set_visible_func(filter(&query, &packets));
+
+        tree_filter.set_visible_func({
+            let query = query.clone();
+            let packets = packets.clone();
+            move |model, iter| {
+                let index: u32 = model.value(iter, 0).get().unwrap_or_default();
+
+                packets.borrow().get(index as usize).unwrap().matches(&query.borrow())
+            }
+        });//filter(&query, &packets));
 
         search.connect_activate({
             let query = query.clone();
             let tree_filter = tree_filter.clone();
             move |entry| {
                 let text = entry.text();
-
-                *query.borrow_mut() = text.to_string();
-
+                *query.borrow_mut() = PacketQuery::from(&text.to_string());
                 tree_filter.refilter();
-
             }
         });
 
@@ -430,206 +438,3 @@ fn get_data_from_ipv6_frame(layer: &Ipv6Layer) -> (String, String, String) {
         }
     }
 }
-
-fn filter(query: &Rc<RefCell<String>>, packets: &Rc<RefCell<Vec<Packet>>>) -> impl Fn(&TreeModel, &TreeIter) -> bool + 'static {
-    let query = query.clone();
-    let packets = packets.clone();
-
-    move |model, iter| {
-        let index: u32 = model.value(iter, 0).get().unwrap_or_default();
-        println!("{}  {}", query.borrow(), index);
-
-        /*
-        if let Some(packet) = packets.borrow().get(index as usize) {
-            match packet.get_data_link_type() {
-                DataLinkTypes::En10mb => {
-                    let ethernet_frame = packet.get_frame::<EthernetFrame>();//.as_any().downcast_ref::<EthernetFrame>().unwrap();
-                    if ethernet_frame.get_field_name("frame").eq(&*query.borrow()) {
-                        return true;
-                    }
-
-                    if query_layer(&*query.borrow(), ethernet_frame) {
-                        return true;
-                    }
-
-                    match ethernet_frame.get_type() {
-                        EthernetTypes::Ipv4 => {
-                            let ipv4_layer = ethernet_frame.get_data().unwrap().as_any().downcast_ref::<Ipv4Layer>().unwrap();
-                            if ipv4_layer.get_field_name("frame").eq(&*query.borrow()) {
-                                return true;
-                            }
-
-                            if query_layer(&*query.borrow(), ipv4_layer) {
-                                return true;
-                            }
-
-
-
-                            match ipv4_layer.get_protocol() {
-                                IpProtocols::HopByHop => {}
-                                IpProtocols::Icmp => {
-                                    let icmp_layer = ipv4_layer.get_data().unwrap().as_any().downcast_ref::<IcmpLayer>().unwrap();
-                                    if icmp_layer.get_field_name("frame").eq(&*query.borrow()) {
-                                        return true;
-                                    }
-
-                                    if query_layer(&*query.borrow(), icmp_layer) {
-                                        return true;
-                                    }
-                                }
-                                IpProtocols::Igmp => {}
-                                IpProtocols::Tcp => {
-                                    let tcp_layer = ipv4_layer.get_data().unwrap().as_any().downcast_ref::<TcpLayer>().unwrap();
-                                    if tcp_layer.get_field_name("frame").eq(&*query.borrow()) {
-                                        return true;
-                                    }
-
-                                    if query_layer(&*query.borrow(), tcp_layer) {
-                                        return true;
-                                    }
-                                }
-                                IpProtocols::Udp => {
-                                    let udp_layer = ipv4_layer.get_data().unwrap().as_any().downcast_ref::<UdpLayer>().unwrap();
-                                    if udp_layer.get_field_name("frame").eq(&*query.borrow()) {
-                                        return true;
-                                    }
-
-                                    if query_layer(&*query.borrow(), udp_layer) {
-                                        return true;
-                                    }
-                                }
-                                IpProtocols::Ipv6 => {}
-                                IpProtocols::Gre => {}
-                                IpProtocols::Icmpv6 => {}
-                                IpProtocols::Ospf => {}
-                                IpProtocols::Sps => {}
-                            }
-
-                        }
-                        EthernetTypes::Arp => {
-                            let arp_layer = ethernet_frame.get_data().unwrap().as_any().downcast_ref::<ArpExtension>().unwrap();
-                            if arp_layer.get_field_name("frame").eq(&*query.borrow()) {
-                                return true;
-                            }
-
-                            if query_layer(&*query.borrow(), arp_layer) {
-                                return true;
-                            }
-                        }
-                        EthernetTypes::Ipv6 => {
-                            let ipv6_layer = ethernet_frame.get_data().unwrap().as_any().downcast_ref::<Ipv6Layer>().unwrap();
-                            if ipv6_layer.get_field_name("frame").eq(&*query.borrow()) {
-                                return true;
-                            }
-
-                            if query_layer(&*query.borrow(), ipv6_layer) {
-                                return true;
-                            }
-                        }
-                        EthernetTypes::Broadcast => {}
-                    }
-                }
-                DataLinkTypes::Sll2 => {
-                    let sll2_frame = packet.get_frame::<Sll2Frame>();//.as_any().downcast_ref::<Sll2Frame>().unwrap();
-                    if sll2_frame.get_field_name("frame").eq(&*query.borrow()) {
-                        return true;
-                    }
-
-                    if query_layer(&*query.borrow(), sll2_frame) {
-                        return true;
-                    }
-
-                    match sll2_frame.get_protocol() {
-                        EthernetTypes::Ipv4 => {
-                            let ipv4_layer = sll2_frame.get_data().unwrap().as_any().downcast_ref::<Ipv4Layer>().unwrap();
-                            if ipv4_layer.get_field_name("frame").eq(&*query.borrow()) {
-                                return true;
-                            }
-
-                            if query_layer(&*query.borrow(), ipv4_layer) {
-                                return true;
-                            }
-
-                            match ipv4_layer.get_protocol() {
-                                IpProtocols::HopByHop => {}
-                                IpProtocols::Icmp => {
-                                    let icmp_layer = ipv4_layer.get_data().unwrap().as_any().downcast_ref::<IcmpLayer>().unwrap();
-                                    if icmp_layer.get_field_name("frame").eq(&*query.borrow()) {
-                                        return true;
-                                    }
-
-                                    if query_layer(&*query.borrow(), icmp_layer) {
-                                        return true;
-                                    }
-                                }
-                                IpProtocols::Igmp => {}
-                                IpProtocols::Tcp => {
-                                    let tcp_layer = ipv4_layer.get_data().unwrap().as_any().downcast_ref::<TcpLayer>().unwrap();
-                                    if tcp_layer.get_field_name("frame").eq(&*query.borrow()) {
-                                        return true;
-                                    }
-
-                                    if query_layer(&*query.borrow(), tcp_layer) {
-                                        return true;
-                                    }
-                                }
-                                IpProtocols::Udp => {
-                                    let udp_layer = ipv4_layer.get_data().unwrap().as_any().downcast_ref::<UdpLayer>().unwrap();
-                                    if udp_layer.get_field_name("frame").eq(&*query.borrow()) {
-                                        return true;
-                                    }
-
-                                    if query_layer(&*query.borrow(), udp_layer) {
-                                        return true;
-                                    }
-                                }
-                                IpProtocols::Ipv6 => {}
-                                IpProtocols::Gre => {}
-                                IpProtocols::Icmpv6 => {}
-                                IpProtocols::Ospf => {}
-                                IpProtocols::Sps => {}
-                            }
-                        }
-                        EthernetTypes::Arp => {
-                            let arp_layer = sll2_frame.get_data().unwrap().as_any().downcast_ref::<ArpExtension>().unwrap();
-                            if arp_layer.get_field_name("frame").eq(&*query.borrow()) {
-                                return true;
-                            }
-
-                            if query_layer(&*query.borrow(), arp_layer) {
-                                return true;
-                            }
-                        }
-                        EthernetTypes::Ipv6 => {
-                            let ipv6_layer = sll2_frame.get_data().unwrap().as_any().downcast_ref::<Ipv6Layer>().unwrap();
-                            if ipv6_layer.get_field_name("frame").eq(&*query.borrow()) {
-                                return true;
-                            }
-
-                            if query_layer(&*query.borrow(), ipv6_layer) {
-                                return true;
-                            }
-                        }
-                        EthernetTypes::Broadcast => {}
-                    }
-                }
-                _ => {}
-            }
-        }*/
-
-        false
-    }
-}
-
-fn query_layer(query: &str, layer: &dyn LayerExt) -> bool {
-    if layer.get_fields().contains(&query) {
-        return true;
-    }
-
-    false
-}
-
-
-
-
-
