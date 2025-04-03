@@ -111,15 +111,9 @@ impl SidebarView {
                 offset += ETHERNET_FRAME_LEN;
 
                 match ethernet_frame.get_type() {
-                    EthernetTypes::Ipv4 => {
-                        create_ipv4_details(&details, &db, &hex_editor, &actions, &ethernet_frame.get_data::<Ipv4Layer>().unwrap(), offset);
-                    }
-                    EthernetTypes::Arp => {
-                        details.add(&Dropdown::from_arp_extension(&db, &hex_editor, &actions, ethernet_frame.get_data::<ArpExtension>().unwrap(), offset).root);
-                    }
-                    EthernetTypes::Ipv6 => {
-                        create_ipv6_details(&details, &db, &hex_editor, &actions, &ethernet_frame.get_data::<Ipv6Layer>().unwrap(), offset);
-                    }
+                    EthernetTypes::Ipv4 => create_ipv4_details(&details, &db, &hex_editor, &actions, &ethernet_frame.get_data::<Ipv4Layer>().unwrap(), offset),
+                    EthernetTypes::Arp => details.add(&Dropdown::from_arp_extension(&db, &hex_editor, &actions, ethernet_frame.get_data::<ArpExtension>().unwrap(), offset).root),
+                    EthernetTypes::Ipv6 => create_ipv6_details(&details, &db, &hex_editor, &actions, &ethernet_frame.get_data::<Ipv6Layer>().unwrap(), offset),
                     EthernetTypes::Broadcast => {
                     }
                 }
@@ -130,12 +124,8 @@ impl SidebarView {
                 offset += SLL2_FRAME_LEN;
 
                 match sll2_frame.get_protocol() {
-                    EthernetTypes::Ipv4 => {
-                        create_ipv4_details(&details, &db, &hex_editor, &actions, &sll2_frame.get_data::<Ipv4Layer>().unwrap(), offset);
-                    }
-                    EthernetTypes::Ipv6 => {
-                        create_ipv6_details(&details, &db, &hex_editor, &actions, &sll2_frame.get_data::<Ipv6Layer>().unwrap(), offset);
-                    }
+                    EthernetTypes::Ipv4 => create_ipv4_details(&details, &db, &hex_editor, &actions, &sll2_frame.get_data::<Ipv4Layer>().unwrap(), offset),
+                    EthernetTypes::Ipv6 => create_ipv6_details(&details, &db, &hex_editor, &actions, &sll2_frame.get_data::<Ipv6Layer>().unwrap(), offset),
                     _ => {}
                 }
             }
@@ -143,12 +133,8 @@ impl SidebarView {
                 let raw_frame = packet.get_frame::<RawFrame>();//.as_any().downcast_ref::<RawFrame>().unwrap();
 
                 match raw_frame.get_version() {
-                    IpVersions::Ipv4 => {
-                        create_ipv4_details(&details, &db, &hex_editor, &actions, &raw_frame.get_data::<Ipv4Layer>().unwrap(), offset);
-                    }
-                    IpVersions::Ipv6 => {
-                        create_ipv6_details(&details, &db, &hex_editor, &actions, &raw_frame.get_data::<Ipv6Layer>().unwrap(), offset);
-                    }
+                    IpVersions::Ipv4 => create_ipv4_details(&details, &db, &hex_editor, &actions, &raw_frame.get_data::<Ipv4Layer>().unwrap(), offset),
+                    IpVersions::Ipv6 => create_ipv6_details(&details, &db, &hex_editor, &actions, &raw_frame.get_data::<Ipv6Layer>().unwrap(), offset)
                 }
             }
             DataLinkTypes::Loop => {
@@ -156,12 +142,8 @@ impl SidebarView {
                 offset += LOOP_FRAME_LENGTH;
 
                 match loop_frame.get_type() {
-                    LoopTypes::Ipv4 => {
-                        create_ipv4_details(&details, &db, &hex_editor, &actions, &loop_frame.get_data::<Ipv4Layer>().unwrap(), offset);
-                    }
-                    LoopTypes::Ipv6 | LoopTypes::Ipv6e2 | LoopTypes::Ipv6e3 => {
-                        create_ipv6_details(&details, &db, &hex_editor, &actions, &loop_frame.get_data::<Ipv6Layer>().unwrap(), offset);
-                    }
+                    LoopTypes::Ipv4 => create_ipv4_details(&details, &db, &hex_editor, &actions, &loop_frame.get_data::<Ipv4Layer>().unwrap(), offset),
+                    LoopTypes::Ipv6 | LoopTypes::Ipv6e2 | LoopTypes::Ipv6e3 => create_ipv6_details(&details, &db, &hex_editor, &actions, &loop_frame.get_data::<Ipv6Layer>().unwrap(), offset),
                     _ => {}
                 }
             }

@@ -413,12 +413,8 @@ fn get_data_from_ipv4_frame(layer: &Ipv4Layer) -> (String, String, String) {
             let udp_layer = layer.get_data::<UdpLayer>().unwrap();
 
             match udp_layer.get_payload() {
-                UdpPayloads::Known(_type, _) => {
-                    (layer.get_source_address().to_string(), layer.get_destination_address().to_string(), udp_layer.get_type().to_string())
-                }
-                _ => {
-                    (layer.get_source_address().to_string(), layer.get_destination_address().to_string(), layer.get_protocol().to_string())
-                }
+                UdpPayloads::Known(_type, _) => (layer.get_source_address().to_string(), layer.get_destination_address().to_string(), udp_layer.get_type().to_string()),
+                _ => (layer.get_source_address().to_string(), layer.get_destination_address().to_string(), layer.get_protocol().to_string())
             }
         }
         _ => {
@@ -433,12 +429,8 @@ fn get_data_from_ipv6_frame(layer: &Ipv6Layer) -> (String, String, String) {
             let udp_layer = layer.get_data::<UdpLayer>().unwrap();
 
             match udp_layer.get_payload() {
-                UdpPayloads::Known(_type, _) => {
-                    (layer.get_source_address().to_string(), layer.get_destination_address().to_string(), udp_layer.get_type().to_string())
-                }
-                _ => {
-                    (layer.get_source_address().to_string(), layer.get_destination_address().to_string(), layer.get_next_header().to_string())
-                }
+                UdpPayloads::Known(_type, _) => (layer.get_source_address().to_string(), layer.get_destination_address().to_string(), udp_layer.get_type().to_string()),
+                _ => (layer.get_source_address().to_string(), layer.get_destination_address().to_string(), layer.get_next_header().to_string())
             }
         }
         _ => {
