@@ -109,6 +109,34 @@ impl PacketsView {
             }
         });
 
+
+        let query = Rc::new(RefCell::new(Vec::new()));
+        let packets: Rc<RefCell<Vec<Packet>>> = Rc::new(RefCell::new(Vec::new()));
+
+        tree_filter.set_visible_func({
+            let query = query.clone();
+            let packets = packets.clone();
+            move |model, iter| {
+                if query.borrow().is_empty() {
+                    return true;
+                }
+
+                let index: u32 = model.value(iter, 0).get().unwrap_or_default();
+                packets.borrow().get(index as usize).unwrap().matches(&query.borrow())
+            }
+        });
+
+        search.connect_activate({
+            let query = query.clone();
+            let tree_filter = tree_filter.clone();
+            move |entry| {
+                let text = entry.text();
+                *query.borrow_mut() = PacketQuery::from(&text.to_string());
+                tree_filter.refilter();
+            }
+        });
+
+
         Self {
             root,
             search,
@@ -116,7 +144,7 @@ impl PacketsView {
             tree_view,
             model,
             tree_filter,
-            packets: Rc::new(RefCell::new(Vec::new()))
+            packets//: Rc::new(RefCell::new(Vec::new()))
         }
     }
 
@@ -205,18 +233,21 @@ impl PacketsView {
         }
 
 
-        let query = Rc::new(RefCell::new(PacketQuery::from("")));
+        let query = Rc::new(RefCell::new(Vec::new()));
         let packets = Rc::new(RefCell::new(pcap.get_packets()));
 
         tree_filter.set_visible_func({
             let query = query.clone();
             let packets = packets.clone();
             move |model, iter| {
-                let index: u32 = model.value(iter, 0).get().unwrap_or_default();
+                if query.borrow().is_empty() {
+                    return true;
+                }
 
+                let index: u32 = model.value(iter, 0).get().unwrap_or_default();
                 packets.borrow().get(index as usize).unwrap().matches(&query.borrow())
             }
-        });//filter(&query, &packets));
+        });
 
         search.connect_activate({
             let query = query.clone();
@@ -228,7 +259,6 @@ impl PacketsView {
             }
         });
 
-
         Self {
             root,
             search,
@@ -236,7 +266,7 @@ impl PacketsView {
             tree_view,
             model,
             tree_filter,
-            packets//: Rc::new(RefCell::new(pcap.get_packets()))
+            packets
         }
     }
 
@@ -248,6 +278,7 @@ impl PacketsView {
             packet_length) = Self::get_model_values(&packet);
 
         let packet_total = self.packets.borrow().len() as u32;
+        self.packets.borrow_mut().push(packet);
 
         self.model.insert_with_values(None, &[
             (0, &packet_total),
@@ -258,7 +289,6 @@ impl PacketsView {
             (5, &packet_length),
             //(6, &"TODO".to_string()),
         ]);
-        self.packets.borrow_mut().push(packet);
     }
 
     fn get_model_values(packet: &Packet) -> (String, String, String, String, String) {
@@ -393,7 +423,7 @@ fn init_column(tree: &TreeView, title: &str, col_id: i32, min_width: i32) {
         };
 
         cell.set_property("cell-background", &color);
-        cell.set_property("cell-background-set", &true); // Let GTK handle selection color
+        cell.set_property("cell-background-set", &true);
     })));
 
     tree.append_column(&column);

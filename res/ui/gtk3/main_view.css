@@ -10,6 +10,7 @@
     border-radius: 0;
     border-bottom: solid 1px @background_shimmer;
     color: @text_primary;
+    caret-color: @text_primary;
     background-color: @background_secondary;
     font-size: 14px;
 }
