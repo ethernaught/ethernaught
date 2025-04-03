@@ -70,7 +70,7 @@ fn main() {
     //unsafe { env::set_var("GTK_THEME", "Adwaita:dark") };
 
     let app = App::new();
-    //app.run();
+    app.run();
 
     println!("{:?}", PacketQuery::from("ethernet.source=asd & ipv4.destination=asdasd & tcp"));
 

@@ -256,14 +256,14 @@ impl PacketsView {
     fn get_model_values(packet: &Packet) -> (String, String, String, String, String) {
         let (source, destination, protocol) = match packet.get_data_link_type() {
             DataLinkTypes::En10mb => {
-                let ethernet_frame = packet.get_frame().as_any().downcast_ref::<EthernetFrame>().unwrap();
+                let ethernet_frame = packet.get_frame::<EthernetFrame>();//.as_any().downcast_ref::<EthernetFrame>().unwrap();
 
                 match ethernet_frame.get_type() {
                     EthernetTypes::Ipv4 => {
-                        get_data_from_ipv4_frame(ethernet_frame.get_data().unwrap().as_any().downcast_ref::<Ipv4Layer>().unwrap())
+                        get_data_from_ipv4_frame(ethernet_frame.get_data::<Ipv4Layer>().unwrap())
                     }
                     EthernetTypes::Ipv6 => {
-                        get_data_from_ipv6_frame(ethernet_frame.get_data().unwrap().as_any().downcast_ref::<Ipv6Layer>().unwrap())
+                        get_data_from_ipv6_frame(ethernet_frame.get_data::<Ipv6Layer>().unwrap())
                     }
                     EthernetTypes::Broadcast => {
                         //source_label.set_label(&ethernet_layer.get_source().to_string());
@@ -276,14 +276,14 @@ impl PacketsView {
                 }
             }
             DataLinkTypes::Sll2 => {
-                let sll2_frame = packet.get_frame().as_any().downcast_ref::<Sll2Frame>().unwrap();
+                let sll2_frame = packet.get_frame::<Sll2Frame>();//.as_any().downcast_ref::<Sll2Frame>().unwrap();
 
                 match sll2_frame.get_protocol() {
                     EthernetTypes::Ipv4 => {
-                        get_data_from_ipv4_frame(sll2_frame.get_data().unwrap().as_any().downcast_ref::<Ipv4Layer>().unwrap())
+                        get_data_from_ipv4_frame(sll2_frame.get_data::<Ipv4Layer>().unwrap())
                     }
                     EthernetTypes::Ipv6 => {
-                        get_data_from_ipv6_frame(sll2_frame.get_data().unwrap().as_any().downcast_ref::<Ipv6Layer>().unwrap())
+                        get_data_from_ipv6_frame(sll2_frame.get_data::<Ipv6Layer>().unwrap())
                     }
                     _ => {
                         unimplemented!()
@@ -291,14 +291,14 @@ impl PacketsView {
                 }
             }
             DataLinkTypes::Raw => {
-                let raw_frame = packet.get_frame().as_any().downcast_ref::<RawFrame>().unwrap();
+                let raw_frame = packet.get_frame::<RawFrame>();//.as_any().downcast_ref::<RawFrame>().unwrap();
 
                 match raw_frame.get_version() {
                     IpVersions::Ipv4 => {
-                        get_data_from_ipv4_frame(raw_frame.get_data().unwrap().as_any().downcast_ref::<Ipv4Layer>().unwrap())
+                        get_data_from_ipv4_frame(raw_frame.get_data::<Ipv4Layer>().unwrap())
                     }
                     IpVersions::Ipv6 => {
-                        get_data_from_ipv6_frame(raw_frame.get_data().unwrap().as_any().downcast_ref::<Ipv6Layer>().unwrap())
+                        get_data_from_ipv6_frame(raw_frame.get_data::<Ipv6Layer>().unwrap())
                     }
                     _ => {
                         unimplemented!()
@@ -306,14 +306,14 @@ impl PacketsView {
                 }
             }
             DataLinkTypes::Loop => {
-                let loop_frame = packet.get_frame().as_any().downcast_ref::<LoopFrame>().unwrap();
+                let loop_frame = packet.get_frame::<LoopFrame>();//.as_any().downcast_ref::<LoopFrame>().unwrap();
 
                 match loop_frame.get_type() {
                     LoopTypes::Ipv4 => {
-                        get_data_from_ipv4_frame(loop_frame.get_data().unwrap().as_any().downcast_ref::<Ipv4Layer>().unwrap())
+                        get_data_from_ipv4_frame(loop_frame.get_data::<Ipv4Layer>().unwrap())
                     }
                     LoopTypes::Ipv6 | LoopTypes::Ipv6e2 | LoopTypes::Ipv6e3 => {
-                        get_data_from_ipv6_frame(loop_frame.get_data().unwrap().as_any().downcast_ref::<Ipv6Layer>().unwrap())
+                        get_data_from_ipv6_frame(loop_frame.get_data::<Ipv6Layer>().unwrap())
                     }
                     _ => {
                         unimplemented!()
@@ -394,7 +394,7 @@ fn init_column(tree: &TreeView, title: &str, col_id: i32, min_width: i32) {
 fn get_data_from_ipv4_frame(layer: &Ipv4Layer) -> (String, String, String) {
     match layer.get_protocol() {
         IpProtocols::Udp => {
-            let udp_layer = layer.get_data().unwrap().as_any().downcast_ref::<UdpLayer>().unwrap();
+            let udp_layer = layer.get_data::<UdpLayer>().unwrap();
 
             match udp_layer.get_payload() {
                 UdpPayloads::Known(_type, _) => {
@@ -414,7 +414,7 @@ fn get_data_from_ipv4_frame(layer: &Ipv4Layer) -> (String, String, String) {
 fn get_data_from_ipv6_frame(layer: &Ipv6Layer) -> (String, String, String) {
     match layer.get_next_header() {
         IpProtocols::Udp => {
-            let udp_layer = layer.get_data().unwrap().as_any().downcast_ref::<UdpLayer>().unwrap();
+            let udp_layer = layer.get_data::<UdpLayer>().unwrap();
 
             match udp_layer.get_payload() {
                 UdpPayloads::Known(_type, _) => {
@@ -439,10 +439,11 @@ fn filter(query: &Rc<RefCell<String>>, packets: &Rc<RefCell<Vec<Packet>>>) -> im
         let index: u32 = model.value(iter, 0).get().unwrap_or_default();
         println!("{}  {}", query.borrow(), index);
 
+        /*
         if let Some(packet) = packets.borrow().get(index as usize) {
             match packet.get_data_link_type() {
                 DataLinkTypes::En10mb => {
-                    let ethernet_frame = packet.get_frame().as_any().downcast_ref::<EthernetFrame>().unwrap();
+                    let ethernet_frame = packet.get_frame::<EthernetFrame>();//.as_any().downcast_ref::<EthernetFrame>().unwrap();
                     if ethernet_frame.get_field_name("frame").eq(&*query.borrow()) {
                         return true;
                     }
@@ -529,7 +530,7 @@ fn filter(query: &Rc<RefCell<String>>, packets: &Rc<RefCell<Vec<Packet>>>) -> im
                     }
                 }
                 DataLinkTypes::Sll2 => {
-                    let sll2_frame = packet.get_frame().as_any().downcast_ref::<Sll2Frame>().unwrap();
+                    let sll2_frame = packet.get_frame::<Sll2Frame>();//.as_any().downcast_ref::<Sll2Frame>().unwrap();
                     if sll2_frame.get_field_name("frame").eq(&*query.borrow()) {
                         return true;
                     }
@@ -614,7 +615,7 @@ fn filter(query: &Rc<RefCell<String>>, packets: &Rc<RefCell<Vec<Packet>>>) -> im
                 }
                 _ => {}
             }
-        }
+        }*/
 
         false
     }

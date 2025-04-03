@@ -1,3 +1,4 @@
+use rlibpcap::packet::layers::ethernet_frame::ethernet_frame::EthernetFrame;
 use rlibpcap::packet::packet::Packet;
 use rlibpcap::utils::data_link_types::DataLinkTypes;
 use crate::pcap_ext::layers::inter::layer_ext::LayerExt;
@@ -15,6 +16,8 @@ impl PacketExt for Packet {
 
         match self.get_data_link_type() {
             DataLinkTypes::En10mb => {
+                let layer = self.get_frame::<EthernetFrame>();
+
             }
             DataLinkTypes::Raw => {}
             DataLinkTypes::Loop => {}
