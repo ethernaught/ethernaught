@@ -175,12 +175,8 @@ impl WidgetImpl for HexEditorImpl {
             }
 
             let color = match byte {
-                0 => {
-                    *self.line_number_color.borrow()
-                }
-                _ => {
-                    text_color
-                }
+                0 => *self.line_number_color.borrow(),
+                _ => text_color
             };
 
             cr.set_source_rgba(color.red(), color.green(), color.blue(), color.alpha());
