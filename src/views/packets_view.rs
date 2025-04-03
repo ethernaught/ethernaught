@@ -3,7 +3,7 @@ use std::rc::Rc;
 use gtk::{gdk, Builder, Button, CellRendererState, CellRendererText, Container, CssProvider, Entry, Image, Label, ListBox, ListStore, ScrolledWindow, StyleContext, TreeModelFilter, TreeView, TreeViewColumn, Widget};
 use gtk::glib::{ObjectExt, PropertyGet, ToValue, Type};
 use gtk::glib::Propagation::Proceed;
-use gtk::prelude::{AdjustmentExt, BuilderExtManual, CellLayoutExt, CellRendererExt, ContainerExt, CssProviderExt, GtkListStoreExt, GtkListStoreExtManual, LabelExt, ListBoxExt, ScrolledWindowExt, TreeModelExt, TreeModelFilterExt, TreeViewColumnExt, TreeViewExt, WidgetExt};
+use gtk::prelude::{AdjustmentExt, BuilderExtManual, CellLayoutExt, CellRendererExt, ContainerExt, CssProviderExt, EntryExt, GtkListStoreExt, GtkListStoreExtManual, LabelExt, ListBoxExt, ScrolledWindowExt, TreeModelExt, TreeModelFilterExt, TreeViewColumnExt, TreeViewExt, WidgetExt};
 use gtk::subclass::container::Callback;
 use rlibpcap::packet::layers::ethernet_frame::ethernet_frame::EthernetFrame;
 use rlibpcap::packet::layers::ethernet_frame::inter::ethernet_types::EthernetTypes;
@@ -194,15 +194,27 @@ impl PacketsView {
             //self.add_to_model(p, i as i32 + 1);
         }
 
-        tree_filter.set_visible_func(move |model, iter| {
-            let index: u32 = model.value(iter, 0).get().unwrap_or_default();
-            println!("index: {}", index);
-            if index < 40 {
-                return false;
+
+
+
+        search.connect_activate({
+            let tree_filter = tree_filter.clone();
+            move |entry| {
+                let query = entry.text();
+
+                tree_filter.set_visible_func(move |model, iter| {
+                    let index: u32 = model.value(iter, 0).get().unwrap_or_default();
+
+
+                    println!("index: {}", index);
+                    if index < 40 {
+                        return false;
+                    }
+                    true
+                });
+                tree_filter.refilter();
             }
-            true
         });
-        tree_filter.refilter();
 
         Self {
             root,
