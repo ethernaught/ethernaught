@@ -174,7 +174,17 @@ impl WidgetImpl for HexEditorImpl {
                 cr.stroke().unwrap();
             }
 
-            cr.set_source_rgba(text_color.red(), text_color.green(), text_color.blue(), text_color.alpha());
+            let color = match byte {
+                0 => {
+                    *self.line_number_color.borrow()
+                }
+                _ => {
+                    text_color
+                }
+            };
+
+            cr.set_source_rgba(color.red(), color.green(), color.blue(), color.alpha());
+
             let hex = format!("{:02X}", byte);
 
             for (i, c) in hex.chars().enumerate() {
