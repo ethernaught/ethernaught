@@ -30,7 +30,7 @@ use crate::bus::event_bus::{register_event, send_event};
 use crate::bus::events::capture_event::CaptureEvent;
 use crate::bus::events::transmitted_event::TransmittedEvent;
 use crate::database::sqlite::Database;
-
+use crate::pcap_ext::packet_query::PacketQuery;
 //SIDEBAR SHOULD BE A FRAGMENT...
 //export GTK_DEBUG=interactive
 
@@ -70,7 +70,9 @@ fn main() {
     //unsafe { env::set_var("GTK_THEME", "Adwaita:dark") };
 
     let app = App::new();
-    app.run();
+    //app.run();
+
+    println!("{:?}", PacketQuery::from("ethernet.source=asd & ipv4.destination=asdasd & tcp"));
 
 
     /*
