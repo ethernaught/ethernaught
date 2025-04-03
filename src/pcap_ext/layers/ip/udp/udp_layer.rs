@@ -48,26 +48,8 @@ impl LayerExt for UdpLayer {
 
     fn get_value(&self, key: &str) -> Option<String> {
         Some(match key {
-            "source_port" => {
-                match UdpPorts::from_code(self.get_source_port()) {
-                    Ok(port) => {
-                        format!("{} ({})", port.to_string(), self.get_source_port())
-                    }
-                    Err(_) => {
-                        self.get_source_port().to_string()
-                    }
-                }
-            },
-            "destination_port" => {
-                match UdpPorts::from_code(self.get_destination_port()) {
-                    Ok(port) => {
-                        format!("{} ({})", port.to_string(), self.get_destination_port())
-                    }
-                    Err(_) => {
-                        self.get_destination_port().to_string()
-                    }
-                }
-            },
+            "source_port" => self.get_source_port().to_string(),
+            "destination_port" => self.get_destination_port().to_string(),
             "length" => self.get_length().to_string(),
             "checksum" => format!("0x{:04X}", self.get_checksum()),
             _ => return None

@@ -68,26 +68,8 @@ impl LayerExt for TcpLayer {
 
     fn get_value(&self, key: &str) -> Option<String> {
         Some(match key {
-            "source_port" => {
-                match TcpPorts::from_code(self.get_source_port()) {
-                    Ok(port) => {
-                        format!("{} ({})", port.to_string(), self.get_source_port())
-                    }
-                    Err(_) => {
-                        self.get_source_port().to_string()
-                    }
-                }
-            },
-            "destination_port" => {
-                match TcpPorts::from_code(self.get_destination_port()) {
-                    Ok(port) => {
-                        format!("{} ({})", port.to_string(), self.get_destination_port())
-                    }
-                    Err(_) => {
-                        self.get_destination_port().to_string()
-                    }
-                }
-            },
+            "source_port" => self.get_source_port().to_string(),
+            "destination_port" => self.get_destination_port().to_string(),
             "sequence_number" => self.get_sequence_number().to_string(),
             "acknowledgment_number" => self.get_acknowledgment_number().to_string(),
             //"data_offset" => ,
