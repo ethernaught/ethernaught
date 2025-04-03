@@ -159,7 +159,8 @@ pub fn open_file_selector(parent: &Window) -> Option<PathBuf> {
 
     let filter = FileFilter::new();
 
-    filter.add_mime_type("application/vnd.tcpdump.pcap\r\napplication/x-pcapng");
+    filter.add_mime_type("application/vnd.tcpdump.pcap");
+    filter.add_mime_type("application/x-pcapng");
     filter.add_mime_type("application/x-snoop");
     filter.add_mime_type("application/x-iptrace");
     filter.add_mime_type("application/x-lanalyzer");

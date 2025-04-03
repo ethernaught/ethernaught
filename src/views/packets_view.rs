@@ -1,9 +1,9 @@
 use std::cell::RefCell;
 use std::rc::Rc;
-use gtk::{gdk, Builder, Button, CellRendererState, CellRendererText, Container, CssProvider, Entry, Image, Label, ListBox, ListStore, ScrolledWindow, StyleContext, TreeView, TreeViewColumn, Widget};
+use gtk::{gdk, Builder, Button, CellRendererState, CellRendererText, Container, CssProvider, Entry, Image, Label, ListBox, ListStore, ScrolledWindow, StyleContext, TreeModelFilter, TreeView, TreeViewColumn, Widget};
 use gtk::glib::{ObjectExt, PropertyGet, ToValue, Type};
 use gtk::glib::Propagation::Proceed;
-use gtk::prelude::{AdjustmentExt, BuilderExtManual, CellLayoutExt, CellRendererExt, ContainerExt, CssProviderExt, GtkListStoreExt, GtkListStoreExtManual, LabelExt, ListBoxExt, ScrolledWindowExt, TreeModelExt, TreeViewColumnExt, TreeViewExt, WidgetExt};
+use gtk::prelude::{AdjustmentExt, BuilderExtManual, CellLayoutExt, CellRendererExt, ContainerExt, CssProviderExt, GtkListStoreExt, GtkListStoreExtManual, LabelExt, ListBoxExt, ScrolledWindowExt, TreeModelExt, TreeModelFilterExt, TreeViewColumnExt, TreeViewExt, WidgetExt};
 use gtk::subclass::container::Callback;
 use rlibpcap::packet::layers::ethernet_frame::ethernet_frame::EthernetFrame;
 use rlibpcap::packet::layers::ethernet_frame::inter::ethernet_types::EthernetTypes;
@@ -28,6 +28,7 @@ pub struct PacketsView {
     pub scroll_layout: ScrolledWindow,
     pub tree_view: TreeView,
     pub model: ListStore,
+    pub tree_filter: TreeModelFilter,
     pub packets: Rc<RefCell<Vec<Packet>>>
 }
 
@@ -52,8 +53,9 @@ impl PacketsView {
             .object("tree_view")
             .expect("Couldn't find 'tree_view' in packet_view.ui");
         let model = ListStore::new(&[Type::U32, Type::STRING, Type::STRING, Type::STRING, Type::STRING, Type::STRING, Type::STRING]);
+        let tree_filter = TreeModelFilter::new(&model, None);
 
-        tree_view.set_model(Some(&model));
+        tree_view.set_model(Some(&tree_filter));
 
         init_column(&tree_view, "No.", 0, 100);
         init_column(&tree_view, "Time", 1, 150);
@@ -103,6 +105,7 @@ impl PacketsView {
             scroll_layout,
             tree_view,
             model,
+            tree_filter,
             packets: Rc::new(RefCell::new(Vec::new()))
         }
     }
@@ -126,8 +129,9 @@ impl PacketsView {
             .object("tree_view")
             .expect("Couldn't find 'tree_view' in packet_view.ui");
         let model = ListStore::new(&[Type::U32, Type::STRING, Type::STRING, Type::STRING, Type::STRING, Type::STRING, Type::STRING]);
+        let tree_filter = TreeModelFilter::new(&model, None);
 
-        tree_view.set_model(Some(&model));
+        tree_view.set_model(Some(&tree_filter));
 
         init_column(&tree_view, "No.", 0, 100);
         init_column(&tree_view, "Time", 1, 150);
@@ -190,12 +194,23 @@ impl PacketsView {
             //self.add_to_model(p, i as i32 + 1);
         }
 
+        tree_filter.set_visible_func(move |model, iter| {
+            let index: u32 = model.value(iter, 0).get().unwrap_or_default();
+            println!("index: {}", index);
+            if index < 40 {
+                return false;
+            }
+            true
+        });
+        tree_filter.refilter();
+
         Self {
             root,
             search,
             scroll_layout,
             tree_view,
             model,
+            tree_filter,
             packets: Rc::new(RefCell::new(pcap.get_packets()))
         }
     }
@@ -358,8 +373,6 @@ fn init_column(tree: &TreeView, title: &str, col_id: i32, min_width: i32) {
 
     tree.append_column(&column);
 }
-
-
 
 fn get_data_from_ipv4_frame(layer: &Ipv4Layer) -> (String, String, String) {
     match layer.get_protocol() {
