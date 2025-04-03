@@ -72,8 +72,6 @@ fn main() {
     let app = App::new();
     app.run();
 
-    println!("{:?}", PacketQuery::from("ethernet.source=asd & ipv4.destination=asdasd & tcp"));
-
 
     /*
     if !cfg!(debug_assertions) {

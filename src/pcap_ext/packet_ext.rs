@@ -25,6 +25,8 @@ pub trait PacketExt {
 impl PacketExt for Packet {
 
     fn matches(&self, query: &Vec<PacketQuery>) -> bool {
+        let query = query.get(0).unwrap();
+
         match self.get_data_link_type() {
             DataLinkTypes::En10mb => {
                 let layer = self.get_frame::<EthernetFrame>();
@@ -86,31 +88,29 @@ impl PacketExt for Packet {
     }
 }
 
-pub fn match_layer(query: &Vec<PacketQuery>, layer: &dyn LayerExt) -> bool {
-    for q in query.iter() {
-        if !layer.get_field_name("frame").unwrap().eq(&q.layer) {
-            continue;
-        }
-
-        match q.field {
-            Some(ref field) => {
-                match layer.get_value(&field.name) {
-                    Some(value) => {
-                        if value.eq(&field.value) {
-                            return true;
-                        }
-                    }
-                    None => return false
-                }
-            }
-            None => return true
-        }
+pub fn match_layer(query: &PacketQuery, layer: &dyn LayerExt) -> bool {
+    if !layer.get_field_name("frame").unwrap().eq(&query.layer) {
+        return false;
     }
 
-    false
+    match query.field {
+        Some(ref field) => {
+            match layer.get_value(&field.name) {
+                Some(value) => {
+                    if value.eq(&field.value) {
+                        return true;
+                    }
+
+                    false
+                }
+                None => false
+            }
+        }
+        None => true
+    }
 }
 
-pub fn match_ipv4_layer(query: &Vec<PacketQuery>, layer: &Ipv4Layer) -> bool {
+pub fn match_ipv4_layer(query: &PacketQuery, layer: &Ipv4Layer) -> bool {
     if match_layer(query, layer) {
         return true;
     }
@@ -143,7 +143,7 @@ pub fn match_ipv4_layer(query: &Vec<PacketQuery>, layer: &Ipv4Layer) -> bool {
     false
 }
 
-pub fn match_ipv6_layer(query: &Vec<PacketQuery>, layer: &Ipv6Layer) -> bool {
+pub fn match_ipv6_layer(query: &PacketQuery, layer: &Ipv6Layer) -> bool {
     if match_layer(query, layer) {
         return true;
     }

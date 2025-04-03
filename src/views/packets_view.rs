@@ -132,6 +132,7 @@ impl PacketsView {
             move |entry| {
                 let text = entry.text();
                 *query.borrow_mut() = PacketQuery::from(&text.to_string());
+                println!("{:?}", query.borrow());
                 tree_filter.refilter();
             }
         });
