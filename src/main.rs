@@ -73,6 +73,8 @@ fn main() {
     app.run();
 
 
+    //println!("{:?}", PacketQuery::from2("udp & tcp.source_port=1080 | arp"));
+
     /*
     if !cfg!(debug_assertions) {
         if !is_root() {

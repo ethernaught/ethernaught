@@ -2,6 +2,7 @@ use rlibpcap::packet::layers::ethernet_frame::arp::arp_extension::ArpExtension;
 use rlibpcap::packet::layers::ethernet_frame::ethernet_frame::EthernetFrame;
 use rlibpcap::packet::layers::ethernet_frame::inter::ethernet_types::EthernetTypes;
 use rlibpcap::packet::layers::ip::icmp::icmp_layer::IcmpLayer;
+use rlibpcap::packet::layers::ip::icmpv6::icmpv6_layer::Icmpv6Layer;
 use rlibpcap::packet::layers::ip::inter::ip_protocols::IpProtocols;
 use rlibpcap::packet::layers::ip::inter::ip_versions::IpVersions;
 use rlibpcap::packet::layers::ip::ipv4_layer::Ipv4Layer;
@@ -19,46 +20,34 @@ use crate::pcap_ext::packet_query::PacketQuery;
 
 pub trait PacketExt {
 
-    fn matches(&self, query: &Vec<PacketQuery>) -> bool;
+    fn matches(&self, query: &Vec<Vec<PacketQuery>>) -> bool;
 }
 
 impl PacketExt for Packet {
 
-    fn matches(&self, query: &Vec<PacketQuery>) -> bool {
-        let query = query.get(0).unwrap();
+    fn matches(&self, query: &Vec<Vec<PacketQuery>>) -> bool {
+        let mut layers: Vec<&dyn LayerExt> = Vec::new();
 
         match self.get_data_link_type() {
             DataLinkTypes::En10mb => {
                 let layer = self.get_frame::<EthernetFrame>();
-                if match_layer(query, layer) {
-                    return true;
-                }
+                layers.push(layer);
 
                 match layer.get_type() {
-                    EthernetTypes::Ipv4 => return match_ipv4_layer(&query, layer.get_data::<Ipv4Layer>().unwrap()),
-                    EthernetTypes::Arp => {
-                        if match_layer(query, layer.get_data::<ArpExtension>().unwrap()) {
-                            return true;
-                        }
-                    }
-                    EthernetTypes::Ipv6 => return match_ipv6_layer(&query, layer.get_data::<Ipv6Layer>().unwrap()),
+                    EthernetTypes::Ipv4 => match_ipv4_layer(&mut layers, layer.get_data::<Ipv4Layer>().unwrap()),
+                    EthernetTypes::Arp => layers.push(layer.get_data::<ArpExtension>().unwrap()),
+                    EthernetTypes::Ipv6 => match_ipv6_layer(&mut layers, layer.get_data::<Ipv6Layer>().unwrap()),
                     EthernetTypes::Broadcast => {}
                 }
             }
             DataLinkTypes::Sll2 => {
                 let layer = self.get_frame::<Sll2Frame>();
-                if match_layer(query, layer) {
-                    return true;
-                }
+                layers.push(layer);
 
                 match layer.get_protocol() {
-                    EthernetTypes::Ipv4 => return match_ipv4_layer(&query, layer.get_data::<Ipv4Layer>().unwrap()),
-                    EthernetTypes::Arp => {
-                        if match_layer(query, layer.get_data::<ArpExtension>().unwrap()) {
-                            return true;
-                        }
-                    }
-                    EthernetTypes::Ipv6 => return match_ipv6_layer(&query, layer.get_data::<Ipv6Layer>().unwrap()),
+                    EthernetTypes::Ipv4 => match_ipv4_layer(&mut layers, layer.get_data::<Ipv4Layer>().unwrap()),
+                    EthernetTypes::Arp => layers.push(layer.get_data::<ArpExtension>().unwrap()),
+                    EthernetTypes::Ipv6 => match_ipv6_layer(&mut layers, layer.get_data::<Ipv6Layer>().unwrap()),
                     EthernetTypes::Broadcast => {}
                 }
             }
@@ -66,22 +55,39 @@ impl PacketExt for Packet {
                 let layer = self.get_frame::<RawFrame>();
 
                 match layer.get_version() {
-                    IpVersions::Ipv4 => return match_ipv4_layer(&query, layer.get_data::<Ipv4Layer>().unwrap()),
-                    IpVersions::Ipv6 => return match_ipv6_layer(&query, layer.get_data::<Ipv6Layer>().unwrap())
+                    IpVersions::Ipv4 => match_ipv4_layer(&mut layers, layer.get_data::<Ipv4Layer>().unwrap()),
+                    IpVersions::Ipv6 => match_ipv6_layer(&mut layers, layer.get_data::<Ipv6Layer>().unwrap())
                 }
             }
             DataLinkTypes::Loop => {
                 let layer = self.get_frame::<LoopFrame>();
 
                 match layer.get_type() {
-                    LoopTypes::Ipv4 => return match_ipv4_layer(&query, layer.get_data::<Ipv4Layer>().unwrap()),
-                    LoopTypes::Ipv6 | LoopTypes::Ipv6e2 | LoopTypes::Ipv6e3 => return match_ipv6_layer(&query, layer.get_data::<Ipv6Layer>().unwrap()),
+                    LoopTypes::Ipv4 => match_ipv4_layer(&mut layers, layer.get_data::<Ipv4Layer>().unwrap()),
+                    LoopTypes::Ipv6 | LoopTypes::Ipv6e2 | LoopTypes::Ipv6e3 => match_ipv6_layer(&mut layers, layer.get_data::<Ipv6Layer>().unwrap()),
                     _ => {
                         unimplemented!()
                     }
                 }
             }
             _ => {}
+        };
+
+        for or_group in query {
+            let mut and_conditions_met = vec![false; or_group.len()];
+
+            for (i, pq) in or_group.iter().enumerate() {
+                for layer in &layers {
+                    if match_layer(pq, *layer) {
+                        and_conditions_met[i] = true;
+                        break;
+                    }
+                }
+            }
+
+            if and_conditions_met.iter().all(|&met| met) {
+                return true;
+            }
         }
 
         false
@@ -110,68 +116,36 @@ pub fn match_layer(query: &PacketQuery, layer: &dyn LayerExt) -> bool {
     }
 }
 
-pub fn match_ipv4_layer(query: &PacketQuery, layer: &Ipv4Layer) -> bool {
-    if match_layer(query, layer) {
-        return true;
-    }
+pub fn match_ipv4_layer<'a>(layers: &mut Vec<&'a dyn LayerExt>, layer: &'a Ipv4Layer) {
+    layers.push(layer);
 
     match layer.get_protocol() {
         IpProtocols::HopByHop => {}
-        IpProtocols::Icmp => {
-            if match_layer(query, layer.get_data::<IcmpLayer>().unwrap()) {
-                return true;
-            }
-        }
+        IpProtocols::Icmp => layers.push(layer.get_data::<IcmpLayer>().unwrap()),
         IpProtocols::Igmp => {}
-        IpProtocols::Tcp => {
-            if match_layer(query, layer.get_data::<TcpLayer>().unwrap()) {
-                return true;
-            }
-        }
-        IpProtocols::Udp => {
-            if match_layer(query, layer.get_data::<UdpLayer>().unwrap()) {
-                return true;
-            }
-        }
+        IpProtocols::Tcp => layers.push(layer.get_data::<TcpLayer>().unwrap()),
+        IpProtocols::Udp => layers.push(layer.get_data::<UdpLayer>().unwrap()),
         IpProtocols::Ipv6 => {}
         IpProtocols::Gre => {}
         IpProtocols::Icmpv6 => {}
         IpProtocols::Ospf => {}
         IpProtocols::Sps => {}
     }
-
-    false
 }
 
-pub fn match_ipv6_layer(query: &PacketQuery, layer: &Ipv6Layer) -> bool {
-    if match_layer(query, layer) {
-        return true;
-    }
+pub fn match_ipv6_layer<'a>(layers: &mut Vec<&'a dyn LayerExt>, layer: &'a Ipv6Layer) {
+    layers.push(layer);
 
     match layer.get_next_header() {
         IpProtocols::HopByHop => {}
-        IpProtocols::Icmp => {
-            if match_layer(query, layer.get_data::<IcmpLayer>().unwrap()) {
-                return true;
-            }
-        }
+        IpProtocols::Icmp => {}
         IpProtocols::Igmp => {}
-        IpProtocols::Tcp => {
-            if match_layer(query, layer.get_data::<TcpLayer>().unwrap()) {
-                return true;
-            }
-        }
-        IpProtocols::Udp => {
-            if match_layer(query, layer.get_data::<UdpLayer>().unwrap()) {
-                return true;
-            }
-        }
+        IpProtocols::Tcp => layers.push(layer.get_data::<TcpLayer>().unwrap()),
+        IpProtocols::Udp => layers.push(layer.get_data::<UdpLayer>().unwrap()),
         IpProtocols::Ipv6 => {}
         IpProtocols::Gre => {}
-        IpProtocols::Icmpv6 => {}
+        IpProtocols::Icmpv6 => layers.push(layer.get_data::<Icmpv6Layer>().unwrap()),
         IpProtocols::Ospf => {}
         IpProtocols::Sps => {}
     }
-
-    false
 }
