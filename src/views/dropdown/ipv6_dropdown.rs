@@ -53,7 +53,7 @@ impl Ipv6Dropdown for Dropdown {
                     }
                 }
             }
-            Err(e) => {
+            Err(_) => {
                 _self.list_box.add(&create_row(format!("{}:", layer.get_title("source_address").unwrap()), layer.get_value("source_address").unwrap()));
                 _self.list_box.add(&create_row(format!("{}:", layer.get_title("destination_address").unwrap()), layer.get_value("destination_address").unwrap()));
             }

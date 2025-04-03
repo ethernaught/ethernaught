@@ -69,7 +69,7 @@ impl ArpDropdown for Dropdown {
                     }
                 }
             }
-            Err(e) => {
+            Err(_) => {
                 _self.list_box.add(&create_row(format!("{}:", layer.get_title("sender_mac").unwrap()), format!("({})", layer.get_value("sender_mac").unwrap())));
                 _self.list_box.add(&create_row(format!("{}:", layer.get_title("sender_address").unwrap()), layer.get_value("sender_address").unwrap()));
                 _self.list_box.add(&create_row(format!("{}:", layer.get_title("target_mac").unwrap()), format!("({})", layer.get_value("target_mac").unwrap())));

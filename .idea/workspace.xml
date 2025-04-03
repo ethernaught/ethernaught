@@ -13,7 +13,6 @@
       <change beforePath="$PROJECT_DIR$/src/views/dropdown/ethernet_dropdown.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/dropdown/ethernet_dropdown.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/views/dropdown/ipv4_dropdown.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/dropdown/ipv4_dropdown.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/views/dropdown/ipv6_dropdown.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/dropdown/ipv6_dropdown.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/sidebar_view.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/sidebar_view.rs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

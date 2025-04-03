@@ -47,7 +47,7 @@ impl EthernetDropdown for Dropdown {
                     }
                 }
             }
-            Err(e) => {
+            Err(_) => {
                 _self.list_box.add(&create_row(format!("{}:", layer.get_title("destination").unwrap()), format!("({})", layer.get_value("destination").unwrap())));
                 _self.list_box.add(&create_row(format!("{}:", layer.get_title("source").unwrap()), format!("({})", layer.get_value("source").unwrap())));
             }
