@@ -8,10 +8,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f0704e63-1929-42d3-83d7-8cbc904dc132" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/pcap_ext/layers/ethernet_frame/llc/llc_extension.rs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pcap_ext/layers/ethernet_frame/llc/mod.rs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/views/dropdown/llc_dropdown.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/resources.gresources" beforeDir="false" afterPath="$PROJECT_DIR$/res/resources.gresources" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pcap_ext/layers/ip/ipv4_layer.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/pcap_ext/layers/ip/ipv4_layer.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pcap_ext/layers/ip/ipv6_layer.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/pcap_ext/layers/ip/ipv6_layer.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pcap_ext/layers/ethernet_frame/arp/arp_extension.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/pcap_ext/layers/ethernet_frame/arp/arp_extension.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pcap_ext/layers/ethernet_frame/ethernet_frame.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/pcap_ext/layers/ethernet_frame/ethernet_frame.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pcap_ext/layers/ethernet_frame/mod.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/pcap_ext/layers/ethernet_frame/mod.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pcap_ext/packet_ext.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/pcap_ext/packet_ext.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/dropdown/ethernet_dropdown.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/dropdown/ethernet_dropdown.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/dropdown/mod.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/dropdown/mod.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/sidebar_view.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/sidebar_view.rs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,33 +47,33 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Cargo.Run ethernaught.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.rust.reset.selective.auto.import&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/brad/CLionProjects/ethernaught/res/icons/macos&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;org.rust.cargo.project.model.PROJECT_DISCOVERY&quot;: &quot;true&quot;,
-    &quot;org.rust.cargo.project.model.impl.CargoExternalSystemProjectAware.subscribe.first.balloon&quot;: &quot;&quot;,
-    &quot;org.rust.first.attach.projects&quot;: &quot;true&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;language.rust&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Cargo.Run ethernaught.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.rust.reset.selective.auto.import": "true",
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "/home/brad/CLionProjects/ethernaught/src/views/dropdown",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "org.rust.cargo.project.model.PROJECT_DISCOVERY": "true",
+    "org.rust.cargo.project.model.impl.CargoExternalSystemProjectAware.subscribe.first.balloon": "",
+    "org.rust.first.attach.projects": "true",
+    "settings.editor.selected.configurable": "language.rust",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/views/dropdown" />
       <recent name="$PROJECT_DIR$/res/icons/macos" />
       <recent name="$PROJECT_DIR$/res/ui/gtk3/linux" />
       <recent name="$PROJECT_DIR$/res/ui" />
       <recent name="$PROJECT_DIR$/res/ui/gtk3" />
-      <recent name="$PROJECT_DIR$/res/icons" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/res/icons/linux" />
@@ -124,6 +131,8 @@
       <workItem from="1743101508758" duration="4207000" />
       <workItem from="1743287386035" duration="1834000" />
       <workItem from="1743310507295" duration="1373000" />
+      <workItem from="1743794250942" duration="328000" />
+      <workItem from="1743794588775" duration="1084000" />
     </task>
     <servers />
   </component>

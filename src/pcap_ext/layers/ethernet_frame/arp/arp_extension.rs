@@ -1,4 +1,4 @@
-use rlibpcap::packet::layers::ethernet_frame::arp::arp_extension::{ArpExtension, ARP_HEADER_LEN};
+use rlibpcap::packet::layers::ethernet_frame::arp::arp_extension::{ArpExtension, ARP_EXTENSION_LEN};
 use crate::pcap_ext::layers::inter::layer_ext::LayerExt;
 
 impl LayerExt for ArpExtension {
@@ -83,7 +83,7 @@ impl LayerExt for ArpExtension {
     fn get_value_as_bytes(&self, key: &str) -> Option<Vec<u8>> {
         Some(match key {
             "frame" => {
-                let mut buf = vec![0; ARP_HEADER_LEN];
+                let mut buf = vec![0; ARP_EXTENSION_LEN];
 
                 buf.splice(0..2, self.get_hardware_type().to_be_bytes());
                 buf.splice(2..4, self.get_protocol_type().get_code().to_be_bytes());

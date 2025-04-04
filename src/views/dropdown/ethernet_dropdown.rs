@@ -6,6 +6,7 @@ use gtk::glib::Cast;
 use gtk::glib::Propagation::Proceed;
 use gtk::prelude::{BuilderExtManual, ButtonExt, ContainerExt, EditableExt, GestureSingleExt, ImageExt, LabelExt, ListBoxExt, ListBoxRowExt, TextExt, WidgetExt};
 use rlibpcap::packet::layers::ethernet_frame::ethernet_frame::EthernetFrame;
+use rlibpcap::packet::layers::ethernet_frame::inter::ethernet_types::EthernetTypes;
 use rlibpcap::packet::layers::ip::ipv4_layer::Ipv4Layer;
 use crate::database::sqlite::Database;
 use crate::pcap_ext::layers::inter::layer_ext::LayerExt;
@@ -53,7 +54,10 @@ impl EthernetDropdown for Dropdown {
             }
         }
 
-        _self.list_box.add(&create_row(format!("{}:", layer.get_title("type").unwrap()), layer.get_value("type").unwrap()));
+        match layer.get_type() {
+            EthernetTypes::Length(_) => _self.list_box.add(&create_row(format!("{}:", layer.get_title("length").unwrap()), layer.get_value("length").unwrap())),
+            _ => _self.list_box.add(&create_row(format!("{}:", layer.get_title("type").unwrap()), layer.get_value("type").unwrap()))
+        }
 
         _self
     }

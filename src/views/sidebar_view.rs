@@ -7,6 +7,7 @@ use gtk::prelude::{ActionMapExt, BuilderExtManual, ContainerExt, PanedExt};
 use rlibpcap::packet::layers::ethernet_frame::arp::arp_extension::ArpExtension;
 use rlibpcap::packet::layers::ethernet_frame::ethernet_frame::{EthernetFrame, ETHERNET_FRAME_LEN};
 use rlibpcap::packet::layers::ethernet_frame::inter::ethernet_types::EthernetTypes;
+use rlibpcap::packet::layers::ethernet_frame::llc::llc_extension::LlcExtension;
 use rlibpcap::packet::layers::inter::layer::Layer;
 use rlibpcap::packet::layers::ip::icmp::icmp_layer::IcmpLayer;
 use rlibpcap::packet::layers::ip::icmpv6::icmpv6_layer::Icmpv6Layer;
@@ -34,6 +35,7 @@ use crate::views::dropdown::icmp_dropdown::IcmpDropdown;
 use crate::views::dropdown::icmpv6_dropdown::Icmpv6Dropdown;
 use crate::views::dropdown::ipv4_dropdown::Ipv4Dropdown;
 use crate::views::dropdown::ipv6_dropdown::Ipv6Dropdown;
+use crate::views::dropdown::llc_dropdown::LlcDropdown;
 use crate::views::dropdown::sll2_dropdown::Sll2Dropdown;
 use crate::views::dropdown::tcp_dropdown::TcpDropdown;
 use crate::views::dropdown::udp_dropdown::UdpDropdown;
@@ -114,8 +116,8 @@ impl SidebarView {
                     EthernetTypes::Ipv4 => create_ipv4_details(&details, &db, &hex_editor, &actions, &ethernet_frame.get_data::<Ipv4Layer>().unwrap(), offset),
                     EthernetTypes::Arp => details.add(&Dropdown::from_arp_extension(&db, &hex_editor, &actions, ethernet_frame.get_data::<ArpExtension>().unwrap(), offset).root),
                     EthernetTypes::Ipv6 => create_ipv6_details(&details, &db, &hex_editor, &actions, &ethernet_frame.get_data::<Ipv6Layer>().unwrap(), offset),
-                    EthernetTypes::Broadcast => {
-                    }
+                    EthernetTypes::Broadcast => {}
+                    EthernetTypes::Length(_) => details.add(&Dropdown::from_llc_extension(&hex_editor, &actions, ethernet_frame.get_data::<LlcExtension>().unwrap(), offset).root)
                 }
             }
             DataLinkTypes::Sll2 => {
@@ -125,8 +127,10 @@ impl SidebarView {
 
                 match sll2_frame.get_protocol() {
                     EthernetTypes::Ipv4 => create_ipv4_details(&details, &db, &hex_editor, &actions, &sll2_frame.get_data::<Ipv4Layer>().unwrap(), offset),
+                    EthernetTypes::Arp => details.add(&Dropdown::from_arp_extension(&db, &hex_editor, &actions, sll2_frame.get_data::<ArpExtension>().unwrap(), offset).root),
                     EthernetTypes::Ipv6 => create_ipv6_details(&details, &db, &hex_editor, &actions, &sll2_frame.get_data::<Ipv6Layer>().unwrap(), offset),
-                    _ => {}
+                    EthernetTypes::Broadcast => {}
+                    EthernetTypes::Length(_) => details.add(&Dropdown::from_llc_extension(&hex_editor, &actions, sll2_frame.get_data::<LlcExtension>().unwrap(), offset).root)
                 }
             }
             DataLinkTypes::Raw => {

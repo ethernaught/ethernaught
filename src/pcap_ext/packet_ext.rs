@@ -1,6 +1,7 @@
 use rlibpcap::packet::layers::ethernet_frame::arp::arp_extension::ArpExtension;
 use rlibpcap::packet::layers::ethernet_frame::ethernet_frame::EthernetFrame;
 use rlibpcap::packet::layers::ethernet_frame::inter::ethernet_types::EthernetTypes;
+use rlibpcap::packet::layers::ethernet_frame::llc::llc_extension::LlcExtension;
 use rlibpcap::packet::layers::ip::icmp::icmp_layer::IcmpLayer;
 use rlibpcap::packet::layers::ip::icmpv6::icmpv6_layer::Icmpv6Layer;
 use rlibpcap::packet::layers::ip::inter::ip_protocols::IpProtocols;
@@ -38,6 +39,7 @@ impl PacketExt for Packet {
                     EthernetTypes::Arp => layers.push(layer.get_data::<ArpExtension>().unwrap()),
                     EthernetTypes::Ipv6 => match_ipv6_layer(&mut layers, layer.get_data::<Ipv6Layer>().unwrap()),
                     EthernetTypes::Broadcast => {}
+                    EthernetTypes::Length(_) => layers.push(layer.get_data::<LlcExtension>().unwrap())
                 }
             }
             DataLinkTypes::Sll2 => {
@@ -49,6 +51,7 @@ impl PacketExt for Packet {
                     EthernetTypes::Arp => layers.push(layer.get_data::<ArpExtension>().unwrap()),
                     EthernetTypes::Ipv6 => match_ipv6_layer(&mut layers, layer.get_data::<Ipv6Layer>().unwrap()),
                     EthernetTypes::Broadcast => {}
+                    EthernetTypes::Length(_) => layers.push(layer.get_data::<LlcExtension>().unwrap())
                 }
             }
             DataLinkTypes::Raw => {
