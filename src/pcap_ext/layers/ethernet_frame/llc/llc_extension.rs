@@ -44,7 +44,7 @@ impl LayerExt for LlcExtension {
     fn get_value(&self, key: &str) -> Option<String> {
         Some(match key {
             "dsap" => format!("{} (0x{:02X})", self.get_dsap().to_string(), self.get_dsap()), //NULL LSAP (0x00)
-            "ssap" => format!("{} (0x{:02X})", self.get_dsap().to_string(), self.get_dsap()), //NULL LSAP (0x00)
+            "ssap" => format!("{} (0x{:02X})", self.get_ssap().to_string(), self.get_ssap()), //NULL LSAP (0x00)
             "control" => format!("func={} ({:02X})", self.get_control().to_string(), self.get_control().get_code()), //U, func=XID (0xAF)
             _ => return None
         })
