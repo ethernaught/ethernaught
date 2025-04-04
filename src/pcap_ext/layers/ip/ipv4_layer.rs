@@ -51,8 +51,8 @@ impl LayerExt for Ipv4Layer {
             "ttl" => "ipv4.ttl",
             "protocol" => "ipv4.protocol",
             "checksum" => "ipv4.checksum",
-            "source_address" => "ipv4.source",
-            "destination_address" => "ipv4.destination",
+            "source_address" => "ipv4.source_address",
+            "destination_address" => "ipv4.destination_address",
             _ => return None
         }.to_string())
     }

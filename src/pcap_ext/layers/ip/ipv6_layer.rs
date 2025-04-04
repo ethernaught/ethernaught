@@ -38,8 +38,8 @@ impl LayerExt for Ipv6Layer {
             "payload_length" => "ipv6.payload_length",
             "next_header" => "ipv6.next_header",
             "hop_limit" => "ipv6.hop_limit",
-            "source_address" => "ipv6.source",
-            "destination_address" => "ipv6.destination",
+            "source_address" => "ipv6.source_address",
+            "destination_address" => "ipv6.destination_address",
             _ => return None
         }.to_string())
     }
