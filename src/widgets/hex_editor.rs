@@ -175,7 +175,18 @@ impl WidgetImpl for HexEditorImpl {
             }
 
             let color = match byte {
-                0 => *self.line_number_color.borrow(),
+                0 => {
+                    match *self.selection.borrow() {
+                        Some((x, x2)) => {
+                            if i >= x && i <= x+x2-1  {
+                                text_color
+                            } else {
+                                *self.line_number_color.borrow()
+                            }
+                        }
+                        None => *self.line_number_color.borrow()
+                    }
+                },
                 _ => text_color
             };
 
