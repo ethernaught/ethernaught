@@ -9,6 +9,7 @@ use gtk::subclass::container::Callback;
 use rlibpcap::packet::layers::ethernet_frame::arp::arp_extension::ArpExtension;
 use rlibpcap::packet::layers::ethernet_frame::ethernet_frame::{EthernetFrame, ETHERNET_FRAME_LEN};
 use rlibpcap::packet::layers::ethernet_frame::inter::ethernet_types::EthernetTypes;
+use rlibpcap::packet::layers::ethernet_frame::llc::llc_extension::LlcExtension;
 use rlibpcap::packet::layers::ip::icmp::icmp_layer::IcmpLayer;
 use rlibpcap::packet::layers::ip::inter::ip_protocols::IpProtocols;
 use rlibpcap::packet::layers::ip::inter::ip_versions::IpVersions;
@@ -299,9 +300,10 @@ impl PacketsView {
 
                 match ethernet_frame.get_type() {
                     EthernetTypes::Ipv4 => get_data_from_ipv4_frame(ethernet_frame.get_data::<Ipv4Layer>().unwrap()),
+                    EthernetTypes::Arp => (ethernet_frame.get_source_mac().to_string(), ethernet_frame.get_destination_mac().to_string(), ethernet_frame.get_type().to_string()),
                     EthernetTypes::Ipv6 => get_data_from_ipv6_frame(ethernet_frame.get_data::<Ipv6Layer>().unwrap()),
                     EthernetTypes::Broadcast => (ethernet_frame.get_source_mac().to_string(), ethernet_frame.get_destination_mac().to_string(), ethernet_frame.get_type().to_string()),
-                    _ => (ethernet_frame.get_source_mac().to_string(), ethernet_frame.get_destination_mac().to_string(), ethernet_frame.get_type().to_string())
+                    EthernetTypes::Length(_) => (ethernet_frame.get_source_mac().to_string(), ethernet_frame.get_destination_mac().to_string(), ethernet_frame.get_data::<LlcExtension>().unwrap().get_control().to_string())
                 }
             }
             DataLinkTypes::Sll2 => {
@@ -310,9 +312,7 @@ impl PacketsView {
                 match sll2_frame.get_protocol() {
                     EthernetTypes::Ipv4 => get_data_from_ipv4_frame(sll2_frame.get_data::<Ipv4Layer>().unwrap()),
                     EthernetTypes::Ipv6 => get_data_from_ipv6_frame(sll2_frame.get_data::<Ipv6Layer>().unwrap()),
-                    _ => {
-                        unimplemented!()
-                    }
+                    _ => unimplemented!()
                 }
             }
             DataLinkTypes::Raw => {
@@ -321,9 +321,7 @@ impl PacketsView {
                 match raw_frame.get_version() {
                     IpVersions::Ipv4 => get_data_from_ipv4_frame(raw_frame.get_data::<Ipv4Layer>().unwrap()),
                     IpVersions::Ipv6 => get_data_from_ipv6_frame(raw_frame.get_data::<Ipv6Layer>().unwrap()),
-                    _ => {
-                        unimplemented!()
-                    }
+                    _ => unimplemented!()
                 }
             }
             DataLinkTypes::Loop => {
@@ -332,9 +330,7 @@ impl PacketsView {
                 match loop_frame.get_type() {
                     LoopTypes::Ipv4 => get_data_from_ipv4_frame(loop_frame.get_data::<Ipv4Layer>().unwrap()),
                     LoopTypes::Ipv6 | LoopTypes::Ipv6e2 | LoopTypes::Ipv6e3 => get_data_from_ipv6_frame(loop_frame.get_data::<Ipv6Layer>().unwrap()),
-                    _ => {
-                        unimplemented!()
-                    }
+                    _ => unimplemented!()
                 }
             }
             _ => {

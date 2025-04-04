@@ -127,10 +127,8 @@ impl SidebarView {
 
                 match sll2_frame.get_protocol() {
                     EthernetTypes::Ipv4 => create_ipv4_details(&details, &db, &hex_editor, &actions, &sll2_frame.get_data::<Ipv4Layer>().unwrap(), offset),
-                    EthernetTypes::Arp => details.add(&Dropdown::from_arp_extension(&db, &hex_editor, &actions, sll2_frame.get_data::<ArpExtension>().unwrap(), offset).root),
                     EthernetTypes::Ipv6 => create_ipv6_details(&details, &db, &hex_editor, &actions, &sll2_frame.get_data::<Ipv6Layer>().unwrap(), offset),
-                    EthernetTypes::Broadcast => {}
-                    EthernetTypes::Length(_) => details.add(&Dropdown::from_llc_extension(&hex_editor, &actions, sll2_frame.get_data::<LlcExtension>().unwrap(), offset).root)
+                    _ => {}
                 }
             }
             DataLinkTypes::Raw => {

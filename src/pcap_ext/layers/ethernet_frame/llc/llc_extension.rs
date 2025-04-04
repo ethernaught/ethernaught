@@ -45,7 +45,7 @@ impl LayerExt for LlcExtension {
         Some(match key {
             "dsap" => format!("{} (0x{:02X})", self.get_dsap().to_string(), self.get_dsap()), //NULL LSAP (0x00)
             "ssap" => format!("{} (0x{:02X})", self.get_dsap().to_string(), self.get_dsap()), //NULL LSAP (0x00)
-            "control" => String::from(""), //U, func=XID (0xAF)
+            "control" => format!("func={} ({:02X})", self.get_control().to_string(), self.get_control().get_code()), //U, func=XID (0xAF)
             _ => return None
         })
     }
@@ -57,13 +57,13 @@ impl LayerExt for LlcExtension {
 
                 buf[0] = self.get_dsap();
                 buf[1] = self.get_ssap();
-                buf[2] = self.get_control();
+                buf[2] = self.get_control().get_code();
 
                 buf
             }
             "dsap" => vec![self.get_dsap()],
             "ssap" => vec![self.get_ssap()],
-            "control" => vec![self.get_control()],
+            "control" => vec![self.get_control().get_code()],
             _ => return None
         })
     }
