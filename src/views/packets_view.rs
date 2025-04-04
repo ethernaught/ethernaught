@@ -220,7 +220,7 @@ impl PacketsView {
                 source,
                 destination,
                 protocol,
-                packet_length) = Self::get_model_values(&packet);
+                packet_length) = get_model_values(&packet);
 
             model.insert_with_values(None, &[
                 (0, &(i as u32)),
@@ -277,7 +277,7 @@ impl PacketsView {
             source,
             destination,
             protocol,
-            packet_length) = Self::get_model_values(&packet);
+            packet_length) = get_model_values(&packet);
 
         let packet_total = self.packets.borrow().len() as u32;
         self.packets.borrow_mut().push(packet);
@@ -291,58 +291,6 @@ impl PacketsView {
             (5, &packet_length),
             //(6, &"TODO".to_string()),
         ]);
-    }
-
-    fn get_model_values(packet: &Packet) -> (String, String, String, String, String) {
-        let (source, destination, protocol) = match packet.get_data_link_type() {
-            DataLinkTypes::En10mb => {
-                let ethernet_frame = packet.get_frame::<EthernetFrame>();//.as_any().downcast_ref::<EthernetFrame>().unwrap();
-
-                match ethernet_frame.get_type() {
-                    EthernetTypes::Ipv4 => get_data_from_ipv4_frame(ethernet_frame.get_data::<Ipv4Layer>().unwrap()),
-                    EthernetTypes::Arp => (ethernet_frame.get_source_mac().to_string(), ethernet_frame.get_destination_mac().to_string(), ethernet_frame.get_type().to_string()),
-                    EthernetTypes::Ipv6 => get_data_from_ipv6_frame(ethernet_frame.get_data::<Ipv6Layer>().unwrap()),
-                    EthernetTypes::Broadcast => (ethernet_frame.get_source_mac().to_string(), ethernet_frame.get_destination_mac().to_string(), ethernet_frame.get_type().to_string()),
-                    EthernetTypes::Length(_) => (ethernet_frame.get_source_mac().to_string(), ethernet_frame.get_destination_mac().to_string(), ethernet_frame.get_data::<LlcExtension>().unwrap().get_control().to_string())
-                }
-            }
-            DataLinkTypes::Sll2 => {
-                let sll2_frame = packet.get_frame::<Sll2Frame>();//.as_any().downcast_ref::<Sll2Frame>().unwrap();
-
-                match sll2_frame.get_protocol() {
-                    EthernetTypes::Ipv4 => get_data_from_ipv4_frame(sll2_frame.get_data::<Ipv4Layer>().unwrap()),
-                    EthernetTypes::Ipv6 => get_data_from_ipv6_frame(sll2_frame.get_data::<Ipv6Layer>().unwrap()),
-                    _ => unimplemented!()
-                }
-            }
-            DataLinkTypes::Raw => {
-                let raw_frame = packet.get_frame::<RawFrame>();//.as_any().downcast_ref::<RawFrame>().unwrap();
-
-                match raw_frame.get_version() {
-                    IpVersions::Ipv4 => get_data_from_ipv4_frame(raw_frame.get_data::<Ipv4Layer>().unwrap()),
-                    IpVersions::Ipv6 => get_data_from_ipv6_frame(raw_frame.get_data::<Ipv6Layer>().unwrap()),
-                    _ => unimplemented!()
-                }
-            }
-            DataLinkTypes::Loop => {
-                let loop_frame = packet.get_frame::<LoopFrame>();//.as_any().downcast_ref::<LoopFrame>().unwrap();
-
-                match loop_frame.get_type() {
-                    LoopTypes::Ipv4 => get_data_from_ipv4_frame(loop_frame.get_data::<Ipv4Layer>().unwrap()),
-                    LoopTypes::Ipv6 | LoopTypes::Ipv6e2 | LoopTypes::Ipv6e3 => get_data_from_ipv6_frame(loop_frame.get_data::<Ipv6Layer>().unwrap()),
-                    _ => unimplemented!()
-                }
-            }
-            _ => {
-                //"[WiFi] TODO".to_string()
-                todo!()
-            }
-        };
-
-        let frame_time = packet.get_frame_time().to_string();
-        let packet_length = packet.len().to_string();
-
-        (frame_time, source, destination, protocol, packet_length)
     }
 
     pub fn clear(&self) {
@@ -402,6 +350,58 @@ fn init_column(tree: &TreeView, title: &str, col_id: i32, min_width: i32) {
     })));
 
     tree.append_column(&column);
+}
+
+fn get_model_values(packet: &Packet) -> (String, String, String, String, String) {
+    let (source, destination, protocol) = match packet.get_data_link_type() {
+        DataLinkTypes::En10mb => {
+            let ethernet_frame = packet.get_frame::<EthernetFrame>();//.as_any().downcast_ref::<EthernetFrame>().unwrap();
+
+            match ethernet_frame.get_type() {
+                EthernetTypes::Ipv4 => get_data_from_ipv4_frame(ethernet_frame.get_data::<Ipv4Layer>().unwrap()),
+                EthernetTypes::Arp => (ethernet_frame.get_source_mac().to_string(), ethernet_frame.get_destination_mac().to_string(), ethernet_frame.get_type().to_string()),
+                EthernetTypes::Ipv6 => get_data_from_ipv6_frame(ethernet_frame.get_data::<Ipv6Layer>().unwrap()),
+                EthernetTypes::Broadcast => (ethernet_frame.get_source_mac().to_string(), ethernet_frame.get_destination_mac().to_string(), ethernet_frame.get_type().to_string()),
+                EthernetTypes::Length(_) => (ethernet_frame.get_source_mac().to_string(), ethernet_frame.get_destination_mac().to_string(), ethernet_frame.get_data::<LlcExtension>().unwrap().get_control().to_string())
+            }
+        }
+        DataLinkTypes::Sll2 => {
+            let sll2_frame = packet.get_frame::<Sll2Frame>();//.as_any().downcast_ref::<Sll2Frame>().unwrap();
+
+            match sll2_frame.get_protocol() {
+                EthernetTypes::Ipv4 => get_data_from_ipv4_frame(sll2_frame.get_data::<Ipv4Layer>().unwrap()),
+                EthernetTypes::Ipv6 => get_data_from_ipv6_frame(sll2_frame.get_data::<Ipv6Layer>().unwrap()),
+                _ => unimplemented!()
+            }
+        }
+        DataLinkTypes::Raw => {
+            let raw_frame = packet.get_frame::<RawFrame>();//.as_any().downcast_ref::<RawFrame>().unwrap();
+
+            match raw_frame.get_version() {
+                IpVersions::Ipv4 => get_data_from_ipv4_frame(raw_frame.get_data::<Ipv4Layer>().unwrap()),
+                IpVersions::Ipv6 => get_data_from_ipv6_frame(raw_frame.get_data::<Ipv6Layer>().unwrap()),
+                _ => unimplemented!()
+            }
+        }
+        DataLinkTypes::Loop => {
+            let loop_frame = packet.get_frame::<LoopFrame>();//.as_any().downcast_ref::<LoopFrame>().unwrap();
+
+            match loop_frame.get_type() {
+                LoopTypes::Ipv4 => get_data_from_ipv4_frame(loop_frame.get_data::<Ipv4Layer>().unwrap()),
+                LoopTypes::Ipv6 | LoopTypes::Ipv6e2 | LoopTypes::Ipv6e3 => get_data_from_ipv6_frame(loop_frame.get_data::<Ipv6Layer>().unwrap()),
+                _ => unimplemented!()
+            }
+        }
+        _ => {
+            //"[WiFi] TODO".to_string()
+            todo!()
+        }
+    };
+
+    let frame_time = packet.get_frame_time().to_string();
+    let packet_length = packet.len().to_string();
+
+    (frame_time, source, destination, protocol, packet_length)
 }
 
 fn get_data_from_ipv4_frame(layer: &Ipv4Layer) -> (String, String, String) {
