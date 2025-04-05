@@ -31,19 +31,19 @@ impl TcpDropdown for Dropdown {
 
         match TcpPorts::from_code(layer.get_source_port()) {
             Ok(port) => {
-                _self.list_box.add(&create_row(format!("{}:", layer.get_title("source_port").unwrap()), format!("{} ({})", port.to_string(), layer.get_source_port())));
+                _self.list_box.add(&create_row(format!("{}:", layer.get_title("source_port").unwrap()), format!("{} ({})", port.to_string(), layer.get_value("source_port").unwrap())));
             }
             Err(_) => {
-                _self.list_box.add(&create_row(format!("{}:", layer.get_title("source_port").unwrap()), layer.get_source_port().to_string()));
+                _self.list_box.add(&create_row(format!("{}:", layer.get_title("source_port").unwrap()), layer.get_value("source_port").unwrap()));
             }
         }
 
         match TcpPorts::from_code(layer.get_destination_port()) {
             Ok(port) => {
-                _self.list_box.add(&create_row(format!("{}:", layer.get_title("source_port").unwrap()), format!("{} ({})", port.to_string(), layer.get_destination_port())));
+                _self.list_box.add(&create_row(format!("{}:", layer.get_title("destination_port").unwrap()), format!("{} ({})", port.to_string(), layer.get_value("destination_port").unwrap())));
             }
             Err(_) => {
-                _self.list_box.add(&create_row(format!("{}:", layer.get_title("destination_port").unwrap()), layer.get_destination_port().to_string()));
+                _self.list_box.add(&create_row(format!("{}:", layer.get_title("destination_port").unwrap()), layer.get_value("destination_port").unwrap()));
             }
         }
 
