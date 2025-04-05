@@ -93,7 +93,6 @@ impl PacketsView {
             let vadj = vadj.clone();
             let needs_scroll = needs_scroll.clone();
             let user_scrolled_up = user_scrolled_up.clone();
-
             move |_, _, _| {
                 if !*user_scrolled_up.borrow() {
                     *needs_scroll.borrow_mut() = true;
@@ -109,7 +108,6 @@ impl PacketsView {
                 }
             }
         });
-
 
         let query = Rc::new(RefCell::new(Vec::new()));
         let packets: Rc<RefCell<Vec<Packet>>> = Rc::new(RefCell::new(Vec::new()));
@@ -137,7 +135,6 @@ impl PacketsView {
                 tree_filter.refilter();
             }
         });
-
 
         Self {
             root,
@@ -223,7 +220,7 @@ impl PacketsView {
                 packet_length) = get_model_values(&packet);
 
             model.insert_with_values(None, &[
-                (0, &(i as u32)),
+                (0, &(i as u32 + 1)),
                 (1, &frame_time),
                 (2, &source),
                 (3, &destination),
@@ -233,7 +230,6 @@ impl PacketsView {
             ]);
             //self.add_to_model(p, i as i32 + 1);
         }
-
 
         let query = Rc::new(RefCell::new(Vec::new()));
         let packets = Rc::new(RefCell::new(pcap.get_packets()));
@@ -279,7 +275,7 @@ impl PacketsView {
             protocol,
             packet_length) = get_model_values(&packet);
 
-        let packet_total = self.packets.borrow().len() as u32;
+        let packet_total = self.packets.borrow().len() as u32 + 1;
         self.packets.borrow_mut().push(packet);
 
         self.model.insert_with_values(None, &[
