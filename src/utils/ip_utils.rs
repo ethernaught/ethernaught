@@ -3,33 +3,30 @@ use gtk::gdk_pixbuf::Pixbuf;
 use crate::database::sqlite::Database;
 
 pub fn ip_to_icon(db: &Database, address: IpAddr) -> Option<Pixbuf> {
-    match address {
+    let documents = match address {
         IpAddr::V4(address) => {
             let address = u32::from(address);
-            match db.get(
+            db.get(
                 "ipv4_location",
                 Some(vec!["id", "country_code"]),
                 Some(format!("start <= {} AND end >= {}", address, address).as_str())
-            ).get(0).unwrap().get("country_code") {
-                Some(code) => {
-                    code_to_icon(code)
-                }
-                None => None
-            }
+            )
         }
         IpAddr::V6(address) => {
             let address = u128::from(address);
-            match db.get(
+            db.get(
                 "ipv6_location",
                 Some(vec!["id", "country_code"]),
                 Some(format!("start <= {} AND end >= {}", address, address).as_str())
-            ).get(0).unwrap().get("country_code") {
-                Some(code) => {
-                    code_to_icon(code)
-                }
-                None => None
-            }
+            )
         }
+    };
+
+    match documents.get(0) {
+        Some(document) => {
+            code_to_icon(document.get("country_code").unwrap())
+        }
+        None => None
     }
 }
 
