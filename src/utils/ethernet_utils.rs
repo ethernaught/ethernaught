@@ -1,4 +1,3 @@
-use gtk::prelude::SocketExt;
 use rlibpcap::packet::layers::ethernet_frame::inter::ethernet_address::EthernetAddress;
 use crate::database::sqlite::Database;
 
