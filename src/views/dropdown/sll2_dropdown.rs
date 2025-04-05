@@ -31,13 +31,7 @@ impl Sll2Dropdown for Dropdown {
         _self.list_box.add(&create_row(format!("{}:", layer.get_title("packet_type").unwrap()), layer.get_value("packet_type").unwrap()));
         _self.list_box.add(&create_row(format!("{}:", layer.get_title("address_length").unwrap()), layer.get_value("address_length").unwrap()));
         _self.list_box.add(&create_row(format!("{}:", layer.get_title("address").unwrap()), layer.get_value("address").unwrap()));
-
-        let unused = layer.get_address().iter()
-            .skip(layer.get_address_length() as usize)
-            .map(|b| format!("{:02X}", b))
-            .collect::<Vec<String>>()
-            .concat();
-        _self.list_box.add(&create_row(String::from("Unused:"), unused));
+        _self.list_box.add(&create_row(format!("{}:", layer.get_title("unused").unwrap()), layer.get_value("unused").unwrap()));
 
         _self
     }
