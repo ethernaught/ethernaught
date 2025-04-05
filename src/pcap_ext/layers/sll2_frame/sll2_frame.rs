@@ -1,6 +1,5 @@
 use rlibpcap::packet::layers::sll2_frame::sll2_frame::{Sll2Frame, SLL2_FRAME_LEN};
 use crate::pcap_ext::layers::inter::layer_ext::LayerExt;
-use crate::views::dropdown::dropdown::create_row;
 
 impl LayerExt for Sll2Frame {
 
