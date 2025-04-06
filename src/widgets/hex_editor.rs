@@ -1,5 +1,4 @@
 use std::cell::RefCell;
-use std::cmp::max;
 use gtk::gdk::{EventMask, EventMotion, WindowAttr, WindowType, WindowWindowClass, RGBA};
 use gtk::{gdk, glib, pango, Allocation, Buildable, Misc, Orientation, StateFlags, Widget};
 use gtk::cairo::{Content, Context, FontSlant, FontWeight, Format, ImageSurface, RecordingSurface};
@@ -59,10 +58,10 @@ impl HexEditorImpl {
         let char_width = extents.max_x_advance() + 2.0;
         let row_height = extents.ascent() + extents.descent() + 2.0;
 
-        let width = padding.left as i32 + padding.right as i32 + (char_width as i32 * ((BYTES_PER_ROW as i32 * 3) + 8)) + extents.max_x_advance() as i32 * 2;
+        let width = padding.left as f64 + padding.right as f64 + (extents.max_x_advance() * 2.0) + (BYTES_PER_ROW as f64 * (char_width * 3.0)) + (char_width * 8.0);
         let height = padding.top as i32 + padding.bottom as i32 + ((self.data.borrow().len() / BYTES_PER_ROW) as i32 + 1) * row_height as i32;
 
-        (width, height)
+        (width as i32, height)
     }
 }
 
