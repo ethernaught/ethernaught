@@ -49,9 +49,7 @@ impl HexEditorImpl {
 
         let font_weight = match font_desc.weight() {
             Weight::Bold => FontWeight::Bold,
-            _ => {
-                FontWeight::Normal
-            }
+            _ => FontWeight::Normal
         };
 
         cr.select_font_face(font_desc.family().unwrap().split(',').next().unwrap().trim(), FontSlant::Normal, font_weight);
@@ -102,9 +100,7 @@ impl WidgetImpl for HexEditorImpl {
 
         let font_weight = match font_desc.weight() {
             Weight::Bold => FontWeight::Bold,
-            _ => {
-                FontWeight::Normal
-            }
+            _ => FontWeight::Normal
         };
 
         cr.select_font_face(font_desc.family().unwrap().split(',').next().unwrap().trim(), FontSlant::Normal, font_weight);
