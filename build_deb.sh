@@ -55,7 +55,21 @@ EOF
 
 # Create icons
 mkdir -p "$DEB_DIR/usr/share/icons/hicolor"
-cp -r res/hicolor/* "$DEB_DIR/usr/share/icons/hicolor/" || true
+
+#cp -r res/hicolor/* "$DEB_DIR/usr/share/icons/hicolor/" || true
+mkdir -p "$DEB_DIR/usr/share/icons/hicolor/16x16/apps"
+cp res/icons/app/icon_16x16.png       "$DEB_DIR/usr/share/icons/hicolor/16x16/apps/ethernaught.png"
+mkdir -p "$DEB_DIR/usr/share/icons/hicolor/32x32/apps"
+cp res/icons/app/icon_32x32.png       "$DEB_DIR/usr/share/icons/hicolor/32x32/apps/ethernaught.png"
+mkdir -p "$DEB_DIR/usr/share/icons/hicolor/64x64/apps"
+cp res/icons/app/icon_64x64.png       "$DEB_DIR/usr/share/icons/hicolor/64x64/apps/ethernaught.png"
+mkdir -p "$DEB_DIR/usr/share/icons/hicolor/128x128/apps"
+cp res/icons/app/icon_128x128.png       "$DEB_DIR/usr/share/icons/hicolor/128x128/apps/ethernaught.png"
+mkdir -p "$DEB_DIR/usr/share/icons/hicolor/256x256/apps"
+cp res/icons/app/icon_256x256.png       "$DEB_DIR/usr/share/icons/hicolor/256x256/apps/ethernaught.png"
+mkdir -p "$DEB_DIR/usr/share/icons/hicolor/512x512/apps"
+cp res/icons/app/icon_512x512.png       "$DEB_DIR/usr/share/icons/hicolor/512x512/apps/ethernaught.png"
+
 
 # Create fonts
 mkdir -p "$DEB_DIR/usr/share/fonts/truetype/$APP_NAME"
