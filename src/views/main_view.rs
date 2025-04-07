@@ -1,8 +1,9 @@
 use std::cell::RefCell;
 use std::path::PathBuf;
 use std::rc::Rc;
-use gtk::{gdk, Builder, Container, CssProvider, Paned, StyleContext};
+use gtk::{gdk, Builder, Button, Container, CssProvider, Paned, StyleContext};
 use gtk::gio::{SimpleAction, SimpleActionGroup};
+use gtk::glib::Propagation::Proceed;
 use gtk::prelude::{ActionMapExt, BuilderExtManual, Cast, ContainerExt, CssProviderExt, ImageExt, LabelExt, ListModelExtManual, PanedExt, StyleContextExt, WidgetExt, WidgetExtManual};
 use rlibpcap::devices::Device;
 use rlibpcap::pcap::pcap::Pcap;
@@ -57,33 +58,32 @@ impl MainView {
         activity_pane.set_child_resize(content_pane.upcast_ref::<Container>(), true);
 
 
+        let terminal_button: Button = builder
+            .object("terminal")
+            .expect("Couldn't find 'terminal' in main_view.ui");
         let terminal = Rc::new(RefCell::new(None::<TerminalView>));
 
-        let actions = SimpleActionGroup::new();
-
-        root.insert_action_group("sidebar", Some(&actions));
-
-        let action = SimpleAction::new("terminal", None);
-        action.connect_activate({
+        terminal_button.connect_button_press_event({
             let activity_pane = activity_pane.clone();
             let terminal = terminal.clone();
-            move |_, _| {
+            move |button, _| {
                 let mut term_ref = terminal.borrow_mut();
 
                 if let Some(terminal) = term_ref.as_ref() {
+                    button.style_context().remove_class("selected");
                     activity_pane.remove(&terminal.root);
                     *term_ref = None::<TerminalView>;
-                    return;
+                    return Proceed;
                 }
 
+                button.style_context().add_class("selected");
                 let view = TerminalView::new();
                 activity_pane.add(&view.root);
                 *term_ref = Some(view);
 
+                Proceed
             }
         });
-        actions.add_action(&action);
-        window.window.add_action(&action);
 
 
         let show_title_bar = Box::new(show_title_bar(window, "Any", DataLinkTypes::Null));
@@ -199,33 +199,33 @@ impl MainView {
         activity_pane.set_child_shrink(content_pane.upcast_ref::<Container>(), false);
         activity_pane.set_child_resize(content_pane.upcast_ref::<Container>(), true);
 
+
+        let terminal_button: Button = builder
+            .object("terminal")
+            .expect("Couldn't find 'terminal' in main_view.ui");
         let terminal = Rc::new(RefCell::new(None::<TerminalView>));
 
-        let actions = SimpleActionGroup::new();
-
-        root.insert_action_group("sidebar", Some(&actions));
-
-        let action = SimpleAction::new("terminal", None);
-        action.connect_activate({
+        terminal_button.connect_button_press_event({
             let activity_pane = activity_pane.clone();
             let terminal = terminal.clone();
-            move |_, _| {
+            move |button, _| {
                 let mut term_ref = terminal.borrow_mut();
 
                 if let Some(terminal) = term_ref.as_ref() {
+                    button.style_context().remove_class("selected");
                     activity_pane.remove(&terminal.root);
                     *term_ref = None::<TerminalView>;
-                    return;
+                    return Proceed;
                 }
 
+                button.style_context().add_class("selected");
                 let view = TerminalView::new();
                 activity_pane.add(&view.root);
                 *term_ref = Some(view);
 
+                Proceed
             }
         });
-        actions.add_action(&action);
-        window.window.add_action(&action);
 
 
         let show_title_bar = Box::new(show_title_bar(window, &device.get_name(), device.get_data_link_type()));
@@ -349,33 +349,32 @@ impl MainView {
         activity_pane.set_child_resize(content_pane.upcast_ref::<Container>(), true);
 
 
+        let terminal_button: Button = builder
+            .object("terminal")
+            .expect("Couldn't find 'terminal' in main_view.ui");
         let terminal = Rc::new(RefCell::new(None::<TerminalView>));
 
-        let actions = SimpleActionGroup::new();
-
-        root.insert_action_group("sidebar", Some(&actions));
-
-        let action = SimpleAction::new("terminal", None);
-        action.connect_activate({
+        terminal_button.connect_button_press_event({
             let activity_pane = activity_pane.clone();
             let terminal = terminal.clone();
-            move |_, _| {
+            move |button, _| {
                 let mut term_ref = terminal.borrow_mut();
 
                 if let Some(terminal) = term_ref.as_ref() {
+                    button.style_context().remove_class("selected");
                     activity_pane.remove(&terminal.root);
                     *term_ref = None::<TerminalView>;
-                    return;
+                    return Proceed;
                 }
 
+                button.style_context().add_class("selected");
                 let view = TerminalView::new();
                 activity_pane.add(&view.root);
                 *term_ref = Some(view);
 
+                Proceed
             }
         });
-        actions.add_action(&action);
-        window.window.add_action(&action);
 
 
         let show_title_bar = Box::new(show_title_bar(window, path.file_name().unwrap().to_str().unwrap(), pcap.get_data_link_type()));

@@ -42,7 +42,6 @@
                         <property name="visible">True</property>
                         <property name="width-request">24</property>
                         <property name="height-request">24</property>
-                        <property name="action-name">sidebar.terminal</property>
                     </object>
                 </child>
             </object>
