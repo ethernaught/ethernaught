@@ -56,7 +56,6 @@ EOF
 # Create icons
 mkdir -p "$DEB_DIR/usr/share/icons/hicolor"
 
-#cp -r res/hicolor/* "$DEB_DIR/usr/share/icons/hicolor/" || true
 mkdir -p "$DEB_DIR/usr/share/icons/hicolor/16x16/apps"
 cp res/icons/app/icon_16x16.png       "$DEB_DIR/usr/share/icons/hicolor/16x16/apps/ethernaught.png"
 mkdir -p "$DEB_DIR/usr/share/icons/hicolor/32x32/apps"
