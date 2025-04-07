@@ -23,6 +23,10 @@ cargo build --profile "$BUILD_TYPE"
 # Remove old package directory if exists
 rm -rf "$DEB_DIR"
 
+# Copy binary
+mkdir -p "$DEB_DIR/usr/local/bin"
+cp "$BUILD_DIR/$APP_NAME" "$DEB_DIR/usr/local/bin/"
+
 # Create control file
 mkdir -p "$DEB_DIR/DEBIAN"
 cat > "$DEB_DIR/DEBIAN/control" <<EOF
@@ -32,10 +36,6 @@ Architecture: $ARCH
 Maintainer: DrBrad <brad@bradeagle.com>
 Description: Ethernaught - Packet sniffer
 EOF
-
-# Copy binary
-mkdir -p "$DEB_DIR/usr/local/bin"
-cp "$BUILD_DIR/$APP_NAME" "$DEB_DIR/usr/local/bin/"
 
 # Create .desktop file
 mkdir -p "$DEB_DIR/usr/share/applications"
