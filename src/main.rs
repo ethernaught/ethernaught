@@ -31,7 +31,9 @@ use crate::bus::events::capture_event::CaptureEvent;
 use crate::bus::events::transmitted_event::TransmittedEvent;
 use crate::database::sqlite::Database;
 use crate::pcap_ext::packet_query::PacketQuery;
-//SIDEBAR SHOULD BE A FRAGMENT...
+
+
+
 //export GTK_DEBUG=interactive
 
 //glib-compile-resources res/linux.gresources.xml --target=res/resources.gresources
@@ -71,33 +73,6 @@ fn main() {
 
     let app = App::new();
     app.run();
-
-
-    //println!("{:?}", PacketQuery::from2("udp & tcp.source_port=1080 | arp"));
-
-    /*
-    if !cfg!(debug_assertions) {
-        if !is_root() {
-            println!("{:?}", env::current_exe().unwrap());
-            let display = env::var("DISPLAY").unwrap_or_else(|_| ":0".to_string());
-            let xauthority = env::var("XAUTHORITY").unwrap_or_else(|_| "/run/user/1000/gdm/Xauthority".to_string());
-
-            let args: Vec<String> = env::args().skip(1).collect();
-
-            let mut command = Command::new("pkexec");
-            command.arg("env")
-                .arg(format!("DISPLAY={}", display))
-                .arg(format!("XAUTHORITY={}", xauthority))
-                .arg(env::current_exe().unwrap());
-
-            for arg in args {
-                command.arg(arg);
-            }
-
-            exit(command.status().expect("Failed to execute pkexec").code().unwrap_or(1));
-        }
-    }
-    */
 }
 
 //CAN WE CHANGE THIS TO A VARIABLE SET ON BUILD...?
@@ -108,10 +83,11 @@ pub fn get_lib_path(file_name: &str) -> PathBuf {
 
     PathBuf::from(format!("/usr/var/lib/ethernaught/{}", file_name))
 }
-
+/*
 fn is_root() -> bool {
     match env::var("USER") {
         Ok(user) => user == "root",
         Err(_) => false,
     }
 }
+*/
