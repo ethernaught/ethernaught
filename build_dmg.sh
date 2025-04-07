@@ -23,12 +23,8 @@ cargo build --profile "$BUILD_TYPE"
 # Remove old package directory if exists
 rm -rf "$APP_DIR"
 
-
-
 mkdir -p "$APP_DIR/Contents/MacOS"
 cp "$BUILD_DIR/$APP_NAME" "$APP_DIR/Contents/MacOS/"
-
-#mkdir -p "$APP_DIR/Contents/Resources"
 
 cat > "$APP_DIR/Contents/Info.plist" <<EOF
 <?xml version="1.0" encoding="UTF-8"?>
@@ -46,72 +42,22 @@ cat > "$APP_DIR/Contents/Info.plist" <<EOF
     <string>1.0</string>
     <key>CFBundlePackageType</key>
     <string>APPL</string>
+    <key>CFBundleIconFile</key>
+    <string>icon</string>
 </dict>
 </plist>
 EOF
 
+mkdir -p target/icon.iconset
 
+cp res/icons/app/icon_16x16.png       target/icon.iconset/icon_16x16.png
+cp res/icons/app/icon_32x32.png       target/icon.iconset/icon_16x16@2x.png
+cp res/icons/app/icon_128x128.png     target/icon.iconset/icon_128x128.png
+cp res/icons/app/icon_256x256.png     target/icon.iconset/icon_128x128@2x.png
+cp res/icons/app/icon_512x512.png     target/icon.iconset/icon_256x256@2x.png
+#cp res/icons/app/icon_1024x1024.png   target/ethernaught.iconset/icon_512x512@2x.png
 
-#set -e
+iconutil -c icns target/icon.iconset
 
-#APP_NAME="Ethernaught"
-#APP_BUNDLE="${APP_NAME}.app"
-#DMG_NAME="${APP_NAME}.dmg"
-#VOLUME_NAME="${APP_NAME} Installer"
-#STAGING_DIR="dmg_staging"
-#FONT_NAME="EthernaughtMono-Regular.ttf"
-#ICON_FILE="icon.icns"
-#
-## Cleanup from previous runs
-#rm -rf "$STAGING_DIR" "$APP_BUNDLE" "$DMG_NAME"
-#
-#echo "[+] Creating .app bundle"
-#mkdir -p "$APP_BUNDLE/Contents/MacOS"
-#mkdir -p "$APP_BUNDLE/Contents/Resources"
-#
-## Copy binary
-#cp "$APP_NAME" "$APP_BUNDLE/Contents/MacOS/"
-#
-## Set up Info.plist
-#cat > "$APP_BUNDLE/Contents/Info.plist" <<EOF
-#<?xml version="1.0" encoding="UTF-8"?>
-#<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" \
-#  "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-#<plist version="1.0">
-#<dict>
-#    <key>CFBundleExecutable</key>
-#    <string>$APP_NAME</string>
-#    <key>CFBundleIdentifier</key>
-#    <string>net.ethernaught.$APP_NAME</string>
-#    <key>CFBundleName</key>
-#    <string>$APP_NAME</string>
-#    <key>CFBundleVersion</key>
-#    <string>1.0</string>
-#    <key>CFBundleIconFile</key>
-#    <string>icon</string>
-#</dict>
-#</plist>
-#EOF
-#
-## Copy icon and font into the app bundle (font optional for manual install)
-##cp "$ICON_FILE" "$APP_BUNDLE/Contents/Resources/icon.icns"
-#cp "$FONT_NAME" "$APP_BUNDLE/Contents/Resources/"
-#
-#echo "[+] Creating DMG staging directory"
-#mkdir "$STAGING_DIR"
-#cp -R "$APP_BUNDLE" "$STAGING_DIR/"
-#
-## Optional: Include a fonts install script or instructions
-#cat > "$STAGING_DIR/InstallFont.command" <<EOF
-##!/bin/bash
-#cp "\$(dirname "\$0")/$APP_BUNDLE/Contents/Resources/$FONT_NAME" ~/Library/Fonts/
-#echo "Font installed!"
-#EOF
-#chmod +x "$STAGING_DIR/InstallFont.command"
-#
-## Create the DMG
-#echo "[+] Creating DMG..."
-#hdiutil create -volname "$VOLUME_NAME" -srcfolder "$STAGING_DIR" -ov -format UDZO "$DMG_NAME"
-#
-#echo "[✓] DMG created: $DMG_NAME"
-#
+mkdir -p "$APP_DIR/Contents/Resources"
+mv target/icon.icns "$APP_DIR/Contents/Resources/"
