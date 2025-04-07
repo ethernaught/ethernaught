@@ -5,7 +5,7 @@ set -e  # Exit on error
 APP_NAME="ethernaught"
 VERSION="0.1.0"
 BUILD_TYPE=${1:release}
-ARCH="amd64"
+ARCH="arm64"
 BUILD_DIR="target/$BUILD_TYPE"
 DMG_DIR="target/dmg-pkg/"
 
@@ -67,4 +67,6 @@ ln -s /Applications "$DMG_DIR/Applications"
 # Create the DMG
 hdiutil create -volname "${APP_NAME} Installer" \
   -srcfolder "$DMG_DIR" \
-  -ov -format UDZO "$APP_NAME.dmg"
+  -ov -format UDZO "target/${APP_NAME}_${VERSION}_${ARCH}.dmg"
+
+echo "Dmg package created: target/${APP_NAME}_${VERSION}_${ARCH}.dmg"
