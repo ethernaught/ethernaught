@@ -7,7 +7,7 @@ VERSION="0.1.0"
 BUILD_TYPE=${1:release}
 ARCH="amd64"
 BUILD_DIR="target/$BUILD_TYPE"
-APP_DIR="target/ethernaught.app"
+DMG_DIR="target/dmg-pkg/"
 
 # Ensure cargo is installed
 if ! command -v cargo &> /dev/null; then
@@ -21,12 +21,12 @@ glib-compile-resources res/macos.gresources.xml --target=res/resources.gresource
 cargo build --profile "$BUILD_TYPE"
 
 # Remove old package directory if exists
-rm -rf "$APP_DIR"
+rm -rf "$DMG_DIR"
 
-mkdir -p "$APP_DIR/Contents/MacOS"
-cp "$BUILD_DIR/$APP_NAME" "$APP_DIR/Contents/MacOS/"
+mkdir -p "$DMG_DIR/$APP_NAME.app/Contents/MacOS"
+cp "$BUILD_DIR/$APP_NAME" "$DMG_DIR/$APP_NAME.app/Contents/MacOS/"
 
-cat > "$APP_DIR/Contents/Info.plist" <<EOF
+cat > "$DMG_DIR/$APP_NAME.app/Contents/Info.plist" <<EOF
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" \
   "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
@@ -55,9 +55,16 @@ cp res/icons/app/icon_32x32.png       target/icon.iconset/icon_16x16@2x.png
 cp res/icons/app/icon_128x128.png     target/icon.iconset/icon_128x128.png
 cp res/icons/app/icon_256x256.png     target/icon.iconset/icon_128x128@2x.png
 cp res/icons/app/icon_512x512.png     target/icon.iconset/icon_256x256@2x.png
-#cp res/icons/app/icon_1024x1024.png   target/ethernaught.iconset/icon_512x512@2x.png
+#cp res/icons/app/icon_1024x1024.png   target/icon.iconset/icon_512x512@2x.png
 
 iconutil -c icns target/icon.iconset
 
-mkdir -p "$APP_DIR/Contents/Resources"
-mv target/icon.icns "$APP_DIR/Contents/Resources/"
+mkdir -p "$DMG_DIR/$APP_NAME.app/Contents/Resources"
+mv target/icon.icns "$DMG_DIR/$APP_NAME.app/Contents/Resources/"
+
+ln -s /Applications "$DMG_DIR/Applications"
+
+# Create the DMG
+hdiutil create -volname "${APP_NAME} Installer" \
+  -srcfolder "$DMG_DIR" \
+  -ov -format UDZO "$APP_NAME.dmg"

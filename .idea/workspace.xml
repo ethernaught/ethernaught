@@ -9,12 +9,8 @@
   <component name="ChangeListManager">
     <list default="true" id="f0704e63-1929-42d3-83d7-8cbc904dc132" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/hicolor/128x128/apps/ethernaught.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/hicolor/16x16/apps/ethernaught.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/hicolor/256x256/apps/ethernaught.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/hicolor/32x32/apps/ethernaught.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/hicolor/512x512/apps/ethernaught.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/hicolor/64x64/apps/ethernaught.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build_deb.sh" beforeDir="false" afterPath="$PROJECT_DIR$/build_deb.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build_dmg.sh" beforeDir="false" afterPath="$PROJECT_DIR$/build_dmg.sh" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/res/resources.gresources" beforeDir="false" afterPath="$PROJECT_DIR$/res/resources.gresources" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />

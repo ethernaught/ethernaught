@@ -39,14 +39,14 @@ EOF
 
 # Create .desktop file
 mkdir -p "$DEB_DIR/usr/share/applications"
-cat > "$DEB_DIR/usr/share/applications/ethernaught.desktop" <<EOF
+cat > "$DEB_DIR/usr/share/applications/$APP_NAME.desktop" <<EOF
 [Desktop Entry]
 Name=Ethernaught
 GenericName=Ethernaught
 Comment=Ethernaught - Packet sniffer
 Keywords=packet;sniffer;capture;network;ethernet
-Exec=ethernaught %f
-Icon=ethernaught
+Exec=$APP_NAME %f
+Icon=$APP_NAME
 MimeType=application/vnd.tcpdump.pcap;application/x-pcapng;application/x-snoop;application/x-iptrace;application/x-lanalyzer;application/x-nettl;application/x-radcom;application/x-etherpeek;application/x-visualnetworks;application/x-netinstobserver;application/x-5view;application/x-tektronix-rf5;application/x-micropross-mplog;application/x-apple-packetlogger;application/x-endace-erf;application/ipfix;application/x-ixia-vwr;
 Terminal=false
 Type=Application
@@ -57,17 +57,17 @@ EOF
 mkdir -p "$DEB_DIR/usr/share/icons/hicolor"
 
 mkdir -p "$DEB_DIR/usr/share/icons/hicolor/16x16/apps"
-cp res/icons/app/icon_16x16.png       "$DEB_DIR/usr/share/icons/hicolor/16x16/apps/ethernaught.png"
+cp res/icons/app/icon_16x16.png       "$DEB_DIR/usr/share/icons/hicolor/16x16/apps/$APP_NAME.png"
 mkdir -p "$DEB_DIR/usr/share/icons/hicolor/32x32/apps"
-cp res/icons/app/icon_32x32.png       "$DEB_DIR/usr/share/icons/hicolor/32x32/apps/ethernaught.png"
+cp res/icons/app/icon_32x32.png       "$DEB_DIR/usr/share/icons/hicolor/32x32/apps/$APP_NAME.png"
 mkdir -p "$DEB_DIR/usr/share/icons/hicolor/64x64/apps"
-cp res/icons/app/icon_64x64.png       "$DEB_DIR/usr/share/icons/hicolor/64x64/apps/ethernaught.png"
+cp res/icons/app/icon_64x64.png       "$DEB_DIR/usr/share/icons/hicolor/64x64/apps/$APP_NAME.png"
 mkdir -p "$DEB_DIR/usr/share/icons/hicolor/128x128/apps"
-cp res/icons/app/icon_128x128.png       "$DEB_DIR/usr/share/icons/hicolor/128x128/apps/ethernaught.png"
+cp res/icons/app/icon_128x128.png       "$DEB_DIR/usr/share/icons/hicolor/128x128/apps/$APP_NAME.png"
 mkdir -p "$DEB_DIR/usr/share/icons/hicolor/256x256/apps"
-cp res/icons/app/icon_256x256.png       "$DEB_DIR/usr/share/icons/hicolor/256x256/apps/ethernaught.png"
+cp res/icons/app/icon_256x256.png       "$DEB_DIR/usr/share/icons/hicolor/256x256/apps/$APP_NAME.png"
 mkdir -p "$DEB_DIR/usr/share/icons/hicolor/512x512/apps"
-cp res/icons/app/icon_512x512.png       "$DEB_DIR/usr/share/icons/hicolor/512x512/apps/ethernaught.png"
+cp res/icons/app/icon_512x512.png       "$DEB_DIR/usr/share/icons/hicolor/512x512/apps/$APP_NAME.png"
 
 
 # Create fonts
