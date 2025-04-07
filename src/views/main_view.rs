@@ -13,6 +13,7 @@ use crate::bus::events::capture_event::CaptureEvent;
 use crate::views::inter::stackable::Stackable;
 use crate::views::packets_view::PacketsView;
 use crate::views::sidebar_view::SidebarView;
+use crate::views::terminal_view::TerminalView;
 use crate::windows::main_window::MainWindow;
 
 pub struct MainView {
@@ -23,6 +24,7 @@ pub struct MainView {
     pub content_pane: Paned,
     pub packets: PacketsView,
     pub sidebar: Rc<RefCell<Option<SidebarView>>>,
+    pub terminal: Rc<RefCell<Option<TerminalView>>>,
     pub event_listener: Option<RefCell<u32>>
 }
 
@@ -53,6 +55,36 @@ impl MainView {
             .expect("Couldn't find 'content_pane' in main_view.ui");
         activity_pane.set_child_shrink(content_pane.upcast_ref::<Container>(), false);
         activity_pane.set_child_resize(content_pane.upcast_ref::<Container>(), true);
+
+
+        let terminal = Rc::new(RefCell::new(None::<TerminalView>));
+
+        let actions = SimpleActionGroup::new();
+
+        root.insert_action_group("sidebar", Some(&actions));
+
+        let action = SimpleAction::new("terminal", None);
+        action.connect_activate({
+            let activity_pane = activity_pane.clone();
+            let terminal = terminal.clone();
+            move |_, _| {
+                let mut term_ref = terminal.borrow_mut();
+
+                if let Some(terminal) = term_ref.as_ref() {
+                    activity_pane.remove(&terminal.root);
+                    *term_ref = None::<TerminalView>;
+                    return;
+                }
+
+                let view = TerminalView::new();
+                activity_pane.add(&view.root);
+                *term_ref = Some(view);
+
+            }
+        });
+        actions.add_action(&action);
+        window.window.add_action(&action);
+
 
         let show_title_bar = Box::new(show_title_bar(window, "Any", DataLinkTypes::Null));
 
@@ -135,7 +167,8 @@ impl MainView {
             activity_pane,
             content_pane,
             packets,
-            sidebar: Rc::new(RefCell::new(None)),
+            sidebar,
+            terminal,
             event_listener
         }
     }
@@ -165,6 +198,35 @@ impl MainView {
             .expect("Couldn't find 'content_pane' in main_view.ui");
         activity_pane.set_child_shrink(content_pane.upcast_ref::<Container>(), false);
         activity_pane.set_child_resize(content_pane.upcast_ref::<Container>(), true);
+
+        let terminal = Rc::new(RefCell::new(None::<TerminalView>));
+
+        let actions = SimpleActionGroup::new();
+
+        root.insert_action_group("sidebar", Some(&actions));
+
+        let action = SimpleAction::new("terminal", None);
+        action.connect_activate({
+            let activity_pane = activity_pane.clone();
+            let terminal = terminal.clone();
+            move |_, _| {
+                let mut term_ref = terminal.borrow_mut();
+
+                if let Some(terminal) = term_ref.as_ref() {
+                    activity_pane.remove(&terminal.root);
+                    *term_ref = None::<TerminalView>;
+                    return;
+                }
+
+                let view = TerminalView::new();
+                activity_pane.add(&view.root);
+                *term_ref = Some(view);
+
+            }
+        });
+        actions.add_action(&action);
+        window.window.add_action(&action);
+
 
         let show_title_bar = Box::new(show_title_bar(window, &device.get_name(), device.get_data_link_type()));
 
@@ -253,6 +315,7 @@ impl MainView {
             content_pane,
             packets,
             sidebar,
+            terminal,
             event_listener
         }
     }
@@ -284,6 +347,36 @@ impl MainView {
             .expect("Couldn't find 'content_pane' in main_view.ui");
         activity_pane.set_child_shrink(content_pane.upcast_ref::<Container>(), false);
         activity_pane.set_child_resize(content_pane.upcast_ref::<Container>(), true);
+
+
+        let terminal = Rc::new(RefCell::new(None::<TerminalView>));
+
+        let actions = SimpleActionGroup::new();
+
+        root.insert_action_group("sidebar", Some(&actions));
+
+        let action = SimpleAction::new("terminal", None);
+        action.connect_activate({
+            let activity_pane = activity_pane.clone();
+            let terminal = terminal.clone();
+            move |_, _| {
+                let mut term_ref = terminal.borrow_mut();
+
+                if let Some(terminal) = term_ref.as_ref() {
+                    activity_pane.remove(&terminal.root);
+                    *term_ref = None::<TerminalView>;
+                    return;
+                }
+
+                let view = TerminalView::new();
+                activity_pane.add(&view.root);
+                *term_ref = Some(view);
+
+            }
+        });
+        actions.add_action(&action);
+        window.window.add_action(&action);
+
 
         let show_title_bar = Box::new(show_title_bar(window, path.file_name().unwrap().to_str().unwrap(), pcap.get_data_link_type()));
 
@@ -333,6 +426,7 @@ impl MainView {
             content_pane,
             packets,
             sidebar,
+            terminal,
             event_listener: None
         }
     }
