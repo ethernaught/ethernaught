@@ -154,20 +154,18 @@ impl Stackable for DevicesView {
     }
 
     fn on_resume(&self) {
-        //clear all points on devices...
-
         self.if_map.iter().for_each(|(pos, index)| {
             self.device_list_item.get(*pos).unwrap().graph.clear_points();
         });
 
-        resume_event("transmitted_event", self.event_listener.borrow().clone());
+        resume_event("transmitted_event", *self.event_listener.borrow());
     }
 
     fn on_pause(&self) {
-        pause_event("transmitted_event", self.event_listener.borrow().clone());
+        pause_event("transmitted_event", *self.event_listener.borrow());
     }
 
     fn on_destroy(&self) {
-        unregister_event("transmitted_event", self.event_listener.borrow().clone());
+        unregister_event("transmitted_event", *self.event_listener.borrow());
     }
 }

@@ -28,7 +28,7 @@ impl TitleBar {
             .object("root")
             .expect("Couldn't find 'root' in title_bar.ui");
 
-        #[cfg(target_os = "linux")]
+        #[cfg(any(target_os = "linux", target_os = "windows"))]
         {
             let menubar: MenuBar = builder
                 .object("menubar")

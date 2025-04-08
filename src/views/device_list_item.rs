@@ -76,6 +76,10 @@ impl DeviceListItem {
                 root.style_context().add_class("vpn");
                 icon.set_resource(Some("/net/ethernaught/rust/res/icons/ic_vpn.svg"));
             }
+            DataLinkTypes::Ieee802_11 => {
+                root.style_context().add_class("wifi");
+                icon.set_resource(Some("/net/ethernaught/rust/res/icons/ic_wifi.svg"));
+            }
             /*
             DataLinkTypes::BluetoothHciH4 => {
                 row.style_context().add_class("bluetooth");

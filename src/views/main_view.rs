@@ -453,7 +453,7 @@ impl Stackable for MainView {
         (self.show_title_bar)(false);
 
         if let Some(event_listener) = &self.event_listener {
-            pause_event("capture_event", event_listener.borrow().clone());
+            pause_event("capture_event", *event_listener.borrow());
         }
 
         if let Some(show_capture_bar) = &self.show_capture_bar {
@@ -463,7 +463,7 @@ impl Stackable for MainView {
 
     fn on_destroy(&self) {
         if let Some(event_listener) = &self.event_listener {
-            unregister_event("capture_event", event_listener.borrow().clone());
+            unregister_event("capture_event", *event_listener.borrow());
         }
     }
 }
@@ -489,6 +489,10 @@ fn show_title_bar(window: &MainWindow, name: &str, data_link_type: DataLinkTypes
                 DataLinkTypes::Raw | DataLinkTypes::Ipv4 | DataLinkTypes::Ipv6 => {
                     title_bar.root.style_context().add_class("vpn");
                     title_bar.network_type_icon.set_resource(Some("/net/ethernaught/rust/res/icons/ic_vpn.svg"));
+                }
+                DataLinkTypes::Ieee802_11 => {
+                    title_bar.root.style_context().add_class("wifi");
+                    title_bar.network_type_icon.set_resource(Some("/net/ethernaught/rust/res/icons/ic_wifi.svg"));
                 }
                 /*
                 DataLinkTypes::BluetoothHciH4 => {
@@ -520,6 +524,9 @@ fn show_title_bar(window: &MainWindow, name: &str, data_link_type: DataLinkTypes
             }
             DataLinkTypes::Raw | DataLinkTypes::Ipv4 | DataLinkTypes::Ipv6 => {
                 title_bar.root.style_context().remove_class("vpn");
+            }
+            DataLinkTypes::Ieee802_11 => {
+                title_bar.root.style_context().remove_class("wifi");
             }
             /*
             DataLinkTypes::BluetoothHciH4 => {
