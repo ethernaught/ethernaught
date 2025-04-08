@@ -68,12 +68,8 @@ impl Serialize for Device {
         offset += 15;
 
         let address = match buf[15] {
-            4 => {
-                Some(IpAddr::from(Ipv4Addr::new(buf[offset + 16], buf[offset + 17], buf[offset + 18], buf[offset + 19])))
-            }
-            6 => {
-                None
-            }
+            4 => Some(IpAddr::from(Ipv4Addr::new(buf[offset + 16], buf[offset + 17], buf[offset + 18], buf[offset + 19]))),
+            6 => None,
             _ => None
         };
 
