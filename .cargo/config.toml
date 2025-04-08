@@ -1,0 +1,2 @@
+[target.x86_64-pc-windows-msvc]
+pkg-config = { path = "C:\\msys64\\mingw64\\bin\\pkg-config.exe" }
