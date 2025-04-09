@@ -2,6 +2,7 @@ use gtk4::{Application, CssProvider, StyleContext};
 use gtk4::gio::{resources_register, ApplicationFlags, Resource};
 use gtk4::glib::Bytes;
 use gtk4::prelude::{ApplicationExt, ApplicationExtManual, StyleContextExt};
+use crate::gtk4::windows::main_window::MainWindow;
 
 pub struct App {
     app: Application
@@ -44,7 +45,7 @@ impl App {
                 app.set_menubar(Some(&model));
             }
 
-            //MainWindow::new(&app);
+            MainWindow::new(&app);
 
             //register_app_actions(&app);
         });

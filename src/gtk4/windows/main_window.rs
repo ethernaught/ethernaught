@@ -1,38 +1,41 @@
 use std::cell::RefCell;
 use std::collections::HashMap;
-use std::path::PathBuf;
 use std::process::exit;
-use std::rc::Rc;
-use gtk::{gdk, Application, ApplicationWindow, Builder, CssProvider, Stack, StyleContext};
-use gtk::gdk::{Geometry, WindowHints};
-use gtk::glib::Propagation::Proceed;
-use gtk::prelude::ContainerExt;
-use rlibpcap::devices::Device;
-use rlibpcap::utils::interface_flags::InterfaceFlags;
-use crate::gtk3::actions::window_actions::{register_stack_actions, register_window_actions};
-use crate::gtk3::views::bottom_bar::BottomBar;
-use crate::gtk3::views::devices_view::DevicesView;
-use crate::gtk3::views::inter::stackable::Stackable;
-use crate::gtk3::views::main_view::MainView;
-use crate::gtk3::views::notification_view::{NotificationTypes, NotificationView};
-use crate::gtk3::views::title_bar::TitleBar;
-use crate::sniffer::Sniffer;
+use gtk4::{Application, ApplicationWindow, Builder, HeaderBar};
+use gtk4::prelude::{GtkWindowExt, ObjectExt, WidgetExt};
 
 #[derive(Clone)]
 pub struct MainWindow {
     pub window: ApplicationWindow,
-    pub title_bar: TitleBar,
-    pub stack: Stack,
-    pub notifications: gtk::Box,
-    pub bottom_bar: BottomBar,
-    pub views: Rc<RefCell<HashMap<String, Box<dyn Stackable>>>>
+    //pub title_bar: TitleBar,
+    //pub stack: Stack,
+    //pub notifications: gtk::Box,
+    //pub bottom_bar: BottomBar,
+    //pub views: Rc<RefCell<HashMap<String, Box<dyn Stackable>>>>
 }
 
-impl crate::gtk3::windows::main_window::MainWindow {
+impl MainWindow {
 
     pub fn new(app: &Application) -> Self {
+        /*
         let builder = Builder::from_resource("/net/ethernaught/rust/res/ui/gtk3/window.ui");
 
+        let window: ApplicationWindow = builder
+            .object("main_window")
+            .expect("Failed to get the 'main_window' from window.ui");*/
+        let window = ApplicationWindow::builder()
+            .application(app)
+            .title("GTK4 Hello App")
+            .default_width(700)
+            .default_height(500)
+            .build();
+
+        window.set_application(Some(app));
+        window.connect_destroy(|_| exit(0));
+        //window.set_decorated(false);
+        //window.set_border_width(1);
+
+        /*
         let provider = CssProvider::new();
         provider.load_from_resource("/net/ethernaught/rust/res/ui/gtk3/window.css");
         //provider.load_from_path("res/ui/gtk3/window.css").expect("Failed to load CSS file.");
@@ -42,16 +45,10 @@ impl crate::gtk3::windows::main_window::MainWindow {
             &provider,
             gtk::STYLE_PROVIDER_PRIORITY_APPLICATION
         );
+        */
 
-        let window: ApplicationWindow = builder
-            .object("main_window")
-            .expect("Failed to get the 'main_window' from window.ui");
 
-        window.set_application(Some(app));
-        window.connect_destroy(|_| exit(0));
-        //window.set_decorated(false);
-        window.set_border_width(1);
-
+        /*
         let (width, height) = window.default_size();
 
         let hints = Geometry::new(
@@ -67,6 +64,7 @@ impl crate::gtk3::windows::main_window::MainWindow {
             0.0,
             gdk::Gravity::NorthWest);
         window.set_geometry_hints(None::<&gtk::Widget>, Some(&hints), WindowHints::MIN_SIZE);
+        */
 
         #[cfg(profile = "nightly")]
         window.style_context().add_class("nightly");
@@ -76,6 +74,14 @@ impl crate::gtk3::windows::main_window::MainWindow {
 
         //window.set_icon_from_file("res/icons/ic_launcher.svg").expect("Failed to load icon");
 
+        let header = HeaderBar::new();
+        #[cfg(target_os = "macos")]
+        header.set_property("use-native-controls", &true);
+        header.show();
+
+        window.set_titlebar(Some(&header));
+
+        /*
         let title_bar = TitleBar::new(&window);
         window.set_titlebar(Some(&title_bar.root));
 
@@ -140,18 +146,20 @@ impl crate::gtk3::windows::main_window::MainWindow {
                 Proceed
             }
         });
+        */
 
         window.show();
 
         let _self = Self {
             window,
-            title_bar,
-            stack,
-            notifications,
-            bottom_bar,
-            views
+            //title_bar,
+            //stack,
+            //notifications,
+            //bottom_bar,
+            //views
         };
 
+        /*
         _self.add_view(Box::new(DevicesView::new(&_self, devices)));
 
 
@@ -161,6 +169,7 @@ impl crate::gtk3::windows::main_window::MainWindow {
 
         let sniffer = Sniffer::new();
         sniffer.run();
+        */
 
         _self
     }
