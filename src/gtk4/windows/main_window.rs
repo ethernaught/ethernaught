@@ -25,7 +25,7 @@ impl MainWindow {
             .expect("Failed to get the 'main_window' from window.ui");*/
         let window = ApplicationWindow::builder()
             .application(app)
-            .title("GTK4 Hello App")
+            .title("Ethernaught")
             .default_width(700)
             .default_height(500)
             .build();
