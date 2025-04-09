@@ -7,28 +7,7 @@
     <cargoProject FILE="$PROJECT_DIR$/Cargo.toml" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f0704e63-1929-42d3-83d7-8cbc904dc132" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/res/icons/windows/ic_close.svg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/res/icons/windows/ic_close_focus.svg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/res/icons/windows/ic_maximize.svg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/res/icons/windows/ic_maximize_focus.svg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/res/icons/windows/ic_menu.svg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/res/icons/windows/ic_minimize.svg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/res/icons/windows/ic_minimize_focus.svg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/res/icons/windows/ic_unmaximize.svg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/res/icons/windows/ic_unmaximize_focus.svg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/res/ui/gtk3/windows/theme.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/res/ui/gtk3/windows/title_bar.ui" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/res/windows.gresources.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/resources.gresources" beforeDir="false" afterPath="$PROJECT_DIR$/res/resources.gresources" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/app.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sniffer.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/sniffer.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/devices_view.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/devices_view.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/main_view.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/main_view.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/packet_playground_view.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/packet_playground_view.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/windows/main_window.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/windows/main_window.rs" afterDir="false" />
-    </list>
+    <list default="true" id="f0704e63-1929-42d3-83d7-8cbc904dc132" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -155,7 +134,7 @@
       <workItem from="1743794250942" duration="328000" />
       <workItem from="1743794588775" duration="19580000" />
       <workItem from="1744154328453" duration="1431000" />
-      <workItem from="1744155832113" duration="1542000" />
+      <workItem from="1744155832113" duration="1633000" />
     </task>
     <servers />
   </component>
