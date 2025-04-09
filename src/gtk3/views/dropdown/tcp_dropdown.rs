@@ -6,30 +6,30 @@ use gtk::glib::Propagation::Proceed;
 use gtk::prelude::{BuilderExtManual, ButtonExt, ContainerExt, EditableExt, GestureSingleExt, ImageExt, LabelExt, ListBoxExt, ListBoxRowExt, TextExt, WidgetExt};
 use rlibpcap::packet::layers::ethernet_frame::ethernet_frame::EthernetFrame;
 use rlibpcap::packet::layers::ip::ipv4_layer::Ipv4Layer;
+use rlibpcap::packet::layers::ip::tcp::tcp_layer::TcpLayer;
 use rlibpcap::packet::layers::ip::udp::udp_layer::UdpLayer;
 use crate::database::sqlite::Database;
 use crate::pcap_ext::layers::inter::layer_ext::LayerExt;
 use crate::pcap_ext::layers::ip::tcp::inter::tcp_ports::TcpPorts;
-use crate::pcap_ext::layers::ip::udp::inter::udp_ports::UdpPorts;
 use crate::utils::ethernet_utils::ethernet_to_company;
 use crate::utils::ip_utils::ip_to_icon;
-use crate::views::dropdown::dropdown::{context_menu, create_row, create_row_with_icon, set_selection, Dropdown};
-use crate::views::sidebar_view::SidebarView;
-use crate::widgets::hex_editor::HexEditor;
+use crate::gtk3::views::dropdown::dropdown::{context_menu, create_row, create_row_with_icon, set_selection, Dropdown};
+use crate::gtk3::views::sidebar_view::SidebarView;
+use crate::gtk3::widgets::hex_editor::HexEditor;
 
-pub trait UdpDropdown {
+pub trait TcpDropdown {
 
-    fn from_udp_layer(source_address: IpAddr, destination_address: IpAddr, hex_editor: &HexEditor, actions: &SimpleActionGroup, layer: &UdpLayer, offset: usize) -> Self;
+    fn from_tcp_layer(hex_editor: &HexEditor, actions: &SimpleActionGroup, layer: &TcpLayer, offset: usize) -> Self;
 }
 
-impl UdpDropdown for Dropdown {
+impl TcpDropdown for Dropdown {
 
-    fn from_udp_layer(source_address: IpAddr, destination_address: IpAddr, hex_editor: &HexEditor, actions: &SimpleActionGroup, layer: &UdpLayer, offset: usize) -> Self {
+    fn from_tcp_layer(hex_editor: &HexEditor, actions: &SimpleActionGroup, layer: &TcpLayer, offset: usize) -> Self {
         let _self = Self::new(&layer.get_title("frame").unwrap());
         _self.list_box.connect_row_activated(set_selection(&hex_editor, layer, offset));
         _self.list_box.connect_button_press_event(context_menu(&hex_editor, actions, layer, offset));
 
-        match UdpPorts::from_code(layer.get_source_port()) {
+        match TcpPorts::from_code(layer.get_source_port()) {
             Ok(port) => {
                 _self.list_box.add(&create_row(format!("{}:", layer.get_title("source_port").unwrap()), format!("{} ({})", port.to_string(), layer.get_value("source_port").unwrap())));
             }
@@ -38,7 +38,7 @@ impl UdpDropdown for Dropdown {
             }
         }
 
-        match UdpPorts::from_code(layer.get_destination_port()) {
+        match TcpPorts::from_code(layer.get_destination_port()) {
             Ok(port) => {
                 _self.list_box.add(&create_row(format!("{}:", layer.get_title("destination_port").unwrap()), format!("{} ({})", port.to_string(), layer.get_value("destination_port").unwrap())));
             }
@@ -47,10 +47,11 @@ impl UdpDropdown for Dropdown {
             }
         }
 
-        _self.list_box.add(&create_row(format!("{}:", layer.get_title("length").unwrap()), layer.get_value("length").unwrap()));
-
-        let checksum_string = if layer.validate_checksum(source_address, destination_address) { "correct" } else { "incorrect" };
-        _self.list_box.add(&create_row(format!("{}:", layer.get_title("checksum").unwrap()), format!("{} [{}]", layer.get_value("checksum").unwrap(), checksum_string)));
+        _self.list_box.add(&create_row(format!("{}:", layer.get_title("sequence_number").unwrap()), layer.get_value("sequence_number").unwrap()));
+        _self.list_box.add(&create_row(format!("{}:", layer.get_title("acknowledgment_number").unwrap()), layer.get_value("acknowledgment_number").unwrap()));
+        _self.list_box.add(&create_row(format!("{}:", layer.get_title("window_size").unwrap()), layer.get_value("window_size").unwrap()));
+        _self.list_box.add(&create_row(format!("{}:", layer.get_title("checksum").unwrap()), layer.get_value("checksum").unwrap()));
+        _self.list_box.add(&create_row(format!("{}:", layer.get_title("urgent_pointer").unwrap()), layer.get_value("urgent_pointer").unwrap()));
 
         _self
     }

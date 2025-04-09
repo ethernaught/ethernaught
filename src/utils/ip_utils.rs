@@ -1,6 +1,11 @@
 use std::net::IpAddr;
-use gtk::gdk_pixbuf::Pixbuf;
 use crate::database::sqlite::Database;
+
+#[cfg(feature = "gtk3")]
+use gtk::gdk_pixbuf::Pixbuf;
+
+#[cfg(feature = "gtk4")]
+use gtk4::gdk_pixbuf::Pixbuf;
 
 pub fn ip_to_icon(db: &Database, address: IpAddr) -> Option<Pixbuf> {
     let documents = match address {

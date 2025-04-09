@@ -1,8 +1,13 @@
 use std::cell::RefCell;
 use std::collections::HashMap;
-use gtk::glib;
 use crate::bus::events::inter::event::Event;
 use crate::utils::random;
+
+#[cfg(feature = "gtk3")]
+use gtk::glib;
+
+#[cfg(feature = "gtk4")]
+use gtk4::glib;
 
 type EventCallback = Box<dyn Fn(&Box<dyn Event>) -> EventPropagation>;
 

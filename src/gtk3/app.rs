@@ -1,20 +1,13 @@
-use std::process::exit;
 use gtk::{gdk, gio, Application, ApplicationWindow, Builder, CssProvider, Stack, StyleContext};
 use gtk::gio::{resources_register, ApplicationFlags, Resource};
 use gtk::glib::{Bytes, StaticType};
-use gtk::glib::Propagation::Proceed;
 use gtk::prelude::{ApplicationExt, ApplicationExtManual, BuilderExtManual, ContainerExt, CssProviderExt, FileExt, GtkApplicationExt, GtkWindowExt, StackExt, WidgetExt};
-use rlibpcap::devices::Device;
-use rlibpcap::utils::interface_flags::InterfaceFlags;
-use crate::actions::app_actions::register_app_actions;
-use crate::views::bottom_bar::BottomBar;
-use crate::views::devices_view::DevicesView;
-use crate::views::inter::stackable::Stackable;
-use crate::widgets::graph::Graph;
-use crate::widgets::hex_editor::HexEditor;
-use crate::widgets::terminal::Terminal;
-use crate::widgets::overlay::Overlay;
-use crate::windows::main_window::MainWindow;
+use crate::gtk3::actions::app_actions::register_app_actions;
+use crate::gtk3::widgets::graph::Graph;
+use crate::gtk3::widgets::hex_editor::HexEditor;
+use crate::gtk3::widgets::terminal::Terminal;
+use crate::gtk3::widgets::overlay::Overlay;
+use crate::gtk3::windows::main_window::MainWindow;
 
 pub struct App {
     app: Application
@@ -37,7 +30,7 @@ impl App {
         Overlay::static_type();
 
         self.app.connect_activate(move |app| {
-            let resource_data = include_bytes!("../res/resources.gresources");
+            let resource_data = include_bytes!("../../res/resources.gresources");
 
             let resource = Resource::from_data(&Bytes::from(resource_data)).unwrap();
             resources_register(&resource);
@@ -69,7 +62,7 @@ impl App {
         self.app.connect_open(move |app, files, _hint| {
             for file in files {
                 if let Some(path) = file.path() {
-                    let resource_data = include_bytes!("../res/resources.gresources");
+                    let resource_data = include_bytes!("../../res/resources.gresources");
 
                     let resource = Resource::from_data(&Bytes::from(resource_data)).unwrap();
                     resources_register(&resource);

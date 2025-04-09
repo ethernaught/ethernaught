@@ -3,20 +3,20 @@ use std::collections::HashMap;
 use std::path::PathBuf;
 use std::process::exit;
 use std::rc::Rc;
-use gtk::{gdk, gio, Application, ApplicationWindow, Builder, CssProvider, Stack, StyleContext};
+use gtk::{gdk, Application, ApplicationWindow, Builder, CssProvider, Stack, StyleContext};
 use gtk::gdk::{Geometry, WindowHints};
 use gtk::glib::Propagation::Proceed;
-use gtk::prelude::{ActionGroupExt, BuilderExtManual, ContainerExt, CssProviderExt, GtkApplicationExt, GtkWindowExt, StackExt, StyleContextExt, WidgetExt};
+use gtk::prelude::ContainerExt;
 use rlibpcap::devices::Device;
 use rlibpcap::utils::interface_flags::InterfaceFlags;
-use crate::actions::window_actions::{register_stack_actions, register_window_actions};
+use crate::gtk3::actions::window_actions::{register_stack_actions, register_window_actions};
+use crate::gtk3::views::bottom_bar::BottomBar;
+use crate::gtk3::views::devices_view::DevicesView;
+use crate::gtk3::views::inter::stackable::Stackable;
+use crate::gtk3::views::main_view::MainView;
+use crate::gtk3::views::notification_view::{NotificationTypes, NotificationView};
+use crate::gtk3::views::title_bar::TitleBar;
 use crate::sniffer::Sniffer;
-use crate::views::notification_view::{NotificationTypes, NotificationView};
-use crate::views::bottom_bar::BottomBar;
-use crate::views::devices_view::DevicesView;
-use crate::views::inter::stackable::Stackable;
-use crate::views::main_view::MainView;
-use crate::views::title_bar::TitleBar;
 
 #[derive(Clone)]
 pub struct MainWindow {
@@ -28,7 +28,7 @@ pub struct MainWindow {
     pub views: Rc<RefCell<HashMap<String, Box<dyn Stackable>>>>
 }
 
-impl MainWindow {
+impl crate::gtk3::windows::main_window::MainWindow {
 
     pub fn new(app: &Application) -> Self {
         let builder = Builder::from_resource("/net/ethernaught/rust/res/ui/gtk3/window.ui");
@@ -165,6 +165,7 @@ impl MainWindow {
         _self
     }
 
+    /*
     pub fn from_file(app: &Application, path: &PathBuf) -> Self {
         let builder = Builder::from_resource("/net/ethernaught/rust/res/ui/gtk3/window.ui");
 
@@ -344,4 +345,5 @@ impl MainWindow {
     pub fn notify(&self, _type: NotificationTypes, title: &str, description: &str) {
         self.notifications.add(&NotificationView::new(_type, title, description).root);
     }
+    */
 }

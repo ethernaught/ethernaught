@@ -28,18 +28,18 @@ use rlibpcap::packet::packet::Packet;
 use rlibpcap::utils::data_link_types::DataLinkTypes;
 use crate::database::sqlite::Database;
 use crate::get_lib_path;
-use crate::views::dropdown::arp_dropdown::ArpDropdown;
-use crate::views::dropdown::dropdown::Dropdown;
-use crate::views::dropdown::ethernet_dropdown::EthernetDropdown;
-use crate::views::dropdown::icmp_dropdown::IcmpDropdown;
-use crate::views::dropdown::icmpv6_dropdown::Icmpv6Dropdown;
-use crate::views::dropdown::ipv4_dropdown::Ipv4Dropdown;
-use crate::views::dropdown::ipv6_dropdown::Ipv6Dropdown;
-use crate::views::dropdown::llc_dropdown::LlcDropdown;
-use crate::views::dropdown::sll2_dropdown::Sll2Dropdown;
-use crate::views::dropdown::tcp_dropdown::TcpDropdown;
-use crate::views::dropdown::udp_dropdown::UdpDropdown;
-use crate::widgets::hex_editor::HexEditor;
+use crate::gtk3::views::dropdown::arp_dropdown::ArpDropdown;
+use crate::gtk3::views::dropdown::dropdown::Dropdown;
+use crate::gtk3::views::dropdown::ethernet_dropdown::EthernetDropdown;
+use crate::gtk3::views::dropdown::icmp_dropdown::IcmpDropdown;
+use crate::gtk3::views::dropdown::icmpv6_dropdown::Icmpv6Dropdown;
+use crate::gtk3::views::dropdown::ipv4_dropdown::Ipv4Dropdown;
+use crate::gtk3::views::dropdown::ipv6_dropdown::Ipv6Dropdown;
+use crate::gtk3::views::dropdown::llc_dropdown::LlcDropdown;
+use crate::gtk3::views::dropdown::sll2_dropdown::Sll2Dropdown;
+use crate::gtk3::views::dropdown::tcp_dropdown::TcpDropdown;
+use crate::gtk3::views::dropdown::udp_dropdown::UdpDropdown;
+use crate::gtk3::widgets::hex_editor::HexEditor;
 
 pub struct SidebarView {
     pub root: gtk::Box,

@@ -3,8 +3,8 @@ use gtk::prelude::{BuilderExtManual, CssProviderExt, ImageExt, LabelExt, StyleCo
 use rlibpcap::devices::Device;
 use rlibpcap::utils::data_link_types::DataLinkTypes;
 use rlibpcap::utils::interface_flags::InterfaceFlags;
-use crate::views::inter::stackable::Stackable;
-use crate::widgets::graph::Graph;
+use crate::gtk3::views::inter::stackable::Stackable;
+use crate::gtk3::widgets::graph::Graph;
 
 #[derive(Clone)]
 pub struct DeviceListItem {

@@ -10,10 +10,10 @@ use crate::bus::events::inter::event::Event;
 use crate::bus::events::permission_event::PermissionEvent;
 use crate::bus::events::transmitted_event::TransmittedEvent;
 use crate::pcap_ext::devices::Serialize;
-use crate::views::device_list_item::DeviceListItem;
-use crate::views::inter::stackable::Stackable;
-use crate::views::notification_view::NotificationTypes;
-use crate::windows::main_window::MainWindow;
+use crate::gtk3::views::device_list_item::DeviceListItem;
+use crate::gtk3::views::inter::stackable::Stackable;
+use crate::gtk3::views::notification_view::NotificationTypes;
+use crate::gtk3::windows::main_window::MainWindow;
 
 pub struct DevicesView {
     pub root: gtk::Box,

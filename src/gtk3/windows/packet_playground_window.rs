@@ -1,6 +1,6 @@
 use gtk::{Window, WindowType};
 use gtk::prelude::{ContainerExt, GtkWindowExt, WidgetExt};
-use crate::views::packet_playground_view::PacketPlaygroundView;
+use crate::gtk3::views::packet_playground_view::PacketPlaygroundView;
 
 #[derive(Clone)]
 pub struct PacketPlaygroundWindow {

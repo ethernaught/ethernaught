@@ -30,7 +30,7 @@ use rlibpcap::utils::data_link_types::DataLinkTypes;
 use crate::pcap_ext::layers::inter::layer_ext::LayerExt;
 use crate::pcap_ext::packet_ext::PacketExt;
 use crate::pcap_ext::packet_query::PacketQuery;
-use crate::views::dropdown::dropdown::Dropdown;
+use crate::gtk3::views::dropdown::dropdown::Dropdown;
 
 #[derive(Clone)]
 pub struct PacketsView {

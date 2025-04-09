@@ -1,7 +1,7 @@
 use gtk::{gdk, Builder, ComboBoxText, CssProvider, Paned, ScrolledWindow, StyleContext};
 use gtk::gdk::RGBA;
 use gtk::prelude::{BuilderExtManual, ComboBoxExt, ComboBoxExtManual, ComboBoxTextExt, ContainerExt, CssProviderExt, PanedExt, WidgetExt};
-use crate::widgets::hex_editor::HexEditor;
+use crate::gtk3::widgets::hex_editor::HexEditor;
 
 pub struct PacketPlaygroundView {
     pub root: Paned

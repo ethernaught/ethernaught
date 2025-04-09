@@ -8,9 +8,54 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f0704e63-1929-42d3-83d7-8cbc904dc132" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/gtk3/mod.rs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/gtk4/app.rs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/gtk4/mod.rs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/gtk4/windows/main_window.rs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/gtk4/windows/mod.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/resources.gresources" beforeDir="false" afterPath="$PROJECT_DIR$/res/resources.gresources" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/ui/gtk3/linux/theme.css" beforeDir="false" afterPath="$PROJECT_DIR$/res/ui/gtk3/linux/theme.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Cargo.lock" beforeDir="false" afterPath="$PROJECT_DIR$/Cargo.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/Cargo.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/actions/app_actions.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/gtk3/actions/app_actions.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/actions/mod.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/gtk3/actions/mod.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/actions/window_actions.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/gtk3/actions/window_actions.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/gtk3/app.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/bus/event_bus.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/bus/event_bus.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/ip_utils.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/ip_utils.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/bottom_bar.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/gtk3/views/bottom_bar.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/device_list_item.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/gtk3/views/device_list_item.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/devices_view.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/gtk3/views/devices_view.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/dropdown/arp_dropdown.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/gtk3/views/dropdown/arp_dropdown.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/dropdown/dropdown.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/gtk3/views/dropdown/dropdown.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/dropdown/ethernet_dropdown.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/gtk3/views/dropdown/ethernet_dropdown.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/dropdown/icmp_dropdown.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/gtk3/views/dropdown/icmp_dropdown.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/dropdown/icmpv6_dropdown.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/gtk3/views/dropdown/icmpv6_dropdown.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/dropdown/ipv4_dropdown.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/gtk3/views/dropdown/ipv4_dropdown.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/dropdown/ipv6_dropdown.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/gtk3/views/dropdown/ipv6_dropdown.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/dropdown/llc_dropdown.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/gtk3/views/dropdown/llc_dropdown.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/dropdown/mod.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/gtk3/views/dropdown/mod.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/dropdown/sll2_dropdown.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/gtk3/views/dropdown/sll2_dropdown.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/dropdown/tcp_dropdown.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/gtk3/views/dropdown/tcp_dropdown.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/dropdown/udp_dropdown.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/gtk3/views/dropdown/udp_dropdown.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/inter/mod.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/gtk3/views/inter/mod.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/inter/stackable.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/gtk3/views/inter/stackable.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/main_view.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/gtk3/views/main_view.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/mod.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/gtk3/views/mod.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/notification_view.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/gtk3/views/notification_view.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/packet_playground_view.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/gtk3/views/packet_playground_view.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/packets_view.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/gtk3/views/packets_view.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/sidebar_view.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/gtk3/views/sidebar_view.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/terminal_view.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/gtk3/views/terminal_view.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/title_bar.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/gtk3/views/title_bar.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/widgets/graph.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/gtk3/widgets/graph.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/widgets/hex_editor.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/gtk3/widgets/hex_editor.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/widgets/mod.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/gtk3/widgets/mod.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/widgets/overlay.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/gtk3/widgets/overlay.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/widgets/terminal.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/gtk3/widgets/terminal.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/windows/main_window.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/gtk3/windows/main_window.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/windows/mod.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/gtk3/windows/mod.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/windows/packet_playground_window.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/gtk3/windows/packet_playground_window.rs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -80,11 +125,11 @@
       <recent name="$PROJECT_DIR$/res/icons" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/gtk3" />
       <recent name="$PROJECT_DIR$/res/app" />
       <recent name="$PROJECT_DIR$/res/icons/linux" />
       <recent name="$PROJECT_DIR$/res" />
       <recent name="$PROJECT_DIR$/res/ui/gtk3" />
-      <recent name="$PROJECT_DIR$/src/pcap_ext/layers" />
     </key>
   </component>
   <component name="RunManager">
@@ -139,6 +184,8 @@
       <workItem from="1743794588775" duration="19580000" />
       <workItem from="1744154328453" duration="1431000" />
       <workItem from="1744155832113" duration="1633000" />
+      <workItem from="1744230965430" duration="467000" />
+      <workItem from="1744231494130" duration="884000" />
     </task>
     <servers />
   </component>

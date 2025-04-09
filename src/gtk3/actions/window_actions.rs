@@ -7,8 +7,8 @@ use gtk::{AboutDialog, FileChooserAction, FileChooserDialog, FileFilter, Respons
 use gtk::gdk_pixbuf::Pixbuf;
 use rlibpcap::devices::Device;
 use crate::pcap_ext::devices::Serialize;
-use crate::views::main_view::MainView;
-use crate::windows::main_window::MainWindow;
+use crate::gtk3::views::main_view::MainView;
+use crate::gtk3::windows::main_window::MainWindow;
 
 pub fn register_window_actions(window: &MainWindow) {
     let action = SimpleAction::new("open", None);

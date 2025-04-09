@@ -1,7 +1,7 @@
 use gtk::Application;
 use gtk::gio::SimpleAction;
 use gtk::prelude::{ActionMapExt, ApplicationExt};
-use crate::windows::packet_playground_window::PacketPlaygroundWindow;
+use crate::gtk3::windows::packet_playground_window::PacketPlaygroundWindow;
 
 pub fn register_app_actions(app: &Application) {
     let action = SimpleAction::new("packet-playground", None);

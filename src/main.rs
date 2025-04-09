@@ -1,38 +1,42 @@
 mod pcap_ext;
 mod database;
-mod app;
-mod actions;
-mod views;
-mod widgets;
-mod windows;
 mod utils;
 mod bus;
 mod sniffer;
 
-use std::sync::{Arc, Mutex};
-use std::sync::mpsc::channel;
-use std::{env, thread};
-use std::collections::HashMap;
-use std::net::Ipv4Addr;
+//use std::sync::{Arc, Mutex};
+//use std::sync::mpsc::channel;
+//use std::{env, thread};
+//use std::collections::HashMap;
+//use std::net::Ipv4Addr;
+//use std::path::PathBuf;
+//use std::process::{exit, Command};
+//use std::thread::sleep;
+//use std::time::{Duration, SystemTime, UNIX_EPOCH};
+//use gtk::glib;
+//use gtk::glib::once_cell::sync::Lazy;
+//use rlibpcap::devices::Device;
+//use gtk::prelude::*;
+//use rlibpcap::capture::Capture;
+//use rlibpcap::utils::interface_flags::InterfaceFlags;
+//use gtk3::app::App;
+//use crate::bus::events::permission_event::PermissionEvent;
+//use crate::bus::event_bus::{register_event, send_event};
+//use crate::bus::events::capture_event::CaptureEvent;
+//use crate::bus::events::transmitted_event::TransmittedEvent;
+//use crate::database::sqlite::Database;
+//use crate::pcap_ext::packet_query::PacketQuery;
 use std::path::PathBuf;
-use std::process::{exit, Command};
-use std::thread::sleep;
-use std::time::{Duration, SystemTime, UNIX_EPOCH};
-use gtk::glib;
-use gtk::glib::once_cell::sync::Lazy;
-use rlibpcap::devices::Device;
-use gtk::prelude::*;
-use rlibpcap::capture::Capture;
-use rlibpcap::utils::interface_flags::InterfaceFlags;
-use crate::app::App;
-use crate::bus::events::permission_event::PermissionEvent;
-use crate::bus::event_bus::{register_event, send_event};
-use crate::bus::events::capture_event::CaptureEvent;
-use crate::bus::events::transmitted_event::TransmittedEvent;
-use crate::database::sqlite::Database;
-use crate::pcap_ext::packet_query::PacketQuery;
 
+#[cfg(feature = "gtk3")]
+mod gtk3;
+#[cfg(feature = "gtk3")]
+use crate::gtk3::app::App;
 
+#[cfg(feature = "gtk4")]
+mod gtk4;
+#[cfg(feature = "gtk4")]
+use crate::gtk4::app::App;
 
 //export GTK_DEBUG=interactive
 

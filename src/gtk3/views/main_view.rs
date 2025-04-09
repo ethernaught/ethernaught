@@ -11,11 +11,11 @@ use rlibpcap::utils::data_link_types::DataLinkTypes;
 use crate::bus::event_bus::{pause_event, register_event, resume_event, unregister_event};
 use crate::bus::event_bus::EventPropagation::Continue;
 use crate::bus::events::capture_event::CaptureEvent;
-use crate::views::inter::stackable::Stackable;
-use crate::views::packets_view::PacketsView;
-use crate::views::sidebar_view::SidebarView;
-use crate::views::terminal_view::TerminalView;
-use crate::windows::main_window::MainWindow;
+use crate::gtk3::views::inter::stackable::Stackable;
+use crate::gtk3::views::packets_view::PacketsView;
+use crate::gtk3::views::sidebar_view::SidebarView;
+use crate::gtk3::views::terminal_view::TerminalView;
+use crate::gtk3::windows::main_window::MainWindow;
 
 pub struct MainView {
     pub show_capture_bar: Option<Rc<RefCell<dyn Fn(bool)>>>,
