@@ -56,9 +56,9 @@ tooltip {
 }
 
 #window_controls button {
-    min-width: 8px;
-    min-height: 8px;
-    padding: 8px;
+    min-width: 12px;
+    min-height: 12px;
+    padding: 6px;
     border-radius: 100%;
     background-color: rgba(255, 255, 255, 0.05);
     background-size: auto;
