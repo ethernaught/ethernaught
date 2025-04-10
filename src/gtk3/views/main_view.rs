@@ -434,7 +434,7 @@ impl MainView {
 impl Stackable for MainView {
 
     fn get_name(&self) -> String {
-        "main_view".to_string()
+        String::from("main_view")
     }
 
     fn get_root(&self) -> &Container {

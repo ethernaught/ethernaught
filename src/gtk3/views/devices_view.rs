@@ -143,7 +143,7 @@ impl DevicesView {
 impl Stackable for DevicesView {
 
     fn get_name(&self) -> String {
-        "devices_view".to_string()
+        String::from("devices_view")
     }
 
     fn get_root(&self) -> &Container {

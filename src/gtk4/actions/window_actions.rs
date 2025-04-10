@@ -1,6 +1,6 @@
 use gtk4::gio::SimpleAction;
 use gtk4::glib::{VariantDict, VariantTy};
-use gtk4::prelude::{ActionMapExt, Cast, GtkWindowExt, WidgetExt};
+use gtk4::prelude::{ActionMapExt, Cast, GtkWindowExt};
 use gtk4::{AboutDialog, Window};
 use crate::gtk4::views::main_view::MainView;
 use crate::gtk4::windows::main_window::MainWindow;
@@ -110,6 +110,10 @@ pub fn register_stack_actions(window: &MainWindow) {
                 }
             }
             */
+
+            //let children = stack.children(); // `gtk4::Stack::children` returns Vec<Widget>
+
+            println!("BACK");
         }
     });
     window.window.add_action(&action);
