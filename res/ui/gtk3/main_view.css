@@ -41,6 +41,7 @@
 
 #main_view #side_navbar {
     padding: 4px;
+    border-right: solid 1px @background_secondary;
 }
 
 #main_view #side_navbar button {
