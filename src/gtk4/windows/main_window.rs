@@ -1,5 +1,6 @@
 use std::cell::RefCell;
 use std::collections::HashMap;
+use std::path::PathBuf;
 use std::process::exit;
 use std::rc::Rc;
 use gtk4::{gdk, style_context_add_provider_for_display, Application, ApplicationWindow, Builder, CssProvider, HeaderBar, Stack, StyleContext};
@@ -10,6 +11,7 @@ use crate::gtk4::actions::window_actions::{register_stack_actions, register_wind
 use crate::gtk4::views::bottom_bar::BottomBar;
 use crate::gtk4::views::devices_view::DevicesView;
 use crate::gtk4::views::inter::stackable::Stackable;
+use crate::gtk4::views::main_view::MainView;
 use crate::gtk4::views::title_bar::TitleBar;
 use crate::sniffer::Sniffer;
 
@@ -18,8 +20,8 @@ pub struct MainWindow {
     pub window: ApplicationWindow,
     pub title_bar: TitleBar,
     pub stack: Stack,
-    //pub notifications: gtk::Box,
-    //pub bottom_bar: BottomBar,
+    pub notifications: gtk4::Box,
+    pub bottom_bar: BottomBar,
     pub views: Rc<RefCell<HashMap<String, Box<dyn Stackable>>>>
 }
 
@@ -39,10 +41,8 @@ impl MainWindow {
 
         let provider = CssProvider::new();
         provider.load_from_resource("/net/ethernaught/rust/res/ui/window.css");
+
         style_context_add_provider_for_display(&gdk::Display::default().unwrap(), &provider, gtk4::STYLE_PROVIDER_PRIORITY_APPLICATION);
-
-        //window.style_context().add_provider(&provider, gtk4::STYLE_PROVIDER_PRIORITY_APPLICATION);
-
 
         /*
         let (width, height) = window.default_size();
@@ -69,15 +69,6 @@ impl MainWindow {
         window.style_context().add_class("release");
 
         //window.set_icon_from_file("res/icons/ic_launcher.svg").expect("Failed to load icon");
-
-        /*
-        let header = HeaderBar::new();
-        #[cfg(target_os = "macos")]
-        header.set_property("use-native-controls", &true);
-        header.set_title_widget(Some(&title_bar.root));
-        header.show();
-
-        window.set_titlebar(Some(&header));*/
 
         let title_bar = TitleBar::new(&window);
         window.set_titlebar(Some(&title_bar.root));
@@ -115,11 +106,10 @@ impl MainWindow {
             }
         });
 
-        /*
-        let notifications: gtk::Box = builder
+        let notifications: gtk4::Box = builder
             .object("notifications")
             .expect("Failed to get the 'notifications' from window.ui");
-        */
+
         let bottom_bar = BottomBar::new();
         root.append(&bottom_bar.root);
 
@@ -153,8 +143,8 @@ impl MainWindow {
             window,
             title_bar,
             stack,
-            //notifications,
-            //bottom_bar,
+            notifications,
+            bottom_bar,
             views
         };
 
@@ -170,7 +160,6 @@ impl MainWindow {
         _self
     }
 
-    /*
     pub fn from_file(app: &Application, path: &PathBuf) -> Self {
         let builder = Builder::from_resource("/net/ethernaught/rust/res/ui/gtk3/window.ui");
 
@@ -178,11 +167,7 @@ impl MainWindow {
         provider.load_from_resource("/net/ethernaught/rust/res/ui/gtk3/window.css");
         //provider.load_from_path("res/ui/gtk3/window.css").expect("Failed to load CSS file.");
 
-        StyleContext::add_provider_for_screen(
-            &gdk::Screen::default().expect("Failed to get default screen."),
-            &provider,
-            gtk::STYLE_PROVIDER_PRIORITY_APPLICATION
-        );
+        style_context_add_provider_for_display(&gdk::Display::default().unwrap(), &provider, gtk4::STYLE_PROVIDER_PRIORITY_APPLICATION);
 
         let window: ApplicationWindow = builder
             .object("main_window")
@@ -191,8 +176,9 @@ impl MainWindow {
         window.set_application(Some(app));
         window.connect_destroy(|_| exit(0));
         //window.set_decorated(false);
-        window.set_border_width(1);
+        //window.set_border_width(1);
 
+        /*
         let (width, height) = window.default_size();
 
         let hints = Geometry::new(
@@ -208,6 +194,7 @@ impl MainWindow {
             0.0,
             gdk::Gravity::NorthWest);
         window.set_geometry_hints(None::<&gtk::Widget>, Some(&hints), WindowHints::MIN_SIZE);
+        */
 
         #[cfg(profile = "nightly")]
         window.style_context().add_class("nightly");
@@ -220,7 +207,7 @@ impl MainWindow {
         let title_bar = TitleBar::new(&window);
         window.set_titlebar(Some(&title_bar.root));
 
-        let root: gtk::Box = builder
+        let root: gtk4::Box = builder
             .object("root")
             .expect("Failed to get the 'root' from window.ui");
 
@@ -253,18 +240,19 @@ impl MainWindow {
             }
         });
 
-        let notifications: gtk::Box = builder
+        let notifications: gtk4::Box = builder
             .object("notifications")
             .expect("Failed to get the 'notifications' from window.ui");
 
         let bottom_bar = BottomBar::new();
-        root.add(&bottom_bar.root);
+        root.append(&bottom_bar.root);
 
         let mut devices = Device::list().expect("Failed to get device list");
         devices.sort_by(|a, b| {
             b.get_flags().contains(&InterfaceFlags::Running).cmp(&a.get_flags().contains(&InterfaceFlags::Running))
         });
 
+        /*
         window.connect_button_press_event({
             let window = window.clone();
             move |_, event| {
@@ -281,6 +269,7 @@ impl MainWindow {
                 Proceed
             }
         });
+        */
 
         window.show();
 
@@ -294,7 +283,7 @@ impl MainWindow {
         };
 
         _self.add_view(Box::new(DevicesView::new(&_self, devices)));
-        _self.add_view(Box::new(MainView::from_pcap(&_self, path)));
+        //_self.add_view(Box::new(MainView::from_pcap(&_self, path)));
 
         register_window_actions(&_self);
         register_stack_actions(&_self);
@@ -305,7 +294,6 @@ impl MainWindow {
 
         _self
     }
-    */
 
     pub fn add_view(&self, view: Box<dyn Stackable>) {
         let name = view.get_name();

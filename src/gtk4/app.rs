@@ -1,7 +1,7 @@
 use gtk4::{gdk, gio, style_context_add_provider_for_display, Application, Builder, CssProvider, StyleContext};
 use gtk4::gio::{resources_register, ApplicationFlags, Resource};
 use gtk4::glib::Bytes;
-use gtk4::prelude::{ApplicationExt, ApplicationExtManual, GtkApplicationExt, StyleContextExt};
+use gtk4::prelude::{ApplicationExt, ApplicationExtManual, FileExt, GtkApplicationExt, StyleContextExt};
 use crate::gtk4::actions::app_actions::register_app_actions;
 use crate::gtk4::windows::main_window::MainWindow;
 
@@ -37,7 +37,7 @@ impl App {
 
             style_context_add_provider_for_display(&gdk::Display::default().unwrap(), &provider, gtk4::STYLE_PROVIDER_PRIORITY_APPLICATION);
 
-            //provider.load_from_resource("/net/ethernaught/rust/res/ui/gtk3/theme.css");
+            //provider.load_from_resource("/net/ethernaught/rust/res/ui/theme.css");
 
             #[cfg(target_os = "macos")]
             {
@@ -54,7 +54,6 @@ impl App {
             register_app_actions(&app);
         });
 
-        /*
         self.app.connect_open(move |app, files, _hint| {
             for file in files {
                 if let Some(path) = file.path() {
@@ -66,11 +65,7 @@ impl App {
                     let provider = CssProvider::new();
                     provider.load_from_resource("/net/ethernaught/rust/res/ui/gtk3/theme.css");
 
-                    StyleContext::add_provider_for_screen(
-                        &gdk::Screen::default().expect("Failed to get default screen."),
-                        &provider,
-                        gtk::STYLE_PROVIDER_PRIORITY_APPLICATION
-                    );
+                    style_context_add_provider_for_display(&gdk::Display::default().unwrap(), &provider, gtk4::STYLE_PROVIDER_PRIORITY_APPLICATION);
 
                     #[cfg(target_os = "macos")]
                     {
@@ -87,7 +82,7 @@ impl App {
                     register_app_actions(&app);
                 }
             }
-        });*/
+        });
 
         self.app.run();
     }
