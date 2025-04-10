@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+    <gresource prefix="/net/ethernaught/rust">
+        <file preprocess="xml-stripblanks">res/ui/ethernaught_ui.xml</file>
+        <file alias="res/ui/gtk3/title_bar.ui" preprocess="xml-stripblanks">res/ui/gtk4/title_bar.ui</file>
+        <file preprocess="xml-stripblanks">res/ui/gtk3/bottom_bar.ui</file>
+        <file preprocess="xml-stripblanks">res/ui/gtk3/notification_view.ui</file>
+
+
+        <file preprocess="xml-stripblanks">res/ui/gtk3/window.ui</file>
+        <file>res/ui/gtk3/window.css</file>
+        <file alias="res/ui/gtk3/theme.css">res/ui/gtk3/linux/theme.css</file>
+
+
+
+
+
+        <file preprocess="xml-stripblanks">res/ui/gtk3/main_view.ui</file>
+        <file>res/ui/gtk3/main_view.css</file>
+
+        <file preprocess="xml-stripblanks">res/ui/gtk3/devices_view.ui</file>
+        <file>res/ui/gtk3/devices_view.css</file>
+
+
+
+        <file preprocess="xml-stripblanks">res/ui/gtk3/packets_view.ui</file>
+        <file preprocess="xml-stripblanks">res/ui/gtk3/sidebar_view.ui</file>
+        <file preprocess="xml-stripblanks">res/ui/gtk3/terminal_view.ui</file>
+
+
+        <file preprocess="xml-stripblanks">res/ui/gtk3/device_list_item.ui</file>
+
+
+
+
+        <file preprocess="xml-stripblanks">res/ui/gtk3/packet_playground_view.ui</file>
+        <file>res/ui/gtk3/packet_playground_view.css</file>
+
+
+
+
+        <file preprocess="xml-stripblanks">res/ui/gtk3/layer_dropdown.ui</file>
+        <file preprocess="xml-stripblanks">res/ui/sidebar_context_menu.xml</file>
+
+
+        <file preprocess="xml-stripblanks">res/icons/ic_launcher.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/ic_launcher_small.svg</file>
+
+        <file alias="res/icons/ic_menu.svg" preprocess="xml-stripblanks">res/icons/linux/ic_menu.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/ic_back.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/ic_back_active.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/ic_next.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/ic_next_active.svg</file>
+
+        <file preprocess="xml-stripblanks">res/icons/ic_start.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/ic_stop.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/ic_restart.svg</file>
+
+        <file alias="res/icons/ic_minimize.svg" preprocess="xml-stripblanks">res/icons/linux/ic_minimize.svg</file>
+        <file alias="res/icons/ic_maximize.svg" preprocess="xml-stripblanks">res/icons/linux/ic_maximize.svg</file>
+        <file alias="res/icons/ic_unmaximize.svg" preprocess="xml-stripblanks">res/icons/linux/ic_unmaximize.svg</file>
+        <file alias="res/icons/ic_close.svg" preprocess="xml-stripblanks">res/icons/linux/ic_close.svg</file>
+
+        <file preprocess="xml-stripblanks">res/icons/ic_dialog_close.svg</file>
+
+        <file preprocess="xml-stripblanks">res/icons/ic_status_good.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/ic_status_warning.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/ic_status_severe.svg</file>
+
+        <file preprocess="xml-stripblanks">res/icons/ic_ethernet.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/ic_lan.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/ic_wifi.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/ic_vpn.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/ic_any.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/ic_bluetooth.svg</file>
+
+        <file preprocess="xml-stripblanks">res/icons/ic_notification_info.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/ic_notification_warning.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/ic_notification_error.svg</file>
+
+
+        <file preprocess="xml-stripblanks">res/icons/ic_plugins.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/ic_terminal.svg</file>
+
+
+
+        <file preprocess="xml-stripblanks">res/icons/ic_replay.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/ic_dismiss.svg</file>
+
+        <file preprocess="xml-stripblanks">res/icons/ic_expand_less.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/ic_expand_more.svg</file>
+
+
+        <file preprocess="xml-stripblanks">res/icons/flags/ic_amenia.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/flags/ic_austria.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/flags/ic_belgium.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/flags/ic_bolivia.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/flags/ic_brazil.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/flags/ic_bulgaria.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/flags/ic_canada.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/flags/ic_chad.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/flags/ic_china.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/flags/ic_denmark.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/flags/ic_estonia.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/flags/ic_finland.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/flags/ic_france.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/flags/ic_gabon.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/flags/ic_georgia.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/flags/ic_germany.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/flags/ic_guinea.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/flags/ic_hungary.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/flags/ic_ireland.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/flags/ic_italy.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/flags/ic_ivory_coast.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/flags/ic_japan.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/flags/ic_latvia.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/flags/ic_lithuania.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/flags/ic_luxembourg.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/flags/ic_mali.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/flags/ic_netherlands.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/flags/ic_nigeria.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/flags/ic_panama.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/flags/ic_peru.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/flags/ic_romania.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/flags/ic_russia.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/flags/ic_sweden.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/flags/ic_switzerland.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/flags/ic_united_kingdom.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/flags/ic_united_states.svg</file>
+        <file preprocess="xml-stripblanks">res/icons/flags/ic_yemen.svg</file>
+
+    </gresource>
+</gresources>

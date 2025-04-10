@@ -1,0 +1,96 @@
+#main_window {
+    border-top: solid 1px @background_secondary;
+    border-left: solid 1px @border;
+    border-right: solid 1px @border;
+    border-bottom: solid 1px @border;
+}
+
+#main_window.maximized {
+    border-left: none;
+    border-right: none;
+    border-bottom: none;
+}
+
+
+tooltip {
+    border: solid 1px @border;
+    border-radius: 0;
+    color: @text_primary;
+    background-color: @background;
+    font-size: 12px;
+}
+
+
+
+#title_bar {
+    min-height: 40px;
+    border-radius: 0;
+    border-top: solid 1px @border;
+    border-left: solid 1px @border;
+    border-right: solid 1px @border;
+    padding: 0 8px;
+    background: linear-gradient(90deg, @background 0%, @primary 20%, @background 40%);
+}
+
+#main_window.maximized #title_bar {
+    border-top: none;
+    border-left: none;
+    border-right: none;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#window_controls {
+    padding: 8px 4px;
+}
+
+#window_controls button {
+    min-width: 12px;
+    min-height: 12px;
+    padding: 6px;
+    border-radius: 100%;
+    background-color: rgba(255, 255, 255, 0.05);
+    background-size: auto;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#window_controls button:hover {
+    background-color: @ripple;
+}
+
+#window_controls #minimize {
+    background-image: url('../../icons/ic_minimize.svg');
+}
+
+#window_controls #maximize {
+    background-image: url('../../icons/ic_maximize.svg');
+}
+
+window.maximized #window_controls #maximize {
+    background-image: url('../../icons/ic_unmaximize.svg');
+}
+
+#window_controls #close {
+    background-image: url('../../icons/ic_close.svg');
+}
+
+#main_window:backdrop button {
+    background-color: transparent;
+}
+
+
+#navigation_buttons #menu {
+    background-image: url('../../icons/ic_menu.svg');
+}

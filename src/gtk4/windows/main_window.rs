@@ -3,6 +3,7 @@ use std::collections::HashMap;
 use std::process::exit;
 use gtk4::{Application, ApplicationWindow, Builder, HeaderBar};
 use gtk4::prelude::{GtkWindowExt, ObjectExt, WidgetExt};
+use crate::gtk4::views::title_bar::TitleBar;
 
 #[derive(Clone)]
 pub struct MainWindow {
@@ -74,9 +75,12 @@ impl MainWindow {
 
         //window.set_icon_from_file("res/icons/ic_launcher.svg").expect("Failed to load icon");
 
+        let title_bar = TitleBar::new(&window);
+
         let header = HeaderBar::new();
         #[cfg(target_os = "macos")]
         header.set_property("use-native-controls", &true);
+        header.set_title_widget(Some(&title_bar.root));
         header.show();
 
         window.set_titlebar(Some(&header));
