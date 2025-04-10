@@ -32,23 +32,6 @@ impl ObjectImpl for OverlayImpl {
 
 impl WidgetImpl for OverlayImpl {
 
-    /*
-    fn snapshot(&self, snapshot: &Snapshot) {
-        let widget = self.obj();
-        let width = widget.width() as f32;
-        let height = widget.height() as f32;
-
-        // Draw a solid background with Cairo
-        let cr = snapshot.append_cairo(&Rect::new(0.0, 0.0, width, height));
-        cr.set_source_rgb(0.2, 0.4, 0.6);
-        cr.rectangle(0.0, 0.0, width as f64, height as f64);
-        cr.fill().unwrap();
-
-        for child in self.children.borrow().iter() {
-            WidgetExt::snapshot(child, snapshot);
-        }
-    }*/
-
     fn measure(&self, orientation: Orientation, for_size: i32) -> (i32, i32, i32, i32) {
         (0, 0, -1, -1)
     }
