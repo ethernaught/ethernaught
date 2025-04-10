@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+    <requires lib="gtk+" version="4.0"/>
+
+    <object class="GtkBox" id="root">
+        <property name="name">notification</property>
+        <property name="visible">True</property>
+        <property name="hexpand">True</property>
+        <property name="orientation">horizontal</property>
+        <property name="valign">end</property>
+        <property name="spacing">5</property>
+
+        <child>
+            <object class="GtkImage" id="icon">
+                <property name="visible">True</property>
+                <property name="width-request">24</property>
+                <property name="height-request">24</property>
+                <property name="valign">start</property>
+            </object>
+        </child>
+
+        <child>
+            <object class="GtkBox">
+                <property name="visible">True</property>
+                <property name="hexpand">True</property>
+                <property name="orientation">vertical</property>
+                <property name="spacing">5</property>
+
+                <child>
+                    <object class="GtkLabel" id="title">
+                        <property name="name">title</property>
+                        <property name="visible">True</property>
+                        <property name="hexpand">True</property>
+                        <property name="xalign">0.0</property>
+                    </object>
+                </child>
+
+                <child>
+                    <object class="GtkLabel" id="description">
+                        <property name="name">description</property>
+                        <property name="visible">True</property>
+                        <property name="hexpand">True</property>
+                        <property name="xalign">0.0</property>
+                    </object>
+                </child>
+            </object>
+        </child>
+
+        <child>
+            <object class="GtkButton" id="close">
+                <property name="name">close</property>
+                <property name="tooltip-text">Close</property>
+                <property name="visible">True</property>
+                <property name="width-request">20</property>
+                <property name="height-request">20</property>
+                <property name="valign">start</property>
+            </object>
+        </child>
+    </object>
+</interface>

@@ -2,7 +2,7 @@ use std::cell::RefCell;
 use std::path::PathBuf;
 use std::rc::Rc;
 use gtk4::{gdk, style_context_add_provider_for_display, Builder, Button, CssProvider, Paned, StyleContext, Widget};
-use gtk4::gio::SimpleAction;
+use gtk4::gio::{SimpleAction, SimpleActionGroup};
 use gtk4::glib::property::PropertyGet;
 use gtk4::prelude::{ActionMapExt, Cast, StyleContextExt, WidgetExt};
 use rlibpcap::devices::Device;
@@ -81,7 +81,7 @@ impl MainView {
 
         let show_title_bar = Box::new(show_title_bar(window, "Any", DataLinkTypes::Null));
 
-        /*let sidebar = Rc::new(RefCell::new(None::<SidebarView>));
+        //let sidebar = Rc::new(RefCell::new(None::<SidebarView>));
 
         let actions = SimpleActionGroup::new();
 
@@ -90,17 +90,20 @@ impl MainView {
         let action = SimpleAction::new("dismiss", None);
         action.connect_activate({
             let content_pane = content_pane.clone();
-            let sidebar = sidebar.clone();
+            //let sidebar = sidebar.clone();
             move |_, _| {
+                /*
                 let view = sidebar.borrow().as_ref().map(|view| view.root.clone());
 
                 if let Some(view) = view {
-                    content_pane.remove(&view);
+                    content_pane.set_end_child(None);
+                    //content_pane.remove(&view);
                     *sidebar.borrow_mut() = None;
                 }
+                */
             }
         });
-        actions.add_action(&action);*/
+        actions.add_action(&action);
 
         let packets = PacketsView::new();
         /*packets.connect_select({

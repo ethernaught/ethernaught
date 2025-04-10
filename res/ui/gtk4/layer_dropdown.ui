@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+    <requires lib="gtk+" version="4.0"/>
+
+    <object class="GtkBox" id="root">
+        <property name="name">dropdown</property>
+        <property name="visible">True</property>
+        <property name="hexpand">True</property>
+        <property name="orientation">vertical</property>
+
+        <child>
+            <object class="GtkButton" id="dropdown_button">
+                <property name="visible">True</property>
+                <property name="hexpand">True</property>
+
+                <child>
+                    <object class="GtkBox">
+                        <property name="visible">True</property>
+                        <property name="hexpand">True</property>
+                        <property name="orientation">horizontal</property>
+                        <property name="spacing">5</property>
+
+                        <child>
+                            <object class="GtkImage" id="expander_icon">
+                                <property name="visible">True</property>
+                                <property name="resource">/net/ethernaught/rust/res/icons/ic_expand_less.svg</property>
+                            </object>
+                        </child>
+
+                        <child>
+                            <object class="GtkLabel" id="label">
+                                <property name="visible">True</property>
+                                <property name="xalign">0.0</property>
+                            </object>
+                        </child>
+                    </object>
+                </child>
+            </object>
+        </child>
+
+        <child>
+            <object class="GtkListBox" id="list_box">
+                <property name="visible">False</property>
+                <property name="hexpand">True</property>
+            </object>
+        </child>
+    </object>
+</interface>

@@ -1,7 +1,7 @@
 pub mod inter;
 pub mod title_bar;
 pub mod bottom_bar;
-//pub mod notification_view;
+pub mod notification_view;
 pub mod devices_view;
 pub mod device_list_item;
 pub mod main_view;
@@ -9,4 +9,4 @@ pub mod packets_view;
 //pub mod sidebar_view;
 //pub mod packet_playground_view;
 //pub mod dropdown;
-//pub mod terminal_view;
+pub mod terminal_view;
