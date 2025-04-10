@@ -1,5 +1,6 @@
-use gtk4::{gio, ApplicationWindow, Builder, Button, Image, Label};
+use gtk4::{gio, ApplicationWindow, Builder, Button, HeaderBar, Image, Label, PackType, WindowControls};
 use gtk4::gio::SimpleAction;
+use gtk4::prelude::{BoxExt, WidgetExt};
 
 #[derive(Clone)]
 pub struct TitleBar {
@@ -20,9 +21,19 @@ impl TitleBar {
     pub fn new(window: &ApplicationWindow) -> Self {
         let builder = Builder::from_resource("/net/ethernaught/rust/res/ui/title_bar.ui");
 
-        let root: gtk4::Box = builder
-            .object("root")
-            .expect("Couldn't find 'root' in title_bar.ui");
+        /*
+        let root = HeaderBar::new();
+        root.set_height_request(40);
+        #[cfg(target_os = "macos")]
+        root.set_property("use-native-controls", &true);
+        root.set_title_widget(Some(&builder.object::<gtk4::Box>("root").expect("Couldn't find 'root' in title_bar.ui")));
+        root.show();
+*/
+
+
+        let root = builder.object::<gtk4::Box>("root").expect("Couldn't find 'root' in title_bar.ui");
+        let x = WindowControls::new(PackType::End);
+        root.append(&x);
 
         /*
         #[cfg(any(target_os = "linux", target_os = "windows"))]

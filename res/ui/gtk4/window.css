@@ -11,6 +11,10 @@ window {
     background-color: @background;
 }
 
+#window_root {
+    border-top: solid 1px @background_secondary;
+}
+
 
 
 

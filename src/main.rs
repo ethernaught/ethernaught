@@ -66,7 +66,7 @@ rustup override set nightly
 
 //look into switching from CSS for handling all icons...
 
-//ALIAS AWAY FROM SPECIFYING GTK3 or GTK4 in folder paths
+//MAKE GTK3 and GTK4 not use global stylesheets but rather per view add styles...
 
 fn main() {
     /*

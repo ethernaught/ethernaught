@@ -3,7 +3,7 @@
     <gresource prefix="/net/ethernaught/rust">
         <file preprocess="xml-stripblanks">res/ui/ethernaught_ui.xml</file>
         <file alias="res/ui/title_bar.ui" preprocess="xml-stripblanks">res/ui/gtk4/title_bar.ui</file>
-        <file alias="res/ui/bottom_bar.ui" preprocess="xml-stripblanks">res/ui/gtk3/bottom_bar.ui</file>
+        <file alias="res/ui/bottom_bar.ui" preprocess="xml-stripblanks">res/ui/gtk4/bottom_bar.ui</file>
         <file alias="res/ui/notification_view.ui" preprocess="xml-stripblanks">res/ui/gtk3/notification_view.ui</file>
 
 

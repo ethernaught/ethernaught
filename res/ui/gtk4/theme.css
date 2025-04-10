@@ -52,10 +52,9 @@ tooltip {
 headerbar {
     min-height: 40px;
     border-radius: 0;
-    /*
     border-top: solid 1px @border;
     border-left: solid 1px @border;
-    border-right: solid 1px @border;*/
+    border-right: solid 1px @border;
     padding: 0 8px;
     background: linear-gradient(90deg, @background 0%, @primary 20%, @background 40%);
 }

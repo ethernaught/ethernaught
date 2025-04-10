@@ -25,7 +25,6 @@
 @define-color device_bluetooth #394366;
 
 #main_window {
-    border-top: solid 1px @background_secondary;
     border-left: solid 1px @border;
     border-right: solid 1px @border;
     border-bottom: solid 1px @border;

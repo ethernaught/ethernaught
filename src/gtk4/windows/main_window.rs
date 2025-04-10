@@ -1,7 +1,7 @@
 use std::cell::RefCell;
 use std::collections::HashMap;
 use std::process::exit;
-use gtk4::{Application, ApplicationWindow, Builder, CssProvider, HeaderBar, StyleContext};
+use gtk4::{gdk, Application, ApplicationWindow, Builder, CssProvider, HeaderBar, StyleContext};
 use gtk4::prelude::{BoxExt, GtkWindowExt, ObjectExt, StyleContextExt, WidgetExt};
 use crate::gtk4::views::bottom_bar::BottomBar;
 use crate::gtk4::views::title_bar::TitleBar;
@@ -32,8 +32,9 @@ impl MainWindow {
 
         let provider = CssProvider::new();
         provider.load_from_resource("/net/ethernaught/rust/res/ui/window.css");
+        gtk4::style_context_add_provider_for_display(&gdk::Display::default().unwrap(), &provider, gtk4::STYLE_PROVIDER_PRIORITY_APPLICATION);
 
-        window.style_context().add_provider(&provider, gtk4::STYLE_PROVIDER_PRIORITY_APPLICATION);
+        //window.style_context().add_provider(&provider, gtk4::STYLE_PROVIDER_PRIORITY_APPLICATION);
 
 
         /*
@@ -62,18 +63,17 @@ impl MainWindow {
 
         //window.set_icon_from_file("res/icons/ic_launcher.svg").expect("Failed to load icon");
 
-        let title_bar = TitleBar::new(&window);
-
+        /*
         let header = HeaderBar::new();
         #[cfg(target_os = "macos")]
         header.set_property("use-native-controls", &true);
         header.set_title_widget(Some(&title_bar.root));
         header.show();
 
-        window.set_titlebar(Some(&header));
+        window.set_titlebar(Some(&header));*/
 
-        //let title_bar = TitleBar::new(&window);
-        //window.set_titlebar(Some(&title_bar.root));
+        let title_bar = TitleBar::new(&window);
+        window.set_titlebar(Some(&title_bar.root));
 
         let root: gtk4::Box = builder
             .object("root")
