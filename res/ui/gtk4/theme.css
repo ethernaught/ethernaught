@@ -25,7 +25,7 @@
 @define-color device_bluetooth #394366;
 
 #main_window {
-    border-radius: 0;
+    border-top: solid 1px @border;
     border-left: solid 1px @border;
     border-right: solid 1px @border;
     border-bottom: solid 1px @border;
@@ -50,10 +50,7 @@ tooltip {
 
 headerbar {
     min-height: 40px;
-    border-radius: 0;
-    border-top: solid 1px @border;
-    border-left: solid 1px @border;
-    border-right: solid 1px @border;
+    border-bottom: solid 1px @background_secondary;
     padding: 0 8px;
     background: linear-gradient(90deg, @background 0%, @primary 20%, @background 40%);
 }
