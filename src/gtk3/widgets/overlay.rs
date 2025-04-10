@@ -1,11 +1,8 @@
 use std::cell::RefCell;
-use std::collections::HashMap;
-use std::rc::Rc;
 use gtk::gdk::{EventMask, WindowAttr, WindowType, WindowWindowClass, RGBA};
 use gtk::{gdk, glib, Align, Allocation, Buildable, Container, Misc, StateFlags, Widget};
 use gtk::cairo::Context;
 use gtk::glib::{Cast, ObjectExt, ParamFlags, ParamSpec, ParamSpecBuilderExt, ParamSpecString, Propagation, StaticType, ToValue, Value};
-use gtk::glib::once_cell::sync::Lazy;
 use gtk::glib::Propagation::Proceed;
 use gtk::prelude::{SettingsExt, StyleContextExt, WidgetExt};
 use gtk::subclass::container::{Callback, ContainerImplExt};
@@ -13,7 +10,6 @@ use gtk::subclass::prelude::{ContainerImpl, ObjectImpl, ObjectSubclass, ObjectSu
 
 #[derive(Default)]
 pub struct OverlayImpl {
-    names: RefCell<Vec<String>>,
     children: RefCell<Vec<Widget>>
 }
 

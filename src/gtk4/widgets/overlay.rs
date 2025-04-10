@@ -59,7 +59,6 @@ impl WidgetImpl for OverlayImpl {
 
         let mut child = widget.first_child();
         while let Some(w) = &child {
-
             let mut child_width = width;
             //if !w.hexpands() {
             //    child_width = w.preferred_width().0;
