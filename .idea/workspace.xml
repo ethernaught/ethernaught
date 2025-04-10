@@ -8,13 +8,23 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f0704e63-1929-42d3-83d7-8cbc904dc132" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/res/gtk4.gresources.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/res/ui/gtk4/theme.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/res/ui/gtk4/title_bar.ui" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/gtk4/views/title_bar.rs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/res/ui/gtk4/window.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/res/ui/gtk4/window.ui" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gtk4/views/mod.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/gtk4/views/mod.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/gtk4.gresources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/res/gtk4/linux.gresources.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/linux.gresources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/res/gtk3/linux.gresources.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/macos.gresources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/res/gtk3/macos.gresources.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/resources.gresources" beforeDir="false" afterPath="$PROJECT_DIR$/res/resources.gresources" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/ui/gtk3/linux/theme.css" beforeDir="false" afterPath="$PROJECT_DIR$/res/ui/gtk3/linux/theme.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/ui/gtk3/macos/theme.css" beforeDir="false" afterPath="$PROJECT_DIR$/res/ui/gtk3/macos/theme.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/ui/gtk3/windows/theme.css" beforeDir="false" afterPath="$PROJECT_DIR$/res/ui/gtk3/windows/theme.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/ui/gtk4/theme.css" beforeDir="false" afterPath="$PROJECT_DIR$/res/ui/gtk4/theme.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/ui/gtk4/title_bar.ui" beforeDir="false" afterPath="$PROJECT_DIR$/res/ui/gtk4/title_bar.ui" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/windows.gresources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/res/gtk3/windows.gresources.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gtk4/app.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/gtk4/app.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gtk4/views/title_bar.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/gtk4/views/title_bar.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/gtk4/windows/main_window.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/gtk4/windows/main_window.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.rs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -62,7 +72,7 @@
     "RunOnceActivity.git.unshallow": "true",
     "RunOnceActivity.rust.reset.selective.auto.import": "true",
     "git-widget-placeholder": "main",
-    "last_opened_file_path": "/home/brad/CLionProjects/ethernaught/res",
+    "last_opened_file_path": "/home/brad/CLionProjects/ethernaught/res/ui/gtk4",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -77,18 +87,18 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/res" />
       <recent name="$PROJECT_DIR$/res/ui/gtk4" />
+      <recent name="$PROJECT_DIR$/res" />
       <recent name="$PROJECT_DIR$/src/gtk4/views/inter" />
       <recent name="$PROJECT_DIR$/src/gtk4/views" />
       <recent name="C:\Users\brad\RustroverProjects\ethernaught\res\icons\windows" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/res/gtk4" />
+      <recent name="$PROJECT_DIR$/res/gtk3" />
       <recent name="$PROJECT_DIR$/src/gtk3" />
       <recent name="$PROJECT_DIR$/res/app" />
       <recent name="$PROJECT_DIR$/res/icons/linux" />
-      <recent name="$PROJECT_DIR$/res" />
-      <recent name="$PROJECT_DIR$/res/ui/gtk3" />
     </key>
   </component>
   <component name="RunManager">

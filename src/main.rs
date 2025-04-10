@@ -40,7 +40,7 @@ use crate::gtk4::app::App;
 
 //export GTK_DEBUG=interactive
 
-//glib-compile-resources res/linux.gresources.xml --target=res/resources.gresources
+//glib-compile-resources res/gtk4/linux.gresources.xml --target=res/resources.gresources
 
 /*
 rustup install nightly
@@ -65,6 +65,8 @@ rustup override set nightly
 // - fix time in list
 
 //look into switching from CSS for handling all icons...
+
+//ALIAS AWAY FROM SPECIFYING GTK3 or GTK4 in folder paths
 
 fn main() {
     /*

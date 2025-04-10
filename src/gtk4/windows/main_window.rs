@@ -1,8 +1,8 @@
 use std::cell::RefCell;
 use std::collections::HashMap;
 use std::process::exit;
-use gtk4::{Application, ApplicationWindow, Builder, HeaderBar};
-use gtk4::prelude::{GtkWindowExt, ObjectExt, WidgetExt};
+use gtk4::{Application, ApplicationWindow, Builder, CssProvider, HeaderBar, StyleContext};
+use gtk4::prelude::{GtkWindowExt, ObjectExt, StyleContextExt, WidgetExt};
 use crate::gtk4::views::title_bar::TitleBar;
 
 #[derive(Clone)]
@@ -18,35 +18,21 @@ pub struct MainWindow {
 impl MainWindow {
 
     pub fn new(app: &Application) -> Self {
-        /*
-        let builder = Builder::from_resource("/net/ethernaught/rust/res/ui/gtk3/window.ui");
+        let builder = Builder::from_resource("/net/ethernaught/rust/res/ui/gtk4/window.ui");
 
         let window: ApplicationWindow = builder
             .object("main_window")
-            .expect("Failed to get the 'main_window' from window.ui");*/
-        let window = ApplicationWindow::builder()
-            .application(app)
-            .title("Ethernaught")
-            .default_width(700)
-            .default_height(500)
-            .build();
+            .expect("Failed to get the 'main_window' from window.ui");
 
         window.set_application(Some(app));
         window.connect_destroy(|_| exit(0));
         //window.set_decorated(false);
         //window.set_border_width(1);
 
-        /*
         let provider = CssProvider::new();
-        provider.load_from_resource("/net/ethernaught/rust/res/ui/gtk3/window.css");
-        //provider.load_from_path("res/ui/gtk3/window.css").expect("Failed to load CSS file.");
+        provider.load_from_resource("/net/ethernaught/rust/res/ui/gtk4/window.css");
 
-        StyleContext::add_provider_for_screen(
-            &gdk::Screen::default().expect("Failed to get default screen."),
-            &provider,
-            gtk::STYLE_PROVIDER_PRIORITY_APPLICATION
-        );
-        */
+        window.style_context().add_provider(&provider, gtk4::STYLE_PROVIDER_PRIORITY_APPLICATION);
 
 
         /*

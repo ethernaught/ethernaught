@@ -1,3 +1,29 @@
+@define-color primary #59436e;
+@define-color background #2b2d30;
+@define-color background_secondary #1e1f22;
+@define-color background_shimmer #393b40;
+
+@define-color text_primary #cbd7dc;
+@define-color text_secondary #a7a7a7;
+@define-color text_dark #9B9D9F;
+
+@define-color ripple rgba(255, 255, 255, 0.15);
+
+@define-color border #5a5d63;
+@define-color border_light #4e5157;
+
+@define-color purple #784da1;
+@define-color green #57965C;
+@define-color red #db5c5c;
+@define-color yellow #d4bf4a;
+
+@define-color device_any #305755;
+@define-color device_ethernet #5e5030;
+@define-color device_lan #5e3030;
+@define-color device_wifi #5e3058;
+@define-color device_vpn #376141;
+@define-color device_bluetooth #394366;
+
 #main_window {
     border-top: solid 1px @background_secondary;
     border-left: solid 1px @border;
