@@ -3,7 +3,6 @@ use gtk4::ffi::GtkPopoverMenuBar;
 use gtk4::gio::SimpleAction;
 use gtk4::prelude::{ActionMapExt, BoxExt, ObjectExt, WidgetExt};
 
-#[cfg(target_os = "macos")]
 #[derive(Clone)]
 pub struct TitleBar {
     pub root: HeaderBar,
