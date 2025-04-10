@@ -41,6 +41,7 @@ impl App {
 
             //StyleContext::add_provider(app, &provider, gtk4::STYLE_PROVIDER_PRIORITY_APPLICATION);
 
+            /*
             #[cfg(target_os = "macos")]
             {
                 let builder = Builder::from_resource("/net/ethernaught/rust/res/ui/ethernaught_ui.xml");
@@ -50,6 +51,7 @@ impl App {
 
                 app.set_menubar(Some(&model));
             }
+            */
 
             MainWindow::new(&app);
 
