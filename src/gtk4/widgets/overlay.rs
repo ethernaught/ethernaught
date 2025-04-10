@@ -7,7 +7,7 @@ const MIN_WIDTH: i32 = 20;
 const MIN_HEIGHT: i32 = 20;
 
 #[derive(Default)]
-pub struct OverlayImpl {}
+pub struct OverlayImpl;
 
 #[glib::object_subclass]
 impl ObjectSubclass for OverlayImpl {
