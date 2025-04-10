@@ -5,6 +5,7 @@ set -e  # Exit on error
 APP_NAME="ethernaught"
 VERSION="0.1.0"
 BUILD_TYPE=${1:release}
+GTK_VERSION=${2:gtk4}
 ARCH="arm64"
 BUILD_DIR="target/$BUILD_TYPE"
 DMG_DIR="target/dmg-pkg/"
@@ -17,8 +18,8 @@ fi
 
 # Build Rust project
 echo "Building Rust project in $BUILD_TYPE mode..."
-glib-compile-resources res/macos.gresources.xml --target=res/resources.gresources
-cargo build --profile "$BUILD_TYPE"
+glib-compile-resources res/"$GTK_VERSION"/macos.gresources.xml --target=res/resources.gresources
+cargo build --profile "$BUILD_TYPE" --no-default-features --features "$GTK_VERSION"
 
 # Remove old package directory if exists
 rm -rf "$DMG_DIR"
