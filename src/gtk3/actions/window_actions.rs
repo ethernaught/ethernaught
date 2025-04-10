@@ -100,8 +100,8 @@ pub fn register_stack_actions(window: &MainWindow) {
         let stack = window.stack.clone();
         let title_bar = window.title_bar.clone();
         move |_, _| {
-            let children = stack.children();
             if let Some(current) = stack.visible_child() {
+                let children = stack.children();
                 if let Some(pos) = children.iter().position(|child| child == &current) {
                     if pos > 0 {
                         stack.set_visible_child(&children[pos - 1]);
@@ -119,8 +119,8 @@ pub fn register_stack_actions(window: &MainWindow) {
         let stack = window.stack.clone();
         let title_bar = window.title_bar.clone();
         move |_, _| {
-            let children = stack.children();
             if let Some(current) = stack.visible_child() {
+                let children = stack.children();
                 if let Some(pos) = children.iter().position(|child| child == &current) {
                     if pos < children.len() - 1 {
                         stack.set_visible_child(&children[pos + 1]);

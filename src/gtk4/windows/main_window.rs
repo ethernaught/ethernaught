@@ -298,6 +298,7 @@ impl MainWindow {
 
     pub fn add_view(&self, view: Box<dyn Stackable>) {
         let name = view.get_name();
+        /*
         if let Some(current) = self.stack.visible_child() {
             // Handle the "back" and "next" buttons state
             self.title_bar.back.style_context().add_class("active");
@@ -307,6 +308,7 @@ impl MainWindow {
             // For now, just remove the current view and append the new one.
             self.stack.remove(&current);
         }
+        */
 
         /*
         let name = view.get_name();

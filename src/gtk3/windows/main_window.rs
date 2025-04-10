@@ -318,8 +318,8 @@ impl MainWindow {
                 }
             }
             None => {
-                let children = self.stack.children();
                 if let Some(current) = self.stack.visible_child() {
+                    let children = self.stack.children();
                     if let Some(pos) = children.iter().position(|child| child == &current) {
                         self.title_bar.back.style_context().add_class("active");
                         self.title_bar.next.style_context().remove_class("active");

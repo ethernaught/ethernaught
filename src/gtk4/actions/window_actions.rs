@@ -1,7 +1,8 @@
 use gtk4::gio::SimpleAction;
 use gtk4::glib::{VariantDict, VariantTy};
-use gtk4::prelude::{ActionMapExt, Cast, GtkWindowExt};
-use gtk4::{AboutDialog, Window};
+use gtk4::prelude::{ActionMapExt, Cast, GtkWindowExt, ListModelExt, StyleContextExt, WidgetExt};
+use gtk4::{AboutDialog, StackPage, Window};
+use gtk::prelude::ContainerExt;
 use crate::gtk4::views::main_view::MainView;
 use crate::gtk4::windows::main_window::MainWindow;
 
@@ -98,20 +99,19 @@ pub fn register_stack_actions(window: &MainWindow) {
         let stack = window.stack.clone();
         let title_bar = window.title_bar.clone();
         move |_, _| {
-            /*
-            let children = stack.children();
             if let Some(current) = stack.visible_child() {
+                let children = stack.children();
                 if let Some(pos) = children.iter().position(|child| child == &current) {
                     if pos > 0 {
-                        stack.set_visible_child(&children[pos - 1]);
+                        //stack.set_visible_child(&children[pos - 1]);
                         title_bar.back.style_context().remove_class("active");
                         title_bar.next.style_context().add_class("active");
                     }
                 }
             }
-            */
 
             //let children = stack.children(); // `gtk4::Stack::children` returns Vec<Widget>
+
 
             println!("BACK");
         }
