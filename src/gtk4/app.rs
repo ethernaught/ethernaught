@@ -1,7 +1,8 @@
-use gtk4::{gdk, style_context_add_provider_for_display, Application, CssProvider, StyleContext};
+use gtk4::{gdk, gio, style_context_add_provider_for_display, Application, Builder, CssProvider, StyleContext};
 use gtk4::gio::{resources_register, ApplicationFlags, Resource};
 use gtk4::glib::Bytes;
-use gtk4::prelude::{ApplicationExt, ApplicationExtManual, StyleContextExt};
+use gtk4::prelude::{ApplicationExt, ApplicationExtManual, GtkApplicationExt, StyleContextExt};
+use crate::gtk4::actions::app_actions::register_app_actions;
 use crate::gtk4::windows::main_window::MainWindow;
 
 pub struct App {
@@ -36,12 +37,8 @@ impl App {
 
             style_context_add_provider_for_display(&gdk::Display::default().unwrap(), &provider, gtk4::STYLE_PROVIDER_PRIORITY_APPLICATION);
 
-            //let provider = CssProvider::new();
             //provider.load_from_resource("/net/ethernaught/rust/res/ui/gtk3/theme.css");
 
-            //StyleContext::add_provider(app, &provider, gtk4::STYLE_PROVIDER_PRIORITY_APPLICATION);
-
-            /*
             #[cfg(target_os = "macos")]
             {
                 let builder = Builder::from_resource("/net/ethernaught/rust/res/ui/ethernaught_ui.xml");
@@ -51,11 +48,10 @@ impl App {
 
                 app.set_menubar(Some(&model));
             }
-            */
 
             MainWindow::new(&app);
 
-            //register_app_actions(&app);
+            register_app_actions(&app);
         });
 
         /*

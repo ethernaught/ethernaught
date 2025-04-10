@@ -1,0 +1,31 @@
+#packet_playground_view {
+    border-left: solid 1px @background_secondary;
+}
+
+#packet_playground_view hexeditor {
+    padding: 10px;
+    font-family: "Ethernaught Mono", monospace;
+    font-size: 20px;
+    color: @text_dark;
+    background-color: @background_secondary;
+}
+
+#packet_playground_view #selection {
+    padding: 20px;
+}
+
+#packet_playground_view combobox button {
+    border-radius: 6px;
+    color: @text_primary;
+    background: @background_shimmer;
+    border: solid 1px @border_light;
+}
+
+#packet_playground_view combobox > window.popup menuitem {
+    margin: 0 5px;
+    border-radius: 6px;
+}
+
+#packet_playground_view combobox > window.popup *:hover {
+    background: @primary;
+}

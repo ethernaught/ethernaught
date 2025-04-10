@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+    <requires lib="gtk+" version="4.0"/>
+
+    <object class="GtkPaned" id="root">
+        <property name="name">packet_playground_view</property>
+        <property name="visible">True</property>
+        <property name="orientation">horizontal</property>
+        <property name="position">570</property>
+
+        <child>
+            <object class="GtkScrolledWindow" id="hex_scroll_layout">
+                <property name="visible">True</property>
+                <property name="hexpand">True</property>
+                <property name="vexpand">True</property>
+                <property name="overlay-scrolling">false</property>
+                <property name="hscrollbar-policy">automatic</property>
+                <property name="vscrollbar-policy">automatic</property>
+
+                <child>
+                    <object class="HexEditor" id="hex_editor">
+                        <property name="visible">True</property>
+                        <property name="hexpand">True</property>
+                        <property name="vexpand">True</property>
+                    </object>
+                </child>
+            </object>
+        </child>
+
+        <child>
+            <object class="GtkScrolledWindow" id="selection_scroll_layout">
+                <property name="visible">True</property>
+                <property name="hexpand">True</property>
+                <property name="vexpand">True</property>
+                <property name="overlay-scrolling">false</property>
+                <property name="hscrollbar-policy">automatic</property>
+                <property name="vscrollbar-policy">automatic</property>
+
+                <child>
+                    <object class="GtkBox" id="selection">
+                        <property name="name">selection</property>
+                        <property name="visible">True</property>
+                        <property name="hexpand">True</property>
+                        <property name="vexpand">True</property>
+                        <property name="orientation">vertical</property>
+                    </object>
+                </child>
+            </object>
+        </child>
+    </object>
+</interface>

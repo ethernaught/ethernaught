@@ -1,12 +1,12 @@
-use gtk4::{gio, ApplicationWindow, Builder, Button, HeaderBar, Image, Label, PackType, WindowControls};
+use gtk4::{gio, ApplicationWindow, Builder, Button, HeaderBar, Image, Label, MenuButton, PackType, PopoverMenuBar, WindowControls};
+use gtk4::ffi::GtkPopoverMenuBar;
 use gtk4::gio::SimpleAction;
-use gtk4::prelude::{BoxExt, ObjectExt, WidgetExt};
+use gtk4::prelude::{ActionMapExt, BoxExt, ObjectExt, WidgetExt};
 
+#[cfg(target_os = "macos")]
 #[derive(Clone)]
 pub struct TitleBar {
     pub root: HeaderBar,
-    //pub menubar: MenuBar,
-    //pub navigation_buttons: gtk::Box,
     pub back: Button,
     pub next: Button,
     pub network_type_icon: Image,
@@ -32,18 +32,18 @@ impl TitleBar {
         header_bar.set_title_widget(Some(&root));
         header_bar.show();
 
-        /*
         #[cfg(any(target_os = "linux", target_os = "windows"))]
         {
-            let menubar: MenuBar = builder
+            let menubar: PopoverMenuBar = builder
                 .object("menubar")
                 .expect("Couldn't find 'menubar' in title_bar.ui");
 
-            let navigation_buttons: gtk::Box = builder
+            let navigation_buttons: gtk4::Box = builder
                 .object("navigation_buttons")
                 .expect("Couldn't find 'navigation_buttons' in ethernaught_ui.xml");
 
-            menubar.connect_deactivate({
+            //.connect_deactivate
+            menubar.connect_cursor_notify({
                 let navigation_menubar = menubar.clone();
                 let navigation_buttons = navigation_buttons.clone();
                 move |_| {
@@ -56,8 +56,8 @@ impl TitleBar {
             let model: gio::MenuModel = builder
                 .object("main_window_menu")
                 .expect("Couldn't find 'main_window_menu' in ethernaught_ui.xml");
-            menubar.bind_model(Some(&model), None, false);
-            menubar.show_all();
+            menubar.set_menu_model(Some(&model));
+            menubar.show();
             menubar.hide();
 
             let action = SimpleAction::new("menu", None);
@@ -65,56 +65,12 @@ impl TitleBar {
                 let navigation_buttons = navigation_buttons.clone();
                 move |_, _| {
                     navigation_buttons.hide();
-                    menubar.show_all();
-                    menubar.select_first(true);
+                    menubar.show();
+                    //menubar.select_first(true);
                 }
             });
             window.add_action(&action);
         }
-
-        #[cfg(target_os = "macos")]
-        {
-            let window_controls_events: EventBox = builder
-                .object("window_controls_events")
-                .expect("Couldn't find 'window_controls_events' in ethernaught_ui.xml");
-            window_controls_events.set_sensitive(true);
-
-            let window_controls: gtk::Box = builder
-                .object("window_controls")
-                .expect("Couldn't find 'window_controls' in ethernaught_ui.xml");
-
-            window_controls_events.connect_enter_notify_event({
-                let window_controls = window_controls.clone();
-                move |_, _| {
-                    let ctx = window_controls.style_context();
-                    if !ctx.state().contains(StateFlags::PRELIGHT) {
-                        ctx.set_state(ctx.state() | StateFlags::PRELIGHT);
-                    }
-                    Proceed
-                }
-            });
-
-            window_controls_events.connect_leave_notify_event({
-                let window_controls = window_controls.clone();
-                move |event_box, event| {
-                    let (pointer_x, pointer_y) = event.position();
-                    let width = event_box.allocated_width();
-                    let height = event_box.allocated_height();
-
-                    if (pointer_x <= 0.0 || pointer_x >= width as f64) ||
-                        (pointer_y <= 0.0 || pointer_y >= height as f64) {
-                        let ctx = window_controls.style_context();
-                        if ctx.state().contains(StateFlags::PRELIGHT) {
-                            ctx.set_state(ctx.state() & !StateFlags::PRELIGHT);
-                        }
-                    }
-
-                    Proceed
-                }
-            });
-        }
-        */
-
 
         let back: Button = builder
             .object("back")

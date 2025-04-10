@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+    <requires lib="gtk+" version="4.0"/>
+
+    <object class="GtkBox" id="root">
+        <property name="name">sidebar_view</property>
+        <property name="visible">True</property>
+        <property name="hexpand">True</property>
+        <property name="vexpand">True</property>
+        <property name="orientation">vertical</property>
+        <property name="width-request">200</property>
+
+        <child>
+            <object class="GtkBox" id="header">
+                <property name="name">header</property>
+                <property name="visible">True</property>
+                <property name="hexpand">True</property>
+                <property name="height-request">40</property>
+                <property name="orientation">horizontal</property>
+
+                <child>
+                    <object class="GtkButton">
+                        <property name="name">replay</property>
+                        <property name="tooltip-text">Replay Packet</property>
+                        <property name="visible">True</property>
+                        <property name="width-request">16</property>
+                        <property name="height-request">16</property>
+                        <property name="action-name">dialog.replay</property>
+                    </object>
+                </child>
+
+                <child>
+                    <object class="GtkBox">
+                        <property name="visible">True</property>
+                        <property name="hexpand">True</property>
+                    </object>
+                </child>
+
+                <child>
+                    <object class="GtkButton">
+                        <property name="name">dismiss</property>
+                        <property name="tooltip-text">Close</property>
+                        <property name="visible">True</property>
+                        <property name="width-request">16</property>
+                        <property name="height-request">16</property>
+                        <property name="action-name">dialog.dismiss</property>
+                    </object>
+                </child>
+            </object>
+        </child>
+
+        <child>
+            <object class="GtkPaned" id="content">
+                <property name="visible">True</property>
+                <property name="hexpand">True</property>
+                <property name="vexpand">True</property>
+                <property name="position">300</property>
+                <property name="height-request">40</property>
+                <property name="orientation">vertical</property>
+
+                <child>
+                    <object class="GtkScrolledWindow" id="hex_scroll_layout">
+                        <property name="visible">True</property>
+                        <property name="hexpand">True</property>
+                        <property name="vexpand">True</property>
+                        <property name="overlay-scrolling">false</property>
+                        <property name="hscrollbar-policy">automatic</property>
+                        <property name="vscrollbar-policy">automatic</property>
+
+                        <child>
+                            <object class="HexEditor" id="hex_editor">
+                                <property name="visible">True</property>
+                                <property name="hexpand">True</property>
+                                <property name="vexpand">True</property>
+                            </object>
+                        </child>
+                    </object>
+                </child>
+
+                <child>
+                    <object class="GtkScrolledWindow" id="details_scroll_layout">
+                        <property name="visible">True</property>
+                        <property name="hexpand">True</property>
+                        <property name="vexpand">True</property>
+                        <property name="overlay-scrolling">false</property>
+                        <property name="hscrollbar-policy">automatic</property>
+                        <property name="vscrollbar-policy">automatic</property>
+
+                        <child>
+                            <object class="GtkBox" id="details">
+                                <property name="name">details</property>
+                                <property name="visible">True</property>
+                                <property name="hexpand">True</property>
+                                <property name="vexpand">True</property>
+                                <property name="orientation">vertical</property>
+                            </object>
+                        </child>
+                    </object>
+                </child>
+            </object>
+        </child>
+    </object>
+</interface>

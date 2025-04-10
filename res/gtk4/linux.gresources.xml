@@ -24,7 +24,7 @@
 
 
         <file alias="res/ui/packets_view.ui" preprocess="xml-stripblanks">res/ui/gtk4/packets_view.ui</file>
-        <file alias="res/ui/sidebar_view.ui" preprocess="xml-stripblanks">res/ui/gtk3/sidebar_view.ui</file>
+        <file alias="res/ui/sidebar_view.ui" preprocess="xml-stripblanks">res/ui/gtk4/sidebar_view.ui</file>
         <file alias="res/ui/terminal_view.ui" preprocess="xml-stripblanks">res/ui/gtk4/terminal_view.ui</file>
 
 
@@ -33,8 +33,8 @@
 
 
 
-        <file alias="res/ui/packet_playground_view.ui" preprocess="xml-stripblanks">res/ui/gtk3/packet_playground_view.ui</file>
-        <file alias="res/ui/packet_playground_view.css">res/ui/gtk3/packet_playground_view.css</file>
+        <file alias="res/ui/packet_playground_view.ui" preprocess="xml-stripblanks">res/ui/gtk4/packet_playground_view.ui</file>
+        <file alias="res/ui/packet_playground_view.css">res/ui/gtk4/packet_playground_view.css</file>
 
 
 

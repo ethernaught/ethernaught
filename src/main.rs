@@ -4,28 +4,6 @@ mod utils;
 mod bus;
 mod sniffer;
 
-//use std::sync::{Arc, Mutex};
-//use std::sync::mpsc::channel;
-//use std::{env, thread};
-//use std::collections::HashMap;
-//use std::net::Ipv4Addr;
-//use std::path::PathBuf;
-//use std::process::{exit, Command};
-//use std::thread::sleep;
-//use std::time::{Duration, SystemTime, UNIX_EPOCH};
-//use gtk::glib;
-//use gtk::glib::once_cell::sync::Lazy;
-//use rlibpcap::devices::Device;
-//use gtk::prelude::*;
-//use rlibpcap::capture::Capture;
-//use rlibpcap::utils::interface_flags::InterfaceFlags;
-//use gtk3::app::App;
-//use crate::bus::events::permission_event::PermissionEvent;
-//use crate::bus::event_bus::{register_event, send_event};
-//use crate::bus::events::capture_event::CaptureEvent;
-//use crate::bus::events::transmitted_event::TransmittedEvent;
-//use crate::database::sqlite::Database;
-//use crate::pcap_ext::packet_query::PacketQuery;
 use std::path::PathBuf;
 
 #[cfg(feature = "gtk3")]
@@ -69,12 +47,6 @@ rustup override set nightly
 //MAKE GTK3 and GTK4 not use global stylesheets but rather per view add styles...
 
 fn main() {
-    /*
-    register_event("capture_event", |event| {
-        let event = event.as_any().downcast_ref::<CaptureEvent>().unwrap();
-        println!("{:?}", event.get_packet());
-    });
-    */
     //unsafe { env::set_var("GTK_THEME", "Adwaita:dark") };
 
     let app = App::new();
