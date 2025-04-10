@@ -156,7 +156,7 @@ impl WidgetImpl for TerminalImpl {
 
 glib::wrapper! {
     pub struct Terminal(ObjectSubclass<TerminalImpl>)
-         @extends Misc, Widget, @implements Buildable;
+        @extends Misc, Widget, @implements Buildable;
 }
 
 impl Terminal {

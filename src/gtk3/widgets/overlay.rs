@@ -154,7 +154,7 @@ impl ContainerImpl for OverlayImpl {
 
 glib::wrapper! {
     pub struct Overlay(ObjectSubclass<OverlayImpl>)
-         @extends Container, Widget, @implements Buildable;
+        @extends Container, Widget, @implements Buildable;
 }
 
 impl Overlay {

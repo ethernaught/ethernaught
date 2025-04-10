@@ -1,8 +1,9 @@
 use gtk4::{gdk, gio, style_context_add_provider_for_display, Application, Builder, CssProvider, StyleContext};
 use gtk4::gio::{resources_register, ApplicationFlags, Resource};
 use gtk4::glib::Bytes;
-use gtk4::prelude::{ApplicationExt, ApplicationExtManual, FileExt, GtkApplicationExt, StyleContextExt};
+use gtk4::prelude::{ApplicationExt, ApplicationExtManual, FileExt, GtkApplicationExt, StaticType, StyleContextExt};
 use crate::gtk4::actions::app_actions::register_app_actions;
+use crate::gtk4::widgets::graph::Graph;
 use crate::gtk4::windows::main_window::MainWindow;
 
 pub struct App {
@@ -20,7 +21,7 @@ impl App {
     }
 
     pub fn run(&self) {
-        //Graph::static_type();
+        Graph::static_type();
         //HexEditor::static_type();
         //Terminal::static_type();
         //Overlay::static_type();

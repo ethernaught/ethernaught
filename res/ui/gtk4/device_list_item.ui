@@ -57,9 +57,13 @@
                     </object>
                 </child>
 
-
-
-
+                <child>
+                    <object class="Graph" id="graph">
+                        <property name="visible">True</property>
+                        <property name="hexpand">True</property>
+                        <property name="vexpand">True</property>
+                    </object>
+                </child>
             </object>
         </child>
     </object>

@@ -330,7 +330,7 @@ impl WidgetImpl for HexEditorImpl {
 
 glib::wrapper! {
     pub struct HexEditor(ObjectSubclass<HexEditorImpl>)
-         @extends Misc, Widget, @implements Buildable;
+        @extends Misc, Widget, @implements Buildable;
 }
 
 impl HexEditor {

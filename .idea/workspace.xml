@@ -8,9 +8,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f0704e63-1929-42d3-83d7-8cbc904dc132" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/gtk4/widgets/graph.rs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/gtk4/widgets/mod.rs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/gtk4/widgets/overlay.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/resources.gresources" beforeDir="false" afterPath="$PROJECT_DIR$/res/resources.gresources" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/ui/gtk4/device_list_item.ui" beforeDir="false" afterPath="$PROJECT_DIR$/res/ui/gtk4/device_list_item.ui" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gtk3/widgets/graph.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/gtk3/widgets/graph.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gtk3/widgets/hex_editor.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/gtk3/widgets/hex_editor.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gtk3/widgets/overlay.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/gtk3/widgets/overlay.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gtk3/widgets/terminal.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/gtk3/widgets/terminal.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/gtk4/app.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/gtk4/app.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gtk4/windows/main_window.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/gtk4/windows/main_window.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gtk4/mod.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/gtk4/mod.rs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -58,7 +67,7 @@
     "RunOnceActivity.git.unshallow": "true",
     "RunOnceActivity.rust.reset.selective.auto.import": "true",
     "git-widget-placeholder": "main",
-    "last_opened_file_path": "/Users/brad/CLionProjects/ethernaught/res/ui/gtk4",
+    "last_opened_file_path": "/Users/brad/CLionProjects/ethernaught/src/gtk4/widgets",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -73,11 +82,11 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/gtk4/widgets" />
       <recent name="$PROJECT_DIR$/res/ui/gtk4" />
       <recent name="$PROJECT_DIR$/src/gtk4/views" />
       <recent name="$PROJECT_DIR$/src/gtk4" />
       <recent name="$PROJECT_DIR$/res" />
-      <recent name="$PROJECT_DIR$/src/gtk4/views/inter" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/res/gtk4" />

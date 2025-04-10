@@ -1,12 +1,8 @@
 use std::cell::RefCell;
-use std::cmp::max;
-use gtk::gdk::{EventMask, WindowAttr, WindowType, WindowWindowClass, RGBA};
-use gtk::{gdk, glib, Allocation, Buildable, Misc, Orientation, StateFlags, Widget};
-use gtk::cairo::Context;
-use gtk::glib::Propagation;
-use gtk::glib::Propagation::Proceed;
-use gtk::prelude::{StyleContextExt, WidgetExt};
-use gtk::subclass::prelude::{ClassStruct, ObjectImpl, ObjectSubclass, ObjectSubclassExt, ObjectSubclassIsExt, WidgetClassSubclassExt, WidgetImpl, WidgetImplExt};
+use gtk4::{glib, Buildable, Widget};
+use gtk4::pango::Context;
+use gtk4::prelude::WidgetExt;
+use gtk4::subclass::prelude::{ObjectImpl, ObjectSubclass, ObjectSubclassIsExt, WidgetClassExt, WidgetImpl};
 
 const MIN_WIDTH: i32 = 20;
 const MIN_HEIGHT: i32 = 20;
@@ -32,6 +28,7 @@ impl ObjectImpl for GraphImpl {}
 
 impl WidgetImpl for GraphImpl {
 
+    /*
     fn draw(&self, cr: &Context) -> Propagation {
         let widget = self.obj();
         let style_context = widget.style_context();
@@ -141,12 +138,12 @@ impl WidgetImpl for GraphImpl {
                 window.move_resize(allocation.x(), allocation.y(), allocation.width(), allocation.height());
             }
         }
-    }
+    }*/
 }
 
 glib::wrapper! {
     pub struct Graph(ObjectSubclass<GraphImpl>)
-        @extends Misc, Widget, @implements Buildable;
+        @extends Widget, @implements Buildable;
 }
 
 impl Graph {
@@ -162,6 +159,7 @@ impl Graph {
     }
 
     pub fn add_point(&self, point: u32) {
+        /*
         let allocation = self.allocation();
         let width = allocation.width();
         let distance = 4.0 * self.screen().unwrap().resolution() / 96.0;
@@ -173,6 +171,7 @@ impl Graph {
 
         self.imp().points.borrow_mut().push(point);
         self.queue_draw();
+        */
     }
 
     pub fn get_points(&self) -> Vec<u32> {
