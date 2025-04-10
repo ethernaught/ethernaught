@@ -23,7 +23,7 @@ split-debuginfo = "off"
 rustflags = ["--cfg", "profile=\"nightly\""]
 
 [features]
-default = ["gtk4"]
+default = ["gtk3"]
 gtk3 = ["gtk"]
 
 [dependencies]

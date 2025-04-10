@@ -13,6 +13,7 @@ use gtk::subclass::prelude::{ContainerImpl, ObjectImpl, ObjectSubclass, ObjectSu
 
 #[derive(Default)]
 pub struct OverlayImpl {
+    names: RefCell<Vec<String>>,
     children: RefCell<Vec<Widget>>
 }
 
@@ -153,7 +154,7 @@ impl ContainerImpl for OverlayImpl {
 
 glib::wrapper! {
     pub struct Overlay(ObjectSubclass<OverlayImpl>)
-        @extends Container, Widget, @implements Buildable;
+         @extends Container, Widget, @implements Buildable;
 }
 
 impl Overlay {

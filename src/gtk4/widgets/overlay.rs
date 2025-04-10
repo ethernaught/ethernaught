@@ -7,9 +7,7 @@ const MIN_WIDTH: i32 = 20;
 const MIN_HEIGHT: i32 = 20;
 
 #[derive(Default)]
-pub struct OverlayImpl {
-    children: RefCell<Vec<Widget>>
-}
+pub struct OverlayImpl {}
 
 #[glib::object_subclass]
 impl ObjectSubclass for OverlayImpl {
@@ -59,21 +57,18 @@ impl WidgetImpl for OverlayImpl {
         let widget = self.obj();
         self.parent_size_allocate(width, height, baseline);
 
-        let allocation = Allocation::new(0, 0, width, height);
-
         let mut child = widget.first_child();
         while let Some(w) = &child {
 
             let mut child_width = width;
-            /*if !child.hexpands() {
-                child_width = child.preferred_width().0;
-            }*/
-
+            //if !w.hexpands() {
+            //    child_width = w.preferred_width().0;
+            //}
 
             let mut child_height = height;
-            /*if !child.vexpands() {
-                child_height = child.preferred_height().0;
-            }*/
+            //if !w.vexpands() {
+            //    child_height = w.preferred_height().0;
+            //}
 
             let x = match w.halign() {
                 Align::Start | Align::Fill => 0,
@@ -106,6 +101,7 @@ impl Overlay {
         glib::Object::builder().build()
     }
 
+    /*
     pub fn add_child(&self, widget: &Widget) {
         widget.set_parent(self);
         self.imp().children.borrow_mut().push(widget.clone());
@@ -124,5 +120,5 @@ impl Overlay {
         for child in self.imp().children.borrow().iter() {
             f(child);
         }
-    }
+    }*/
 }
