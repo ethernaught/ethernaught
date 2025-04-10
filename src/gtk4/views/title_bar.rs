@@ -21,12 +21,16 @@ impl TitleBar {
     pub fn new(window: &ApplicationWindow) -> Self {
         let builder = Builder::from_resource("/net/ethernaught/rust/res/ui/title_bar.ui");
 
-        let root = HeaderBar::new();
-        root.set_height_request(40);
+        let root: gtk4::Box = builder
+            .object("root")
+            .expect("Couldn't find 'root' in title_bar.ui");
+
+        let header_bar = HeaderBar::new();
+        header_bar.set_height_request(40);
         #[cfg(target_os = "macos")]
-        root.set_property("use-native-controls", &true);
-        root.set_title_widget(Some(&builder.object::<gtk4::Box>("root").expect("Couldn't find 'root' in title_bar.ui")));
-        root.show();
+        header_bar.set_property("use-native-controls", &true);
+        header_bar.set_title_widget(Some(&root));
+        header_bar.show();
 
         /*
         #[cfg(any(target_os = "linux", target_os = "windows"))]
@@ -141,7 +145,7 @@ impl TitleBar {
             .expect("Couldn't find 'stop' in title_bar.ui");
 
         Self {
-            root,
+            root: header_bar,
             back,
             next,
             network_type_icon,
