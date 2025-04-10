@@ -1,3 +1,5 @@
-pub mod windows;
 pub mod app;
-mod views;
+pub mod views;
+//pub mod widgets;
+pub mod windows;
+pub mod actions;

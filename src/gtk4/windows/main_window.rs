@@ -1,19 +1,26 @@
 use std::cell::RefCell;
 use std::collections::HashMap;
 use std::process::exit;
-use gtk4::{gdk, Application, ApplicationWindow, Builder, CssProvider, HeaderBar, StyleContext};
+use std::rc::Rc;
+use gtk4::{gdk, style_context_add_provider_for_display, Application, ApplicationWindow, Builder, CssProvider, HeaderBar, Stack, StyleContext};
 use gtk4::prelude::{BoxExt, GtkWindowExt, ObjectExt, StyleContextExt, WidgetExt};
+use rlibpcap::devices::Device;
+use rlibpcap::utils::interface_flags::InterfaceFlags;
+use crate::gtk4::actions::window_actions::{register_stack_actions, register_window_actions};
 use crate::gtk4::views::bottom_bar::BottomBar;
+use crate::gtk4::views::devices_view::DevicesView;
+use crate::gtk4::views::inter::stackable::Stackable;
 use crate::gtk4::views::title_bar::TitleBar;
+use crate::sniffer::Sniffer;
 
 #[derive(Clone)]
 pub struct MainWindow {
     pub window: ApplicationWindow,
-    //pub title_bar: TitleBar,
-    //pub stack: Stack,
+    pub title_bar: TitleBar,
+    pub stack: Stack,
     //pub notifications: gtk::Box,
     //pub bottom_bar: BottomBar,
-    //pub views: Rc<RefCell<HashMap<String, Box<dyn Stackable>>>>
+    pub views: Rc<RefCell<HashMap<String, Box<dyn Stackable>>>>
 }
 
 impl MainWindow {
@@ -32,7 +39,7 @@ impl MainWindow {
 
         let provider = CssProvider::new();
         provider.load_from_resource("/net/ethernaught/rust/res/ui/window.css");
-        gtk4::style_context_add_provider_for_display(&gdk::Display::default().unwrap(), &provider, gtk4::STYLE_PROVIDER_PRIORITY_APPLICATION);
+        style_context_add_provider_for_display(&gdk::Display::default().unwrap(), &provider, gtk4::STYLE_PROVIDER_PRIORITY_APPLICATION);
 
         //window.style_context().add_provider(&provider, gtk4::STYLE_PROVIDER_PRIORITY_APPLICATION);
 
@@ -79,7 +86,6 @@ impl MainWindow {
             .object("root")
             .expect("Failed to get the 'root' from window.ui");
 
-        /*
         //window_content.add(&create_alertbar());
 
         let stack: Stack = builder
@@ -109,18 +115,20 @@ impl MainWindow {
             }
         });
 
+        /*
         let notifications: gtk::Box = builder
             .object("notifications")
             .expect("Failed to get the 'notifications' from window.ui");
         */
         let bottom_bar = BottomBar::new();
         root.append(&bottom_bar.root);
-        /*
+
         let mut devices = Device::list().expect("Failed to get device list");
         devices.sort_by(|a, b| {
             b.get_flags().contains(&InterfaceFlags::Running).cmp(&a.get_flags().contains(&InterfaceFlags::Running))
         });
 
+        /*
         window.connect_button_press_event({
             let window = window.clone();
             move |_, event| {
@@ -143,16 +151,14 @@ impl MainWindow {
 
         let _self = Self {
             window,
-            //title_bar,
-            //stack,
+            title_bar,
+            stack,
             //notifications,
             //bottom_bar,
-            //views
+            views
         };
 
-        /*
         _self.add_view(Box::new(DevicesView::new(&_self, devices)));
-
 
         register_window_actions(&_self);
         register_stack_actions(&_self);
@@ -160,7 +166,6 @@ impl MainWindow {
 
         let sniffer = Sniffer::new();
         sniffer.run();
-        */
 
         _self
     }
@@ -300,8 +305,21 @@ impl MainWindow {
 
         _self
     }
+    */
 
     pub fn add_view(&self, view: Box<dyn Stackable>) {
+        let name = view.get_name();
+        if let Some(current) = self.stack.visible_child() {
+            // Handle the "back" and "next" buttons state
+            self.title_bar.back.style_context().add_class("active");
+            self.title_bar.next.style_context().remove_class("active");
+
+            // You can use a hash map or some way to track views.
+            // For now, just remove the current view and append the new one.
+            self.stack.remove(&current);
+        }
+
+        /*
         let name = view.get_name();
         match self.stack.child_by_name(&name) {
             Some(child) => {
@@ -334,14 +352,15 @@ impl MainWindow {
                     }
                 }
             }
-        }
+        }*/
 
-        self.stack.add_named(view.get_root(), &name);
+        self.stack.add_named(view.get_root(), Some(&name));
         self.stack.set_visible_child_name(&name);
         view.on_create();
         self.views.borrow_mut().insert(name, view);
     }
 
+    /*
     pub fn notify(&self, _type: NotificationTypes, title: &str, description: &str) {
         self.notifications.add(&NotificationView::new(_type, title, description).root);
     }

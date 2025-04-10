@@ -1,0 +1,79 @@
+#devices_view {
+    padding: 20px 160px;
+}
+
+#devices_view #header #title {
+    padding: 10px 15px;
+    border-radius: 40px;
+    font-weight: bold;
+    color: @text_primary;
+    background-color: @primary;
+}
+
+#devices_view list {
+    background-color: @background;
+}
+
+#devices_view list row {
+    background-color: @background;
+    outline: none;
+    border: none;
+    border-radius: 5px;
+    margin: 2px 0;
+    padding: 10px;
+    font-size: 12px;
+}
+
+#devices_view list row:hover {
+    background-color: @ripple;
+}
+
+#devices_view list row #icon {
+    border-radius: 6px;
+}
+
+
+#devices_view list row.any #icon {
+    background-color: @device_any;
+}
+
+#devices_view list row.ethernet #icon {
+    background-color: @device_ethernet;
+}
+
+#devices_view list row.lan #icon {
+    background-color: @device_lan;
+}
+
+#devices_view list row.wifi #icon {
+    background-color: @device_wifi;
+}
+
+#devices_view list row.vpn #icon {
+    background-color: @device_vpn;
+}
+
+#devices_view list row.bluetooth #icon {
+    background-color: @device_bluetooth;
+}
+
+#devices_view list row #title {
+    font-size: 14px;
+    color: @text_primary;
+}
+
+#devices_view list row label {
+    color: @text_secondary;
+}
+
+#devices_view list row graph {
+    color: @green;
+}
+
+#devices_view list row.down graph {
+    color: @red;
+}
+
+#devices_view list row.error graph {
+    color: @yellow;
+}

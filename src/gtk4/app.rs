@@ -1,4 +1,4 @@
-use gtk4::{gdk, Application, CssProvider, StyleContext};
+use gtk4::{gdk, style_context_add_provider_for_display, Application, CssProvider, StyleContext};
 use gtk4::gio::{resources_register, ApplicationFlags, Resource};
 use gtk4::glib::Bytes;
 use gtk4::prelude::{ApplicationExt, ApplicationExtManual, StyleContextExt};
@@ -34,7 +34,7 @@ impl App {
             let provider = CssProvider::new();
             provider.load_from_resource("/net/ethernaught/rust/res/ui/theme.css");
 
-            gtk4::style_context_add_provider_for_display(&gdk::Display::default().unwrap(), &provider, gtk4::STYLE_PROVIDER_PRIORITY_APPLICATION);
+            style_context_add_provider_for_display(&gdk::Display::default().unwrap(), &provider, gtk4::STYLE_PROVIDER_PRIORITY_APPLICATION);
 
             //let provider = CssProvider::new();
             //provider.load_from_resource("/net/ethernaught/rust/res/ui/gtk3/theme.css");

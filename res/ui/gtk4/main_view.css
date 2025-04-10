@@ -1,0 +1,200 @@
+#main_view {
+    border-left: solid 1px @background_secondary;
+}
+
+
+
+#packet_view entry {
+    padding: 4px 8px;
+    border: none;
+    border-radius: 0;
+    border-bottom: solid 1px @background_shimmer;
+    color: @text_primary;
+    caret-color: @text_primary;
+    background-color: @background_secondary;
+    font-size: 14px;
+}
+
+#packet_view entry:focus {
+    outline: none;
+}
+
+#packet_view treeview {
+    color: @text_secondary;
+    background-color: @background_secondary;
+    outline: none;
+}
+
+#packet_view treeview header button {
+    padding: 8px 4px;
+    font-size: 14px;
+    border: none;
+    border-bottom: solid 1px @background_shimmer;
+    font-weight: normal;
+    color: @text_secondary;
+    background-color: @background_secondary;
+}
+
+#packet_view treeview *:selected {
+    background: @primary;
+}
+
+#main_view #side_navbar {
+    padding: 4px;
+}
+
+#main_view #side_navbar button {
+    min-width: 0;
+    padding: 4px;
+    border-radius: 6px;
+    border: none;
+    background-color: transparent;
+    background-size: auto;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#main_view #side_navbar button.selected,
+        #main_view #side_navbar button:hover {
+    background-color: @ripple;
+}
+
+#main_view #side_navbar #terminal {
+    background-image: url('../icons/ic_terminal.svg');
+}
+
+#main_view #side_navbar #plugins {
+    background-image: url('../icons/ic_plugins.svg');
+}
+
+
+
+
+
+
+
+
+
+
+
+#main_view #terminal_layout {
+    border-top: solid 1px @background_secondary;
+}
+
+#main_view #terminal_title label {
+    padding: 0 10px;
+    color: @text_primary;
+    font-size: 14px;
+}
+
+#main_view terminal {
+    padding: 4px;
+    font-family: "Ethernaught Mono", monospace;
+    font-size: 18px;
+    color: @text_secondary;
+    background-color: @background_secondary;
+}
+
+
+
+
+
+
+
+#sidebar_view #header {
+    padding: 4px 4px 3px 4px;
+    border-bottom: solid 1px @background_shimmer;
+}
+
+#sidebar_view #header button {
+    min-height: 0;
+    padding: 8px;
+    border-radius: 6px;
+    border: none;
+    background-color: transparent;
+    background-size: auto;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#sidebar_view #header #dismiss {
+    background-image: url('../icons/ic_dismiss.svg');
+}
+
+#sidebar_view #header #replay {
+    background-image: url('../icons/ic_replay.svg');
+}
+
+#sidebar_view #header button:hover {
+    background-color: @ripple;
+}
+
+
+
+
+
+
+
+
+#sidebar_view hexeditor {
+    padding: 10px;
+    font-family: "Ethernaught Mono", monospace;
+    font-size: 20px;
+    color: @text_dark;
+    background-color: @background_secondary;
+}
+
+
+
+#sidebar_view #details {
+    padding: 5px 0;
+}
+
+#sidebar_view #dropdown button {
+    padding: 10px;
+    border: 0;
+    margin: 0 5px;
+    border-radius: 5px;
+    font-size: 12px;
+    font-weight: bold;
+    color: @text_dark;
+    background: transparent;
+}
+
+#sidebar_view #dropdown button:hover {
+    background: @ripple;
+}
+
+#sidebar_view #dropdown list {
+    padding-left: 32px;
+    background-color: @background;
+}
+
+#sidebar_view #dropdown list row {
+    background-color: @background;
+    outline: none;
+    border: none;
+    margin: 0 5px;
+    border-radius: 5px;
+}
+
+#sidebar_view #dropdown list row label {
+    padding: 10px;
+    font-size: 12px;
+    color: @text_secondary;
+}
+
+#sidebar_view #dropdown list row:hover,
+        #sidebar_view #dropdown list row.selected {
+    background-color: @ripple;
+}
+
+#sidebar_view #dropdown list #key {
+    font-weight: bold;
+    min-width: 160px;
+}
+
+#sidebar_view #dropdown list #value {
+    font-family: "Ethernaught Mono", monospace;
+}
+
