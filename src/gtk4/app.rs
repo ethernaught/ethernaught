@@ -4,6 +4,7 @@ use gtk4::glib::Bytes;
 use gtk4::prelude::{ApplicationExt, ApplicationExtManual, FileExt, GtkApplicationExt, StaticType, StyleContextExt};
 use crate::gtk4::actions::app_actions::register_app_actions;
 use crate::gtk4::widgets::graph::Graph;
+use crate::gtk4::widgets::overlay::Overlay;
 use crate::gtk4::windows::main_window::MainWindow;
 
 pub struct App {
@@ -24,7 +25,7 @@ impl App {
         Graph::static_type();
         //HexEditor::static_type();
         //Terminal::static_type();
-        //Overlay::static_type();
+        Overlay::static_type();
 
         self.app.connect_activate(move |app| {
             let resource_data = include_bytes!("../../res/resources.gresources");

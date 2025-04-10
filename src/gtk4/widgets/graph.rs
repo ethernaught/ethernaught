@@ -1,8 +1,8 @@
 use std::cell::RefCell;
-use gtk4::{glib, Buildable, Widget};
-use gtk4::pango::Context;
-use gtk4::prelude::WidgetExt;
-use gtk4::subclass::prelude::{ObjectImpl, ObjectSubclass, ObjectSubclassIsExt, WidgetClassExt, WidgetImpl};
+use gtk4::{glib, Buildable, Orientation, Snapshot, Widget};
+use gtk4::graphene::Rect;
+use gtk4::prelude::{SnapshotExt, WidgetExt};
+use gtk4::subclass::prelude::{ObjectImpl, ObjectSubclass, ObjectSubclassExt, ObjectSubclassIsExt, WidgetClassExt, WidgetImpl, WidgetImplExt};
 
 const MIN_WIDTH: i32 = 20;
 const MIN_HEIGHT: i32 = 20;
@@ -27,6 +27,26 @@ impl ObjectSubclass for GraphImpl {
 impl ObjectImpl for GraphImpl {}
 
 impl WidgetImpl for GraphImpl {
+
+    fn snapshot(&self, snapshot: &Snapshot) {
+        let widget = self.obj();
+        let width = widget.width() as f32;
+        let height = widget.height() as f32;
+
+        // Draw a solid background with Cairo
+        let cr = snapshot.append_cairo(&Rect::new(0.0, 0.0, width, height));
+        cr.set_source_rgb(0.2, 0.4, 0.6);
+        cr.rectangle(0.0, 0.0, width as f64, height as f64);
+        cr.fill().unwrap();
+    }
+
+    fn measure(&self, orientation: Orientation, for_size: i32) -> (i32, i32, i32, i32) {
+        match orientation {
+            Orientation::Horizontal => (MIN_WIDTH, MIN_WIDTH, -1, -1),
+            Orientation::Vertical => (MIN_HEIGHT, MIN_HEIGHT, -1, -1),
+            _ => unimplemented!()
+        }
+    }
 
     /*
     fn draw(&self, cr: &Context) -> Propagation {
@@ -79,66 +99,7 @@ impl WidgetImpl for GraphImpl {
 
         Proceed
     }
-
-    fn realize(&self) {
-        let widget = self.obj();
-        let allocation = widget.allocation();
-
-        let attr = WindowAttr {
-            title: None,
-            event_mask: EventMask::empty(),
-            x: Some(allocation.x()),
-            y: Some(allocation.y()),
-            width: allocation.width(),
-            height: allocation.height(),
-            wclass: WindowWindowClass::InputOutput,
-            visual: None,
-            window_type: WindowType::Child,
-            cursor: None,
-            override_redirect: false,
-            type_hint: None
-        };
-
-        let parent_window = widget.parent_window().unwrap();
-        let window = gdk::Window::new(Some(&parent_window), &attr);
-
-        widget.register_window(&window);
-        widget.set_window(window);
-        widget.set_realized(true);
-
-        widget.set_can_focus(true);
-    }
-
-    fn adjust_size_request(&self, orientation: Orientation, minimum_size: &mut i32, natural_size: &mut i32) {
-        match orientation {
-            Orientation::Horizontal => {
-                *minimum_size = MIN_WIDTH;
-                if *natural_size < MIN_WIDTH {
-                    *natural_size = MIN_WIDTH;
-                }
-            }
-            Orientation::Vertical => {
-                *minimum_size = MIN_HEIGHT;
-                if *natural_size < MIN_HEIGHT {
-                    *natural_size = MIN_HEIGHT;
-                }
-            }
-            _ => unimplemented!()
-        }
-
-        self.parent_adjust_size_request(orientation, minimum_size, natural_size);
-    }
-
-    fn size_allocate(&self, allocation: &Allocation) {
-        let widget = self.obj();
-
-        widget.set_allocation(allocation);
-        if widget.is_realized() {
-            if let Some(window) = widget.window() {
-                window.move_resize(allocation.x(), allocation.y(), allocation.width(), allocation.height());
-            }
-        }
-    }*/
+    */
 }
 
 glib::wrapper! {

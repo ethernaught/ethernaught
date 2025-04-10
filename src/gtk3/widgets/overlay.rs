@@ -13,7 +13,6 @@ use gtk::subclass::prelude::{ContainerImpl, ObjectImpl, ObjectSubclass, ObjectSu
 
 #[derive(Default)]
 pub struct OverlayImpl {
-    names: RefCell<Vec<String>>,
     children: RefCell<Vec<Widget>>
 }
 
