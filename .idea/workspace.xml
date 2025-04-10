@@ -10,8 +10,6 @@
     <list default="true" id="f0704e63-1929-42d3-83d7-8cbc904dc132" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/gtk4/actions/window_actions.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/gtk4/actions/window_actions.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gtk4/widgets/graph.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/gtk4/widgets/graph.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gtk4/widgets/overlay.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/gtk4/widgets/overlay.rs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

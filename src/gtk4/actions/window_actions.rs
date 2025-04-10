@@ -99,18 +99,20 @@ pub fn register_stack_actions(window: &MainWindow) {
         let title_bar = window.title_bar.clone();
         move |_, _| {
             if let Some(current) = stack.visible_child() {
-                let mut position = 0;
-                let mut child = stack.first_child();
-                while let Some(w) = &child {
-                    if current.eq(w) && position > 0 {
-                        stack.set_visible_child(&w.prev_sibling().unwrap());
+                let pages = stack.pages();
+                for i in 0..pages.n_items() {
+                    let page = pages.item(i).expect("Failed to get page")
+                        .downcast::<StackPage>()
+                        .expect("Item is not a StackPage");
+
+                    if current.eq(&page.child()) && i > 0 {
+                        stack.set_visible_child(&pages.item(i - 1).expect("Failed to get page")
+                            .downcast::<StackPage>()
+                            .expect("Item is not a StackPage").child());
                         title_bar.back.style_context().remove_class("active");
                         title_bar.next.style_context().add_class("active");
                         break;
                     }
-
-                    position += 1;
-                    child = w.next_sibling();
                 }
             }
         }
@@ -122,18 +124,23 @@ pub fn register_stack_actions(window: &MainWindow) {
         let stack = window.stack.clone();
         let title_bar = window.title_bar.clone();
         move |_, _| {
-            /*
-            let children = stack..children();
             if let Some(current) = stack.visible_child() {
-                if let Some(pos) = children.iter().position(|child| child == &current) {
-                    if pos < children.len() - 1 {
-                        stack.set_visible_child(&children[pos + 1]);
+                let pages = stack.pages();
+                for i in 0..pages.n_items() {
+                    let page = pages.item(i).expect("Failed to get page")
+                        .downcast::<StackPage>()
+                        .expect("Item is not a StackPage");
+
+                    if current.eq(&page.child()) && i < pages.n_items() - 1 {
+                        stack.set_visible_child(&pages.item(i + 1).expect("Failed to get page")
+                            .downcast::<StackPage>()
+                            .expect("Item is not a StackPage").child());
                         title_bar.next.style_context().remove_class("active");
                         title_bar.back.style_context().add_class("active");
+                        break;
                     }
                 }
             }
-            */
         }
     });
     window.window.add_action(&action);
