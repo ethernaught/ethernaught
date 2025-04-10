@@ -5,7 +5,7 @@ pub mod bottom_bar;
 pub mod devices_view;
 pub mod device_list_item;
 pub mod main_view;
-//pub mod packets_view;
+pub mod packets_view;
 //pub mod sidebar_view;
 //pub mod packet_playground_view;
 //pub mod dropdown;

@@ -2,6 +2,7 @@ use std::cell::RefCell;
 use std::path::PathBuf;
 use std::rc::Rc;
 use gtk4::{gdk, style_context_add_provider_for_display, Builder, Button, CssProvider, Paned, StyleContext, Widget};
+use gtk4::glib::property::PropertyGet;
 use gtk4::prelude::{Cast, StyleContextExt, WidgetExt};
 use rlibpcap::devices::Device;
 use rlibpcap::pcap::pcap::Pcap;
@@ -10,6 +11,7 @@ use crate::bus::event_bus::{pause_event, register_event, resume_event, unregiste
 use crate::bus::event_bus::EventPropagation::Continue;
 use crate::bus::events::capture_event::CaptureEvent;
 use crate::gtk4::views::inter::stackable::Stackable;
+use crate::gtk4::views::packets_view::PacketsView;
 use crate::gtk4::windows::main_window::MainWindow;
 
 pub struct MainView {
@@ -99,8 +101,8 @@ impl MainView {
         });
         actions.add_action(&action);*/
 
-        /*let packets = PacketsView::new();
-        packets.connect_select({
+        let packets = PacketsView::new();
+        /*packets.connect_select({
             let content_pane = content_pane.clone();
             let sidebar = sidebar.clone();
             move |packet| {
@@ -113,10 +115,11 @@ impl MainView {
                 content_pane.set_child_shrink(&view.root, false);
                 *sidebar.borrow_mut() = Some(view);
             }
-        });
-        content_pane.add(&packets.root);
+        });*/
+        content_pane.set_start_child(Some(&packets.root));
+        //content_pane.append(&packets.root);
 
-        let event_listener = Some(RefCell::new(register_event("capture_event", {
+        /*let event_listener = Some(RefCell::new(register_event("capture_event", {
             let packets = packets.clone();
             move |event| {
                 let event = event.as_any().downcast_ref::<CaptureEvent>().unwrap();

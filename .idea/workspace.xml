@@ -8,25 +8,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f0704e63-1929-42d3-83d7-8cbc904dc132" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/res/ui/gtk4/device_list_item.ui" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/res/ui/gtk4/devices_view.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/res/ui/gtk4/devices_view.ui" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/res/ui/gtk4/main_view.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/res/ui/gtk4/main_view.ui" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/gtk4/actions/app_actions.rs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/gtk4/actions/mod.rs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/gtk4/actions/window_actions.rs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/gtk4/views/device_list_item.rs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/res/ui/gtk4/packets_view.ui" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/res/gtk4/linux.gresources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/res/gtk4/linux.gresources.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/resources.gresources" beforeDir="false" afterPath="$PROJECT_DIR$/res/resources.gresources" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/ui/gtk4/theme.css" beforeDir="false" afterPath="$PROJECT_DIR$/res/ui/gtk4/theme.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gtk3/views/mod.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/gtk3/views/mod.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gtk4/app.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/gtk4/app.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gtk4/mod.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/gtk4/mod.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gtk4/views/devices_view.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/gtk4/views/devices_view.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gtk4/views/main_view.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/gtk4/views/main_view.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/gtk4/views/mod.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/gtk4/views/mod.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gtk4/windows/main_window.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/gtk4/windows/main_window.rs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
