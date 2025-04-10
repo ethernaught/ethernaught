@@ -2,8 +2,9 @@ use std::cell::RefCell;
 use std::path::PathBuf;
 use std::rc::Rc;
 use gtk4::{gdk, style_context_add_provider_for_display, Builder, Button, CssProvider, Paned, StyleContext, Widget};
+use gtk4::gio::SimpleAction;
 use gtk4::glib::property::PropertyGet;
-use gtk4::prelude::{Cast, StyleContextExt, WidgetExt};
+use gtk4::prelude::{ActionMapExt, Cast, StyleContextExt, WidgetExt};
 use rlibpcap::devices::Device;
 use rlibpcap::pcap::pcap::Pcap;
 use rlibpcap::utils::data_link_types::DataLinkTypes;
@@ -15,15 +16,15 @@ use crate::gtk4::views::packets_view::PacketsView;
 use crate::gtk4::windows::main_window::MainWindow;
 
 pub struct MainView {
-    //pub show_capture_bar: Option<Rc<RefCell<dyn Fn(bool)>>>,
+    pub show_capture_bar: Option<Rc<RefCell<dyn Fn(bool)>>>,
     pub show_title_bar: Box<dyn Fn(bool)>,
     pub root: gtk4::Box,
     pub activity_pane: Paned,
     pub content_pane: Paned,
-    //pub packets: PacketsView,
+    pub packets: PacketsView,
     //pub sidebar: Rc<RefCell<Option<SidebarView>>>,
     //pub terminal: Rc<RefCell<Option<TerminalView>>>,
-    //pub event_listener: Option<RefCell<u32>>
+    pub event_listener: Option<RefCell<u32>>
 }
 
 impl MainView {
@@ -119,7 +120,7 @@ impl MainView {
         content_pane.set_start_child(Some(&packets.root));
         //content_pane.append(&packets.root);
 
-        /*let event_listener = Some(RefCell::new(register_event("capture_event", {
+        let event_listener = Some(RefCell::new(register_event("capture_event", {
             let packets = packets.clone();
             move |event| {
                 let event = event.as_any().downcast_ref::<CaptureEvent>().unwrap();
@@ -151,18 +152,18 @@ impl MainView {
                 pause_event("capture_event", event_listener.borrow().clone());
             }
         });
-        window.window.add_action(&action);*/
+        window.window.add_action(&action);
 
         Self {
             show_title_bar,
-            //show_capture_bar: Some(show_capture_bar),
+            show_capture_bar: Some(show_capture_bar),
             root,
             activity_pane,
             content_pane,
-            //packets,
+            packets,
             //sidebar,
             //terminal,
-            //event_listener
+            event_listener
         }
     }
 
@@ -536,7 +537,7 @@ fn show_title_bar(window: &MainWindow, name: &str, data_link_type: DataLinkTypes
         title_bar.app_options.hide();
     }
 }
-/*
+
 fn show_capture_bar(window: &MainWindow, packets: &PacketsView) -> impl Fn(bool) {
     let title_bar = window.title_bar.clone();
     let packets = packets.clone();
@@ -551,4 +552,4 @@ fn show_capture_bar(window: &MainWindow, packets: &PacketsView) -> impl Fn(bool)
         title_bar.app_options.style_context().remove_class("running");
         title_bar.stop.hide();
     }
-}*/
+}

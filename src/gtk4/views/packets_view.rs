@@ -3,7 +3,7 @@ use std::net::IpAddr;
 use std::rc::Rc;
 use gtk4::{Builder, CellRendererText, Entry, ListStore, ScrolledWindow, TreeModelFilter, TreeView, TreeViewColumn};
 use gtk4::glib::Type;
-use gtk4::prelude::{AdjustmentExt, CellLayoutExt, EditableExt, EntryExt, TreeModelExt, TreeModelFilterExt, TreeViewExt};
+use gtk4::prelude::{AdjustmentExt, CellLayoutExt, EditableExt, EntryExt, ObjectExt, TreeModelExt, TreeModelExtManual, TreeModelFilterExt, TreeViewExt};
 use rlibpcap::packet::layers::ethernet_frame::arp::arp_extension::ArpExtension;
 use rlibpcap::packet::layers::ethernet_frame::ethernet_frame::{EthernetFrame, ETHERNET_FRAME_LEN};
 use rlibpcap::packet::layers::ethernet_frame::inter::ethernet_types::EthernetTypes;
@@ -117,7 +117,8 @@ impl PacketsView {
                     return true;
                 }
 
-                return false;
+                let index: u32 = model.get_value(iter, 0).get().unwrap_or_default();
+                packets.borrow().get(index as usize).unwrap().matches(&query.borrow())
                 //let index: u32 = model.value(iter, 0).get().unwrap_or_default();
                 //packets.borrow().get(index as usize - 1).unwrap().matches(&query.borrow())
             }
@@ -240,7 +241,8 @@ impl PacketsView {
                     return true;
                 }
 
-                return false;
+                let index: u32 = model.get_value(iter, 0).get().unwrap_or_default();
+                packets.borrow().get(index as usize).unwrap().matches(&query.borrow())
                 //let index: u32 = model.value(iter, 0).get().unwrap_or_default();
                 //packets.borrow().get(index as usize).unwrap().matches(&query.borrow())
             }
@@ -329,9 +331,8 @@ fn init_column(tree: &TreeView, title: &str, col_id: i32, min_width: i32) {
     CellLayoutExt::pack_start(&column, &renderer, true);
     CellLayoutExt::add_attribute(&column, &renderer, "text", col_id);
 
-    /*
-    CellLayoutExt::set_cell_data_func(&column, &renderer, Some(Box::new(move |_, cell, model, iter| {
-        let protocol: String = model.value(iter, 4).get().unwrap_or_default();
+    CellLayoutExt::set_cell_data_func(&column, &renderer, move |column, cell, model, iter| {
+        let protocol: String = model.get_value(iter, 4).get().unwrap_or_default();
 
         let color = match protocol.as_str() {
             "ARP" => "#05211b",
@@ -345,8 +346,7 @@ fn init_column(tree: &TreeView, title: &str, col_id: i32, min_width: i32) {
 
         cell.set_property("cell-background", &color);
         cell.set_property("cell-background-set", &true);
-    })));
-    */
+    });
 
     tree.append_column(&column);
 }
