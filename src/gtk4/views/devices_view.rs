@@ -114,17 +114,15 @@ impl DevicesView {
 
                 if_map.iter().for_each(|(pos, index)| {
                     if event.if_bytes.contains_key(index) {
-                        //device_list_item.get(*pos).unwrap().graph.add_point(event.if_bytes.get(index).unwrap().clone() as u32);
+                        device_list_item.get(*pos).unwrap().graph.add_point(event.if_bytes.get(index).unwrap().clone() as u32);
                     } else {
-                        //device_list_item.get(*pos).unwrap().graph.add_point(0);
+                        device_list_item.get(*pos).unwrap().graph.add_point(0);
                     }
                 });
 
                 Continue
             }
         }, false));
-
-        let event_listener = RefCell::new(0);
 
         Self {
             root,
@@ -150,18 +148,18 @@ impl Stackable for DevicesView {
     }
 
     fn on_resume(&self) {
-        //self.if_map.iter().for_each(|(pos, index)| {
-        //    self.device_list_item.get(*pos).unwrap().graph.clear_points();
-        //});
+        self.if_map.iter().for_each(|(pos, index)| {
+            self.device_list_item.get(*pos).unwrap().graph.clear_points();
+        });
 
-        //resume_event("transmitted_event", *self.event_listener.borrow());
+        resume_event("transmitted_event", *self.event_listener.borrow());
     }
 
     fn on_pause(&self) {
-        //pause_event("transmitted_event", *self.event_listener.borrow());
+        pause_event("transmitted_event", *self.event_listener.borrow());
     }
 
     fn on_destroy(&self) {
-        //unregister_event("transmitted_event", *self.event_listener.borrow());
+        unregister_event("transmitted_event", *self.event_listener.borrow());
     }
 }

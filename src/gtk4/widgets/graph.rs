@@ -1,7 +1,8 @@
 use std::cell::RefCell;
-use gtk4::{glib, Buildable, Orientation, Snapshot, Widget};
+use gtk4::{glib, Buildable, Orientation, Snapshot, StateFlags, Widget};
+use gtk4::glib::property::PropertyGet;
 use gtk4::graphene::Rect;
-use gtk4::prelude::{SnapshotExt, WidgetExt};
+use gtk4::prelude::{DisplayExt, ObjectExt, SnapshotExt, StyleContextExt, WidgetExt};
 use gtk4::subclass::prelude::{ObjectImpl, ObjectSubclass, ObjectSubclassExt, ObjectSubclassIsExt, WidgetClassExt, WidgetImpl, WidgetImplExt};
 
 const MIN_WIDTH: i32 = 20;
@@ -35,9 +36,60 @@ impl WidgetImpl for GraphImpl {
 
         // Draw a solid background with Cairo
         let cr = snapshot.append_cairo(&Rect::new(0.0, 0.0, width, height));
-        cr.set_source_rgb(0.2, 0.4, 0.6);
-        cr.rectangle(0.0, 0.0, width as f64, height as f64);
-        cr.fill().unwrap();
+        //cr.set_source_rgb(0.2, 0.4, 0.6);
+        //cr.rectangle(0.0, 0.0, width as f64, height as f64);
+        //cr.fill().unwrap();
+
+
+
+
+        let widget = self.obj();
+        let style_context = widget.style_context();
+
+        style_context.set_state(StateFlags::NORMAL);
+        let color = style_context.color();
+
+        let padding = style_context.padding();
+
+        if let Some(background) = style_context.lookup_color("background-color") {
+            cr.set_source_rgba(background.red() as f64, background.green() as f64, background.blue() as f64, background.alpha() as f64);
+            cr.paint();
+        }
+
+        let allocation = self.obj().allocation();
+        let width = allocation.width() as f64;
+        let height = allocation.height() as f64;
+
+        cr.set_line_width(1.0);
+
+        cr.set_source_rgba(color.red() as f64, color.green() as f64, color.blue() as f64, color.alpha() as f64);
+
+        let points = self.points.borrow();
+        if points.len() < 2 {
+            cr.move_to(0.0, height);
+            cr.line_to(width, height);
+            cr.stroke().unwrap();
+
+            return;
+        }
+
+        let min = *points.iter().min_by(|a, b| a.partial_cmp(b).unwrap()).unwrap() as f64;
+        let max = *points.iter().max_by(|a, b| a.partial_cmp(b).unwrap()).unwrap() as f64;
+
+        let range = if max > min { max - min } else { 1.0 };
+        let distance = 4.0;// * widget.screen().unwrap().resolution() / 96.0;
+
+        cr.move_to(0.0, height - ((points[0] as f64 - min) / range) * height);
+
+        for (i, &point) in points.iter().enumerate() {
+            let x = i as f64 * distance;
+            let y = height - ((point as f64 - min) / range) * height;
+            cr.line_to(x, y);
+        }
+
+        cr.stroke().unwrap();
+
+
     }
 
     fn measure(&self, orientation: Orientation, for_size: i32) -> (i32, i32, i32, i32) {
@@ -120,10 +172,9 @@ impl Graph {
     }
 
     pub fn add_point(&self, point: u32) {
-        /*
         let allocation = self.allocation();
         let width = allocation.width();
-        let distance = 4.0 * self.screen().unwrap().resolution() / 96.0;
+        let distance = 4.0;// * self.screen().unwrap().resolution() / 96.0;
 
         if self.imp().points.borrow().len() >= width as usize / distance as usize {
             let size_to_remove = self.imp().points.borrow_mut().len() - width as usize / distance as usize;
@@ -132,7 +183,6 @@ impl Graph {
 
         self.imp().points.borrow_mut().push(point);
         self.queue_draw();
-        */
     }
 
     pub fn get_points(&self) -> Vec<u32> {

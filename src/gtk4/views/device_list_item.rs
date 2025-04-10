@@ -3,6 +3,7 @@ use gtk4::prelude::{StyleContextExt, WidgetExt};
 use rlibpcap::devices::Device;
 use rlibpcap::utils::data_link_types::DataLinkTypes;
 use rlibpcap::utils::interface_flags::InterfaceFlags;
+use crate::gtk4::widgets::graph::Graph;
 
 #[derive(Clone)]
 pub struct DeviceListItem {
@@ -10,7 +11,7 @@ pub struct DeviceListItem {
     pub icon: Image,
     pub title: Label,
     pub description: Label,
-    //pub graph: Graph
+    pub graph: Graph
 }
 
 impl DeviceListItem {
@@ -38,17 +39,16 @@ impl DeviceListItem {
             .expect("Couldn't find 'description' in device_list_item.ui");
         description.set_label("[Promiscuous]");
 
-        /*
         let graph: Graph = builder
             .object("graph")
             .expect("Couldn't find 'graph' in device_list_item.ui");
-            */
 
         Self {
             root,
             icon,
             title,
-            description
+            description,
+            graph
         }
     }
 
@@ -102,18 +102,16 @@ impl DeviceListItem {
             root.style_context().add_class("down");
         }
 
-        /*
         let graph: Graph = builder
             .object("graph")
             .expect("Couldn't find 'graph' in device_list_item.ui");
-            */
 
         Self {
             root,
             icon,
             title,
             description,
-            //graph
+            graph
         }
     }
 }

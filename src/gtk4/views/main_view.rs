@@ -450,19 +450,19 @@ impl Stackable for MainView {
     fn on_pause(&self) {
         (self.show_title_bar)(false);
 
-        /*if let Some(event_listener) = &self.event_listener {
+        if let Some(event_listener) = &self.event_listener {
             pause_event("capture_event", *event_listener.borrow());
         }
 
         if let Some(show_capture_bar) = &self.show_capture_bar {
             show_capture_bar.borrow()(false);
-        }*/
+        }
     }
 
     fn on_destroy(&self) {
-        /*if let Some(event_listener) = &self.event_listener {
+        if let Some(event_listener) = &self.event_listener {
             unregister_event("capture_event", *event_listener.borrow());
-        }*/
+        }
     }
 }
 

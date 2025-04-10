@@ -158,8 +158,6 @@ impl MainWindow {
         let sniffer = Sniffer::new();
         sniffer.run();
 
-        _self.notify(NotificationTypes::Info, "A", "aaaaaaaaaaaaaaaaaaa");
-
         _self
     }
 

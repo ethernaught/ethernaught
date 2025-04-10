@@ -8,7 +8,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f0704e63-1929-42d3-83d7-8cbc904dc132" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/src/gtk4/widgets/overlay.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/gtk4/widgets/overlay.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/Cargo.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/resources.gresources" beforeDir="false" afterPath="$PROJECT_DIR$/res/resources.gresources" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gtk4/views/device_list_item.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/gtk4/views/device_list_item.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gtk4/views/devices_view.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/gtk4/views/devices_view.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gtk4/views/main_view.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/gtk4/views/main_view.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gtk4/widgets/graph.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/gtk4/widgets/graph.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gtk4/windows/main_window.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/gtk4/windows/main_window.rs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
