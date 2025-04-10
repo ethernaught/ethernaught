@@ -18,7 +18,7 @@ pub struct DeviceListItem {
 impl DeviceListItem {
 
     pub fn new() -> Self {
-        let builder = Builder::from_resource("/net/ethernaught/rust/res/ui/gtk3/device_list_item.ui");
+        let builder = Builder::from_resource("/net/ethernaught/rust/res/ui/device_list_item.ui");
         let root: ListBoxRow = builder
             .object("root")
             .expect("Couldn't find 'root' in device_list_item.ui");
@@ -54,7 +54,7 @@ impl DeviceListItem {
     }
 
     pub fn from_device(device: &Device) -> Self {
-        let builder = Builder::from_resource("/net/ethernaught/rust/res/ui/gtk3/device_list_item.ui");
+        let builder = Builder::from_resource("/net/ethernaught/rust/res/ui/device_list_item.ui");
         let root: ListBoxRow = builder
             .object("root")
             .expect("Couldn't find 'root' in device_list_item.ui");

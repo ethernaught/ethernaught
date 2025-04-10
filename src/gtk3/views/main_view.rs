@@ -32,10 +32,10 @@ pub struct MainView {
 impl MainView {
 
     pub fn new(window: &MainWindow) -> Self {
-        let builder = Builder::from_resource("/net/ethernaught/rust/res/ui/gtk3/main_view.ui");
+        let builder = Builder::from_resource("/net/ethernaught/rust/res/ui/main_view.ui");
 
         let provider = CssProvider::new();
-        provider.load_from_resource("/net/ethernaught/rust/res/ui/gtk3/main_view.css");
+        provider.load_from_resource("/net/ethernaught/rust/res/ui/main_view.css");
 
         StyleContext::add_provider_for_screen(
             &gdk::Screen::default().expect("Failed to get default screen."),
@@ -174,10 +174,10 @@ impl MainView {
     }
 
     pub fn from_device(window: &MainWindow, device: &Device) -> Self {
-        let builder = Builder::from_resource("/net/ethernaught/rust/res/ui/gtk3/main_view.ui");
+        let builder = Builder::from_resource("/net/ethernaught/rust/res/ui/main_view.ui");
 
         let provider = CssProvider::new();
-        provider.load_from_resource("/net/ethernaught/rust/res/ui/gtk3/main_view.css");
+        provider.load_from_resource("/net/ethernaught/rust/res/ui/main_view.css");
 
         StyleContext::add_provider_for_screen(
             &gdk::Screen::default().expect("Failed to get default screen."),
@@ -323,10 +323,10 @@ impl MainView {
     pub fn from_pcap(window: &MainWindow, path: &PathBuf) -> Self {
         let pcap = Pcap::from_file(path.to_str().unwrap()).expect("Couldn't parse pcap");
 
-        let builder = Builder::from_resource("/net/ethernaught/rust/res/ui/gtk3/main_view.ui");
+        let builder = Builder::from_resource("/net/ethernaught/rust/res/ui/main_view.ui");
 
         let provider = CssProvider::new();
-        provider.load_from_resource("/net/ethernaught/rust/res/ui/gtk3/main_view.css");
+        provider.load_from_resource("/net/ethernaught/rust/res/ui/main_view.css");
 
         StyleContext::add_provider_for_screen(
             &gdk::Screen::default().expect("Failed to get default screen."),

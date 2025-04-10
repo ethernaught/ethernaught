@@ -97,19 +97,19 @@ tooltip {
 }
 
 #window_controls #minimize {
-    background-image: url('../../icons/ic_minimize.svg');
+    background-image: url('../icons/ic_minimize.svg');
 }
 
 #window_controls #maximize {
-    background-image: url('../../icons/ic_maximize.svg');
+    background-image: url('../icons/ic_maximize.svg');
 }
 
 window.maximized #window_controls #maximize {
-    background-image: url('../../icons/ic_unmaximize.svg');
+    background-image: url('../icons/ic_unmaximize.svg');
 }
 
 #window_controls #close {
-    background-image: url('../../icons/ic_close.svg');
+    background-image: url('../icons/ic_close.svg');
 }
 
 #main_window:backdrop #window_controls button {
@@ -118,5 +118,5 @@ window.maximized #window_controls #maximize {
 
 
 #navigation_buttons #menu {
-    background-image: url('../../icons/ic_menu.svg');
+    background-image: url('../icons/ic_menu.svg');
 }

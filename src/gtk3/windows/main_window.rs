@@ -31,10 +31,10 @@ pub struct MainWindow {
 impl MainWindow {
 
     pub fn new(app: &Application) -> Self {
-        let builder = Builder::from_resource("/net/ethernaught/rust/res/ui/gtk3/window.ui");
+        let builder = Builder::from_resource("/net/ethernaught/rust/res/ui/window.ui");
 
         let provider = CssProvider::new();
-        provider.load_from_resource("/net/ethernaught/rust/res/ui/gtk3/window.css");
+        provider.load_from_resource("/net/ethernaught/rust/res/ui/window.css");
         //provider.load_from_path("res/ui/gtk3/window.css").expect("Failed to load CSS file.");
 
         StyleContext::add_provider_for_screen(
@@ -166,11 +166,11 @@ impl MainWindow {
     }
 
     pub fn from_file(app: &Application, path: &PathBuf) -> Self {
-        let builder = Builder::from_resource("/net/ethernaught/rust/res/ui/gtk3/window.ui");
+        let builder = Builder::from_resource("/net/ethernaught/rust/res/ui/window.ui");
 
         let provider = CssProvider::new();
-        provider.load_from_resource("/net/ethernaught/rust/res/ui/gtk3/window.css");
-        //provider.load_from_path("res/ui/gtk3/window.css").expect("Failed to load CSS file.");
+        provider.load_from_resource("/net/ethernaught/rust/res/ui/window.css");
+        //provider.load_from_path("res/ui/window.css").expect("Failed to load CSS file.");
 
         StyleContext::add_provider_for_screen(
             &gdk::Screen::default().expect("Failed to get default screen."),

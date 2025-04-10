@@ -9,7 +9,7 @@ pub struct TerminalView {
 impl TerminalView {
 
     pub fn new() -> Self {
-        let builder = Builder::from_resource("/net/ethernaught/rust/res/ui/gtk3/terminal_view.ui");
+        let builder = Builder::from_resource("/net/ethernaught/rust/res/ui/terminal_view.ui");
 
         let root: gtk::Box = builder
             .object("root")

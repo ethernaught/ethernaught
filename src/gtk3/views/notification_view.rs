@@ -18,7 +18,7 @@ pub struct NotificationView {
 impl NotificationView {
 
     pub fn new(_type: NotificationTypes, title: &str, description: &str) -> Self {
-        let builder = Builder::from_resource("/net/ethernaught/rust/res/ui/gtk3/notification_view.ui");
+        let builder = Builder::from_resource("/net/ethernaught/rust/res/ui/notification_view.ui");
 
         let root: gtk::Box = builder
             .object("root")

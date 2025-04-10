@@ -132,19 +132,19 @@ tooltip {
 
 
 #window_controls:hover #minimize {
-    background-image: url('../../icons/ic_minimize.svg');
+    background-image: url('../icons/ic_minimize.svg');
 }
 
 #window_controls:hover #maximize {
-    background-image: url('../../icons/ic_maximize.svg');
+    background-image: url('../icons/ic_maximize.svg');
 }
 /*
 window.maximized #window_controls #maximize {
-    background-image: url('../../icons/ic_unmaximize.svg');
+    background-image: url('../icons/ic_unmaximize.svg');
 }
 */
 #window_controls:hover #close {
-    background-image: url('../../icons/ic_close.svg');
+    background-image: url('../icons/ic_close.svg');
 }
 
 

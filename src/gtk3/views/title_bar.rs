@@ -22,7 +22,7 @@ pub struct TitleBar {
 impl TitleBar {
 
     pub fn new(window: &ApplicationWindow) -> Self {
-        let builder = Builder::from_resource("/net/ethernaught/rust/res/ui/gtk3/title_bar.ui");
+        let builder = Builder::from_resource("/net/ethernaught/rust/res/ui/title_bar.ui");
 
         let root: gtk::Box = builder
             .object("root")

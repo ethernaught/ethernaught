@@ -10,7 +10,7 @@ pub struct BottomBar {
 impl BottomBar {
 
     pub fn new() -> Self {
-        let builder = Builder::from_resource("/net/ethernaught/rust/res/ui/gtk3/bottom_bar.ui");
+        let builder = Builder::from_resource("/net/ethernaught/rust/res/ui/bottom_bar.ui");
 
 
         let root: gtk::Box = builder

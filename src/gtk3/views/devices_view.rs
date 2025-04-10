@@ -26,10 +26,10 @@ pub struct DevicesView {
 impl DevicesView {
 
     pub fn new(window: &MainWindow, devices: Vec<Device>) -> Self {
-        let builder = Builder::from_resource("/net/ethernaught/rust/res/ui/gtk3/devices_view.ui");
+        let builder = Builder::from_resource("/net/ethernaught/rust/res/ui/devices_view.ui");
 
         let provider = CssProvider::new();
-        provider.load_from_resource("/net/ethernaught/rust/res/ui/gtk3/devices_view.css");
+        provider.load_from_resource("/net/ethernaught/rust/res/ui/devices_view.css");
 
         StyleContext::add_provider_for_screen(
             &gdk::Screen::default().expect("Failed to get default screen."),

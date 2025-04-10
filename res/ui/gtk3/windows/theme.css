@@ -102,41 +102,41 @@ tooltip {
 
 
 #window_controls #minimize {
-    background-image: url('../../icons/ic_minimize_focus.svg');
+    background-image: url('../icons/ic_minimize_focus.svg');
 }
 
 #window_controls #maximize {
-    background-image: url('../../icons/ic_maximize_focus.svg');
+    background-image: url('../icons/ic_maximize_focus.svg');
 }
 
 window.maximized #window_controls #maximize {
-    background-image: url('../../icons/ic_unmaximize_focus.svg');
+    background-image: url('../icons/ic_unmaximize_focus.svg');
 }
 
 #window_controls #close {
-    background-image: url('../../icons/ic_close_focus.svg');
+    background-image: url('../icons/ic_close_focus.svg');
 }
 
 
 
 #window_controls:backdrop #minimize {
-    background-image: url('../../icons/ic_minimize.svg');
+    background-image: url('../icons/ic_minimize.svg');
 }
 
 #window_controls:backdrop #maximize {
-    background-image: url('../../icons/ic_maximize.svg');
+    background-image: url('../icons/ic_maximize.svg');
 }
 
 window.maximized:backdrop #window_controls #maximize {
-    background-image: url('../../icons/ic_unmaximize.svg');
+    background-image: url('../icons/ic_unmaximize.svg');
 }
 
 #window_controls:backdrop #close {
-    background-image: url('../../icons/ic_close.svg');
+    background-image: url('../icons/ic_close.svg');
 }
 
 
 
 #navigation_buttons #menu {
-    background-image: url('../../icons/ic_menu.svg');
+    background-image: url('../icons/ic_menu.svg');
 }

@@ -36,7 +36,7 @@ impl App {
             resources_register(&resource);
 
             let provider = CssProvider::new();
-            provider.load_from_resource("/net/ethernaught/rust/res/ui/gtk3/theme.css");
+            provider.load_from_resource("/net/ethernaught/rust/res/ui/theme.css");
 
             StyleContext::add_provider_for_screen(
                 &gdk::Screen::default().expect("Failed to get default screen."),
@@ -68,7 +68,7 @@ impl App {
                     resources_register(&resource);
 
                     let provider = CssProvider::new();
-                    provider.load_from_resource("/net/ethernaught/rust/res/ui/gtk3/theme.css");
+                    provider.load_from_resource("/net/ethernaught/rust/res/ui/theme.css");
 
                     StyleContext::add_provider_for_screen(
                         &gdk::Screen::default().expect("Failed to get default screen."),

@@ -60,11 +60,11 @@
 }
 
 #main_view #side_navbar #terminal {
-    background-image: url('../../icons/ic_terminal.svg');
+    background-image: url('../icons/ic_terminal.svg');
 }
 
 #main_view #side_navbar #plugins {
-    background-image: url('../../icons/ic_plugins.svg');
+    background-image: url('../icons/ic_plugins.svg');
 }
 
 
@@ -118,11 +118,11 @@
 }
 
 #sidebar_view #header #dismiss {
-    background-image: url('../../icons/ic_dismiss.svg');
+    background-image: url('../icons/ic_dismiss.svg');
 }
 
 #sidebar_view #header #replay {
-    background-image: url('../../icons/ic_replay.svg');
+    background-image: url('../icons/ic_replay.svg');
 }
 
 #sidebar_view #header button:hover {

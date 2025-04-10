@@ -10,10 +10,10 @@ pub struct PacketPlaygroundView {
 impl PacketPlaygroundView {
 
     pub fn new() -> Self {
-        let builder = Builder::from_resource("/net/ethernaught/rust/res/ui/gtk3/packet_playground_view.ui");
+        let builder = Builder::from_resource("/net/ethernaught/rust/res/ui/packet_playground_view.ui");
 
         let provider = CssProvider::new();
-        provider.load_from_resource("/net/ethernaught/rust/res/ui/gtk3/packet_playground_view.css");
+        provider.load_from_resource("/net/ethernaught/rust/res/ui/packet_playground_view.css");
 
         StyleContext::add_provider_for_screen(
             &gdk::Screen::default().expect("Failed to get default screen."),

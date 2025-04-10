@@ -25,7 +25,7 @@ pub struct Dropdown {
 impl Dropdown {
 
     pub fn new(title: &str) -> Self {
-        let builder = Builder::from_resource("/net/ethernaught/rust/res/ui/gtk3/layer_dropdown.ui");
+        let builder = Builder::from_resource("/net/ethernaught/rust/res/ui/layer_dropdown.ui");
 
         let root: gtk::Box = builder
             .object("root")

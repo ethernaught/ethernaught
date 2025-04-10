@@ -49,7 +49,7 @@ pub struct SidebarView {
 impl SidebarView {
 
     pub fn from_packet(packet: &Packet) -> Self {
-        let builder = Builder::from_resource("/net/ethernaught/rust/res/ui/gtk3/sidebar_view.ui");
+        let builder = Builder::from_resource("/net/ethernaught/rust/res/ui/sidebar_view.ui");
 
         let root: gtk::Box = builder
             .object("root")
