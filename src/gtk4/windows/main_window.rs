@@ -2,7 +2,8 @@ use std::cell::RefCell;
 use std::collections::HashMap;
 use std::process::exit;
 use gtk4::{Application, ApplicationWindow, Builder, CssProvider, HeaderBar, StyleContext};
-use gtk4::prelude::{GtkWindowExt, ObjectExt, StyleContextExt, WidgetExt};
+use gtk4::prelude::{BoxExt, GtkWindowExt, ObjectExt, StyleContextExt, WidgetExt};
+use crate::gtk4::views::bottom_bar::BottomBar;
 use crate::gtk4::views::title_bar::TitleBar;
 
 #[derive(Clone)]
@@ -71,14 +72,14 @@ impl MainWindow {
 
         window.set_titlebar(Some(&header));
 
-        /*
-        let title_bar = TitleBar::new(&window);
-        window.set_titlebar(Some(&title_bar.root));
+        //let title_bar = TitleBar::new(&window);
+        //window.set_titlebar(Some(&title_bar.root));
 
-        let root: gtk::Box = builder
+        let root: gtk4::Box = builder
             .object("root")
             .expect("Failed to get the 'root' from window.ui");
 
+        /*
         //window_content.add(&create_alertbar());
 
         let stack: Stack = builder
@@ -111,10 +112,10 @@ impl MainWindow {
         let notifications: gtk::Box = builder
             .object("notifications")
             .expect("Failed to get the 'notifications' from window.ui");
-
+        */
         let bottom_bar = BottomBar::new();
-        root.add(&bottom_bar.root);
-
+        root.append(&bottom_bar.root);
+        /*
         let mut devices = Device::list().expect("Failed to get device list");
         devices.sort_by(|a, b| {
             b.get_flags().contains(&InterfaceFlags::Running).cmp(&a.get_flags().contains(&InterfaceFlags::Running))

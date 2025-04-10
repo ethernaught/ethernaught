@@ -9,4 +9,4 @@ pub mod packets_view;
 pub mod sidebar_view;
 pub mod packet_playground_view;
 pub mod dropdown;
-mod terminal_view;
+pub mod terminal_view;
