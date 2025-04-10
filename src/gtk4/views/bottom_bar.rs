@@ -20,7 +20,7 @@ impl BottomBar {
             .object("license")
             .expect("Couldn't find 'license' in bottom_bar.ui");
 
-        license.set_label(format!("{}-{}", env!("PROFILE"), env!("CARGO_PKG_VERSION")).as_str());
+        license.set_label(format!("{}-{}-{}", env!("PROFILE"), env!("CARGO_PKG_VERSION"), "gtk4").as_str());
 
 
 
