@@ -18,7 +18,7 @@ pub struct MainWindow {
 impl MainWindow {
 
     pub fn new(app: &Application) -> Self {
-        let builder = Builder::from_resource("/net/ethernaught/rust/res/ui/gtk4/window.ui");
+        let builder = Builder::from_resource("/net/ethernaught/rust/res/ui/window.ui");
 
         let window: ApplicationWindow = builder
             .object("main_window")
@@ -30,7 +30,7 @@ impl MainWindow {
         //window.set_border_width(1);
 
         let provider = CssProvider::new();
-        provider.load_from_resource("/net/ethernaught/rust/res/ui/gtk4/window.css");
+        provider.load_from_resource("/net/ethernaught/rust/res/ui/window.css");
 
         window.style_context().add_provider(&provider, gtk4::STYLE_PROVIDER_PRIORITY_APPLICATION);
 

@@ -84,19 +84,19 @@ button:focus, button:checked {
 }
 
 #navigation_buttons #back {
-    background-image: url('../../icons/ic_back.svg');
+    background-image: url('../icons/ic_back.svg');
 }
 
 #navigation_buttons #back.active {
-    background-image: url('../../icons/ic_back_active.svg');
+    background-image: url('../icons/ic_back_active.svg');
 }
 
 #navigation_buttons #next {
-    background-image: url('../../icons/ic_next.svg');
+    background-image: url('../icons/ic_next.svg');
 }
 
 #navigation_buttons #next.active {
-    background-image: url('../../icons/ic_next_active.svg');
+    background-image: url('../icons/ic_next_active.svg');
 }
 
 
@@ -124,11 +124,11 @@ button:focus, button:checked {
 }
 
 #app_options #start {
-    background-image: url('../../icons/ic_start.svg');
+    background-image: url('../icons/ic_start.svg');
 }
 
 #app_options #stop {
-    background-image: url('../../icons/ic_stop.svg');
+    background-image: url('../icons/ic_stop.svg');
 }
 
 #app_options #stop {
@@ -137,7 +137,7 @@ button:focus, button:checked {
 
 #app_options.running #start {
     background-color: @green;
-    background-image: url('../../icons/ic_restart.svg');
+    background-image: url('../icons/ic_restart.svg');
 }
 
 
@@ -227,15 +227,15 @@ window.release #bottom_bar #license {
 }
 
 #bottom_bar #warning {
-    background-image: url('../../icons/ic_status_good.svg');
+    background-image: url('../icons/ic_status_good.svg');
 }
 
 #bottom_bar #warning.warning {
-    background-image: url('../../icons/ic_status_warning.svg');
+    background-image: url('../icons/ic_status_warning.svg');
 }
 
 #bottom_bar #warning.severe {
-    background-image: url('../../icons/ic_status_severe.svg');
+    background-image: url('../icons/ic_status_severe.svg');
 }
 
 
@@ -264,7 +264,7 @@ window.release #bottom_bar #license {
 #notification #close {
     border: 4px;
     border-radius: 100%;
-    background-image: url('../../icons/ic_dialog_close.svg');
+    background-image: url('../icons/ic_dialog_close.svg');
 }
 
 #notification button {

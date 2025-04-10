@@ -23,7 +23,7 @@ pub struct DevicesView {
 impl DevicesView {
 
     pub fn new(window: &MainWindow, devices: Vec<Device>) -> Self {
-        let builder = Builder::from_resource("/net/ethernaught/rust/res/ui/gtk3/devices_view.ui");
+        let builder = Builder::from_resource("/net/ethernaught/rust/res/ui/devices_view.ui");
 
         /*
         let provider = CssProvider::new();

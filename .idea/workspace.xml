@@ -12,25 +12,14 @@
       <change beforePath="$PROJECT_DIR$/res/gtk3/linux.gresources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/res/gtk3/linux.gresources.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/res/gtk3/macos.gresources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/res/gtk3/macos.gresources.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/res/gtk3/windows.gresources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/res/gtk3/windows.gresources.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/gtk4/linux.gresources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/res/gtk4/linux.gresources.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/res/resources.gresources" beforeDir="false" afterPath="$PROJECT_DIR$/res/resources.gresources" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/ui/gtk3/linux/theme.css" beforeDir="false" afterPath="$PROJECT_DIR$/res/ui/gtk3/linux/theme.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/ui/gtk3/macos/theme.css" beforeDir="false" afterPath="$PROJECT_DIR$/res/ui/gtk3/macos/theme.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/ui/gtk3/main_view.css" beforeDir="false" afterPath="$PROJECT_DIR$/res/ui/gtk3/main_view.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/ui/gtk3/window.css" beforeDir="false" afterPath="$PROJECT_DIR$/res/ui/gtk3/window.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/ui/gtk3/windows/theme.css" beforeDir="false" afterPath="$PROJECT_DIR$/res/ui/gtk3/windows/theme.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gtk3/app.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/gtk3/app.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gtk3/views/bottom_bar.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/gtk3/views/bottom_bar.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gtk3/views/device_list_item.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/gtk3/views/device_list_item.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gtk3/views/devices_view.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/gtk3/views/devices_view.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gtk3/views/dropdown/dropdown.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/gtk3/views/dropdown/dropdown.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gtk3/views/main_view.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/gtk3/views/main_view.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gtk3/views/notification_view.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/gtk3/views/notification_view.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gtk3/views/packet_playground_view.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/gtk3/views/packet_playground_view.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gtk3/views/packets_view.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/gtk3/views/packets_view.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gtk3/views/sidebar_view.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/gtk3/views/sidebar_view.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gtk3/views/terminal_view.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/gtk3/views/terminal_view.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gtk3/views/title_bar.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/gtk3/views/title_bar.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gtk3/windows/main_window.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/gtk3/windows/main_window.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/ui/gtk4/theme.css" beforeDir="false" afterPath="$PROJECT_DIR$/res/ui/gtk4/theme.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/ui/gtk4/window.css" beforeDir="false" afterPath="$PROJECT_DIR$/res/ui/gtk4/window.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gtk4/app.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/gtk4/app.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gtk4/views/devices_view.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/gtk4/views/devices_view.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gtk4/views/title_bar.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/gtk4/views/title_bar.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gtk4/windows/main_window.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/gtk4/windows/main_window.rs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
