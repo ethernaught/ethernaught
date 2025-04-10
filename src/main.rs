@@ -46,6 +46,8 @@ rustup override set nightly
 
 //MAKE GTK3 and GTK4 not use global stylesheets but rather per view add styles...
 
+//do we need refcell to store children for GTK3 overlay or can we take from widget...
+
 fn main() {
     //unsafe { env::set_var("GTK_THEME", "Adwaita:dark") };
 

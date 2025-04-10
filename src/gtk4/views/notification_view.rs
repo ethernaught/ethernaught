@@ -1,5 +1,5 @@
 use gtk4::{Builder, Button, Image, Label};
-use gtk4::prelude::ButtonExt;
+use gtk4::prelude::{BoxExt, ButtonExt, Cast, WidgetExt};
 
 #[derive(Copy, Clone, Eq, PartialEq, Hash, Debug)]
 pub enum NotificationTypes {
@@ -57,13 +57,11 @@ impl NotificationView {
         close.connect_clicked({
             let root = root.clone();
             move |button| {
-                /*
                 if let Some(parent) = root.parent() {
-                    if let Some(container) = parent.downcast_ref::<Container>() {
+                    if let Some(container) = parent.downcast_ref::<gtk4::Box>() {
                         container.remove(&root);
                     }
                 }
-                */
             }
         });
 

@@ -12,6 +12,7 @@ use crate::gtk4::views::bottom_bar::BottomBar;
 use crate::gtk4::views::devices_view::DevicesView;
 use crate::gtk4::views::inter::stackable::Stackable;
 use crate::gtk4::views::main_view::MainView;
+use crate::gtk4::views::notification_view::{NotificationTypes, NotificationView};
 use crate::gtk4::views::title_bar::TitleBar;
 use crate::sniffer::Sniffer;
 
@@ -156,6 +157,8 @@ impl MainWindow {
 
         let sniffer = Sniffer::new();
         sniffer.run();
+
+        _self.notify(NotificationTypes::Info, "A", "aaaaaaaaaaaaaaaaaaa");
 
         _self
     }
@@ -348,9 +351,7 @@ impl MainWindow {
         self.views.borrow_mut().insert(name, view);
     }
 
-    /*
     pub fn notify(&self, _type: NotificationTypes, title: &str, description: &str) {
-        self.notifications.add(&NotificationView::new(_type, title, description).root);
+        self.notifications.append(&NotificationView::new(_type, title, description).root);
     }
-    */
 }
