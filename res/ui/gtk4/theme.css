@@ -51,7 +51,8 @@ tooltip {
 #main_window headerbar {
     min-height: 40px;
     border-bottom: solid 1px @background_secondary;
-    padding: 0 8px;
+    /*padding: 0 8px;*/
+    padding: 0;
     background: linear-gradient(90deg, @background 0%, @primary 20%, @background 40%);
 }
 
