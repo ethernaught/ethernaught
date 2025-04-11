@@ -3,7 +3,7 @@ use std::net::IpAddr;
 use gtk4::{Builder, Paned, ScrolledWindow};
 use gtk4::gdk::RGBA;
 use gtk4::gio::{SimpleAction, SimpleActionGroup};
-use gtk4::prelude::ActionMapExt;
+use gtk4::prelude::{ActionMapExt, BoxExt};
 use rlibpcap::packet::layers::ethernet_frame::arp::arp_extension::ArpExtension;
 use rlibpcap::packet::layers::ethernet_frame::ethernet_frame::{EthernetFrame, ETHERNET_FRAME_LEN};
 use rlibpcap::packet::layers::ethernet_frame::inter::ethernet_types::EthernetTypes;
@@ -28,6 +28,18 @@ use rlibpcap::packet::packet::Packet;
 use rlibpcap::utils::data_link_types::DataLinkTypes;
 use crate::database::sqlite::Database;
 use crate::get_lib_path;
+use crate::gtk4::views::dropdown::arp_dropdown::ArpDropdown;
+use crate::gtk4::views::dropdown::dropdown::Dropdown;
+use crate::gtk4::views::dropdown::ethernet_dropdown::EthernetDropdown;
+use crate::gtk4::views::dropdown::icmp_dropdown::IcmpDropdown;
+use crate::gtk4::views::dropdown::icmpv6_dropdown::Icmpv6Dropdown;
+use crate::gtk4::views::dropdown::ipv4_dropdown::Ipv4Dropdown;
+use crate::gtk4::views::dropdown::ipv6_dropdown::Ipv6Dropdown;
+use crate::gtk4::views::dropdown::llc_dropdown::LlcDropdown;
+use crate::gtk4::views::dropdown::sll2_dropdown::Sll2Dropdown;
+use crate::gtk4::views::dropdown::tcp_dropdown::TcpDropdown;
+use crate::gtk4::views::dropdown::udp_dropdown::UdpDropdown;
+use crate::gtk4::widgets::hex_editor::HexEditor;
 
 pub struct SidebarView {
     pub root: gtk4::Box,
@@ -88,7 +100,7 @@ impl SidebarView {
         });
         actions.add_action(&action);
 
-        let details: gtk::Box = builder
+        let details: gtk4::Box = builder
             .object("details")
             .expect("Couldn't find 'details' in sidebar_view.ui");
 
@@ -97,20 +109,20 @@ impl SidebarView {
         match packet.get_data_link_type() {
             DataLinkTypes::En10mb => {
                 let ethernet_frame = packet.get_frame::<EthernetFrame>();//.as_any().downcast_ref::<EthernetFrame>().unwrap();
-                details.add(&Dropdown::from_ethernet_frame(&db, &hex_editor, &actions, ethernet_frame, offset).root);
+                details.append(&Dropdown::from_ethernet_frame(&db, &hex_editor, &actions, ethernet_frame, offset).root);
                 offset += ETHERNET_FRAME_LEN;
 
                 match ethernet_frame.get_type() {
                     EthernetTypes::Ipv4 => create_ipv4_details(&details, &db, &hex_editor, &actions, &ethernet_frame.get_data::<Ipv4Layer>().unwrap(), offset),
-                    EthernetTypes::Arp => details.add(&Dropdown::from_arp_extension(&db, &hex_editor, &actions, ethernet_frame.get_data::<ArpExtension>().unwrap(), offset).root),
+                    EthernetTypes::Arp => details.append(&Dropdown::from_arp_extension(&db, &hex_editor, &actions, ethernet_frame.get_data::<ArpExtension>().unwrap(), offset).root),
                     EthernetTypes::Ipv6 => create_ipv6_details(&details, &db, &hex_editor, &actions, &ethernet_frame.get_data::<Ipv6Layer>().unwrap(), offset),
                     EthernetTypes::Broadcast => {}
-                    EthernetTypes::Length(_) => details.add(&Dropdown::from_llc_extension(&hex_editor, &actions, ethernet_frame.get_data::<LlcExtension>().unwrap(), offset).root)
+                    EthernetTypes::Length(_) => details.append(&Dropdown::from_llc_extension(&hex_editor, &actions, ethernet_frame.get_data::<LlcExtension>().unwrap(), offset).root)
                 }
             }
             DataLinkTypes::Sll2 => {
                 let sll2_frame = packet.get_frame::<Sll2Frame>();//.as_any().downcast_ref::<Sll2Frame>().unwrap();
-                details.add(&Dropdown::from_sll2_frame(&hex_editor, &actions, sll2_frame, offset).root);
+                details.append(&Dropdown::from_sll2_frame(&hex_editor, &actions, sll2_frame, offset).root);
                 offset += SLL2_FRAME_LEN;
 
                 match sll2_frame.get_protocol() {
@@ -148,24 +160,24 @@ impl SidebarView {
 }
 
 
-fn create_ipv4_details(details: &gtk::Box, db: &io::Result<Database>, hex_editor: &HexEditor, actions: &SimpleActionGroup, layer: &Ipv4Layer, offset: usize) {
-    details.add(&Dropdown::from_ipv4_layer(db, hex_editor, actions, layer, offset).root);
+fn create_ipv4_details(details: &gtk4::Box, db: &io::Result<Database>, hex_editor: &HexEditor, actions: &SimpleActionGroup, layer: &Ipv4Layer, offset: usize) {
+    details.append(&Dropdown::from_ipv4_layer(db, hex_editor, actions, layer, offset).root);
     let mut offset = offset + IPV4_HEADER_LEN;
 
     match layer.get_protocol() {
         IpProtocols::HopByHop => {}
         IpProtocols::Icmp => {
             let icmp_layer = layer.get_data::<IcmpLayer>().unwrap();
-            details.add(&Dropdown::from_icmp_layer(hex_editor, actions, icmp_layer, offset).root);
+            details.append(&Dropdown::from_icmp_layer(hex_editor, actions, icmp_layer, offset).root);
         }
         IpProtocols::Igmp => {}
         IpProtocols::Tcp => {
             let tcp_layer = layer.get_data::<TcpLayer>().unwrap();
-            details.add(&Dropdown::from_tcp_layer(hex_editor, actions, tcp_layer, offset).root);
+            details.append(&Dropdown::from_tcp_layer(hex_editor, actions, tcp_layer, offset).root);
         }
         IpProtocols::Udp => {
             let udp_layer = layer.get_data::<UdpLayer>().unwrap();
-            details.add(&Dropdown::from_udp_layer(IpAddr::V4(layer.get_source_address()), IpAddr::V4(layer.get_destination_address()), hex_editor, actions, udp_layer, offset).root);
+            details.append(&Dropdown::from_udp_layer(IpAddr::V4(layer.get_source_address()), IpAddr::V4(layer.get_destination_address()), hex_editor, actions, udp_layer, offset).root);
 
             match udp_layer.get_payload() {
                 UdpPayloads::Known(_type, payload) => {
@@ -192,8 +204,8 @@ fn create_ipv4_details(details: &gtk::Box, db: &io::Result<Database>, hex_editor
     }
 }
 
-fn create_ipv6_details(details: &gtk::Box, db: &io::Result<Database>, hex_editor: &HexEditor, actions: &SimpleActionGroup, layer: &Ipv6Layer, offset: usize) {
-    details.add(&Dropdown::from_ipv6_layer(db, hex_editor, actions, layer, offset).root);
+fn create_ipv6_details(details: &gtk4::Box, db: &io::Result<Database>, hex_editor: &HexEditor, actions: &SimpleActionGroup, layer: &Ipv6Layer, offset: usize) {
+    details.append(&Dropdown::from_ipv6_layer(db, hex_editor, actions, layer, offset).root);
     let mut offset = offset + IPV6_HEADER_LEN;
 
     match layer.get_next_header() {
@@ -202,12 +214,12 @@ fn create_ipv6_details(details: &gtk::Box, db: &io::Result<Database>, hex_editor
         IpProtocols::Igmp => {}
         IpProtocols::Tcp => {
             let tcp_layer = layer.get_data::<TcpLayer>().unwrap();
-            details.add(&Dropdown::from_tcp_layer(hex_editor, actions, tcp_layer, offset).root);
+            details.append(&Dropdown::from_tcp_layer(hex_editor, actions, tcp_layer, offset).root);
         }
         IpProtocols::Udp => {
             let udp_layer = layer.get_data::<UdpLayer>().unwrap();
             //details_layout.add(&create_udp_layer_expander(&udp_layer, IpAddr::V6(layer.get_source_address()), IpAddr::V6(layer.get_destination_address())));
-            details.add(&Dropdown::from_udp_layer(IpAddr::V6(layer.get_source_address()), IpAddr::V6(layer.get_destination_address()), hex_editor, actions, udp_layer, offset).root);
+            details.append(&Dropdown::from_udp_layer(IpAddr::V6(layer.get_source_address()), IpAddr::V6(layer.get_destination_address()), hex_editor, actions, udp_layer, offset).root);
 
             match udp_layer.get_payload() {
                 UdpPayloads::Known(_type, payload) => {
@@ -230,7 +242,7 @@ fn create_ipv6_details(details: &gtk::Box, db: &io::Result<Database>, hex_editor
         IpProtocols::Gre => {}
         IpProtocols::Icmpv6 => {
             let icmpv6_layer = layer.get_data::<Icmpv6Layer>().unwrap();
-            details.add(&Dropdown::from_icmpv6_layer(hex_editor, actions, icmpv6_layer, offset).root);
+            details.append(&Dropdown::from_icmpv6_layer(hex_editor, actions, icmpv6_layer, offset).root);
         }
         IpProtocols::Ospf => {}
         IpProtocols::Sps => {}
