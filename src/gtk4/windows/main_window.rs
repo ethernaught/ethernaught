@@ -3,8 +3,8 @@ use std::collections::HashMap;
 use std::path::PathBuf;
 use std::process::exit;
 use std::rc::Rc;
-use gtk4::{gdk, style_context_add_provider_for_display, Application, ApplicationWindow, Builder, CssProvider, HeaderBar, Stack, StyleContext};
-use gtk4::prelude::{BoxExt, GtkWindowExt, ObjectExt, StyleContextExt, WidgetExt};
+use gtk4::{gdk, style_context_add_provider_for_display, Application, ApplicationWindow, Builder, CssProvider, HeaderBar, Stack, StackPage, StyleContext, Widget};
+use gtk4::prelude::{BoxExt, Cast, GtkWindowExt, ListModelExt, ObjectExt, StyleContextExt, WidgetExt};
 use rlibpcap::devices::Device;
 use rlibpcap::utils::interface_flags::InterfaceFlags;
 use crate::gtk4::actions::window_actions::{register_stack_actions, register_window_actions};
@@ -298,17 +298,48 @@ impl MainWindow {
 
     pub fn add_view(&self, view: Box<dyn Stackable>) {
         let name = view.get_name();
-        /*
-        if let Some(current) = self.stack.visible_child() {
-            // Handle the "back" and "next" buttons state
-            self.title_bar.back.style_context().add_class("active");
-            self.title_bar.next.style_context().remove_class("active");
 
-            // You can use a hash map or some way to track views.
-            // For now, just remove the current view and append the new one.
-            self.stack.remove(&current);
+        match self.stack.child_by_name(&name) {
+            Some(child) => {
+                self.title_bar.back.style_context().add_class("active");
+                self.title_bar.next.style_context().remove_class("active");
+
+
+                let pages = self.stack.pages();
+                for i in (0..pages.n_items()).rev() {
+                    let page = pages.item(i).expect("Failed to get page")
+                        .downcast::<StackPage>()
+                        .expect("Item is not a StackPage");
+
+                    if child.eq(&page.child()) {
+                        let name = page.name().unwrap().to_string();
+                        self.views.borrow().get(&name).unwrap().on_destroy();
+                        self.stack.remove(&page.child());
+                        self.views.borrow_mut().remove(&name);
+                        break;
+                    }
+                }
+
+            }
+            None => {
+                if let Some(current) = self.stack.visible_child() {
+                    /*
+                    if let Some(pos) = children.iter().position(|child| child == &current) {
+                        self.title_bar.back.style_context().add_class("active");
+                        self.title_bar.next.style_context().remove_class("active");
+
+                        for i in (pos + 1..children.len()).rev() {
+                            let name = self.stack.child_name(&children[i]).unwrap().to_string();
+                            self.views.borrow().get(&name).unwrap().on_destroy();
+                            self.stack.remove(&children[i]);
+                            self.views.borrow_mut().remove(&name);
+                        }
+                    }
+                    */
+                }
+
+            }
         }
-        */
 
         /*
         let name = view.get_name();
