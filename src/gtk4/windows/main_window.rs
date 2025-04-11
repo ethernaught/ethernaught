@@ -330,6 +330,8 @@ impl MainWindow {
                             .expect("Item is not a StackPage");
 
                         if current.eq(&page.child()) {
+                            self.title_bar.back.style_context().add_class("active");
+                            self.title_bar.next.style_context().remove_class("active");
                             break;
                         }
 
