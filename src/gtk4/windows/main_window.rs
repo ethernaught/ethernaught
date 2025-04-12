@@ -3,8 +3,8 @@ use std::collections::HashMap;
 use std::path::PathBuf;
 use std::process::exit;
 use std::rc::Rc;
-use gtk4::{gdk, style_context_add_provider_for_display, Application, ApplicationWindow, Builder, CssProvider, HeaderBar, Stack, StackPage, StyleContext, Widget};
-use gtk4::prelude::{BoxExt, Cast, GtkWindowExt, ListModelExt, ObjectExt, StyleContextExt, WidgetExt};
+use gtk4::{gdk, style_context_add_provider_for_display, Application, ApplicationWindow, Builder, CssProvider, GestureClick, HeaderBar, Stack, StackPage, StyleContext, Widget};
+use gtk4::prelude::{BoxExt, Cast, GestureSingleExt, GtkWindowExt, ListModelExt, ObjectExt, StyleContextExt, WidgetExt};
 use rlibpcap::devices::Device;
 use rlibpcap::utils::interface_flags::InterfaceFlags;
 use crate::gtk4::actions::window_actions::{register_stack_actions, register_window_actions};
@@ -119,24 +119,23 @@ impl MainWindow {
             b.get_flags().contains(&InterfaceFlags::Running).cmp(&a.get_flags().contains(&InterfaceFlags::Running))
         });
 
-        /*
-        window.connect_button_press_event({
+        window.set_focusable(true);
+        window.set_can_focus(true);
+        window.set_receives_default(true);
+
+        let gesture = GestureClick::builder().button(0).build();
+
+        gesture.connect_pressed({
             let window = window.clone();
-            move |_, event| {
-                match event.button() {
-                    8 => {
-                        window.activate_action("back", None);
-                    }
-                    9 => {
-                        window.activate_action("next", None);
-                    }
+            move |gesture, button, _, _| {
+                match gesture.current_button() {
+                    8 => window.activate_action("win.back", None).unwrap(),
+                    9 => window.activate_action("win.next", None).unwrap(),
                     _ => {}
                 }
-
-                Proceed
             }
         });
-        */
+        window.add_controller(gesture);
 
         window.show();
 
@@ -253,24 +252,23 @@ impl MainWindow {
             b.get_flags().contains(&InterfaceFlags::Running).cmp(&a.get_flags().contains(&InterfaceFlags::Running))
         });
 
-        /*
-        window.connect_button_press_event({
+        window.set_focusable(true);
+        window.set_can_focus(true);
+        window.set_receives_default(true);
+
+        let gesture = GestureClick::builder().button(0).build();
+
+        gesture.connect_pressed({
             let window = window.clone();
-            move |_, event| {
-                match event.button() {
-                    8 => {
-                        window.activate_action("back", None);
-                    }
-                    9 => {
-                        window.activate_action("next", None);
-                    }
+            move |gesture, button, _, _| {
+                match gesture.current_button() {
+                    8 => window.activate_action("win.back", None).unwrap(),
+                    9 => window.activate_action("win.next", None).unwrap(),
                     _ => {}
                 }
-
-                Proceed
             }
         });
-        */
+        window.add_controller(gesture);
 
         window.show();
 

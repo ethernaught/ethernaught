@@ -2,6 +2,7 @@ use gtk4::{Builder, Button, Image, Label, ListBox, ListBoxRow, Orientation};
 use gtk4::gdk_pixbuf::Pixbuf;
 use gtk4::gio::SimpleActionGroup;
 use gtk4::prelude::{BoxExt, ButtonExt, GestureSingleExt, ListBoxRowExt, SelectionModelExt, WidgetExt};
+use crate::gtk4::widgets::hex_editor::HexEditor;
 use crate::pcap_ext::layers::inter::layer_ext::LayerExt;
 
 pub struct Dropdown {
@@ -69,11 +70,11 @@ pub fn set_selection(hex_editor: &HexEditor, layer: &dyn LayerExt, offset: usize
     }
 }
 
-pub fn context_menu(hex_editor: &HexEditor, actions: &SimpleActionGroup, layer: &dyn LayerExt, offset: usize) -> impl Fn(&ListBox, &EventButton) -> glib::Propagation + 'static {
+pub fn context_menu(hex_editor: &HexEditor, actions: &SimpleActionGroup, layer: &dyn LayerExt, offset: usize) {// -> impl Fn(&ListBox, &EventButton) -> glib::Propagation + 'static {
     let hex_editor = hex_editor.clone();
     let layer = layer.clone_ext();
     let actions = actions.clone();
-    move |list_box, event| {
+    //move |list_box, event| {
         /*
         if event.button() != 3 {
             return Proceed;
@@ -230,7 +231,7 @@ pub fn context_menu(hex_editor: &HexEditor, actions: &SimpleActionGroup, layer: 
 
         Proceed
         */
-    }
+    //}
 }
 
 pub fn create_row(key: String, value: String) -> ListBoxRow {
@@ -248,7 +249,7 @@ pub fn create_row(key: String, value: String) -> ListBoxRow {
     label.set_xalign(0.0);
     hbox.append(&label);
 
-    row.append(&hbox);
+    row.set_child(Some(&hbox));
     row.show();
 
     row
@@ -273,7 +274,7 @@ pub fn create_row_with_icon(key: String, icon: Pixbuf, value: String) -> ListBox
     label.set_xalign(0.0);
     hbox.append(&label);
 
-    row.append(&hbox);
+    row.set_child(Some(&hbox));
     row.show();
 
     row

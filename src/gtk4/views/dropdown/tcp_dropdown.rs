@@ -15,7 +15,7 @@ impl TcpDropdown for Dropdown {
     fn from_tcp_layer(hex_editor: &HexEditor, actions: &SimpleActionGroup, layer: &TcpLayer, offset: usize) -> Self {
         let _self = Self::new(&layer.get_title("frame").unwrap());
         _self.list_box.connect_row_activated(set_selection(&hex_editor, layer, offset));
-        _self.list_box.connect_button_press_event(context_menu(&hex_editor, actions, layer, offset));
+        //_self.list_box.connect_button_press_event(context_menu(&hex_editor, actions, layer, offset));
 
         match TcpPorts::from_code(layer.get_source_port()) {
             Ok(port) => {

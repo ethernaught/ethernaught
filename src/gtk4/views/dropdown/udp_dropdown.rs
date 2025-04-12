@@ -16,7 +16,7 @@ impl UdpDropdown for Dropdown {
     fn from_udp_layer(source_address: IpAddr, destination_address: IpAddr, hex_editor: &HexEditor, actions: &SimpleActionGroup, layer: &UdpLayer, offset: usize) -> Self {
         let _self = Self::new(&layer.get_title("frame").unwrap());
         _self.list_box.connect_row_activated(set_selection(&hex_editor, layer, offset));
-        _self.list_box.connect_button_press_event(context_menu(&hex_editor, actions, layer, offset));
+        //_self.list_box.connect_button_press_event(context_menu(&hex_editor, actions, layer, offset));
 
         match UdpPorts::from_code(layer.get_source_port()) {
             Ok(port) => {

@@ -14,7 +14,7 @@ impl Sll2Dropdown for Dropdown {
     fn from_sll2_frame(hex_editor: &HexEditor, actions: &SimpleActionGroup, layer: &Sll2Frame, offset: usize) -> Self {
         let _self = Self::new(&layer.get_title("frame").unwrap());
         _self.list_box.connect_row_activated(set_selection(&hex_editor, layer, offset));
-        _self.list_box.connect_button_press_event(context_menu(&hex_editor, actions, layer, offset));
+        //_self.list_box.connect_button_press_event(context_menu(&hex_editor, actions, layer, offset));
 
         _self.list_box.append(&create_row(format!("{}:", layer.get_title("protocol").unwrap()), layer.get_value("protocol").unwrap()));
         _self.list_box.append(&create_row(format!("{}:", layer.get_title("if_index").unwrap()), layer.get_value("if_index").unwrap()));

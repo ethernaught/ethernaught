@@ -128,12 +128,8 @@ impl MainWindow {
             let window = window.clone();
             move |_, event| {
                 match event.button() {
-                    8 => {
-                        window.activate_action("back", None);
-                    }
-                    9 => {
-                        window.activate_action("next", None);
-                    }
+                    8 => window.activate_action("back", None),
+                    9 => window.activate_action("next", None),
                     _ => {}
                 }
 
@@ -263,12 +259,8 @@ impl MainWindow {
             let window = window.clone();
             move |_, event| {
                 match event.button() {
-                    8 => {
-                        window.activate_action("back", None);
-                    }
-                    9 => {
-                        window.activate_action("next", None);
-                    }
+                    8 => window.activate_action("back", None),
+                    9 => window.activate_action("next", None),
                     _ => {}
                 }
 

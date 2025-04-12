@@ -18,7 +18,7 @@ impl Ipv6Dropdown for Dropdown {
     fn from_ipv6_layer(db: &io::Result<Database>, hex_editor: &HexEditor, actions: &SimpleActionGroup, layer: &Ipv6Layer, offset: usize) -> Self {
         let _self = Self::new(&layer.get_title("frame").unwrap());
         _self.list_box.connect_row_activated(set_selection(&hex_editor, layer, offset));
-        _self.list_box.connect_button_press_event(context_menu(&hex_editor, actions, layer, offset));
+        //_self.list_box.connect_button_press_event(context_menu(&hex_editor, actions, layer, offset));
 
         _self.list_box.append(&create_row(format!("{}:", layer.get_title("version").unwrap()), layer.get_value("version").unwrap()));
         _self.list_box.append(&create_row(format!("{}:", layer.get_title("payload_length").unwrap()), layer.get_value("payload_length").unwrap()));

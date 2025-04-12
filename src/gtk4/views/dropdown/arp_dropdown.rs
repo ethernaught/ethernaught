@@ -19,7 +19,7 @@ impl ArpDropdown for Dropdown {
     fn from_arp_extension(db: &io::Result<Database>, hex_editor: &HexEditor, actions: &SimpleActionGroup, layer: &ArpExtension, offset: usize) -> Self {
         let _self = Self::new(&layer.get_title("frame").unwrap());
         _self.list_box.connect_row_activated(set_selection(&hex_editor, layer, offset));
-        _self.list_box.connect_button_press_event(context_menu(&hex_editor, actions, layer, offset));
+        //_self.list_box.connect_button_press_event(context_menu(&hex_editor, actions, layer, offset));
 
         _self.list_box.append(&create_row(format!("{}:", layer.get_title("hardware_type").unwrap()), layer.get_value("hardware_type").unwrap()));
         _self.list_box.append(&create_row(format!("{}:", layer.get_title("protocol_type").unwrap()), layer.get_value("protocol_type").unwrap()));

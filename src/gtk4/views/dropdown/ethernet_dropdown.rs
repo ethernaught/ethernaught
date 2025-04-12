@@ -18,7 +18,7 @@ impl EthernetDropdown for Dropdown {
     fn from_ethernet_frame(db: &io::Result<Database>, hex_editor: &HexEditor, actions: &SimpleActionGroup, layer: &EthernetFrame, offset: usize) -> Self {
         let _self = Self::new(&layer.get_title("frame").unwrap());
         _self.list_box.connect_row_activated(set_selection(&hex_editor, layer, offset));
-        _self.list_box.connect_button_press_event(context_menu(&hex_editor, actions, layer, offset));
+        //_self.list_box.connect_button_press_event(context_menu(&hex_editor, actions, layer, offset));
 
         match db {
             Ok(db) => {
