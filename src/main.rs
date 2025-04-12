@@ -32,11 +32,7 @@ rustup override set nightly
 //FIND A BETTER METHOD WITHIN PCAP LIB TO SEND ADDRESS DETAILS AS IT WOND BE THE SAME STRUCT PER OS
 // - not to mention we will need the data when saving, so might want to add to the packet - MAINLY FOR PROMISCUOUS MODE...
 
-//DPI the padding for hex editor
-
 //MacOS Font goes to /Library/fonts
-
-//PCAP - SLL2 we need to be using SLL2 types not DataLinkTypes...
 
 //Setting to change programming language of choice...
 

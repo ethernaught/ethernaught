@@ -342,41 +342,6 @@ impl MainWindow {
             }
         }
 
-        /*
-        let name = view.get_name();
-        match self.stack.child_by_name(&name) {
-            Some(child) => {
-                let pos = self.stack.child_position(&child) as usize;
-
-                self.title_bar.back.style_context().add_class("active");
-                self.title_bar.next.style_context().remove_class("active");
-
-                let children = self.stack.children();
-                for i in (pos..children.len()).rev() {
-                    let name = self.stack.child_name(&children[i]).unwrap().to_string();
-                    self.views.borrow().get(&name).unwrap().on_destroy();
-                    self.stack.remove(&children[i]);
-                    self.views.borrow_mut().remove(&name);
-                }
-            }
-            None => {
-                let children = self.stack.children();
-                if let Some(current) = self.stack.visible_child() {
-                    if let Some(pos) = children.iter().position(|child| child == &current) {
-                        self.title_bar.back.style_context().add_class("active");
-                        self.title_bar.next.style_context().remove_class("active");
-
-                        for i in (pos + 1..children.len()).rev() {
-                            let name = self.stack.child_name(&children[i]).unwrap().to_string();
-                            self.views.borrow().get(&name).unwrap().on_destroy();
-                            self.stack.remove(&children[i]);
-                            self.views.borrow_mut().remove(&name);
-                        }
-                    }
-                }
-            }
-        }*/
-
         self.stack.add_named(view.get_root(), Some(&name));
         self.stack.set_visible_child_name(&name);
         view.on_create();
