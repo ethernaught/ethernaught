@@ -13,6 +13,7 @@ use crate::bus::event_bus::EventPropagation::Continue;
 use crate::bus::events::capture_event::CaptureEvent;
 use crate::gtk4::views::inter::stackable::Stackable;
 use crate::gtk4::views::packets_view::PacketsView;
+use crate::gtk4::views::sidebar_view::SidebarView;
 use crate::gtk4::windows::main_window::MainWindow;
 
 pub struct MainView {
@@ -81,7 +82,7 @@ impl MainView {
 
         let show_title_bar = Box::new(show_title_bar(window, "Any", DataLinkTypes::Null));
 
-        //let sidebar = Rc::new(RefCell::new(None::<SidebarView>));
+        let sidebar = Rc::new(RefCell::new(None::<SidebarView>));
 
         let actions = SimpleActionGroup::new();
 
@@ -90,36 +91,35 @@ impl MainView {
         let action = SimpleAction::new("dismiss", None);
         action.connect_activate({
             let content_pane = content_pane.clone();
-            //let sidebar = sidebar.clone();
+            let sidebar = sidebar.clone();
             move |_, _| {
-                /*
                 let view = sidebar.borrow().as_ref().map(|view| view.root.clone());
 
                 if let Some(view) = view {
-                    content_pane.set_end_child(None);
+                    content_pane.set_end_child(None::<&Widget>);
                     //content_pane.remove(&view);
                     *sidebar.borrow_mut() = None;
                 }
-                */
             }
         });
         actions.add_action(&action);
 
         let packets = PacketsView::new();
-        /*packets.connect_select({
+        packets.connect_select({
             let content_pane = content_pane.clone();
             let sidebar = sidebar.clone();
             move |packet| {
-                if let Some(sidebar) = sidebar.borrow().as_ref() {
-                    content_pane.remove(&sidebar.root);
-                }
+                //if let Some(sidebar) = sidebar.borrow().as_ref() {
+                    //content_pane.remove(&sidebar.root);
+                //    content_pane.set_end_child(None);
+                //}
 
                 let view = SidebarView::from_packet(packet);
-                content_pane.add(&view.root);
-                content_pane.set_child_shrink(&view.root, false);
+                content_pane.set_end_child(Some(&view.root));
+                //content_pane.set_child_shrink(&view.root, false);
                 *sidebar.borrow_mut() = Some(view);
             }
-        });*/
+        });
         content_pane.set_start_child(Some(&packets.root));
         //content_pane.append(&packets.root);
 

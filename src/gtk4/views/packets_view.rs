@@ -299,6 +299,17 @@ impl PacketsView {
     where
         F: Fn(&Packet) + 'static
     {
+        self.tree_view.connect_row_activated({
+            let packets = self.packets.clone();
+            move |tree_view, path, _| {
+                let model = tree_view.model().unwrap();
+                //model.iter(path).unwrap()
+                //let index = model.value(&model.iter(&path).unwrap(), 0).get::<u32>().unwrap() - 1;
+
+                //callback(packets.borrow().get(index as usize).unwrap());
+                callback(packets.borrow().get(0).unwrap());
+            }
+        });
         /*
         self.tree_view.connect_button_press_event({
             let packets = self.packets.clone();

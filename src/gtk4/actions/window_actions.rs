@@ -1,7 +1,9 @@
+use std::env;
+use std::path::{Path, PathBuf};
 use gtk4::gio::SimpleAction;
 use gtk4::glib::{VariantDict, VariantTy};
-use gtk4::prelude::{ActionMapExt, Cast, GtkWindowExt, ListModelExt, StyleContextExt, WidgetExt};
-use gtk4::{AboutDialog, StackPage, Window};
+use gtk4::prelude::{ActionMapExt, Cast, DialogExt, DialogExtManual, FileChooserExt, FileChooserExtManual, FileExt, GtkWindowExt, ListModelExt, RecentManagerExt, StyleContextExt, WidgetExt};
+use gtk4::{AboutDialog, FileChooserAction, FileChooserDialog, FileFilter, ResponseType, StackPage, Window};
 use crate::gtk4::views::main_view::MainView;
 use crate::gtk4::windows::main_window::MainWindow;
 
@@ -10,12 +12,11 @@ pub fn register_window_actions(window: &MainWindow) {
     action.connect_activate({
         let window = window.clone();
         move |_, _| {
-            /*
             if let Some(path) = open_file_selector(window.window.upcast_ref()) {
-                let view = Box::new(MainView::from_pcap(&window, &path));
-                window.add_view(view);
+                println!("{:?}", path);
+                //let view = Box::new(MainView::from_pcap(&window, &path));
+                //window.add_view(view);
             }
-            */
         }
     });
     window.window.add_action(&action);
@@ -146,13 +147,8 @@ pub fn register_stack_actions(window: &MainWindow) {
     window.window.add_action(&action);
 }
 
-/*
 pub fn open_file_selector(parent: &Window) -> Option<PathBuf> {
-    let dialog = FileChooserDialog::new(
-        Some("Open File"),
-        Some(parent),
-        FileChooserAction::Open
-    );
+    let dialog = FileChooserDialog::new(Some("Open File"), Some(parent), FileChooserAction::Open, &[]);
 
     dialog.add_button("Cancel", ResponseType::Cancel);
     dialog.add_button("Open", ResponseType::Accept);
@@ -168,7 +164,7 @@ pub fn open_file_selector(parent: &Window) -> Option<PathBuf> {
     } else {
         env::var("HOME").map(PathBuf::from).unwrap_or_else(|_| PathBuf::from("/"))
     };
-    dialog.set_current_folder(&default_path);
+    //dialog.set_current_folder(Some(&default_path));
 
     let filter = FileFilter::new();
 
@@ -190,17 +186,19 @@ pub fn open_file_selector(parent: &Window) -> Option<PathBuf> {
     filter.add_mime_type("application/ipfix");
     filter.add_mime_type("application/x-ixia-vwr");
     filter.set_name(Some("Pcap and Dump files"));
-    dialog.add_filter(filter);
+    dialog.add_filter(&filter);
 
-    if dialog.run() == ResponseType::Accept {
-        dialog.close();
-        return dialog.filename();
-    }
+    //let s = dialog.run_future().await;
+    //s.as_mut().
+    //if dialog.run() == ResponseType::Accept {
+    //    dialog.close();
+    //    return dialog.file()?.path();
+    //}
 
     dialog.close();
 
     None
-}*/
+}
 
 pub fn open_about_dialog(window: &Window) {
     //let icon_pixbuf = Pixbuf::from_resource("/net/ethernaught/rust/res/icons/ic_launcher.svg").expect("Failed to get Pixbuf from SVG");
