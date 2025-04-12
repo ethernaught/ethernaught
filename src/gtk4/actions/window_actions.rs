@@ -12,11 +12,52 @@ pub fn register_window_actions(window: &MainWindow) {
     action.connect_activate({
         let window = window.clone();
         move |_, _| {
-            if let Some(path) = open_file_selector(window.window.upcast_ref()) {
-                println!("{:?}", path);
-                //let view = Box::new(MainView::from_pcap(&window, &path));
-                //window.add_view(view);
-            }
+            let dialog = FileChooserDialog::new(Some("Open File"), Some(&window.window), FileChooserAction::Open, &[("Cancel", ResponseType::Cancel), ("Open", ResponseType::Accept)]);
+
+            let default_path = if let Ok(sudo_user) = env::var("SUDO_USER") {
+                let user_home = format!("/home/{}", sudo_user);
+                Path::new(&user_home).to_path_buf()
+            } else {
+                env::var("HOME").map(PathBuf::from).unwrap_or_else(|_| PathBuf::from("/"))
+            };
+            //dialog.set_current_folder(Some(&default_path));
+
+            let filter = FileFilter::new();
+
+            filter.add_mime_type("application/vnd.tcpdump.pcap");
+            filter.add_mime_type("application/x-pcapng");
+            filter.add_mime_type("application/x-snoop");
+            filter.add_mime_type("application/x-iptrace");
+            filter.add_mime_type("application/x-lanalyzer");
+            filter.add_mime_type("application/x-nettl");
+            filter.add_mime_type("application/x-radcom");
+            filter.add_mime_type("application/x-etherpeek");
+            filter.add_mime_type("application/x-visualnetworks");
+            filter.add_mime_type("application/x-netinstobserver");
+            filter.add_mime_type("application/x-5view");
+            filter.add_mime_type("application/x-tektronix-rf5");
+            filter.add_mime_type("application/x-micropross-mplog");
+            filter.add_mime_type("application/x-apple-packetlogger");
+            filter.add_mime_type("application/x-endace-erf");
+            filter.add_mime_type("application/ipfix");
+            filter.add_mime_type("application/x-ixia-vwr");
+            filter.set_name(Some("Pcap and Dump files"));
+            dialog.add_filter(&filter);
+
+            dialog.connect_response(|dialog, response| {
+                if response == ResponseType::Accept {
+                    if let Some(file) = dialog.file() {
+                        if let Some(path) = file.path() {
+                            println!("Selected file: {}", path.display());
+                            //let view = Box::new(MainView::from_pcap(&window, &path));
+                            //window.add_view(view);
+                        }
+                    }
+                }
+                dialog.close();
+            });
+
+            dialog.show();
         }
     });
     window.window.add_action(&action);
@@ -145,59 +186,6 @@ pub fn register_stack_actions(window: &MainWindow) {
         }
     });
     window.window.add_action(&action);
-}
-
-pub fn open_file_selector(parent: &Window) -> Option<PathBuf> {
-    let dialog = FileChooserDialog::new(Some("Open File"), Some(parent), FileChooserAction::Open, &[]);
-
-    dialog.add_button("Cancel", ResponseType::Cancel);
-    dialog.add_button("Open", ResponseType::Accept);
-
-    /*
-    if let Some(default_path) = env::var("HOME").ok() {
-        let default_path = Path::new(&default_path);
-        dialog.set_current_folder(default_path);
-    }*/
-    let default_path = if let Ok(sudo_user) = env::var("SUDO_USER") {
-        let user_home = format!("/home/{}", sudo_user);
-        Path::new(&user_home).to_path_buf()
-    } else {
-        env::var("HOME").map(PathBuf::from).unwrap_or_else(|_| PathBuf::from("/"))
-    };
-    //dialog.set_current_folder(Some(&default_path));
-
-    let filter = FileFilter::new();
-
-    filter.add_mime_type("application/vnd.tcpdump.pcap");
-    filter.add_mime_type("application/x-pcapng");
-    filter.add_mime_type("application/x-snoop");
-    filter.add_mime_type("application/x-iptrace");
-    filter.add_mime_type("application/x-lanalyzer");
-    filter.add_mime_type("application/x-nettl");
-    filter.add_mime_type("application/x-radcom");
-    filter.add_mime_type("application/x-etherpeek");
-    filter.add_mime_type("application/x-visualnetworks");
-    filter.add_mime_type("application/x-netinstobserver");
-    filter.add_mime_type("application/x-5view");
-    filter.add_mime_type("application/x-tektronix-rf5");
-    filter.add_mime_type("application/x-micropross-mplog");
-    filter.add_mime_type("application/x-apple-packetlogger");
-    filter.add_mime_type("application/x-endace-erf");
-    filter.add_mime_type("application/ipfix");
-    filter.add_mime_type("application/x-ixia-vwr");
-    filter.set_name(Some("Pcap and Dump files"));
-    dialog.add_filter(&filter);
-
-    //let s = dialog.run_future().await;
-    //s.as_mut().
-    //if dialog.run() == ResponseType::Accept {
-    //    dialog.close();
-    //    return dialog.file()?.path();
-    //}
-
-    dialog.close();
-
-    None
 }
 
 pub fn open_about_dialog(window: &Window) {
