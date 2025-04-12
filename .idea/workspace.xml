@@ -9,19 +9,7 @@
   <component name="ChangeListManager">
     <list default="true" id="f0704e63-1929-42d3-83d7-8cbc904dc132" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gtk3/windows/main_window.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/gtk3/windows/main_window.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gtk4/views/dropdown/arp_dropdown.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/gtk4/views/dropdown/arp_dropdown.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gtk4/views/dropdown/dropdown.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/gtk4/views/dropdown/dropdown.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gtk4/views/dropdown/ethernet_dropdown.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/gtk4/views/dropdown/ethernet_dropdown.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gtk4/views/dropdown/icmp_dropdown.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/gtk4/views/dropdown/icmp_dropdown.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gtk4/views/dropdown/icmpv6_dropdown.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/gtk4/views/dropdown/icmpv6_dropdown.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gtk4/views/dropdown/ipv4_dropdown.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/gtk4/views/dropdown/ipv4_dropdown.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gtk4/views/dropdown/ipv6_dropdown.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/gtk4/views/dropdown/ipv6_dropdown.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gtk4/views/dropdown/llc_dropdown.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/gtk4/views/dropdown/llc_dropdown.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gtk4/views/dropdown/sll2_dropdown.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/gtk4/views/dropdown/sll2_dropdown.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gtk4/views/dropdown/tcp_dropdown.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/gtk4/views/dropdown/tcp_dropdown.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gtk4/views/dropdown/udp_dropdown.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/gtk4/views/dropdown/udp_dropdown.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gtk4/windows/main_window.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/gtk4/windows/main_window.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.rs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

@@ -48,6 +48,8 @@ rustup override set nightly
 
 //do we need refcell to store children for GTK3 overlay or can we take from widget...
 
+//re-add the min-height for the damn menubar on GTK3 and add it for GTk4
+
 fn main() {
     //unsafe { env::set_var("GTK_THEME", "Adwaita:dark") };
 
