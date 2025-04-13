@@ -1,9 +1,9 @@
 use std::env;
 use std::path::{Path, PathBuf};
-use gtk::gio::{SimpleAction, SimpleActionGroup};
-use gtk::prelude::{ActionMapExt, Cast, ContainerExt, DialogExt, FileChooserExt, GtkWindowExt, ProxyResolverExt, StackExt, StyleContextExt, ToVariant, WidgetExt};
+use gtk::gio::{SimpleAction};
+use gtk::prelude::{ActionMapExt, Cast, ContainerExt, FileChooserExt, GtkWindowExt, NativeDialogExt, ProxyResolverExt, StackExt, StyleContextExt, WidgetExt};
 use gtk::glib::{PropertyGet, VariantDict, VariantTy};
-use gtk::{AboutDialog, FileChooserAction, FileChooserDialog, FileFilter, ResponseType, Window};
+use gtk::{AboutDialog, FileChooserAction, FileChooserNative, FileFilter, ResponseType, Window};
 use gtk::gdk_pixbuf::Pixbuf;
 use rlibpcap::devices::Device;
 use crate::pcap_ext::devices::Serialize;
@@ -15,14 +15,7 @@ pub fn register_window_actions(window: &MainWindow) {
     action.connect_activate({
         let window = window.clone();
         move |_, _| {
-            let dialog = FileChooserDialog::new(
-                Some("Open File"),
-                Some(&window.window),
-                FileChooserAction::Open
-            );
-
-            dialog.add_button("Cancel", ResponseType::Cancel);
-            dialog.add_button("Open", ResponseType::Accept);
+            let dialog = FileChooserNative::new(Some("Open File"), Some(&window.window), FileChooserAction::Open, Some("Open"), Some("Cancel"));
 
             let default_path = if let Ok(sudo_user) = env::var("SUDO_USER") {
                 let user_home = format!("/home/{}", sudo_user);
@@ -32,6 +25,7 @@ pub fn register_window_actions(window: &MainWindow) {
             };
             dialog.set_current_folder(&default_path);
 
+            /*
             let filter = FileFilter::new();
 
             filter.add_mime_type("application/vnd.tcpdump.pcap");
@@ -53,17 +47,22 @@ pub fn register_window_actions(window: &MainWindow) {
             filter.add_mime_type("application/x-ixia-vwr");
             filter.set_name(Some("Pcap and Dump files"));
             dialog.add_filter(filter);
+            */
 
-            if dialog.run() == ResponseType::Accept {
-                dialog.close();
-                if let Some(file) = dialog.filename() {
-                    let view = Box::new(MainView::from_pcap(&window, &file));
-                    window.add_view(view);
+            dialog.connect_response({
+                let window = window.clone();
+                move |dialog, response| {
+                    if response == ResponseType::Accept {
+                        if let Some(path) = dialog.filename() {
+                            println!("Selected file: {:?}", path);
+                            let view = Box::new(MainView::from_pcap(&window, &path));
+                            window.add_view(view);
+                        }
+                    }
                 }
-                return;
-            }
+            });
 
-            dialog.close();
+            dialog.show();
         }
     });
     window.window.add_action(&action);

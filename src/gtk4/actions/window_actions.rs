@@ -2,8 +2,8 @@ use std::env;
 use std::path::{Path, PathBuf};
 use gtk4::gio::SimpleAction;
 use gtk4::glib::{VariantDict, VariantTy};
-use gtk4::prelude::{ActionMapExt, Cast, DialogExt, DialogExtManual, FileChooserExt, FileChooserExtManual, FileExt, GtkWindowExt, ListModelExt, RecentManagerExt, StyleContextExt, WidgetExt};
-use gtk4::{AboutDialog, FileChooserAction, FileChooserDialog, FileFilter, ResponseType, StackPage, Window};
+use gtk4::prelude::{ActionMapExt, Cast, FileChooserExt, FileExt, GtkWindowExt, ListModelExt, NativeDialogExt, StyleContextExt, WidgetExt};
+use gtk4::{AboutDialog, FileChooserAction, FileChooserNative, FileFilter, ResponseType, StackPage, Window};
 use crate::gtk4::views::main_view::MainView;
 use crate::gtk4::windows::main_window::MainWindow;
 
@@ -12,7 +12,7 @@ pub fn register_window_actions(window: &MainWindow) {
     action.connect_activate({
         let window = window.clone();
         move |_, _| {
-            let dialog = FileChooserDialog::new(Some("Open File"), Some(&window.window), FileChooserAction::Open, &[("Cancel", ResponseType::Cancel), ("Open", ResponseType::Accept)]);
+            let dialog = FileChooserNative::new(Some("Open File"), Some(&window.window), FileChooserAction::Open, Some("Open"), Some("Cancel"));
 
             let default_path = if let Ok(sudo_user) = env::var("SUDO_USER") {
                 let user_home = format!("/home/{}", sudo_user);
@@ -22,6 +22,7 @@ pub fn register_window_actions(window: &MainWindow) {
             };
             //dialog.set_current_folder(Some(&default_path));
 
+            /*
             let filter = FileFilter::new();
 
             filter.add_mime_type("application/vnd.tcpdump.pcap");
@@ -42,7 +43,7 @@ pub fn register_window_actions(window: &MainWindow) {
             filter.add_mime_type("application/ipfix");
             filter.add_mime_type("application/x-ixia-vwr");
             filter.set_name(Some("Pcap and Dump files"));
-            dialog.add_filter(&filter);
+            dialog.add_filter(&filter);*/
 
             dialog.connect_response(|dialog, response| {
                 if response == ResponseType::Accept {
@@ -54,7 +55,7 @@ pub fn register_window_actions(window: &MainWindow) {
                         }
                     }
                 }
-                dialog.close();
+                //dialog.close();
             });
 
             dialog.show();
