@@ -45,17 +45,19 @@ pub fn register_window_actions(window: &MainWindow) {
             filter.set_name(Some("Pcap and Dump files"));
             dialog.add_filter(&filter);*/
 
-            dialog.connect_response(|dialog, response| {
-                if response == ResponseType::Accept {
-                    if let Some(file) = dialog.file() {
-                        if let Some(path) = file.path() {
-                            println!("Selected file: {}", path.display());
-                            //let view = Box::new(MainView::from_pcap(&window, &path));
-                            //window.add_view(view);
+            dialog.connect_response({
+                let window = window.clone();
+                move |dialog, response| {
+                    if response == ResponseType::Accept {
+                        if let Some(file) = dialog.file() {
+                            if let Some(path) = file.path() {
+                                println!("Selected file: {}", path.display());
+                                let view = Box::new(MainView::from_pcap(&window, &path));
+                                window.add_view(view);
+                            }
                         }
                     }
                 }
-                //dialog.close();
             });
 
             dialog.show();

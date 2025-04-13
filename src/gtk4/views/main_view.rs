@@ -170,18 +170,12 @@ impl MainView {
         }
     }
 
-    /*
     pub fn from_device(window: &MainWindow, device: &Device) -> Self {
         let builder = Builder::from_resource("/net/ethernaught/rust/res/ui/main_view.ui");
 
         let provider = CssProvider::new();
         provider.load_from_resource("/net/ethernaught/rust/res/ui/main_view.css");
-
-        StyleContext::add_provider_for_screen(
-            &gdk::Screen::default().expect("Failed to get default screen."),
-            &provider,
-            gtk::STYLE_PROVIDER_PRIORITY_APPLICATION
-        );
+        style_context_add_provider_for_display(&gdk::Display::default().unwrap(), &provider, gtk4::STYLE_PROVIDER_PRIORITY_APPLICATION);
 
         let root: gtk4::Box = builder
             .object("root")
@@ -194,14 +188,14 @@ impl MainView {
         let content_pane: Paned = builder
             .object("content_pane")
             .expect("Couldn't find 'content_pane' in main_view.ui");
-        activity_pane.set_child_shrink(content_pane.upcast_ref::<Container>(), false);
-        activity_pane.set_child_resize(content_pane.upcast_ref::<Container>(), true);
+        //activity_pane.set_child_shrink(content_pane.upcast_ref::<Container>(), false);
+        //activity_pane.set_child_resize(content_pane.upcast_ref::<Container>(), true);
 
 
         let terminal_button: Button = builder
             .object("terminal")
             .expect("Couldn't find 'terminal' in main_view.ui");
-        let terminal = Rc::new(RefCell::new(None::<TerminalView>));
+        /*let terminal = Rc::new(RefCell::new(None::<TerminalView>));
 
         terminal_button.connect_button_press_event({
             let activity_pane = activity_pane.clone();
@@ -223,7 +217,7 @@ impl MainView {
 
                 Proceed
             }
-        });
+        });*/
 
 
         let show_title_bar = Box::new(show_title_bar(window, &device.get_name(), device.get_data_link_type()));
@@ -242,7 +236,8 @@ impl MainView {
                 let view = sidebar.borrow().as_ref().map(|view| view.root.clone());
 
                 if let Some(view) = view {
-                    content_pane.remove(&view);
+                    content_pane.set_end_child(None::<&Widget>);
+                    //content_pane.remove(&view);
                     *sidebar.borrow_mut() = None;
                 }
             }
@@ -254,17 +249,18 @@ impl MainView {
             let content_pane = content_pane.clone();
             let sidebar = sidebar.clone();
             move |packet| {
-                if let Some(sidebar) = sidebar.borrow().as_ref() {
-                    content_pane.remove(&sidebar.root);
-                }
+                //if let Some(sidebar) = sidebar.borrow().as_ref() {
+                //content_pane.remove(&sidebar.root);
+                //    content_pane.set_end_child(None);
+                //}
 
                 let view = SidebarView::from_packet(packet);
-                content_pane.add(&view.root);
-                content_pane.set_child_shrink(&view.root, false);
+                content_pane.set_end_child(Some(&view.root));
+                //content_pane.set_child_shrink(&view.root, false);
                 *sidebar.borrow_mut() = Some(view);
             }
         });
-        content_pane.add(&packets.root);
+        content_pane.set_start_child(Some(&packets.root));
 
         let event_listener = Some(RefCell::new(register_event("capture_event", {
             let if_index = device.get_index();
@@ -312,8 +308,8 @@ impl MainView {
             activity_pane,
             content_pane,
             packets,
-            sidebar,
-            terminal,
+            //sidebar,
+            //terminal,
             event_listener
         }
     }
@@ -325,12 +321,7 @@ impl MainView {
 
         let provider = CssProvider::new();
         provider.load_from_resource("/net/ethernaught/rust/res/ui/main_view.css");
-
-        StyleContext::add_provider_for_screen(
-            &gdk::Screen::default().expect("Failed to get default screen."),
-            &provider,
-            gtk::STYLE_PROVIDER_PRIORITY_APPLICATION
-        );
+        style_context_add_provider_for_display(&gdk::Display::default().unwrap(), &provider, gtk4::STYLE_PROVIDER_PRIORITY_APPLICATION);
 
         let root: gtk4::Box = builder
             .object("root")
@@ -343,14 +334,14 @@ impl MainView {
         let content_pane: Paned = builder
             .object("content_pane")
             .expect("Couldn't find 'content_pane' in main_view.ui");
-        activity_pane.set_child_shrink(content_pane.upcast_ref::<Container>(), false);
-        activity_pane.set_child_resize(content_pane.upcast_ref::<Container>(), true);
+        //activity_pane.set_child_shrink(content_pane.upcast_ref::<Container>(), false);
+        //activity_pane.set_child_resize(content_pane.upcast_ref::<Container>(), true);
 
 
         let terminal_button: Button = builder
             .object("terminal")
             .expect("Couldn't find 'terminal' in main_view.ui");
-        let terminal = Rc::new(RefCell::new(None::<TerminalView>));
+        /*let terminal = Rc::new(RefCell::new(None::<TerminalView>));
 
         terminal_button.connect_button_press_event({
             let activity_pane = activity_pane.clone();
@@ -372,7 +363,7 @@ impl MainView {
 
                 Proceed
             }
-        });
+        });*/
 
 
         let show_title_bar = Box::new(show_title_bar(window, path.file_name().unwrap().to_str().unwrap(), pcap.get_data_link_type()));
@@ -391,29 +382,31 @@ impl MainView {
                 let view = sidebar.borrow().as_ref().map(|view| view.root.clone());
 
                 if let Some(view) = view {
-                    content_pane.remove(&view);
+                    content_pane.set_end_child(None::<&Widget>);
+                    //content_pane.remove(&view);
                     *sidebar.borrow_mut() = None;
                 }
             }
         });
         actions.add_action(&action);
 
-        let mut packets = PacketsView::from_pcap(pcap);
+        let packets = PacketsView::new();
         packets.connect_select({
             let content_pane = content_pane.clone();
             let sidebar = sidebar.clone();
             move |packet| {
-                if let Some(sidebar) = sidebar.borrow().as_ref() {
-                    content_pane.remove(&sidebar.root);
-                }
+                //if let Some(sidebar) = sidebar.borrow().as_ref() {
+                //content_pane.remove(&sidebar.root);
+                //    content_pane.set_end_child(None);
+                //}
 
                 let view = SidebarView::from_packet(packet);
-                content_pane.add(&view.root);
-                content_pane.set_child_shrink(&view.root, false);
+                content_pane.set_end_child(Some(&view.root));
+                //content_pane.set_child_shrink(&view.root, false);
                 *sidebar.borrow_mut() = Some(view);
             }
         });
-        content_pane.add(&packets.root);
+        content_pane.set_start_child(Some(&packets.root));
 
         Self {
             show_title_bar,
@@ -422,11 +415,11 @@ impl MainView {
             activity_pane,
             content_pane,
             packets,
-            sidebar,
-            terminal,
+            //sidebar,
+            //terminal,
             event_listener: None
         }
-    }*/
+    }
 }
 
 impl Stackable for MainView {

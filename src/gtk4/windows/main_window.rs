@@ -282,7 +282,7 @@ impl MainWindow {
         };
 
         _self.add_view(Box::new(DevicesView::new(&_self, devices)));
-        //_self.add_view(Box::new(MainView::from_pcap(&_self, path)));
+        _self.add_view(Box::new(MainView::from_pcap(&_self, path)));
 
         register_window_actions(&_self);
         register_stack_actions(&_self);
