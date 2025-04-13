@@ -60,15 +60,15 @@ impl Serialize for Device {
         let index = i32::from_ne_bytes([buf[offset], buf[offset + 1], buf[offset + 2], buf[offset + 3]]);
         let data_link_type = DataLinkTypes::from_code(u32::from_ne_bytes([buf[offset + 4], buf[offset + 5], buf[offset + 6], buf[offset + 7]])).unwrap();
 
-        let mac = match buf[8] {
+        let mac = match buf[offset + 8] {
             6 => Some(EthernetAddress::new(buf[offset + 9], buf[offset + 10], buf[offset + 11], buf[offset + 12], buf[offset + 13], buf[offset + 14])),
             _ => None
         };
 
-        offset += 15;
+        offset += 9 + buf[offset + 8] as usize;
 
-        let address = match buf[15] {
-            4 => Some(IpAddr::from(Ipv4Addr::new(buf[offset + 16], buf[offset + 17], buf[offset + 18], buf[offset + 19]))),
+        let address = match buf[offset] {
+            4 => Some(IpAddr::from(Ipv4Addr::new(buf[offset + 1], buf[offset + 2], buf[offset + 3], buf[offset + 4]))),
             6 => None,
             _ => None
         };

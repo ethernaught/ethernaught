@@ -4,8 +4,10 @@ use gtk4::gio::SimpleAction;
 use gtk4::glib::{VariantDict, VariantTy};
 use gtk4::prelude::{ActionMapExt, Cast, FileChooserExt, FileExt, GtkWindowExt, ListModelExt, NativeDialogExt, StyleContextExt, WidgetExt};
 use gtk4::{AboutDialog, FileChooserAction, FileChooserNative, FileFilter, ResponseType, StackPage, Window};
+use rlibpcap::devices::Device;
 use crate::gtk4::views::main_view::MainView;
 use crate::gtk4::windows::main_window::MainWindow;
+use crate::pcap_ext::devices::Serialize;
 
 pub fn register_window_actions(window: &MainWindow) {
     let action = SimpleAction::new("open", None);
@@ -51,7 +53,6 @@ pub fn register_window_actions(window: &MainWindow) {
                     if response == ResponseType::Accept {
                         if let Some(file) = dialog.file() {
                             if let Some(path) = file.path() {
-                                println!("Selected file: {}", path.display());
                                 let view = Box::new(MainView::from_pcap(&window, &path));
                                 window.add_view(view);
                             }
@@ -114,9 +115,8 @@ pub fn register_stack_actions(window: &MainWindow) {
                                 if let Some(_type) = dict.lookup::<String>("type").ok().unwrap() {
                                     match _type.as_str() {
                                         "device" => {
-                                            //let device = Device::unserialize(&dict.lookup::<Vec<u8>>("device").ok().unwrap().unwrap());
-                                            //Box::new(MainView::from_device(&window, &device))
-                                            Box::new(MainView::new(&window))
+                                            let device = Device::unserialize(&dict.lookup::<Vec<u8>>("device").ok().unwrap().unwrap());
+                                            Box::new(MainView::from_device(&window, &device))
                                         }
                                         "any" => {
                                             Box::new(MainView::new(&window))

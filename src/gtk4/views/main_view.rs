@@ -390,7 +390,7 @@ impl MainView {
         });
         actions.add_action(&action);
 
-        let packets = PacketsView::new();
+        let packets = PacketsView::from_pcap(pcap);
         packets.connect_select({
             let content_pane = content_pane.clone();
             let sidebar = sidebar.clone();

@@ -12,6 +12,7 @@
       <change beforePath="$PROJECT_DIR$/src/gtk4/actions/window_actions.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/gtk4/actions/window_actions.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/gtk4/views/main_view.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/gtk4/views/main_view.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/gtk4/windows/main_window.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/gtk4/windows/main_window.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pcap_ext/devices.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/pcap_ext/devices.rs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

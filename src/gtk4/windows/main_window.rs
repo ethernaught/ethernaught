@@ -302,19 +302,19 @@ impl MainWindow {
                 self.title_bar.back.style_context().add_class("active");
                 self.title_bar.next.style_context().remove_class("active");
 
-
                 let pages = self.stack.pages();
                 for i in (0..pages.n_items()).rev() {
                     let page = pages.item(i).expect("Failed to get page")
                         .downcast::<StackPage>()
                         .expect("Item is not a StackPage");
 
+                    let eq = child.eq(&page.child());
                     let name = page.name().unwrap().to_string();
                     self.views.borrow().get(&name).unwrap().on_destroy();
                     self.stack.remove(&page.child());
                     self.views.borrow_mut().remove(&name);
 
-                    if child.eq(&page.child()) {
+                    if eq {
                         break;
                     }
                 }
