@@ -46,6 +46,8 @@ rustup override set nightly
 
 //re-add the min-height for the damn menubar on GTK3 and add it for GTk4
 
+// NO TRANSIENT PARENT...
+
 fn main() {
     //unsafe { env::set_var("GTK_THEME", "Adwaita:dark") };
 
