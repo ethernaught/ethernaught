@@ -29,27 +29,27 @@ button:focus, button:checked {
 
 
 
-#title_bar.any {
+#main_window headerbar.any {
     background-image: linear-gradient(90deg, @background 0%, @device_any 20%, @background 40%);
 }
 
-#title_bar.ethernet {
+#main_window headerbar.ethernet {
     background-image: linear-gradient(90deg, @background 0%, @device_ethernet 20%, @background 40%);
 }
 
-#title_bar.lan {
+#main_window headerbar.lan {
     background-image: linear-gradient(90deg, @background 0%, @device_lan 20%, @background 40%);
 }
 
-#title_bar.wifi {
+#main_window headerbar.wifi {
     background-image: linear-gradient(90deg, @background 0%, @device_wifi 20%, @background 40%);
 }
 
-#title_bar.vpn {
+#main_window headerbar.vpn {
     background-image: linear-gradient(90deg, @background 0%, @device_vpn 20%, @background 40%);
 }
 
-#title_bar.bluetooth {
+#main_window headerbar.bluetooth {
     background-image: linear-gradient(90deg, @background 0%, @device_bluetooth 20%, @background 40%);
 }
 

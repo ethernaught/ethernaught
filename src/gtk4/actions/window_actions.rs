@@ -1,8 +1,8 @@
 use std::env;
 use std::path::{Path, PathBuf};
-use gtk4::gio::SimpleAction;
+use gtk4::gio::{File, SimpleAction};
 use gtk4::glib::{VariantDict, VariantTy};
-use gtk4::prelude::{ActionMapExt, Cast, FileChooserExt, FileExt, GtkWindowExt, ListModelExt, NativeDialogExt, StyleContextExt, WidgetExt};
+use gtk4::prelude::{ActionMapExt, Cast, FileChooserExt, FileChooserExtManual, FileExt, GtkWindowExt, ListModelExt, NativeDialogExt, StyleContextExt, WidgetExt};
 use gtk4::{AboutDialog, FileChooserAction, FileChooserNative, FileFilter, ResponseType, StackPage, Window};
 use rlibpcap::devices::Device;
 use crate::gtk4::views::main_view::MainView;
@@ -22,6 +22,8 @@ pub fn register_window_actions(window: &MainWindow) {
             } else {
                 env::var("HOME").map(PathBuf::from).unwrap_or_else(|_| PathBuf::from("/"))
             };
+
+            dialog.set_current_folder(Some(&File::for_path(default_path))).unwrap();
             //dialog.set_current_folder(Some(&default_path));
 
             /*
