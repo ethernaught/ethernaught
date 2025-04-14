@@ -4,7 +4,7 @@ use std::rc::Rc;
 use gtk4::{gdk, style_context_add_provider_for_display, Builder, Button, CssProvider, Paned, StyleContext, Widget};
 use gtk4::gio::{SimpleAction, SimpleActionGroup};
 use gtk4::glib::property::PropertyGet;
-use gtk4::prelude::{ActionMapExt, Cast, StyleContextExt, WidgetExt};
+use gtk4::prelude::{ActionMapExt, ButtonExt, Cast, StyleContextExt, WidgetExt};
 use rlibpcap::devices::Device;
 use rlibpcap::pcap::pcap::Pcap;
 use rlibpcap::utils::data_link_types::DataLinkTypes;
@@ -14,6 +14,7 @@ use crate::bus::events::capture_event::CaptureEvent;
 use crate::gtk4::views::inter::stackable::Stackable;
 use crate::gtk4::views::packets_view::PacketsView;
 use crate::gtk4::views::sidebar_view::SidebarView;
+use crate::gtk4::views::terminal_view::TerminalView;
 use crate::gtk4::windows::main_window::MainWindow;
 
 pub struct MainView {
@@ -24,7 +25,7 @@ pub struct MainView {
     pub content_pane: Paned,
     pub packets: PacketsView,
     //pub sidebar: Rc<RefCell<Option<SidebarView>>>,
-    //pub terminal: Rc<RefCell<Option<TerminalView>>>,
+    pub terminal: Rc<RefCell<Option<TerminalView>>>,
     pub event_listener: Option<RefCell<u32>>
 }
 
@@ -55,30 +56,27 @@ impl MainView {
         let terminal_button: Button = builder
             .object("terminal")
             .expect("Couldn't find 'terminal' in main_view.ui");
-        /*let terminal = Rc::new(RefCell::new(None::<TerminalView>));
+        let terminal = Rc::new(RefCell::new(None::<TerminalView>));
 
-        terminal_button.connect_button_press_event({
+        terminal_button.connect_clicked({
             let activity_pane = activity_pane.clone();
             let terminal = terminal.clone();
-            move |button, _| {
+            move |button| {
                 let mut term_ref = terminal.borrow_mut();
 
-                if let Some(terminal) = term_ref.as_ref() {
+                if let Some(_) = term_ref.as_ref() {
                     button.style_context().remove_class("selected");
-                    activity_pane.remove(&terminal.root);
+                    activity_pane.set_end_child(None::<&Widget>);
                     *term_ref = None::<TerminalView>;
-                    return Proceed;
+                    return;
                 }
 
                 button.style_context().add_class("selected");
                 let view = TerminalView::new();
-                activity_pane.add(&view.root);
+                activity_pane.set_end_child(Some(&view.root));
                 *term_ref = Some(view);
-
-                Proceed
             }
-        });*/
-
+        });
 
         let show_title_bar = Box::new(show_title_bar(window, "Any", DataLinkTypes::Null));
 
@@ -165,7 +163,7 @@ impl MainView {
             content_pane,
             packets,
             //sidebar,
-            //terminal,
+            terminal,
             event_listener
         }
     }
@@ -195,29 +193,27 @@ impl MainView {
         let terminal_button: Button = builder
             .object("terminal")
             .expect("Couldn't find 'terminal' in main_view.ui");
-        /*let terminal = Rc::new(RefCell::new(None::<TerminalView>));
+        let terminal = Rc::new(RefCell::new(None::<TerminalView>));
 
-        terminal_button.connect_button_press_event({
+        terminal_button.connect_clicked({
             let activity_pane = activity_pane.clone();
             let terminal = terminal.clone();
-            move |button, _| {
+            move |button| {
                 let mut term_ref = terminal.borrow_mut();
 
-                if let Some(terminal) = term_ref.as_ref() {
+                if let Some(_) = term_ref.as_ref() {
                     button.style_context().remove_class("selected");
-                    activity_pane.remove(&terminal.root);
+                    activity_pane.set_end_child(None::<&Widget>);
                     *term_ref = None::<TerminalView>;
-                    return Proceed;
+                    return;
                 }
 
                 button.style_context().add_class("selected");
                 let view = TerminalView::new();
-                activity_pane.add(&view.root);
+                activity_pane.set_end_child(Some(&view.root));
                 *term_ref = Some(view);
-
-                Proceed
             }
-        });*/
+        });
 
 
         let show_title_bar = Box::new(show_title_bar(window, &device.get_name(), device.get_data_link_type()));
@@ -309,7 +305,7 @@ impl MainView {
             content_pane,
             packets,
             //sidebar,
-            //terminal,
+            terminal,
             event_listener
         }
     }
@@ -341,29 +337,27 @@ impl MainView {
         let terminal_button: Button = builder
             .object("terminal")
             .expect("Couldn't find 'terminal' in main_view.ui");
-        /*let terminal = Rc::new(RefCell::new(None::<TerminalView>));
+        let terminal = Rc::new(RefCell::new(None::<TerminalView>));
 
-        terminal_button.connect_button_press_event({
+        terminal_button.connect_clicked({
             let activity_pane = activity_pane.clone();
             let terminal = terminal.clone();
-            move |button, _| {
+            move |button| {
                 let mut term_ref = terminal.borrow_mut();
 
-                if let Some(terminal) = term_ref.as_ref() {
+                if let Some(_) = term_ref.as_ref() {
                     button.style_context().remove_class("selected");
-                    activity_pane.remove(&terminal.root);
+                    activity_pane.set_end_child(None::<&Widget>);
                     *term_ref = None::<TerminalView>;
-                    return Proceed;
+                    return;
                 }
 
                 button.style_context().add_class("selected");
                 let view = TerminalView::new();
-                activity_pane.add(&view.root);
+                activity_pane.set_end_child(Some(&view.root));
                 *term_ref = Some(view);
-
-                Proceed
             }
-        });*/
+        });
 
 
         let show_title_bar = Box::new(show_title_bar(window, path.file_name().unwrap().to_str().unwrap(), pcap.get_data_link_type()));
@@ -416,7 +410,7 @@ impl MainView {
             content_pane,
             packets,
             //sidebar,
-            //terminal,
+            terminal,
             event_listener: None
         }
     }
