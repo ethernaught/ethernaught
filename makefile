@@ -31,8 +31,15 @@ else
 endif
 
 postbuild:
-ifeq ($(OS),linux)
+ifeq ($(OS),debian)
+	@echo "Generating Linux DEB"
+	@rm -rf "$(BUILD_DIR)"
+	@mkdir -p "$(BUILD_DIR)/deb-pkg/"
 
+ifeq ($(OS),rpm)
+	@echo "Generating Linux RPM"
+	@rm -rf "$(BUILD_DIR)"
+	@mkdir -p "$(BUILD_DIR)/rpm-pkg/"
 
 else ifeq ($(OS),macos)
 	@echo "Generating MacOS App Image"
@@ -76,6 +83,12 @@ else ifeq ($(OS),macos)
         -srcfolder "$(BUILD_DIR)/dmg-pkg" \
         -ov -format UDZO "$(BUILD_DIR)/$(APP_NAME)_$(VERSION).dmg"
 	@echo "Dmg package created: $(BUILD_DIR)/$(APP_NAME)_$(VERSION).dmg"
+
+ifeq ($(OS),windows)
+	@echo "Generating Windows EXE"
+	@rm -rf "$(BUILD_DIR)"
+	@mkdir -p "$(BUILD_DIR)/exe-pkg/"
+
 
 else
 	@echo "Unknown OS. Skipping postbuild."
