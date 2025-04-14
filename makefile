@@ -32,30 +32,31 @@ endif
 
 postbuild:
 ifeq ($(OS),linux)
-    #else ifeq ($(OS),macos)
 
+
+else ifeq ($(OS),macos)
 	@echo "Generating MacOS App Image"
 	@rm -rf "$(BUILD_DIR)"
 	@mkdir -p "$(BUILD_DIR)/dmg-pkg/$(APP_NAME).app/Contents/MacOS"
 	@cp "target/$(PROFILE)/$(APP_NAME)" "$(BUILD_DIR)/dmg-pkg/$(APP_NAME).app/Contents/MacOS/";
 	@printf '%s\n' '<?xml version="1.0" encoding="UTF-8"?>' \
-    '<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">' \
-    '<plist version="1.0">' \
-    '<dict>' \
-    '    <key>CFBundleExecutable</key>' \
-    '    <string>ethernaught</string>' \
-    '    <key>CFBundleIdentifier</key>' \
-    '    <string>net.ethernaught.rust</string>' \
-    '    <key>CFBundleName</key>' \
-    '    <string>Ethernaught</string>' \
-    '    <key>CFBundleVersion</key>' \
-    '    <string>1.0</string>' \
-    '    <key>CFBundlePackageType</key>' \
-    '    <string>APPL</string>' \
-    '    <key>CFBundleIconFile</key>' \
-    '    <string>icon</string>' \
-    '</dict>' \
-    '</plist>' > "$(BUILD_DIR)/dmg-pkg/$(APP_NAME).app/Contents/Info.plist"
+        '<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">' \
+        '<plist version="1.0">' \
+        '<dict>' \
+        '    <key>CFBundleExecutable</key>' \
+        '    <string>ethernaught</string>' \
+        '    <key>CFBundleIdentifier</key>' \
+        '    <string>net.ethernaught.rust</string>' \
+        '    <key>CFBundleName</key>' \
+        '    <string>Ethernaught</string>' \
+        '    <key>CFBundleVersion</key>' \
+        '    <string>1.0</string>' \
+        '    <key>CFBundlePackageType</key>' \
+        '    <string>APPL</string>' \
+        '    <key>CFBundleIconFile</key>' \
+        '    <string>icon</string>' \
+        '</dict>' \
+        '</plist>' > "$(BUILD_DIR)/dmg-pkg/$(APP_NAME).app/Contents/Info.plist"
 	@mkdir -p "$(BUILD_DIR)/icon.iconset"
 
 	@cp res/icons/app/icon_16x16.png "$(BUILD_DIR)/icon.iconset/icon_16x16.png"
@@ -70,8 +71,11 @@ ifeq ($(OS),linux)
 	@mv "$(BUILD_DIR)/icon.icns" "$(BUILD_DIR)/dmg-pkg/$(APP_NAME).app/Contents/Resources/"
 
 	@echo "Generating MacOS DMG"
-
-
+	@ln -s /Applications "$(BUILD_DIR)/dmg-pkg/Applications"
+	@hdiutil create -volname "$(APP_NAME) Installer" \
+        -srcfolder "$(BUILD_DIR)/dmg-pkg" \
+        -ov -format UDZO "$(BUILD_DIR)/$(APP_NAME)_$(VERSION).dmg"
+	@echo "Dmg package created: $(BUILD_DIR)/$(APP_NAME)_$(VERSION).dmg"
 
 else
 	@echo "Unknown OS. Skipping postbuild."
