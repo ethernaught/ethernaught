@@ -13,6 +13,11 @@ window {
 
 
 
+menubar {
+    min-height: 0;
+    background-color: red;
+}
+
 
 button {
     border: none;
