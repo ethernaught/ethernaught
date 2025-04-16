@@ -1,5 +1,14 @@
-OS ?= debian
-#OS ?= $(shell uname)
+OS ?= $(shell uname -s | tr '[:upper:]' '[:lower:]' | awk '\
+    /darwin/ { print "macos"; exit } \
+    /linux/ { \
+      if (system("test -f /etc/debian_version") == 0) { print "debian"; exit } \
+      else if (system("test -f /etc/redhat-release") == 0 || system("test -f /etc/centos-release") == 0) { print "rpm"; exit } \
+      else { print "linux"; exit } \
+    } \
+    /mingw|msys|cygwin/ { print "windows"; exit } \
+    { print "unknown" }')
+OS_TYPE := $(if $(filter $(OS),rpm debian),linux,$(OS))
+
 PROFILE ?= release
 GTK ?= gtk4
 
@@ -7,7 +16,6 @@ GTK ?= gtk4
 BUILD_DIR = target/build
 VERSION = 0.1.0
 APP_NAME = ethernaught
-OS_TYPE := $(if $(filter $(OS),rpm debian),linux,$(OS))
 
 RESOURCE_XML = res/$(GTK)/$(OS_TYPE).gresources.xml
 RESOURCE_TARGET = res/resources.gresources
@@ -19,6 +27,7 @@ CARGO_ARGS := --profile $(PROFILE) --no-default-features --features $(GTK)
 all: build postbuild
 
 build: resources
+	@echo "$(OS_DETECTED)"
 	@echo "Building for OS=$(OS), Profile=$(PROFILE), GTK=$(GTK)"
 	cargo build $(CARGO_ARGS)
 
@@ -138,7 +147,7 @@ else ifeq ($(OS),windows)
 	@mkdir -p "$(BUILD_DIR)/exe-pkg/"
 
 else
-	@echo "Unknown OS. Skipping postbuild."
+	@echo "Unknown OS. Skipping postbuild. $(OS)"
 endif
 
 clean:
