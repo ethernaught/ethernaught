@@ -7,6 +7,6 @@ pub mod device_list_item;
 pub mod main_view;
 pub mod packets_view;
 pub mod sidebar_view;
-//pub mod packet_playground_view;
+pub mod packet_playground_view;
 pub mod dropdown;
 pub mod terminal_view;

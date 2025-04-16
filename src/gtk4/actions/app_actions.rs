@@ -1,12 +1,13 @@
 use gtk4::Application;
 use gtk4::gio::SimpleAction;
 use gtk4::prelude::{ActionMapExt, ApplicationExt};
+use crate::gtk4::windows::packet_playground_window::PacketPlaygroundWindow;
 
 pub fn register_app_actions(app: &Application) {
     let action = SimpleAction::new("packet-playground", None);
     action.connect_activate({
         move |_, _| {
-            //PacketPlaygroundWindow::new();
+            PacketPlaygroundWindow::new();
         }
     });
     app.add_action(&action);
