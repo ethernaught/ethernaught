@@ -138,6 +138,8 @@ impl TitleBar {
             .object("stop")
             .expect("Couldn't find 'stop' in title_bar.ui");
 
+        window.set_titlebar(Some(&root));
+
         Self {
             root,
             back,

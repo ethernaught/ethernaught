@@ -77,7 +77,6 @@ impl MainWindow {
         //window.set_icon_from_file("res/icons/ic_launcher.svg").expect("Failed to load icon");
 
         let title_bar = TitleBar::new(&window);
-        window.set_titlebar(Some(&title_bar.root));
 
         let root: gtk::Box = builder
             .object("root")
@@ -208,7 +207,6 @@ impl MainWindow {
         //window.set_icon_from_file("res/icons/ic_launcher.svg").expect("Failed to load icon");
 
         let title_bar = TitleBar::new(&window);
-        window.set_titlebar(Some(&title_bar.root));
 
         let root: gtk::Box = builder
             .object("root")

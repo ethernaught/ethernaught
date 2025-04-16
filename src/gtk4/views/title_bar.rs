@@ -1,11 +1,10 @@
-use gtk4::{gio, ApplicationWindow, Builder, Button, HeaderBar, Image, Label, MenuButton, PackType, PopoverMenuBar, WindowControls};
-use gtk4::ffi::GtkPopoverMenuBar;
+use gtk4::{gio, ApplicationWindow, Builder, Button, HeaderBar, Image, Label, PopoverMenuBar};
 use gtk4::gio::SimpleAction;
-use gtk4::prelude::{ActionMapExt, BoxExt, ObjectExt, WidgetExt};
+use gtk4::prelude::{ActionMapExt, GtkWindowExt, WidgetExt};
 
 #[derive(Clone)]
 pub struct TitleBar {
-    pub root: HeaderBar,
+    pub root: gtk4::Box,
     pub back: Button,
     pub next: Button,
     pub network_type_icon: Image,
@@ -29,6 +28,7 @@ impl TitleBar {
         #[cfg(target_os = "macos")]
         header_bar.set_property("use-native-controls", &true);
         header_bar.set_title_widget(Some(&root));
+        //header_bar.set_show_title_buttons(false);
         header_bar.show();
 
         #[cfg(any(target_os = "linux", target_os = "windows"))]
@@ -99,8 +99,10 @@ impl TitleBar {
             .object("stop")
             .expect("Couldn't find 'stop' in title_bar.ui");
 
+        window.set_titlebar(Some(&header_bar));
+
         Self {
-            root: header_bar,
+            root,
             back,
             next,
             network_type_icon,
