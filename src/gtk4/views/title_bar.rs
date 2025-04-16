@@ -1,6 +1,6 @@
 use gtk4::{gio, ApplicationWindow, Builder, Button, HeaderBar, Image, Label, PopoverMenuBar};
 use gtk4::gio::SimpleAction;
-use gtk4::prelude::{ActionMapExt, GtkWindowExt, WidgetExt};
+use gtk4::prelude::{ActionMapExt, GtkWindowExt, ObjectExt, WidgetExt};
 
 #[derive(Clone)]
 pub struct TitleBar {
