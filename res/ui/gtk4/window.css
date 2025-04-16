@@ -14,8 +14,7 @@ window {
 
 
 menubar {
-    min-height: 0;
-    background-color: red;
+    min-height: 40px;
 }
 
 
