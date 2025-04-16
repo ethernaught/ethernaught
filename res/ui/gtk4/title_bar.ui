@@ -90,6 +90,7 @@
                         <property name="name">menubar</property>
                         <property name="visible">True</property>
                         <property name="hexpand">True</property>
+                        <property name="height-request">40</property>
                     </object>
                 </child>
             </object>
