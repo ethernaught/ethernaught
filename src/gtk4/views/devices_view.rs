@@ -11,6 +11,7 @@ use crate::bus::events::permission_event::PermissionEvent;
 use crate::bus::events::transmitted_event::TransmittedEvent;
 use crate::gtk4::views::device_list_item::DeviceListItem;
 use crate::gtk4::views::inter::stackable::Stackable;
+use crate::gtk4::views::notification_view::NotificationTypes;
 use crate::gtk4::windows::main_window::MainWindow;
 use crate::pcap_ext::devices::Serialize;
 
@@ -96,7 +97,7 @@ impl DevicesView {
                     return Stop;
                 }
 
-                //window.notify(NotificationTypes::Warning, "Permission", "You don't have permission to capture network interfaces.");
+                window.notify(NotificationTypes::Warning, "Permission", "You don't have permission to capture network interfaces.");
 
                 if_map.iter().for_each(|(pos, _)| {
                     device_list_item.get(*pos).unwrap().root.style_context().add_class("error");

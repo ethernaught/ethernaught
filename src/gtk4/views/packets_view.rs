@@ -118,9 +118,7 @@ impl PacketsView {
                 }
 
                 let index: u32 = model.get_value(iter, 0).get().unwrap_or_default();
-                packets.borrow().get(index as usize).unwrap().matches(&query.borrow())
-                //let index: u32 = model.value(iter, 0).get().unwrap_or_default();
-                //packets.borrow().get(index as usize - 1).unwrap().matches(&query.borrow())
+                packets.borrow().get(index as usize - 1).unwrap().matches(&query.borrow())
             }
         });
 
@@ -242,9 +240,7 @@ impl PacketsView {
                 }
 
                 let index: u32 = model.get_value(iter, 0).get().unwrap_or_default();
-                packets.borrow().get(index as usize).unwrap().matches(&query.borrow())
-                //let index: u32 = model.value(iter, 0).get().unwrap_or_default();
-                //packets.borrow().get(index as usize).unwrap().matches(&query.borrow())
+                packets.borrow().get(index as usize - 1).unwrap().matches(&query.borrow())
             }
         });
 

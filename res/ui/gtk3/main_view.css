@@ -13,10 +13,12 @@
     caret-color: @text_primary;
     background-color: @background_secondary;
     font-size: 14px;
+    outline: none;
 }
 
-#packet_view entry:focus {
-    outline: none;
+entry selection {
+    background-color: @primary;
+    color: @text_primary;
 }
 
 #packet_view treeview {
