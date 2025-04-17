@@ -295,38 +295,16 @@ impl PacketsView {
     where
         F: Fn(&Packet) + 'static
     {
-        self.tree_view.connect_row_activated({
+        self.tree_view.connect_cursor_changed({
             let packets = self.packets.clone();
-            move |tree_view, path, _| {
-                let model = tree_view.model().unwrap();
-                //model.iter(path).unwrap()
-                //let index = model.value(&model.iter(&path).unwrap(), 0).get::<u32>().unwrap() - 1;
-
-                //callback(packets.borrow().get(index as usize).unwrap());
-                callback(packets.borrow().get(0).unwrap());
-            }
-        });
-        /*
-        self.tree_view.connect_button_press_event({
-            let packets = self.packets.clone();
-            move |tree_view, event| {
-                if event.button() == 1 {
-                    let (x, y) = event.position();
-
-                    let path = tree_view.path_at_pos(x as i32, y as i32);
-
-                    if let Some((Some(path), _column, _x, _y)) = path {
-                        let model = tree_view.model().unwrap();
-                        let index = model.value(&model.iter(&path).unwrap(), 0).get::<u32>().unwrap() - 1;
-
-                        callback(packets.borrow().get(index as usize).unwrap());
-                    }
+            move |tree_view| {
+                let selection = tree_view.selection();
+                if let Some((model, iter)) = selection.selected() {
+                    let index: u32 = model.get_value(&iter, 0).get().unwrap_or_default();
+                    callback(packets.borrow().get(index as usize - 1).unwrap());
                 }
-
-                Proceed
             }
         });
-        */
     }
 }
 

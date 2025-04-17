@@ -107,14 +107,8 @@ impl MainView {
             let content_pane = content_pane.clone();
             let sidebar = sidebar.clone();
             move |packet| {
-                //if let Some(sidebar) = sidebar.borrow().as_ref() {
-                    //content_pane.remove(&sidebar.root);
-                //    content_pane.set_end_child(None);
-                //}
-
                 let view = SidebarView::from_packet(packet);
                 content_pane.set_end_child(Some(&view.root));
-                //content_pane.set_child_shrink(&view.root, false);
                 *sidebar.borrow_mut() = Some(view);
             }
         });
@@ -245,11 +239,6 @@ impl MainView {
             let content_pane = content_pane.clone();
             let sidebar = sidebar.clone();
             move |packet| {
-                //if let Some(sidebar) = sidebar.borrow().as_ref() {
-                //content_pane.remove(&sidebar.root);
-                //    content_pane.set_end_child(None);
-                //}
-
                 let view = SidebarView::from_packet(packet);
                 content_pane.set_end_child(Some(&view.root));
                 //content_pane.set_child_shrink(&view.root, false);
@@ -389,11 +378,6 @@ impl MainView {
             let content_pane = content_pane.clone();
             let sidebar = sidebar.clone();
             move |packet| {
-                //if let Some(sidebar) = sidebar.borrow().as_ref() {
-                //content_pane.remove(&sidebar.root);
-                //    content_pane.set_end_child(None);
-                //}
-
                 let view = SidebarView::from_packet(packet);
                 content_pane.set_end_child(Some(&view.root));
                 //content_pane.set_child_shrink(&view.root, false);
