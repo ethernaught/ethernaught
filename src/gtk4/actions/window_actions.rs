@@ -3,7 +3,8 @@ use std::path::{Path, PathBuf};
 use gtk4::gio::{File, SimpleAction};
 use gtk4::glib::{VariantDict, VariantTy};
 use gtk4::prelude::{ActionMapExt, Cast, FileChooserExt, FileChooserExtManual, FileExt, GtkWindowExt, ListModelExt, NativeDialogExt, StyleContextExt, WidgetExt};
-use gtk4::{AboutDialog, FileChooserAction, FileChooserNative, FileFilter, ResponseType, StackPage, Window};
+use gtk4::{AboutDialog, FileChooserAction, FileChooserNative, ResponseType, StackPage, Window};
+use gtk4::gdk::Texture;
 use rlibpcap::devices::Device;
 use crate::gtk4::views::main_view::MainView;
 use crate::gtk4::windows::main_window::MainWindow;
@@ -194,38 +195,20 @@ pub fn register_stack_actions(window: &MainWindow) {
 }
 
 pub fn open_about_dialog(window: &Window) {
-    //let icon_pixbuf = Pixbuf::from_resource("/net/ethernaught/rust/res/icons/ic_launcher.svg").expect("Failed to get Pixbuf from SVG");
+    let icon_paintable = Texture::from_resource("/net/ethernaught/rust/res/icons/ic_launcher.svg");
 
     let dialog = AboutDialog::builder()
         .transient_for(window)
         .modal(true)
         .program_name("Ethernaught")
-        .version(format!("{}-{}", env!("PROFILE"), env!("CARGO_PKG_VERSION")).as_str())
+        .version(format!("{}-{}-{}", env!("PROFILE"), env!("CARGO_PKG_VERSION"), "gtk4").as_str())
         .authors(vec!["DrBrad"])
         .website_label("https://ethernaught.net")
         .website("https://ethernaught.net")
         .comments("")
         .copyright("Copyright (c) 2024 Ethernaught")
-        .license("Copyright (c) 2024 Ethernaught\r\n\r\n\
-        \
-        Permission is hereby granted, free of charge, to any person obtaining a copy\r\n\
-        of this software and associated documentation files (the \"Software\"), to deal\r\n\
-        in the Software without restriction, including without limitation the rights\r\n\
-        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\r\n\
-        copies of the Software, and to permit persons to whom the Software is\r\n\
-        furnished to do so, subject to the following conditions:\r\n\r\n\
-        \
-        The above copyright notice and this permission notice shall be included in all\r\n\
-        copies or substantial portions of the Software.\r\n\r\n\
-        \
-        THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\r\n\
-        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\r\n\
-        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\r\n\
-        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\r\n\
-        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\r\n\
-        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\r\n\
-        SOFTWARE.")
-        //.logo(&icon_pixbuf)
+        .license("Copyright (c) 2024 Ethernaught")
+        .logo(&icon_paintable)
         .build();
 
     dialog.present();

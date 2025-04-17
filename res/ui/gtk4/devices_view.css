@@ -29,6 +29,7 @@
 }
 
 #devices_view list row #icon {
+    padding: 4px;
     border-radius: 6px;
 }
 
