@@ -1,10 +1,10 @@
-use gtk4::{gio, ApplicationWindow, Builder, Button, HeaderBar, Image, Label, PopoverMenuBar, Widget};
+use gtk4::{gio, ApplicationWindow, Builder, Button, HeaderBar, Image, Label, PackType, PopoverMenuBar, Widget, WindowControls};
 use gtk4::gio::SimpleAction;
 use gtk4::prelude::{ActionMapExt, BoxExt, GtkWindowExt, NativeExt, ObjectExt, WidgetExt};
 
 #[derive(Clone)]
 pub struct TitleBar {
-    pub header_bar: HeaderBar,
+    //pub header_bar: HeaderBar,
     pub root: gtk4::Box,
     pub back: Button,
     pub next: Button,
@@ -24,13 +24,28 @@ impl TitleBar {
             .object("root")
             .expect("Couldn't find 'root' in title_bar.ui");
 
+        /*
         let header_bar = HeaderBar::new();
         header_bar.set_height_request(40);
         #[cfg(target_os = "macos")]
         header_bar.set_property("use-native-controls", &true);
         header_bar.set_title_widget(Some(&root));
         //header_bar.set_show_title_buttons(false);
-        header_bar.show();
+        header_bar.show();*/
+
+
+        let handle = gtk4::WindowHandle::new();
+        handle.set_child(Some(&root));
+
+        let window_controls = WindowControls::new(PackType::Start);
+        #[cfg(target_os = "macos")]
+        window_controls.set_property("use-native-controls", &true);
+        window_controls.set_vexpand(true);
+        root.insert_child_after(&window_controls, None::<&Widget>);
+        //root.append(&window_controls);
+        //handle.set_child(Some(&window_controls));
+
+
 
         #[cfg(any(target_os = "linux", target_os = "windows"))]
         {
@@ -100,8 +115,10 @@ impl TitleBar {
             .object("stop")
             .expect("Couldn't find 'stop' in title_bar.ui");
 
+        window.set_titlebar(Some(&handle));
+
         Self {
-            header_bar,
+            //header_bar,
             root,
             back,
             next,
