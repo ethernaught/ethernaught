@@ -1,9 +1,10 @@
-use gtk4::{gio, ApplicationWindow, Builder, Button, HeaderBar, Image, Label, PopoverMenuBar};
+use gtk4::{gio, ApplicationWindow, Builder, Button, HeaderBar, Image, Label, PopoverMenuBar, Widget};
 use gtk4::gio::SimpleAction;
-use gtk4::prelude::{ActionMapExt, GtkWindowExt, ObjectExt, WidgetExt};
+use gtk4::prelude::{ActionMapExt, BoxExt, GtkWindowExt, NativeExt, ObjectExt, WidgetExt};
 
 #[derive(Clone)]
 pub struct TitleBar {
+    pub header_bar: HeaderBar,
     pub root: gtk4::Box,
     pub back: Button,
     pub next: Button,
@@ -99,9 +100,8 @@ impl TitleBar {
             .object("stop")
             .expect("Couldn't find 'stop' in title_bar.ui");
 
-        window.set_titlebar(Some(&header_bar));
-
         Self {
+            header_bar,
             root,
             back,
             next,
