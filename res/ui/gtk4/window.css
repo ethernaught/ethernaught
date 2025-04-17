@@ -299,7 +299,7 @@ scrollbar trough {
 
 scrollbar slider {
     background-color: @ripple;
-    border: none;
+    /*border: none;*/
     /*border-radius: 0;*/
 }
 

@@ -298,7 +298,7 @@ scrollbar trough {
 scrollbar slider {
     background-color: @ripple;
     border: none;
-    border-radius: 0;
+    /*border-radius: 0;*/
 }
 
 scrollbar.vertical slider {
