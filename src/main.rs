@@ -49,8 +49,7 @@ rustup override set nightly
 // NO TRANSIENT PARENT... - FIX FOR LINUX NATIVE PORTAL
 
 fn main() {
-    //unsafe { env::set_var("GTK_THEME", "Adwaita:dark") };
-
+    //unsafe { env::set_var("GTK_THEME", "Adwaita:dark") };{
     let app = App::new();
     app.run();
 }

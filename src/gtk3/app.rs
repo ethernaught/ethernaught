@@ -1,7 +1,7 @@
-use gtk::{gdk, gio, Application, ApplicationWindow, Builder, CssProvider, Stack, StyleContext};
+use gtk::{gdk, gio, Application, ApplicationWindow, Builder, CssProvider, Settings, Stack, StyleContext};
 use gtk::gio::{resources_register, ApplicationFlags, Resource};
 use gtk::glib::{Bytes, StaticType};
-use gtk::prelude::{ApplicationExt, ApplicationExtManual, BuilderExtManual, ContainerExt, CssProviderExt, FileExt, GtkApplicationExt, GtkWindowExt, StackExt, WidgetExt};
+use gtk::prelude::{ApplicationExt, ApplicationExtManual, BuilderExtManual, ContainerExt, CssProviderExt, FileExt, GtkApplicationExt, GtkWindowExt, ObjectExt, StackExt, WidgetExt};
 use crate::gtk3::actions::app_actions::register_app_actions;
 use crate::gtk3::widgets::graph::Graph;
 use crate::gtk3::widgets::hex_editor::HexEditor;
@@ -30,6 +30,10 @@ impl App {
         Overlay::static_type();
 
         self.app.connect_activate(move |app| {
+            if let Some(settings) = Settings::default() {
+                settings.set_property("gtk-application-prefer-dark-theme", &true);
+            }
+
             let resource_data = include_bytes!("../../res/resources.gresources");
 
             let resource = Resource::from_data(&Bytes::from(resource_data)).unwrap();
@@ -60,6 +64,10 @@ impl App {
         });
 
         self.app.connect_open(move |app, files, _hint| {
+            if let Some(settings) = Settings::default() {
+                settings.set_property("gtk-application-prefer-dark-theme", &true);
+            }
+
             for file in files {
                 if let Some(path) = file.path() {
                     let resource_data = include_bytes!("../../res/resources.gresources");
