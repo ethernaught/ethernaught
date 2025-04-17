@@ -248,7 +248,8 @@ window.release #bottom_bar #license {
 }
 
 #notification {
-    padding: 10px;
+    padding: 15px;
+    border-radius: 10px;
     background-color: @background_shimmer;
 }
 
