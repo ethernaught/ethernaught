@@ -287,18 +287,16 @@ window.release #bottom_bar #license {
 
 
 
-
+/*
 scrollbar {
-    border: none;
 }
-
+*/
 scrollbar trough {
     background-color: @background_secondary;
 }
 
 scrollbar slider {
     background-color: @ripple;
-    border: none;
     border-radius: 0;
 }
 
