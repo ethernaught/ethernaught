@@ -53,6 +53,143 @@ impl WidgetImpl for HexEditorImpl {
         let height = widget.height() as f32;
 
         let cr = snapshot.append_cairo(&Rect::new(0.0, 0.0, width, height));
+
+
+
+
+
+
+
+
+
+
+
+        let widget = self.obj();
+        let style_context = widget.style_context();
+
+        style_context.set_state(StateFlags::NORMAL);
+        let text_color = style_context.color();
+
+        let padding = style_context.padding();
+
+        if let Some(background) = style_context.lookup_color("background-color") {
+            cr.set_source_rgba(background.red() as f64, background.green() as f64, background.blue() as f64, background.alpha() as f64);
+            cr.paint();
+        }
+
+        /*
+        let font_desc = style_context.font(gtk::StateFlags::NORMAL);
+
+        let font_weight = match font_desc.weight() {
+            Weight::Bold => FontWeight::Bold,
+            _ => FontWeight::Normal
+        };
+
+        //cr.select_font_face(font_desc.family().unwrap().split(',').next().unwrap().trim(), FontSlant::Normal, font_weight);
+        cr.set_font_size(font_desc.size() as f64 / 1024.0 * widget.screen().unwrap().resolution() / 96.0);*/
+
+        let extents = cr.font_extents().unwrap();
+        let char_width = extents.max_x_advance() + 2.0;
+        let row_padding = 2.0;
+        let row_height = extents.ascent() + extents.descent() + row_padding;
+        let hex_offset = padding.left() as f64 + extents.max_x_advance() + char_width * 8.0;
+        let ascii_offset = hex_offset + extents.max_x_advance() + char_width * (BYTES_PER_ROW as f64 * 2.0);
+
+        for (i, &byte) in self.data.borrow().iter().enumerate() {
+            let row = i / BYTES_PER_ROW;
+            let col = i % BYTES_PER_ROW;
+
+            let hex_x = hex_offset + col as f64 * (char_width * 2.0);
+            let y = padding.top() as f64 + (row as f64 * row_height);
+            let ascii_x = ascii_offset + col as f64 * char_width;
+
+            if col == 0 {
+                let color = match *self.cursor.borrow() {
+                    Some(cursor) => {
+                        if cursor/BYTES_PER_ROW == row {
+                            text_color
+
+                        } else {
+                            *self.line_number_color.borrow()
+                        }
+                    }
+                    None => {
+                        *self.line_number_color.borrow()
+                    }
+                };
+
+                cr.set_source_rgba(color.red() as f64, color.green() as f64, color.blue() as f64, color.alpha() as f64);
+                let line_number = format!("{:08X}", row * BYTES_PER_ROW);
+
+                for (i, c) in line_number.chars().enumerate() {
+                    cr.move_to(padding.left() as f64 + (i as f64 * char_width), y + extents.ascent() + row_padding);
+                    cr.show_text(&c.to_string());
+                }
+            }
+
+            match *self.selection.borrow() {
+                Some((x, x2)) => {
+                    if i >= x && i <= x+x2-1  {
+                        let color = self.selection_color.borrow();
+                        cr.set_source_rgba(color.red() as f64, color.green() as f64, color.blue() as f64, color.alpha() as f64);
+                        cr.rectangle(hex_x - 1.0, y, char_width * 2.0, row_height);
+                        cr.fill().unwrap();
+
+                        cr.rectangle(ascii_x - 1.0, y, char_width - 2.0 + 2.0, row_height);
+                        cr.fill().unwrap();
+                    }
+                }
+                None => {}
+            }
+
+            if Some(i) == *self.cursor.borrow() {
+                let color = self.cursor_color.borrow();
+                cr.set_source_rgba(color.red() as f64, color.green() as f64, color.blue() as f64, color.alpha() as f64);
+                cr.rectangle(hex_x, y + 1.0, char_width * 2.0 - 2.0, row_height - 2.0);
+                cr.stroke().unwrap();
+
+                cr.rectangle(ascii_x, y + 1.0, char_width - 2.0, row_height - 2.0);
+                cr.stroke().unwrap();
+            }
+
+            let color = match byte {
+                0 => {
+                    match *self.selection.borrow() {
+                        Some((x, x2)) => {
+                            if i >= x && i <= x+x2-1  {
+                                text_color
+                            } else {
+                                *self.line_number_color.borrow()
+                            }
+                        }
+                        None => *self.line_number_color.borrow()
+                    }
+                },
+                _ => text_color
+            };
+
+            cr.set_source_rgba(color.red() as f64, color.green() as f64, color.blue() as f64, color.alpha() as f64);
+
+            let hex = format!("{:02X}", byte);
+
+            for (i, c) in hex.chars().enumerate() {
+                cr.move_to(hex_x + (i as f64 * char_width), y + extents.ascent() + row_padding);
+                cr.show_text(&c.to_string());
+            }
+
+            let ascii_char = if byte.is_ascii_graphic() { byte as char } else { '.' };
+            cr.move_to(ascii_x, y + extents.ascent() + row_padding);
+            cr.show_text(&ascii_char.to_string());
+        }
+
+
+
+
+
+
+
+
+
     }
 
     fn measure(&self, orientation: Orientation, for_size: i32) -> (i32, i32, i32, i32) {
