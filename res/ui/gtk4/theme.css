@@ -48,6 +48,7 @@ tooltip {
 
 #header_bar {
     border-bottom: solid 1px @background_secondary;
+    padding: 0 8px 0 0;
 }
 
 #title_bar {
