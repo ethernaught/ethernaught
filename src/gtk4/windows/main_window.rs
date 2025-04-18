@@ -72,7 +72,6 @@ impl MainWindow {
         //window.set_icon_from_file("res/icons/ic_launcher.svg").expect("Failed to load icon");
 
         let title_bar = TitleBar::new(&window);
-        window.set_titlebar(Some(&title_bar.header_bar));
 
         let root: gtk4::Box = builder
             .object("root")
@@ -82,6 +81,7 @@ impl MainWindow {
 
 
 
+        /*
         //FULL SCREEN MAC PATCH...
         window.connect_fullscreened_notify({
             let root = root.clone();
@@ -97,6 +97,8 @@ impl MainWindow {
                 title_bar.header_bar.set_title_widget(Some(&title_bar.root));
             }
         });
+        */
+        //root.insert_child_after(&title_bar.handle, None::<&Widget>);
 
 
 

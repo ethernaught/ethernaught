@@ -48,22 +48,21 @@ tooltip {
 
 
 
-#main_window headerbar {
+#title_bar {
     min-height: 40px;
     border-bottom: solid 1px @background_secondary;
-    /*padding: 0 8px;*/
-    padding: 0;
+    padding: 0 8px;
     background: linear-gradient(90deg, @background 0%, @primary 20%, @background 40%);
 }
 
-#main_window headerbar entry,
-        #main_window headerbar spinbutton,
-        #main_window headerbar button,
-        #main_window headerbar separator {
+#title_bar entry,
+        #title_bar spinbutton,
+        #title_bar button,
+        #title_bar separator {
     margin: 0;
 }
 
-#main_window.maximized headerbar {
+#main_window.maximized #title_bar {
     border-top: none;
     border-left: none;
     border-right: none;
