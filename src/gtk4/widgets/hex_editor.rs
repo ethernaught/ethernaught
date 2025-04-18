@@ -1,5 +1,6 @@
 use std::cell::RefCell;
 use gtk4::{glib, Buildable, Orientation, Snapshot, StateFlags, Widget};
+use gtk4::cairo::{Content, Context, RecordingSurface};
 use gtk4::gdk::RGBA;
 use gtk4::glib::property::PropertyGet;
 use gtk4::graphene::Rect;
@@ -28,6 +29,39 @@ impl Default for HexEditorImpl {
             cursor_color: RefCell::new(RGBA::new(0.8, 0.8, 0.8, 1.0)),
             selection_color: RefCell::new(RGBA::new(0.4, 0.0, 0.4, 1.0))
         }
+    }
+}
+
+impl HexEditorImpl {
+
+    fn calculate_size(&self) -> (i32, i32) {
+        let widget = self.obj();
+        let style_context = widget.style_context();
+
+        let padding = style_context.padding();
+
+        let surface = RecordingSurface::create(Content::Color, None).unwrap();
+        let cr = Context::new(&surface).unwrap();
+
+        /*
+        let font_desc = style_context.font(StateFlags::NORMAL);
+
+        let font_weight = match font_desc.weight() {
+            Weight::Bold => FontWeight::Bold,
+            _ => FontWeight::Normal
+        };
+
+        cr.select_font_face(font_desc.family().unwrap().split(',').next().unwrap().trim(), FontSlant::Normal, font_weight);
+        cr.set_font_size(font_desc.size() as f64 / 1024.0 * widget.screen().unwrap().resolution() / 96.0);*/
+
+        let extents = cr.font_extents().unwrap();
+        let char_width = extents.max_x_advance() + 2.0;
+        let row_height = extents.ascent() + extents.descent() + 2.0;
+
+        let width = padding.left() as f64 + padding.right() as f64 + (extents.max_x_advance() * 2.0) + (BYTES_PER_ROW as f64 * (char_width * 3.0)) + (char_width * 8.0);
+        let height = padding.top() as i32 + padding.bottom() as i32 + ((self.data.borrow().len() / BYTES_PER_ROW) as i32 + 1) * row_height as i32;
+
+        (width as i32, height)
     }
 }
 
@@ -78,7 +112,7 @@ impl WidgetImpl for HexEditorImpl {
         }
 
         /*
-        let font_desc = style_context.font(gtk::StateFlags::NORMAL);
+        let font_desc = style_context.font(StateFlags::NORMAL);
 
         let font_weight = match font_desc.weight() {
             Weight::Bold => FontWeight::Bold,
@@ -193,9 +227,10 @@ impl WidgetImpl for HexEditorImpl {
     }
 
     fn measure(&self, orientation: Orientation, for_size: i32) -> (i32, i32, i32, i32) {
+        let (width, height) = self.calculate_size();
         match orientation {
-            Orientation::Horizontal => (0, 0, -1, -1),
-            Orientation::Vertical => (0, 0, -1, -1),
+            Orientation::Horizontal => (width, width, -1, -1),
+            Orientation::Vertical => (height, height, -1, -1),
             _ => unimplemented!()
         }
     }
