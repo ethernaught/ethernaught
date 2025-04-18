@@ -1,10 +1,11 @@
 use std::cell::RefCell;
 use gtk4::{glib, Buildable, Orientation, Snapshot, StateFlags, Widget};
-use gtk4::cairo::{Content, Context, RecordingSurface};
-use gtk4::gdk::RGBA;
+use gtk4::cairo::{Content, Context, FontSlant, FontWeight, RecordingSurface};
+use gtk4::gdk::{Display, RGBA};
 use gtk4::glib::property::PropertyGet;
 use gtk4::graphene::Rect;
-use gtk4::prelude::{DisplayExt, ObjectExt, SnapshotExt, StyleContextExt, WidgetExt};
+use gtk4::pango::Weight;
+use gtk4::prelude::{DisplayExt, NativeExt, ObjectExt, SnapshotExt, StyleContextExt, WidgetExt};
 use gtk4::subclass::prelude::{ObjectImpl, ObjectSubclass, ObjectSubclassExt, ObjectSubclassIsExt, WidgetClassExt, WidgetImpl, WidgetImplExt};
 
 const BYTES_PER_ROW: usize = 16;
@@ -43,8 +44,7 @@ impl HexEditorImpl {
         let surface = RecordingSurface::create(Content::Color, None).unwrap();
         let cr = Context::new(&surface).unwrap();
 
-        /*
-        let font_desc = style_context.font(StateFlags::NORMAL);
+        let font_desc = widget.pango_context().font_description().unwrap();
 
         let font_weight = match font_desc.weight() {
             Weight::Bold => FontWeight::Bold,
@@ -52,7 +52,7 @@ impl HexEditorImpl {
         };
 
         cr.select_font_face(font_desc.family().unwrap().split(',').next().unwrap().trim(), FontSlant::Normal, font_weight);
-        cr.set_font_size(font_desc.size() as f64 / 1024.0 * widget.screen().unwrap().resolution() / 96.0);*/
+        cr.set_font_size(font_desc.size() as f64 / 1024.0);// * self.get_monitor_dpi() / 96.0);
 
         let extents = cr.font_extents().unwrap();
         let char_width = extents.max_x_advance() + 2.0;
@@ -111,16 +111,16 @@ impl WidgetImpl for HexEditorImpl {
             cr.paint();
         }
 
-        /*
-        let font_desc = style_context.font(StateFlags::NORMAL);
+        let font_desc = widget.pango_context().font_description().unwrap();
 
         let font_weight = match font_desc.weight() {
             Weight::Bold => FontWeight::Bold,
             _ => FontWeight::Normal
         };
 
+        cr.select_font_face(font_desc.family().unwrap().split(',').next().unwrap().trim(), FontSlant::Normal, font_weight);
         //cr.select_font_face(font_desc.family().unwrap().split(',').next().unwrap().trim(), FontSlant::Normal, font_weight);
-        cr.set_font_size(font_desc.size() as f64 / 1024.0 * widget.screen().unwrap().resolution() / 96.0);*/
+        cr.set_font_size(font_desc.size() as f64 / 1024.0);// * self.get_monitor_dpi() / 96.0);
 
         let extents = cr.font_extents().unwrap();
         let char_width = extents.max_x_advance() + 2.0;
@@ -215,15 +215,6 @@ impl WidgetImpl for HexEditorImpl {
             cr.move_to(ascii_x, y + extents.ascent() + row_padding);
             cr.show_text(&ascii_char.to_string());
         }
-
-
-
-
-
-
-
-
-
     }
 
     fn measure(&self, orientation: Orientation, for_size: i32) -> (i32, i32, i32, i32) {
