@@ -52,7 +52,7 @@ impl HexEditorImpl {
         };
 
         cr.select_font_face(font_desc.family().unwrap().split(',').next().unwrap().trim(), FontSlant::Normal, font_weight);
-        cr.set_font_size(font_desc.size() as f64 / 1024.0 * widget.screen().unwrap().resolution() / 96.0);
+        cr.set_font_size(font_desc.size() as f64 / 1024.0);// * widget.screen().unwrap().resolution() / 96.0);
 
         let extents = cr.font_extents().unwrap();
         let char_width = extents.max_x_advance() + 2.0;
@@ -103,7 +103,7 @@ impl WidgetImpl for HexEditorImpl {
         };
 
         cr.select_font_face(font_desc.family().unwrap().split(',').next().unwrap().trim(), FontSlant::Normal, font_weight);
-        cr.set_font_size(font_desc.size() as f64 / 1024.0 * widget.screen().unwrap().resolution() / 96.0);
+        cr.set_font_size(font_desc.size() as f64 / 1024.0);// * widget.screen().unwrap().resolution() / 96.0);
 
         let extents = cr.font_extents().unwrap();
         let char_width = extents.max_x_advance() + 2.0;

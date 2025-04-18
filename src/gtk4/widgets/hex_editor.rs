@@ -88,16 +88,6 @@ impl WidgetImpl for HexEditorImpl {
 
         let cr = snapshot.append_cairo(&Rect::new(0.0, 0.0, width, height));
 
-
-
-
-
-
-
-
-
-
-
         let widget = self.obj();
         let style_context = widget.style_context();
 
