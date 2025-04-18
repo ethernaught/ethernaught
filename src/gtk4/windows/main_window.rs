@@ -81,25 +81,21 @@ impl MainWindow {
 
 
 
-        /*
         //FULL SCREEN MAC PATCH...
         window.connect_fullscreened_notify({
             let root = root.clone();
             let title_bar = title_bar.clone();
             move |window| {
                 if window.is_fullscreen() {
-                    title_bar.header_bar.set_title_widget(None::<&Widget>);
-                    root.insert_child_after(&title_bar.root, None::<&Widget>);
+                    title_bar.root.remove(&title_bar.title_bar);
+                    root.insert_child_after(&title_bar.title_bar, None::<&Widget>);
                     return;
                 }
 
-                root.remove(&title_bar.root);
-                title_bar.header_bar.set_title_widget(Some(&title_bar.root));
+                root.remove(&title_bar.title_bar);
+                title_bar.root.append(&title_bar.title_bar);
             }
         });
-        */
-        //root.insert_child_after(&title_bar.handle, None::<&Widget>);
-
 
 
         let stack: Stack = builder

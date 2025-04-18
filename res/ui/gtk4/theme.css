@@ -55,13 +55,6 @@ tooltip {
     background: linear-gradient(90deg, @background 0%, @primary 20%, @background 40%);
 }
 
-#title_bar entry,
-        #title_bar spinbutton,
-        #title_bar button,
-        #title_bar separator {
-    margin: 0;
-}
-
 #main_window.maximized #title_bar {
     border-top: none;
     border-left: none;

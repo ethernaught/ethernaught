@@ -1,11 +1,11 @@
-use gtk4::{gio, ApplicationWindow, Builder, Button, HeaderBar, Image, Label, PackType, PopoverMenuBar, Widget, WindowControls, WindowHandle};
+use gtk4::{gio, ApplicationWindow, Builder, Button, HeaderBar, Image, Label, Orientation, PackType, PopoverMenuBar, Widget, WindowControls, WindowHandle};
 use gtk4::gio::SimpleAction;
 use gtk4::prelude::{ActionMapExt, BoxExt, GtkWindowExt, NativeExt, ObjectExt, WidgetExt};
 
 #[derive(Clone)]
 pub struct TitleBar {
-    pub handle: WindowHandle,
     pub root: gtk4::Box,
+    pub title_bar: gtk4::Box,
     pub back: Button,
     pub next: Button,
     pub network_type_icon: Image,
@@ -37,7 +37,6 @@ impl TitleBar {
         let handle = WindowHandle::new();
         handle.set_child(Some(&root));
 
-
         #[cfg(target_os = "macos")]
         {
             let window_controls = WindowControls::new(PackType::Start);
@@ -48,10 +47,8 @@ impl TitleBar {
         #[cfg(any(target_os = "linux", target_os = "windows"))]
         {
             let window_controls = WindowControls::new(PackType::End);
-            root.append(&window_controls);
+            handle_root.append(&window_controls);
         }
-
-
 
         #[cfg(any(target_os = "linux", target_os = "windows"))]
         {
@@ -93,6 +90,12 @@ impl TitleBar {
             window.add_action(&action);
         }
 
+
+
+        let title_bar: gtk4::Box = builder
+            .object("title_bar")
+            .expect("Couldn't find 'title_bar' in title_bar.ui");
+
         let back: Button = builder
             .object("back")
             .expect("Couldn't find 'back' in ethernaught_ui.xml");
@@ -124,8 +127,8 @@ impl TitleBar {
         window.set_titlebar(Some(&handle));
 
         Self {
-            handle,
             root,
+            title_bar,
             back,
             next,
             network_type_icon,
