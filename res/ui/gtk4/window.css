@@ -289,27 +289,31 @@ window.release #bottom_bar #license {
 
 
 
+/*
 scrollbar {
     min-width: 5px;
+    min-height: 5px;
     border: none;
 }
+*/
 
-scrollbar trough {
-    background-color: @background_secondary;
+scrollbar {
+    padding: 0;
+    border: 0;
+    background-color: transparent;
+}
+
+scrollbar slider {
+    min-width: 8px;
+    min-height: 8px;
+    padding: 0;
+    border: 0;
+    margin: 0;
+    box-shadow: none;
 }
 
 scrollbar slider {
     background-color: @ripple;
-    /*border: none;*/
-    /*border-radius: 0;*/
-}
-
-scrollbar.vertical slider {
-    padding: 0 2px;
-}
-
-scrollbar.horizontal slider {
-    padding: 2px 0;
 }
 
 overshoot {

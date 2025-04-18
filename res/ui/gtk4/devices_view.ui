@@ -31,6 +31,8 @@
                 <property name="visible">True</property>
                 <property name="hexpand">True</property>
                 <property name="vexpand">True</property>
+                <property name="overlay-scrolling">false</property>
+                <property name="vscrollbar-policy">automatic</property>
 
                 <child>
                     <object class="GtkListBox" id="devices_list">

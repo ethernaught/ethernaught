@@ -21,6 +21,10 @@ entry selection {
     color: @text_primary;
 }
 
+#packet_view #list_scroll_layout {
+    background-color: @background_secondary;
+}
+
 #packet_view treeview {
     color: @text_secondary;
     background-color: @background_secondary;
