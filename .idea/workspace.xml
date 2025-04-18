@@ -9,10 +9,7 @@
   <component name="ChangeListManager">
     <list default="true" id="f0704e63-1929-42d3-83d7-8cbc904dc132" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/resources.gresources" beforeDir="false" afterPath="$PROJECT_DIR$/res/resources.gresources" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/ui/gtk4/theme.css" beforeDir="false" afterPath="$PROJECT_DIR$/res/ui/gtk4/theme.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/ui/gtk4/title_bar.ui" beforeDir="false" afterPath="$PROJECT_DIR$/res/ui/gtk4/title_bar.ui" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/ui/gtk4/window.css" beforeDir="false" afterPath="$PROJECT_DIR$/res/ui/gtk4/window.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gtk4/views/title_bar.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/gtk4/views/title_bar.rs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -59,7 +56,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
     "RunOnceActivity.rust.reset.selective.auto.import": "true",
-    "git-widget-placeholder": "custom__header",
+    "git-widget-placeholder": "Merging custom__header",
     "last_opened_file_path": "/home/brad/CLionProjects/ethernaught/src/gtk4/views",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",

@@ -45,8 +45,11 @@ impl TitleBar {
             root.insert_child_after(&window_controls, None::<&Widget>);
         }
 
-        let window_controls = WindowControls::new(PackType::End);
-        root.append(&window_controls);
+        #[cfg(any(target_os = "linux", target_os = "windows"))]
+        {
+            let window_controls = WindowControls::new(PackType::End);
+            root.append(&window_controls);
+        }
 
 
 
