@@ -3,6 +3,7 @@
     <requires lib="gtk+" version="4.0"/>
 
     <object class="GtkBox" id="root">
+        <property name="name">header_bar</property>
         <property name="visible">True</property>
         <property name="hexpand">True</property>
         <property name="orientation">horizontal</property>

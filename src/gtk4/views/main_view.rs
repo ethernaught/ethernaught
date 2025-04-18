@@ -444,23 +444,23 @@ fn show_title_bar(window: &MainWindow, name: &str, data_link_type: DataLinkTypes
         if shown {
             match data_link_type {
                 DataLinkTypes::Null => {
-                    title_bar.root.style_context().add_class("any");
+                    title_bar.title_bar.style_context().add_class("any");
                     title_bar.network_type_icon.set_resource(Some("/net/ethernaught/rust/res/icons/ic_any.svg"));
                 }
                 DataLinkTypes::En10mb | DataLinkTypes::En3mb | DataLinkTypes::Sll2 => {
-                    title_bar.root.style_context().add_class("ethernet");
+                    title_bar.title_bar.style_context().add_class("ethernet");
                     title_bar.network_type_icon.set_resource(Some("/net/ethernaught/rust/res/icons/ic_ethernet.svg"));
                 }
                 DataLinkTypes::Loop => {
-                    title_bar.root.style_context().add_class("lan");
+                    title_bar.title_bar.style_context().add_class("lan");
                     title_bar.network_type_icon.set_resource(Some("/net/ethernaught/rust/res/icons/ic_lan.svg"));
                 }
                 DataLinkTypes::Raw | DataLinkTypes::Ipv4 | DataLinkTypes::Ipv6 => {
-                    title_bar.root.style_context().add_class("vpn");
+                    title_bar.title_bar.style_context().add_class("vpn");
                     title_bar.network_type_icon.set_resource(Some("/net/ethernaught/rust/res/icons/ic_vpn.svg"));
                 }
                 DataLinkTypes::Ieee802_11 => {
-                    title_bar.root.style_context().add_class("wifi");
+                    title_bar.title_bar.style_context().add_class("wifi");
                     title_bar.network_type_icon.set_resource(Some("/net/ethernaught/rust/res/icons/ic_wifi.svg"));
                 }
                 /*
@@ -483,19 +483,19 @@ fn show_title_bar(window: &MainWindow, name: &str, data_link_type: DataLinkTypes
 
         match data_link_type {
             DataLinkTypes::Null => {
-                title_bar.root.style_context().remove_class("any");
+                title_bar.title_bar.style_context().remove_class("any");
             }
             DataLinkTypes::En10mb | DataLinkTypes::En3mb | DataLinkTypes::Sll2 => {
-                title_bar.root.style_context().remove_class("ethernet");
+                title_bar.title_bar.style_context().remove_class("ethernet");
             }
             DataLinkTypes::Loop => {
-                title_bar.root.style_context().remove_class("lan");
+                title_bar.title_bar.style_context().remove_class("lan");
             }
             DataLinkTypes::Raw | DataLinkTypes::Ipv4 | DataLinkTypes::Ipv6 => {
-                title_bar.root.style_context().remove_class("vpn");
+                title_bar.title_bar.style_context().remove_class("vpn");
             }
             DataLinkTypes::Ieee802_11 => {
-                title_bar.root.style_context().remove_class("wifi");
+                title_bar.title_bar.style_context().remove_class("wifi");
             }
             /*
             DataLinkTypes::BluetoothHciH4 => {

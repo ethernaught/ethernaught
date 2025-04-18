@@ -47,7 +47,7 @@ impl TitleBar {
         #[cfg(any(target_os = "linux", target_os = "windows"))]
         {
             let window_controls = WindowControls::new(PackType::End);
-            handle_root.append(&window_controls);
+            root.append(&window_controls);
         }
 
         #[cfg(any(target_os = "linux", target_os = "windows"))]
