@@ -30,27 +30,27 @@ button:focus, button:checked {
 
 
 
-#main_window headerbar.any {
+#main_window #title_bar.any {
     background-image: linear-gradient(90deg, @background 0%, @device_any 20%, @background 40%);
 }
 
-#main_window headerbar.ethernet {
+#main_window #title_bar.ethernet {
     background-image: linear-gradient(90deg, @background 0%, @device_ethernet 20%, @background 40%);
 }
 
-#main_window headerbar.lan {
+#main_window #title_bar.lan {
     background-image: linear-gradient(90deg, @background 0%, @device_lan 20%, @background 40%);
 }
 
-#main_window headerbar.wifi {
+#main_window #title_bar.wifi {
     background-image: linear-gradient(90deg, @background 0%, @device_wifi 20%, @background 40%);
 }
 
-#main_window headerbar.vpn {
+#main_window #title_bar.vpn {
     background-image: linear-gradient(90deg, @background 0%, @device_vpn 20%, @background 40%);
 }
 
-#main_window headerbar.bluetooth {
+#main_window #title_bar.bluetooth {
     background-image: linear-gradient(90deg, @background 0%, @device_bluetooth 20%, @background 40%);
 }
 
