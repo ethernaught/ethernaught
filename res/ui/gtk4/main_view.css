@@ -146,7 +146,7 @@ entry selection {
 #sidebar_view hexeditor {
     padding: 10px;
     font-family: "Ethernaught Mono", monospace;
-    font-size: 20px;
+    font-size: 16px;
     color: @text_dark;
     background-color: @background_secondary;
 }
