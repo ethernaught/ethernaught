@@ -1,12 +1,12 @@
 use std::cell::RefCell;
 use gtk4::{glib, Buildable, Orientation, Snapshot, StateFlags, Widget};
 use gtk4::cairo::{Content, Context, FontSlant, FontWeight, RecordingSurface};
-use gtk4::gdk::{Display, RGBA};
+use gtk4::gdk::RGBA;
 use gtk4::glib::property::PropertyGet;
 use gtk4::graphene::Rect;
 use gtk4::pango::Weight;
-use gtk4::prelude::{DisplayExt, NativeExt, ObjectExt, SnapshotExt, StyleContextExt, WidgetExt};
-use gtk4::subclass::prelude::{ObjectImpl, ObjectSubclass, ObjectSubclassExt, ObjectSubclassIsExt, WidgetClassExt, WidgetImpl, WidgetImplExt};
+use gtk4::prelude::{DisplayExt, ObjectExt, SnapshotExt, StyleContextExt, WidgetExt};
+use gtk4::subclass::prelude::{ObjectImpl, ObjectImplExt, ObjectSubclass, ObjectSubclassExt, ObjectSubclassIsExt, WidgetClassExt, WidgetImpl, WidgetImplExt};
 
 const BYTES_PER_ROW: usize = 16;
 
@@ -77,7 +77,79 @@ impl ObjectSubclass for HexEditorImpl {
     }
 }
 
-impl ObjectImpl for HexEditorImpl {}
+impl ObjectImpl for HexEditorImpl {
+
+    fn constructed(&self) {
+        self.parent_constructed();
+
+        let motion = gtk4::EventControllerMotion::new();
+
+        motion.connect_motion({
+            let widget = self.obj().clone();
+            move |_, x, y| {
+                let style_context = widget.style_context();
+
+                let padding = style_context.padding();
+
+                let surface = RecordingSurface::create(Content::Color, None).unwrap();
+                let cr = Context::new(&surface).unwrap();
+
+                let font_desc = widget.pango_context().font_description().unwrap();
+
+                let font_weight = match font_desc.weight() {
+                    Weight::Bold => FontWeight::Bold,
+                    _ => FontWeight::Normal
+                };
+
+                cr.select_font_face(font_desc.family().unwrap().split(',').next().unwrap().trim(), FontSlant::Normal, font_weight);
+                cr.set_font_size(font_desc.size() as f64 / 1024.0); // * self.get_monitor_dpi() / 96.0);
+
+
+                let extents = cr.font_extents().unwrap();
+                let char_width = extents.max_x_advance() + 2.0;
+                let row_padding = 2.0;
+                let row_height = extents.ascent() + extents.descent() + row_padding;
+                let hex_offset = padding.left() as f64 + extents.max_x_advance() + char_width * 8.0;
+                let ascii_offset = hex_offset + extents.max_x_advance() + char_width * (BYTES_PER_ROW as f64 * 2.0);
+
+                if y < padding.top() as f64 {
+                    *widget.imp().cursor.borrow_mut() = None;
+                    widget.queue_draw();
+                    return;
+                }
+
+                let mut col = ((x - hex_offset) / (char_width * 2.0)).floor() as isize;
+                let row = ((y - padding.top() as f64 - 1.0) / row_height).floor() as isize;
+
+                if x >= ascii_offset {
+                    let ascii_col = ((x - ascii_offset) / char_width).floor() as isize;
+                    col = ascii_col;
+                }
+
+                if col >= BYTES_PER_ROW as isize || row < 0 {
+                    *widget.imp().cursor.borrow_mut() = None;
+                    widget.queue_draw();
+                    return;
+                }
+
+                if row >= 0 && col >= 0 {
+                    let index = (row * BYTES_PER_ROW as isize + col) as usize;
+                    if index < widget.imp().data.borrow().len() {
+                        *widget.imp().cursor.borrow_mut() = Some(index);
+                    } else {
+                        *widget.imp().cursor.borrow_mut() = None;
+                    }
+                } else {
+                    *widget.imp().cursor.borrow_mut() = None;
+                }
+
+                widget.queue_draw();
+            }
+        });
+
+        self.obj().add_controller(motion);
+    }
+}
 
 impl WidgetImpl for HexEditorImpl {
 

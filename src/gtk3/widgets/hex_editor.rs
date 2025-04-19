@@ -293,7 +293,7 @@ impl WidgetImpl for HexEditorImpl {
 
         if y < padding.top as f64 {
             *self.cursor.borrow_mut() = None;
-            self.obj().queue_draw();
+            widget.queue_draw();
             return Proceed;
         }
 
@@ -307,7 +307,7 @@ impl WidgetImpl for HexEditorImpl {
 
         if col >= BYTES_PER_ROW as isize || row < 0 {
             *self.cursor.borrow_mut() = None;
-            self.obj().queue_draw();
+            widget.queue_draw();
             return Proceed;
         }
 
@@ -322,7 +322,7 @@ impl WidgetImpl for HexEditorImpl {
             *self.cursor.borrow_mut() = None;
         }
 
-        self.obj().queue_draw();
+        widget.queue_draw();
 
         Proceed
     }
