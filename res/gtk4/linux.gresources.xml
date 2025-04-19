@@ -56,11 +56,6 @@
         <file preprocess="xml-stripblanks">res/icons/ic_stop.svg</file>
         <file preprocess="xml-stripblanks">res/icons/ic_restart.svg</file>
 
-        <file alias="res/icons/ic_minimize.svg" preprocess="xml-stripblanks">res/icons/linux/ic_minimize.svg</file>
-        <file alias="res/icons/ic_maximize.svg" preprocess="xml-stripblanks">res/icons/linux/ic_maximize.svg</file>
-        <file alias="res/icons/ic_unmaximize.svg" preprocess="xml-stripblanks">res/icons/linux/ic_unmaximize.svg</file>
-        <file alias="res/icons/ic_close.svg" preprocess="xml-stripblanks">res/icons/linux/ic_close.svg</file>
-
         <file preprocess="xml-stripblanks">res/icons/ic_dialog_close.svg</file>
 
         <file preprocess="xml-stripblanks">res/icons/ic_status_good.svg</file>
