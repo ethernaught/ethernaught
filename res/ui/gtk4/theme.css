@@ -47,7 +47,7 @@ tooltip {
 }
 
 windowhandle {
-    min-height: 0;
+    min-height: 40px;
 }
 
 #header_bar {
