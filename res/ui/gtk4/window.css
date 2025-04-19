@@ -298,22 +298,30 @@ scrollbar {
 */
 
 scrollbar {
-    padding: 0;
-    border: 0;
-    background-color: transparent;
+    all: unset;
+    background: transparent;
+}
+
+scrollbar trough {
+    all: unset;
+    background: transparent; /* or match background */
 }
 
 scrollbar slider {
+    all: unset;
     min-width: 8px;
     min-height: 8px;
-    padding: 0;
-    border: 0;
-    margin: 0;
+    border-radius: 4px;
     box-shadow: none;
+    background-color: #5a5a5a;
 }
 
-scrollbar slider {
-    background-color: @ripple;
+scrollbar.vertical slider {
+    margin-right: 2px;
+}
+
+scrollbar.horizontal slider {
+    margin-bottom: 2px;
 }
 
 overshoot {

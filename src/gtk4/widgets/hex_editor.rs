@@ -109,7 +109,6 @@ impl WidgetImpl for HexEditorImpl {
         };
 
         cr.select_font_face(font_desc.family().unwrap().split(',').next().unwrap().trim(), FontSlant::Normal, font_weight);
-        //cr.select_font_face(font_desc.family().unwrap().split(',').next().unwrap().trim(), FontSlant::Normal, font_weight);
         cr.set_font_size(font_desc.size() as f64 / 1024.0);// * self.get_monitor_dpi() / 96.0);
 
         let extents = cr.font_extents().unwrap();
