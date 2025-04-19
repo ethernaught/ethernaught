@@ -47,6 +47,7 @@ rustup override set nightly
 //re-add the min-height for the damn menubar on GTK3 and add it for GTk4
 
 // NO TRANSIENT PARENT... - FIX FOR LINUX NATIVE PORTAL
+//Finish HexEditor
 
 fn main() {
     //unsafe { env::set_var("GTK_THEME", "Adwaita:dark") };{
