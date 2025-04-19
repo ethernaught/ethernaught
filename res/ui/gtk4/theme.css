@@ -46,6 +46,10 @@ tooltip {
     font-size: 12px;
 }
 
+windowhandle {
+    min-height: 0;
+}
+
 #header_bar {
     border-bottom: solid 1px @background_secondary;
     padding: 0 8px 0 0;

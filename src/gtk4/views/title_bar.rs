@@ -48,10 +48,7 @@ impl TitleBar {
         {
             let window_controls = WindowControls::new(PackType::End);
             root.append(&window_controls);
-        }
 
-        #[cfg(any(target_os = "linux", target_os = "windows"))]
-        {
             let menubar: PopoverMenuBar = builder
                 .object("menubar")
                 .expect("Couldn't find 'menubar' in title_bar.ui");
