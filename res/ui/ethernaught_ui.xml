@@ -132,7 +132,7 @@
             <attribute name="label" translatable="true">_Help</attribute>
             <section>
                 <item>
-                    <attribute name="action">app.website</attribute>
+                    <attribute name="action">win.website</attribute>
                     <attribute name="label" translatable="yes">Website</attribute>
                 </item>
             </section>
