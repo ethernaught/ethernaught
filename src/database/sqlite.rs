@@ -11,7 +11,7 @@ pub struct Database {
 impl Database {
 
     pub fn open(name: &str) -> io::Result<Self> {
-        let c_db_name = CString::new(name).unwrap();
+        let c_db_name = CString::new(name)?;
         let mut db: *mut u32 = ptr::null_mut();
         let rc = unsafe { sqlite3_open(c_db_name.as_ptr(), &mut db) };
         if rc != 0 {
@@ -70,8 +70,8 @@ impl Database {
                 self.db,
                 query_cstr.as_ptr(),
                 Some(query_callback),
-                &mut documents as *mut Vec<HashMap<String, String>> as *mut u32, // Pass the reference to the callback
-                ptr::null_mut(),
+                &mut documents as *mut Vec<HashMap<String, String>> as *mut u32,
+                ptr::null_mut()
             );
         }
 
@@ -89,7 +89,7 @@ fn execute_sql(db: *mut u32, sql: &str) {
 }
 
 #[link(name = "sqlite3")]
-extern "C" {
+unsafe extern "C" {
     fn sqlite3_open(filename: *const i8, db: *mut *mut u32) -> i32;
 
     fn sqlite3_exec(
