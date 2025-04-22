@@ -4,6 +4,8 @@ use std::collections::HashMap;
 use std::ffi::CString;
 use std::io;
 
+const SQLITE_OPEN_READWRITE: i32 = 0x00000002;
+
 pub struct Database {
     db: *mut u32
 }
@@ -13,7 +15,8 @@ impl Database {
     pub fn open(name: &str) -> io::Result<Self> {
         let c_db_name = CString::new(name)?;
         let mut db: *mut u32 = ptr::null_mut();
-        let rc = unsafe { sqlite3_open(c_db_name.as_ptr(), &mut db) };
+
+        let rc = unsafe { sqlite3_open_v2(c_db_name.as_ptr(), &mut db, SQLITE_OPEN_READWRITE, ptr::null()) };
         if rc != 0 {
             return Err(io::Error::last_os_error());
         }
@@ -90,7 +93,7 @@ fn execute_sql(db: *mut u32, sql: &str) {
 
 #[link(name = "sqlite3")]
 unsafe extern "C" {
-    fn sqlite3_open(filename: *const i8, db: *mut *mut u32) -> i32;
+    fn sqlite3_open_v2(filename: *const i8, db: *mut *mut u32, flags: i32, z_vfs: *const i8) -> i32;
 
     fn sqlite3_exec(
         db: *mut u32,
