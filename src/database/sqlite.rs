@@ -5,6 +5,7 @@ use std::ffi::CString;
 use std::io;
 
 const SQLITE_OPEN_READWRITE: i32 = 0x00000002;
+const SQLITE_OPEN_CREATE: i32 = 0x00000004;
 
 pub struct Database {
     db: *mut u32
@@ -12,11 +13,19 @@ pub struct Database {
 
 impl Database {
 
-    pub fn open(name: &str) -> io::Result<Self> {
+    pub fn open_existing(name: &str) -> io::Result<Self> {
+        Self::open_with_flags(name, SQLITE_OPEN_READWRITE)
+    }
+
+    pub fn open_or_create(name: &str) -> io::Result<Self> {
+        Self::open_with_flags(name, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE)
+    }
+
+    fn open_with_flags(name: &str, flags: i32) -> io::Result<Self> {
         let c_db_name = CString::new(name)?;
         let mut db: *mut u32 = ptr::null_mut();
 
-        let rc = unsafe { sqlite3_open_v2(c_db_name.as_ptr(), &mut db, SQLITE_OPEN_READWRITE, ptr::null()) };
+        let rc = unsafe { sqlite3_open_v2(c_db_name.as_ptr(), &mut db, flags, ptr::null()) };
         if rc != 0 {
             return Err(io::Error::last_os_error());
         }
