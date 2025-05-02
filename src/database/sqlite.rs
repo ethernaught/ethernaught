@@ -47,12 +47,16 @@ impl Database {
             {}
         );", name, column_definitions.join(", "));
 
-        execute_sql(self.db as *mut u32, &create_table);
+        unsafe { sqlite3_exec(self.db as *mut u32, CString::new(&*create_table).unwrap().as_ptr(), None, ptr::null_mut(), ptr::null_mut()) };
     }
 
-    pub fn insert(&mut self, table: &str, fields: &HashMap<&str, String>) {
+    pub fn insert(&mut self, table: &str, fields: &HashMap<&str, SqlValue>) {
         let field_names: Vec<&str> = fields.keys().cloned().collect();
-        let field_values: Vec<String> = fields.values().cloned().collect();
+        let field_values: Vec<String> = fields.values().map(|v| match v {
+            SqlValue::Int(i) => i.to_string(),
+            SqlValue::Uint(i) => i.to_string(),
+            SqlValue::Str(s) => format!("'{}'", s.replace('\'', "''")),
+        }).collect();
 
         let sql = format!(
             "INSERT INTO {} ({}) VALUES ({});",
@@ -61,7 +65,7 @@ impl Database {
             field_values.join(", ")
         );
 
-        execute_sql(self.db as *mut u32, &sql);
+        unsafe { sqlite3_exec(self.db as *mut u32, CString::new(&*sql).unwrap().as_ptr(), None, ptr::null_mut(), ptr::null_mut()) };
     }
 
     pub fn get(&self, table: &str, fields: Option<Vec<&str>>, condition: Option<&str>) -> Vec<HashMap<String, String>> {
@@ -95,14 +99,14 @@ impl Database {
         unsafe { sqlite3_close(self.db as *mut u32) };
     }
 }
-
-fn execute_sql(db: *mut u32, sql: &str) {
+/*
+fn execute_sql(db: *mut u32, sql: &str) -> i32 {
     let c_sql = CString::new(sql).unwrap();
-    unsafe { sqlite3_exec(db, c_sql.as_ptr(), None, ptr::null_mut(), ptr::null_mut()) };
+    unsafe { sqlite3_exec(db, c_sql.as_ptr(), None, ptr::null_mut(), ptr::null_mut()) }
 }
-
+*/
 #[link(name = "sqlite3")]
-unsafe extern "C" {
+extern "C" {
     fn sqlite3_open_v2(filename: *const i8, db: *mut *mut u32, flags: i32, z_vfs: *const i8) -> i32;
 
     fn sqlite3_exec(
@@ -133,4 +137,77 @@ extern "C" fn query_callback(_arg: *mut u32, column_count: i32, column_values: *
     documents.push(document);
 
     0
+}
+
+pub enum SqlValue {
+    Int(i128),
+    Uint(u128),
+    Float(f64),
+    Str(String)
+}
+
+macro_rules! impl_from_signed {
+    ($($t:ty),*) => {
+        $(
+            impl From<$t> for SqlValue {
+
+                fn from(value: $t) -> Self {
+                    SqlValue::Uint(value as u128)
+                }
+            }
+        )*
+    };
+}
+
+impl_from_signed!(i8, i16, i32, i64, i128, isize);
+
+macro_rules! impl_from_unsigned {
+    ($($t:ty),*) => {
+        $(
+            impl From<$t> for SqlValue {
+
+                fn from(value: $t) -> Self {
+                    SqlValue::Uint(value as u128)
+                }
+            }
+        )*
+    };
+}
+
+impl_from_unsigned!(u8, u16, u32, u64, u128, usize);
+
+macro_rules! impl_from_float {
+    ($($t:ty),*) => {
+        $(
+            impl From<$t> for SqlValue {
+
+                fn from(value: $t) -> Self {
+                    SqlValue::Float(value as f64)
+                }
+            }
+        )*
+    };
+}
+
+impl_from_float!(f32, f64);
+
+impl From<bool> for SqlValue {
+
+    fn from(value: bool) -> Self {
+        SqlValue::Str(value.to_string())
+    }
+}
+
+impl From<&str> for SqlValue {
+
+    fn from(value: &str) -> Self {
+        SqlValue::Str(value.to_string())
+    }
+}
+
+impl From<String> for SqlValue {
+
+    fn from(value: String) -> Self {
+        SqlValue::Str(value)
+    }
 }
