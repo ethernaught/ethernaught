@@ -3,6 +3,7 @@ use core::ffi::CStr;
 use std::collections::HashMap;
 use std::ffi::CString;
 use std::io;
+use crate::database::sql_value::SqlValue;
 
 const SQLITE_OPEN_READWRITE: i32 = 0x00000002;
 const SQLITE_OPEN_CREATE: i32 = 0x00000004;
@@ -55,6 +56,7 @@ impl Database {
         let field_values: Vec<String> = fields.values().map(|v| match v {
             SqlValue::Int(i) => i.to_string(),
             SqlValue::Uint(i) => i.to_string(),
+            SqlValue::Float(i) => i.to_string(),
             SqlValue::Str(s) => format!("'{}'", s.replace('\'', "''")),
         }).collect();
 
