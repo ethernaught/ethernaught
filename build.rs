@@ -12,14 +12,14 @@ glib-compile-resources res/gtk4/linux.gresources.xml --target=res/resources.gres
 glib-compile-resources res/gtk4/windows.gresources.xml --target=res/resources.gresources
 
 WINDOWS TEST BUILD
-cargo build --release
-powershell -ExecutionPolicy Bypass -File tools\package.ps1
-
-WINDOWS BUILD
 gdk-pixbuf-query-loaders --update-cache
 
 $env:PATH="C:\Windows\System32;C:\Windows"
 Start-Process -FilePath .\target\release\ethernaught.exe
+
+WINDOWS BUILD
+cargo build --release
+powershell -ExecutionPolicy Bypass -File tools\package.ps1
 */
 
 fn main() {

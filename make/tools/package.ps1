@@ -127,6 +127,55 @@ Copy-RequiredDlls -ExePath (Join-Path $Out "$AppName.exe") -OutDir $Out -MingwBi
 
 
 
+
+# ------------------------------------------------------------
+# gdk-pixbuf loaders (PNG/JPG/SVG/etc)
+# ------------------------------------------------------------
+Write-Host "== Copying gdk-pixbuf loaders =="
+
+$pixRel = "gdk-pixbuf-2.0\2.10.0"
+$pixLoadersSrc = Join-Path $MingwRoot ("lib\" + $pixRel + "\loaders")
+$pixLoadersOut = Join-Path $Out      ("lib\" + $pixRel + "\loaders")
+
+if (!(Test-Path $pixLoadersSrc)) {
+  throw "Pixbuf loaders source not found: $pixLoadersSrc"
+}
+
+New-Item -ItemType Directory -Force -Path $pixLoadersOut | Out-Null
+Copy-Item (Join-Path $pixLoadersSrc "*") $pixLoadersOut -Recurse -Force
+
+# Copy dependencies for each loader DLL into dist root so they can load
+Write-Host "== Copying loader DLL dependencies =="
+Get-ChildItem -Path $pixLoadersOut -Filter "*.dll" | ForEach-Object {
+  Copy-RequiredDlls -ExePath $_.FullName -OutDir $Out -MingwBin $bin
+}
+
+# ------------------------------------------------------------
+# Generate loaders.cache in the SAME place you point GDK_PIXBUF_MODULE_FILE
+# ------------------------------------------------------------
+Write-Host "== Generating gdk-pixbuf loaders.cache =="
+$dstToolDir = Join-Path $Out "bin"
+$dstTool    = Join-Path $dstToolDir "gdk-pixbuf-query-loaders.exe"
+New-Item -ItemType Directory -Force -Path $dstToolDir | Out-Null
+
+$srcTool = Join-Path $MingwRoot "bin\gdk-pixbuf-query-loaders.exe"
+Copy-Item $srcTool $dstTool -Force
+
+# Ensure the tool itself can run using your dist DLL set
+Copy-RequiredDlls -ExePath $dstTool -OutDir $Out -MingwBin $bin
+
+$env:PATH = "$Out;$Out\bin;$env:PATH"
+$env:GDK_PIXBUF_MODULEDIR   = $pixLoadersOut
+$env:GDK_PIXBUF_MODULE_FILE = Join-Path $Out ("lib\" + $pixRel + "\loaders.cache")
+
+& $dstTool --update-cache
+
+# Sanity check: print modules found
+& $dstTool --print-modules | Out-Host
+
+
+
+
 # ------------------------------------------------------------
 # (Optional) Icon themes (uncomment if you use themed icons)
 # ------------------------------------------------------------

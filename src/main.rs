@@ -6,6 +6,7 @@ mod utils;
 mod bus;
 mod sniffer;
 
+use std::env;
 use std::path::PathBuf;
 
 #[cfg(feature = "gtk3")]
