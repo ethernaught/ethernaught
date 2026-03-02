@@ -7,7 +7,7 @@ VERSION="0.1.0"
 BUILD_TYPE=${1:release}
 GTK_VERSION=${2:gtk4}
 ARCH="arm64"
-BUILD_DIR="../build/$BUILD_TYPE"
+BUILD_DIR="../target/$BUILD_TYPE"
 DMG_DIR="../build/dmg-pkg/"
 
 # Ensure cargo is installed
@@ -27,7 +27,7 @@ cd make
 rm -rf "$DMG_DIR"
 
 mkdir -p "$DMG_DIR/$APP_NAME.app/Contents/MacOS"
-cp "../target/$BUILD_TYPE/$APP_NAME" "$DMG_DIR/$APP_NAME.app/Contents/MacOS/"
+cp "$BUILD_DIR/$APP_NAME" "$DMG_DIR/$APP_NAME.app/Contents/MacOS/"
 
 cat > "$DMG_DIR/$APP_NAME.app/Contents/Info.plist" <<EOF
 <?xml version="1.0" encoding="UTF-8"?>
