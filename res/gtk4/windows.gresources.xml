@@ -9,7 +9,7 @@
 
         <file alias="res/ui/window.ui" preprocess="xml-stripblanks">res/ui/gtk4/window.ui</file>
         <file alias="res/ui/window.css">res/ui/gtk4/window.css</file>
-        <file alias="res/ui/theme.css">res/ui/gtk4/theme.css</file>
+        <file alias="res/ui/theme.css">res/ui/gtk4/windows/theme.css</file>
 
 
 
@@ -56,10 +56,14 @@
         <file preprocess="xml-stripblanks">res/icons/ic_stop.svg</file>
         <file preprocess="xml-stripblanks">res/icons/ic_restart.svg</file>
 
-        <file alias="res/icons/ic_minimize.svg" preprocess="xml-stripblanks">res/icons/linux/ic_minimize.svg</file>
-        <file alias="res/icons/ic_maximize.svg" preprocess="xml-stripblanks">res/icons/linux/ic_maximize.svg</file>
-        <file alias="res/icons/ic_unmaximize.svg" preprocess="xml-stripblanks">res/icons/linux/ic_unmaximize.svg</file>
-        <file alias="res/icons/ic_close.svg" preprocess="xml-stripblanks">res/icons/linux/ic_close.svg</file>
+        <file alias="res/icons/ic_minimize.svg" preprocess="xml-stripblanks">res/icons/windows/ic_minimize.svg</file>
+        <file alias="res/icons/ic_minimize_focus.svg" preprocess="xml-stripblanks">res/icons/windows/ic_minimize_focus.svg</file>
+        <file alias="res/icons/ic_maximize.svg" preprocess="xml-stripblanks">res/icons/windows/ic_maximize.svg</file>
+        <file alias="res/icons/ic_maximize_focus.svg" preprocess="xml-stripblanks">res/icons/windows/ic_maximize_focus.svg</file>
+        <file alias="res/icons/ic_unmaximize.svg" preprocess="xml-stripblanks">res/icons/windows/ic_unmaximize.svg</file>
+        <file alias="res/icons/ic_unmaximize_focus.svg" preprocess="xml-stripblanks">res/icons/windows/ic_unmaximize_focus.svg</file>
+        <file alias="res/icons/ic_close.svg" preprocess="xml-stripblanks">res/icons/windows/ic_close.svg</file>
+        <file alias="res/icons/ic_close_focus.svg" preprocess="xml-stripblanks">res/icons/windows/ic_close_focus.svg</file>
 
         <file preprocess="xml-stripblanks">res/icons/ic_dialog_close.svg</file>
 

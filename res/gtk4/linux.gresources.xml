@@ -9,7 +9,7 @@
 
         <file alias="res/ui/window.ui" preprocess="xml-stripblanks">res/ui/gtk4/window.ui</file>
         <file alias="res/ui/window.css">res/ui/gtk4/window.css</file>
-        <file alias="res/ui/theme.css">res/ui/gtk4/theme.css</file>
+        <file alias="res/ui/theme.css">res/ui/gtk4/linux/theme.css</file>
 
 
 

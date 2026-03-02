@@ -88,7 +88,7 @@ impl SidebarView {
 
 
 
-        let db = Database::open(get_lib_path("database.db").to_str().unwrap());
+        let db = Database::open_existing(get_lib_path("database.db").to_str().unwrap());
 
         let actions = SimpleActionGroup::new();
 

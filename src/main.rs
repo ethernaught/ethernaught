@@ -1,4 +1,4 @@
-#![cfg_attr(target_os = "windows", windows_subsystem = "windows")]
+//#![cfg_attr(target_os = "windows", windows_subsystem = "windows")]
 
 mod pcap_ext;
 mod database;
@@ -17,15 +17,6 @@ use crate::gtk3::app::App;
 mod gtk4;
 #[cfg(feature = "gtk4")]
 use crate::gtk4::app::App;
-
-//export GTK_DEBUG=interactive
-
-//glib-compile-resources res/gtk4/linux.gresources.xml --target=res/resources.gresources
-
-/*
-rustup install nightly
-rustup override set nightly
-*/
 
 //re-implement dropdown replay...
 //save fragments so we can clear adapter
