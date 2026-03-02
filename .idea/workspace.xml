@@ -7,7 +7,10 @@
     <cargoProject FILE="$PROJECT_DIR$/Cargo.toml" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f0704e63-1929-42d3-83d7-8cbc904dc132" name="Changes" comment="" />
+    <list default="true" id="f0704e63-1929-42d3-83d7-8cbc904dc132" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gtk4/views/bottom_bar.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/gtk4/views/bottom_bar.rs" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -54,7 +57,7 @@
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.rust.reset.selective.auto.import&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/brad/CLionProjects/ethernaught/src/database&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/brad/RustroverProjects/rlibdns&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -140,6 +143,13 @@
       <workItem from="1744267747100" duration="52000" />
       <workItem from="1746205603620" duration="26000" />
       <workItem from="1746205711113" duration="71000" />
+      <workItem from="1767530043579" duration="3233000" />
+      <workItem from="1767663665097" duration="110000" />
+      <workItem from="1767744557138" duration="3821000" />
+      <workItem from="1768778789534" duration="680000" />
+      <workItem from="1769308669489" duration="4865000" />
+      <workItem from="1769338441643" duration="643000" />
+      <workItem from="1772430713477" duration="196000" />
     </task>
     <servers />
   </component>
