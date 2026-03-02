@@ -18,8 +18,8 @@ fi
 
 # Build Rust project
 echo "Building Rust project in $BUILD_TYPE mode..."
-glib-compile-resources ../res/"$GTK_VERSION"/macos.gresources.xml --target=../res/resources.gresources
 cd ..
+glib-compile-resources res/"$GTK_VERSION"/macos.gresources.xml --target=res/resources.gresources
 cargo build --profile "$BUILD_TYPE" --no-default-features --features "$GTK_VERSION"
 cd make
 
@@ -27,7 +27,7 @@ cd make
 rm -rf "$DMG_DIR"
 
 mkdir -p "$DMG_DIR/$APP_NAME.app/Contents/MacOS"
-cp "$BUILD_DIR/$APP_NAME" "$DMG_DIR/$APP_NAME.app/Contents/MacOS/"
+cp "../target/$BUILD_TYPE/$APP_NAME" "$DMG_DIR/$APP_NAME.app/Contents/MacOS/"
 
 cat > "$DMG_DIR/$APP_NAME.app/Contents/Info.plist" <<EOF
 <?xml version="1.0" encoding="UTF-8"?>
@@ -51,7 +51,7 @@ cat > "$DMG_DIR/$APP_NAME.app/Contents/Info.plist" <<EOF
 </plist>
 EOF
 
-mkdir -p build/icon.iconset
+mkdir -p ../build/icon.iconset
 
 cp ../res/icons/app/icon_16x16.png       ../build/icon.iconset/icon_16x16.png
 cp ../res/icons/app/icon_32x32.png       ../build/icon.iconset/icon_16x16@2x.png
