@@ -7,8 +7,8 @@ VERSION="0.1.0"
 BUILD_TYPE=${1:release}
 GTK_VERSION=${2:gtk4}
 ARCH="amd64"
-BUILD_DIR="target/$BUILD_TYPE"
-DEB_DIR="target/deb-pkg"
+BUILD_DIR="../build/$BUILD_TYPE"
+DEB_DIR="../build/deb-pkg"
 
 # Ensure cargo is installed
 if ! command -v cargo &> /dev/null; then
@@ -18,8 +18,10 @@ fi
 
 # Build Rust project
 echo "Building Rust project in $BUILD_TYPE mode..."
-glib-compile-resources res/"$GTK_VERSION"/linux.gresources.xml --target=res/resources.gresources
+glib-compile-resources ../res/"$GTK_VERSION"/linux.gresources.xml --target=../res/resources.gresources
+cd ..
 cargo build --profile "$BUILD_TYPE" --no-default-features --features "$GTK_VERSION"
+cd make
 
 # Remove old package directory if exists
 rm -rf "$DEB_DIR"
@@ -58,28 +60,28 @@ EOF
 mkdir -p "$DEB_DIR/usr/share/icons/hicolor"
 
 mkdir -p "$DEB_DIR/usr/share/icons/hicolor/16x16/apps"
-cp res/icons/app/icon_16x16.png       "$DEB_DIR/usr/share/icons/hicolor/16x16/apps/$APP_NAME.png"
+cp ../res/icons/app/icon_16x16.png       "$DEB_DIR/usr/share/icons/hicolor/16x16/apps/$APP_NAME.png"
 mkdir -p "$DEB_DIR/usr/share/icons/hicolor/32x32/apps"
-cp res/icons/app/icon_32x32.png       "$DEB_DIR/usr/share/icons/hicolor/32x32/apps/$APP_NAME.png"
+cp ../res/icons/app/icon_32x32.png       "$DEB_DIR/usr/share/icons/hicolor/32x32/apps/$APP_NAME.png"
 mkdir -p "$DEB_DIR/usr/share/icons/hicolor/64x64/apps"
-cp res/icons/app/icon_64x64.png       "$DEB_DIR/usr/share/icons/hicolor/64x64/apps/$APP_NAME.png"
+cp ../res/icons/app/icon_64x64.png       "$DEB_DIR/usr/share/icons/hicolor/64x64/apps/$APP_NAME.png"
 mkdir -p "$DEB_DIR/usr/share/icons/hicolor/128x128/apps"
-cp res/icons/app/icon_128x128.png       "$DEB_DIR/usr/share/icons/hicolor/128x128/apps/$APP_NAME.png"
+cp ../res/icons/app/icon_128x128.png       "$DEB_DIR/usr/share/icons/hicolor/128x128/apps/$APP_NAME.png"
 mkdir -p "$DEB_DIR/usr/share/icons/hicolor/256x256/apps"
-cp res/icons/app/icon_256x256.png       "$DEB_DIR/usr/share/icons/hicolor/256x256/apps/$APP_NAME.png"
+cp ../res/icons/app/icon_256x256.png       "$DEB_DIR/usr/share/icons/hicolor/256x256/apps/$APP_NAME.png"
 mkdir -p "$DEB_DIR/usr/share/icons/hicolor/512x512/apps"
-cp res/icons/app/icon_512x512.png       "$DEB_DIR/usr/share/icons/hicolor/512x512/apps/$APP_NAME.png"
+cp ../res/icons/app/icon_512x512.png       "$DEB_DIR/usr/share/icons/hicolor/512x512/apps/$APP_NAME.png"
 
 
 # Create fonts
 mkdir -p "$DEB_DIR/usr/share/fonts/truetype/$APP_NAME"
-cp -r res/fonts/* "$DEB_DIR/usr/share/fonts/truetype/$APP_NAME/" || true
+cp -r ../res/fonts/* "$DEB_DIR/usr/share/fonts/truetype/$APP_NAME/" || true
 
 # Create database file
 mkdir -p "$DEB_DIR/usr/var/lib/$APP_NAME"
-cp database.db "$DEB_DIR/usr/var/lib/$APP_NAME/database.db"
+cp ../database.db "$DEB_DIR/usr/var/lib/$APP_NAME/database.db"
 
 # Build the .deb package
-dpkg-deb --build "$DEB_DIR" "target/${APP_NAME}_${VERSION}_${ARCH}.deb"
+dpkg-deb --build "$DEB_DIR" "../build/${APP_NAME}_${VERSION}_${ARCH}.deb"
 
-echo "Deb package created: target/${APP_NAME}_${VERSION}_${ARCH}.deb"
+echo "Deb package created: build/${APP_NAME}_${VERSION}_${ARCH}.deb"
