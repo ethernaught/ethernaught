@@ -1,3 +1,5 @@
+#![cfg_attr(target_os = "windows", windows_subsystem = "windows")]
+
 mod pcap_ext;
 mod database;
 mod utils;
@@ -50,7 +52,7 @@ rustup override set nightly
 //Finish HexEditor
 
 fn main() {
-    //unsafe { env::set_var("GTK_THEME", "Adwaita:dark") };{
+    //unsafe { env::set_var("GTK_THEME", "Adwaita:dark") };
     let app = App::new();
     app.run();
 }

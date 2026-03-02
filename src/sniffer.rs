@@ -99,14 +99,11 @@ impl Sniffer {
                                         captures.push(cap);
                                     }
                                     Err(_) => {
-                                        //send_event(Box::new(PermissionEvent::new(false)));
-                                        //return;
                                     }
                                 }
                             }
                             Err(_) => {
-                                //send_event(Box::new(PermissionEvent::new(false)));
-                                //return;
+                                send_event(Box::new(PermissionEvent::new(false)));
                             }
                         }
                     }
