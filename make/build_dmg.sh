@@ -70,6 +70,6 @@ ln -s /Applications "$DMG_DIR/Applications"
 # Create the DMG
 hdiutil create -volname "${APP_NAME} Installer" \
   -srcfolder "$DMG_DIR" \
-  -ov -format UDZO "../build/${APP_NAME}_${VERSION}_${ARCH}.dmg"
+  -ov -format UDZO "../build/${APP_NAME}_${VERSION}_${ARCH}_${GTK_VERSION}.dmg"
 
-echo "Dmg package created: build/${APP_NAME}_${VERSION}_${ARCH}.dmg"
+echo "Dmg package created: build/${APP_NAME}_${VERSION}_${ARCH}_${GTK_VERSION}.dmg"

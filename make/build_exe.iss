@@ -1,5 +1,9 @@
 ; installer\ethernaught.iss
 
+#ifndef GtkVersion
+  #define GtkVersion "gtk4"
+#endif
+
 #define MyAppName "ethernaught"
 #define MyAppExeName "Ethernaught.exe"
 #define MyAppVersion "0.1.0"
@@ -17,7 +21,7 @@ DefaultDirName={autopf}\{#MyAppName}
 DefaultGroupName={#MyAppName}
 DisableProgramGroupPage=yes
 OutputDir=..\build
-OutputBaseFilename=Ethernaught-Setup-{#MyAppVersion}
+OutputBaseFilename=Ethernaught-Setup-{#MyAppVersion}_{#GtkVersion}
 Compression=lzma2
 SolidCompression=yes
 WizardStyle=modern

@@ -82,6 +82,6 @@ mkdir -p "$DEB_DIR/usr/var/lib/$APP_NAME"
 cp ../database.db "$DEB_DIR/usr/var/lib/$APP_NAME/database.db"
 
 # Build the .deb package
-dpkg-deb --build "$DEB_DIR" "../build/${APP_NAME}_${VERSION}_${ARCH}.deb"
+dpkg-deb --build "$DEB_DIR" "../build/${APP_NAME}_${VERSION}_${ARCH}_${GTK_VERSION}.deb"
 
-echo "Deb package created: build/${APP_NAME}_${VERSION}_${ARCH}.deb"
+echo "Deb package created: build/${APP_NAME}_${VERSION}_${ARCH}_${GTK_VERSION}.deb"

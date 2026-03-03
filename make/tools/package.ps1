@@ -192,4 +192,6 @@ Write-Host "Test like a clean PC:"
 Write-Host "  `$env:PATH='C:\Windows\System32;C:\Windows'"
 Write-Host "  Start-Process -WorkingDirectory '$Out' -FilePath '$Out\$AppName.exe'"
 
-& "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" ".\build_exe.iss"
+#& "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" "/GtkVersion=`"$GtkVersion`"" ".\build_exe.iss"
+$ISCC = "C:\Program Files (x86)\Inno Setup 6\ISCC.exe"
+& $ISCC "/DGtkVersion=`"$GtkVersion`"" ".\build_exe.iss"
