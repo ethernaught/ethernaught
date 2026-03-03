@@ -835,7 +835,9 @@ dependencies = [
 
 [[package]]
 name = "rlibpcap"
-version = "0.1.0"
+version = "0.1.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "75eabd3b951a9e65c65f7eab8b88b6308cf62a2e7a396382575e39f67ad40f63"
 
 [[package]]
 name = "rustc_version"
