@@ -173,7 +173,7 @@ impl MainWindow {
         register_stack_actions(&_self);
 
 
-        _self.add_view(Box::new(MainView::from_pcap(&_self, &PathBuf::from_str("/home/brad/Downloads/ssl-v2.pcap").unwrap())));
+        //_self.add_view(Box::new(MainView::from_pcap(&_self, &PathBuf::from_str("/home/brad/Downloads/ssl-v2.pcap").unwrap())));
 
 
         let sniffer = Sniffer::new();
