@@ -3,6 +3,7 @@ use std::collections::HashMap;
 use std::path::PathBuf;
 use std::process::exit;
 use std::rc::Rc;
+use std::str::FromStr;
 use gtk4::{gdk, style_context_add_provider_for_display, Application, ApplicationWindow, Builder, CssProvider, GestureClick, HeaderBar, Stack, StackPage, StyleContext, Widget};
 use gtk4::prelude::{BoxExt, Cast, GestureSingleExt, GtkWindowExt, ListModelExt, ObjectExt, StyleContextExt, WidgetExt};
 use rlibpcap::devices::Device;
@@ -170,6 +171,9 @@ impl MainWindow {
 
         register_window_actions(&_self);
         register_stack_actions(&_self);
+
+
+        _self.add_view(Box::new(MainView::from_pcap(&_self, &PathBuf::from_str("/home/brad/Downloads/ssl-v2.pcap").unwrap())));
 
 
         let sniffer = Sniffer::new();

@@ -1,5 +1,8 @@
 #devices_view {
     padding: 20px 160px;
+    margin: 0 10px;
+    background-color: @background_secondary;
+    border-radius: 10px;
 }
 
 #devices_view #header #title {
@@ -11,11 +14,11 @@
 }
 
 #devices_view list {
-    background-color: @background;
+    background-color: @background_secondary;
 }
 
 #devices_view list row {
-    background-color: @background;
+    background-color: @background_secondary;
     outline: none;
     border: none;
     border-radius: 5px;

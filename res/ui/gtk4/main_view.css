@@ -1,18 +1,20 @@
-#main_view {
-    border-left: solid 1px @background_secondary;
+#packet_view {
+    margin-right: 10px;
+    border-radius: 10px;
 }
-
 
 
 #packet_view entry {
     padding: 4px 8px;
     border: none;
-    border-radius: 0;
     border-bottom: solid 1px @background_shimmer;
     color: @text_primary;
     caret-color: @text_primary;
-    background-color: @background_secondary;
+    background-color: @background_header;
     font-size: 14px;
+    border-radius: 0;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
     outline: none;
 }
 
@@ -23,12 +25,16 @@ entry selection {
 
 #packet_view #list_scroll_layout {
     background-color: @background_secondary;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
 }
 
 #packet_view treeview {
     color: @text_secondary;
     background-color: @background_secondary;
     outline: none;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
 }
 
 #packet_view treeview header button {
@@ -38,7 +44,7 @@ entry selection {
     border-bottom: solid 1px @background_shimmer;
     font-weight: normal;
     color: @text_secondary;
-    background-color: @background_secondary;
+    background-color: @background_header;
 }
 
 #packet_view treeview *:selected {
@@ -47,7 +53,6 @@ entry selection {
 
 #main_view #side_navbar {
     padding: 4px;
-    border-right: solid 1px @background_secondary;
 }
 
 #main_view #side_navbar button {
@@ -84,12 +89,21 @@ entry selection {
 
 
 
-#main_view #terminal_layout {
-    border-top: solid 1px @background_secondary;
+#main_view #terminal_view {
+    background-color: @background_secondary;
+    margin: 5px 10px 0 0;
+    border-radius: 10px;
+}
+
+#main_view #terminal_view #title {
+    padding: 10px;
+    background-color: @background_header;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-bottom: solid 1px @background_shimmer;
 }
 
 #main_view #terminal_title label {
-    padding: 0 10px;
     color: @text_primary;
     font-size: 14px;
 }
@@ -99,18 +113,22 @@ entry selection {
     font-family: "Ethernaught Mono", monospace;
     font-size: 18px;
     color: @text_secondary;
-    background-color: @background_secondary;
 }
 
 
 
 
 
-
+#sidebar_view {
+    margin-right: 10px;
+    border-radius: 10px;
+}
 
 #sidebar_view #header {
     padding: 4px 4px 3px 4px;
-    border-bottom: solid 1px @background_shimmer;
+    background-color: @background_header;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
 }
 
 #sidebar_view #header button {
@@ -136,7 +154,10 @@ entry selection {
     background-color: @ripple;
 }
 
-
+#sidebar_view #content {
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
 
 
 
@@ -154,7 +175,10 @@ entry selection {
 
 
 #sidebar_view #details {
+    margin-top: 5px;
     padding: 5px 0;
+    background-color: @background_secondary;
+    border-radius: 10px;
 }
 
 #sidebar_view #dropdown button {
@@ -166,6 +190,7 @@ entry selection {
     font-weight: bold;
     color: @text_dark;
     background: transparent;
+    background-color: @background_header;
 }
 
 #sidebar_view #dropdown button:hover {
@@ -174,11 +199,11 @@ entry selection {
 
 #sidebar_view #dropdown list {
     padding-left: 32px;
-    background-color: @background;
+    background-color: @background_secondary;
 }
 
 #sidebar_view #dropdown list row {
-    background-color: @background;
+    background-color: @background_secondary;
     outline: none;
     border: none;
     margin: 0 5px;
