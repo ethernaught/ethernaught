@@ -168,13 +168,10 @@ impl MainWindow {
         };
 
         _self.add_view(Box::new(DevicesView::new(&_self, devices)));
+        _self.add_view(Box::new(MainView::from_pcap(&_self, &PathBuf::from_str("C:/Users/brad/Downloads/tcp-ecn-sample.pcap").unwrap())));
 
         register_window_actions(&_self);
         register_stack_actions(&_self);
-
-
-        //_self.add_view(Box::new(MainView::from_pcap(&_self, &PathBuf::from_str("/home/brad/Downloads/ssl-v2.pcap").unwrap())));
-
 
         let sniffer = Sniffer::new();
         sniffer.run();

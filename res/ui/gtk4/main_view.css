@@ -49,6 +49,7 @@ entry selection {
 
 #packet_view treeview *:selected {
     background: @primary;
+    border-radius: 0;
 }
 
 #main_view #side_navbar {
