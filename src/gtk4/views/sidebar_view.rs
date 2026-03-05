@@ -1,9 +1,9 @@
 use std::io;
 use std::net::IpAddr;
-use gtk4::{Builder, Paned, ScrolledWindow};
+use gtk4::{Builder, Overflow, Paned, ScrolledWindow};
 use gtk4::gdk::RGBA;
 use gtk4::gio::{SimpleAction, SimpleActionGroup};
-use gtk4::prelude::{ActionMapExt, BoxExt};
+use gtk4::prelude::{ActionMapExt, BoxExt, WidgetExt};
 use rlibpcap::packet::layers::ethernet_frame::arp::arp_extension::ArpExtension;
 use rlibpcap::packet::layers::ethernet_frame::ethernet_frame::{EthernetFrame, ETHERNET_FRAME_LEN};
 use rlibpcap::packet::layers::ethernet_frame::inter::ethernet_types::EthernetTypes;
@@ -63,6 +63,7 @@ impl SidebarView {
         let hex_scroll_layout: ScrolledWindow = builder
             .object("hex_scroll_layout")
             .expect("Couldn't find 'hex_scroll_layout' in sidebar_view.ui");
+        hex_scroll_layout.set_overflow(Overflow::Hidden);
 
         //content.set_child_shrink(&hex_scroll_layout, false);
         //content.set_child_resize(&hex_scroll_layout, true);
@@ -70,6 +71,7 @@ impl SidebarView {
         let details_scroll_layout: ScrolledWindow = builder
             .object("details_scroll_layout")
             .expect("Couldn't find 'details_scroll_layout' in sidebar_view.ui");
+        details_scroll_layout.set_overflow(Overflow::Hidden);
 
         //content.set_child_shrink(&details_scroll_layout, false);
 

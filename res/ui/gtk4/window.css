@@ -61,7 +61,9 @@ button:focus, button:checked {
 }
 
 
-
+paned separator {
+    min-height: 10px;
+}
 
 
 
