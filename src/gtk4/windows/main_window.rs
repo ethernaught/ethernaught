@@ -168,7 +168,7 @@ impl MainWindow {
         };
 
         _self.add_view(Box::new(DevicesView::new(&_self, devices)));
-        //_self.add_view(Box::new(MainView::from_pcap(&_self, &PathBuf::from_str("C:/Users/brad/Downloads/tcp-ecn-sample.pcap").unwrap())));
+        _self.add_view(Box::new(MainView::from_pcap(&_self, &PathBuf::from_str("/home/brad/Downloads/ssl-v2.pcap").unwrap())));
 
         register_window_actions(&_self);
         register_stack_actions(&_self);
@@ -184,7 +184,7 @@ impl MainWindow {
 
         let provider = CssProvider::new();
         provider.load_from_resource("/net/ethernaught/rust/res/ui/window.css");
-        //provider.load_from_path("res/ui/gtk3/window.css").expect("Failed to load CSS file.");
+        //provider.load_from_path("res/ui/window.css").expect("Failed to load CSS file.");
 
         style_context_add_provider_for_display(&gdk::Display::default().unwrap(), &provider, gtk4::STYLE_PROVIDER_PRIORITY_APPLICATION);
 

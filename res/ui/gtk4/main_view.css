@@ -92,7 +92,7 @@ entry selection {
 
 #main_view #terminal_view {
     background-color: @background_secondary;
-    margin-bottom: 10px;
+    margin-right: 10px;
     border-radius: 10px;
 }
 

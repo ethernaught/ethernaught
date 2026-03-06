@@ -17,7 +17,7 @@
                 <property name="orientation">vertical</property>
 
                 <child>
-                    <object class="Overlay">
+                    <object class="GtkOverlay">
                         <property name="visible">True</property>
                         <property name="hexpand">True</property>
                         <property name="vexpand">True</property>
@@ -30,7 +30,7 @@
                             </object>
                         </child>
 
-                        <child>
+                        <child type="overlay">
                             <object class="GtkBox" id="notifications">
                                 <property name="name">notifications</property>
                                 <property name="visible">True</property>
