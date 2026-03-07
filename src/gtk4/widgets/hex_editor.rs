@@ -24,11 +24,11 @@ mod imp {
         pub data: RefCell<Vec<u8>>,
         pub cursor: RefCell<Option<usize>>,
         pub selection: RefCell<Option<(usize, usize)>>,
-        #[property(name = "line_number_color", get, set = Self::set_line_number_color, type = RGBA)]
+        #[property(name = "line-number-color", get, set = Self::set_line_number_color, type = RGBA)]
         pub line_number_color: Cell<RGBA>,
-        #[property(name = "cursor_color", get, set = Self::set_cursor_color, type = RGBA)]
+        #[property(name = "cursor-color", get, set = Self::set_cursor_color, type = RGBA)]
         pub cursor_color: Cell<RGBA>,
-        #[property(name = "selection_color", get, set = Self::set_selection_color, type = RGBA)]
+        #[property(name = "selection-color", get, set = Self::set_selection_color, type = RGBA)]
         pub selection_color: Cell<RGBA>
     }
 
@@ -53,11 +53,11 @@ mod imp {
         }
 
         pub fn set_cursor_color(&self, color: RGBA) {
-            self.line_number_color.set(color);
+            self.cursor_color.set(color);
         }
 
         pub fn set_selection_color(&self, color: RGBA) {
-            self.line_number_color.set(color);
+            self.selection_color.set(color);
         }
 
         fn calculate_size(&self) -> (i32, i32) {
