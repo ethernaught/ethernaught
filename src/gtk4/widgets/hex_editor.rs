@@ -263,7 +263,7 @@ glib::wrapper! {
 }
 
 impl HexEditor {
-    
+
     pub fn new() -> Self {
         glib::Object::builder::<HexEditor>().build()
     }
