@@ -172,9 +172,6 @@ entry selection {
     font-family: "Ethernaught Mono", monospace;
     font-size: 16px;
     color: @text_dark;
-    line-number-color: #494e57;
-    cursor-color: #9b9d9f;
-    selection-color: #59436e;
     background-color: @background_secondary;
 }
 

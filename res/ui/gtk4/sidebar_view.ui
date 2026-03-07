@@ -72,6 +72,9 @@
                                 <property name="visible">True</property>
                                 <property name="hexpand">True</property>
                                 <property name="vexpand">True</property>
+                                <property name="line-number-color">#494E57</property>
+                                <property name="cursor-color">#9B9D9F</property>
+                                <property name="selection-color">#59436E</property>
                             </object>
                         </child>
                     </object>
