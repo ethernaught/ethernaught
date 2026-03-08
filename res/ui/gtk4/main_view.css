@@ -163,7 +163,12 @@ entry selection {
 
 
 
-#sidebar_view #hex_scroll_layout, #sidebar_view #details_scroll_layout {
+#sidebar_view #hex_scroll_layout {
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+#sidebar_view #details_scroll_layout {
     border-radius: 10px;
 }
 

@@ -30,7 +30,7 @@
         <child>
             <object class="GtkLabel" id="status">
                 <property name="name">status</property>
-                <property name="visible">True</property>
+                <property name="visible">False</property>
                 <property name="label">Packets: 0 • Dropped: 0 (0.0%)</property>
             </object>
         </child>

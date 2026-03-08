@@ -75,8 +75,7 @@ mod imp {
         }
 
         fn editor_font_desc(&self) -> FontDescription {
-            let widget = self.obj();
-            let mut desc = widget
+            let mut desc = self.obj()
                 .pango_context()
                 .font_description()
                 .unwrap_or_else(|| FontDescription::from_string("Monospace 11"));

@@ -117,9 +117,12 @@ impl MainView {
 
         let event_listener = Some(RefCell::new(register_event("capture_event", {
             let packets = packets.clone();
+            let bottom_bar = window.bottom_bar.clone();
+
             move |event| {
                 let event = event.as_any().downcast_ref::<CaptureEvent>().unwrap();
                 packets.add(event.get_packet().clone());
+                bottom_bar.add_packet();
                 Continue
             }
         }, true)));
@@ -130,8 +133,11 @@ impl MainView {
         action.connect_activate({
             let show_capture_bar = show_capture_bar.clone();
             let event_listener = event_listener.as_ref().unwrap().clone();
+            let bottom_bar = window.bottom_bar.clone();
+
             move |_, _| {
                 show_capture_bar.borrow()(true);
+                bottom_bar.reset_status();
                 resume_event("capture_event", event_listener.borrow().clone());
             }
         });
@@ -250,11 +256,14 @@ impl MainView {
         let event_listener = Some(RefCell::new(register_event("capture_event", {
             let if_index = device.get_index();
             let packets = packets.clone();
+            let bottom_bar = window.bottom_bar.clone();
+
             move |event| {
                 let event = event.as_any().downcast_ref::<CaptureEvent>().unwrap();
 
                 if event.get_if_index() == if_index {
                     packets.add(event.get_packet().clone());
+                    bottom_bar.add_packet();
                 }
                 Continue
             }
@@ -266,8 +275,11 @@ impl MainView {
         action.connect_activate({
             let show_capture_bar = show_capture_bar.clone();
             let event_listener = event_listener.as_ref().unwrap().clone();
+            let bottom_bar = window.bottom_bar.clone();
+
             move |_, _| {
                 show_capture_bar.borrow()(true);
+                bottom_bar.reset_status();
                 resume_event("capture_event", event_listener.borrow().clone());
             }
         });
@@ -438,30 +450,30 @@ impl Stackable for MainView {
 }
 
 fn show_title_bar(window: &MainWindow, name: &str, data_link_type: DataLinkTypes) -> impl Fn(bool) {
-    let title_bar = window.title_bar.clone();
+    let window = window.clone();
     let name = name.to_string();
     move |shown| {
         if shown {
             match data_link_type {
                 DataLinkTypes::Null => {
-                    title_bar.title_bar.style_context().add_class("any");
-                    title_bar.network_type_icon.set_resource(Some("/net/ethernaught/rust/res/icons/ic_any.svg"));
+                    window.window.style_context().add_class("any");
+                    window.title_bar.network_type_icon.set_resource(Some("/net/ethernaught/rust/res/icons/ic_any.svg"));
                 }
                 DataLinkTypes::En10mb | DataLinkTypes::En3mb | DataLinkTypes::Sll2 => {
-                    title_bar.title_bar.style_context().add_class("ethernet");
-                    title_bar.network_type_icon.set_resource(Some("/net/ethernaught/rust/res/icons/ic_ethernet.svg"));
+                    window.window.style_context().add_class("ethernet");
+                    window.title_bar.network_type_icon.set_resource(Some("/net/ethernaught/rust/res/icons/ic_ethernet.svg"));
                 }
                 DataLinkTypes::Loop => {
-                    title_bar.title_bar.style_context().add_class("lan");
-                    title_bar.network_type_icon.set_resource(Some("/net/ethernaught/rust/res/icons/ic_lan.svg"));
+                    window.window.style_context().add_class("lan");
+                    window.title_bar.network_type_icon.set_resource(Some("/net/ethernaught/rust/res/icons/ic_lan.svg"));
                 }
                 DataLinkTypes::Raw | DataLinkTypes::Ipv4 | DataLinkTypes::Ipv6 => {
-                    title_bar.title_bar.style_context().add_class("vpn");
-                    title_bar.network_type_icon.set_resource(Some("/net/ethernaught/rust/res/icons/ic_vpn.svg"));
+                    window.window.style_context().add_class("vpn");
+                    window.title_bar.network_type_icon.set_resource(Some("/net/ethernaught/rust/res/icons/ic_vpn.svg"));
                 }
                 DataLinkTypes::Ieee802_11 => {
-                    title_bar.title_bar.style_context().add_class("wifi");
-                    title_bar.network_type_icon.set_resource(Some("/net/ethernaught/rust/res/icons/ic_wifi.svg"));
+                    window.window.style_context().add_class("wifi");
+                    window.title_bar.network_type_icon.set_resource(Some("/net/ethernaught/rust/res/icons/ic_wifi.svg"));
                 }
                 /*
                 DataLinkTypes::BluetoothHciH4 => {
@@ -472,30 +484,31 @@ fn show_title_bar(window: &MainWindow, name: &str, data_link_type: DataLinkTypes
                 _ => {}
             }
 
-            title_bar.network_type_label.set_label(&name);
+            window.title_bar.network_type_label.set_label(&name);
 
-            title_bar.network_type_icon.show();
-            title_bar.network_type_label.show();
+            window.title_bar.network_type_icon.show();
+            window.title_bar.network_type_label.show();
 
-            title_bar.app_options.show();
+            window.title_bar.app_options.show();
+            window.bottom_bar.status.show();
             return;
         }
 
         match data_link_type {
             DataLinkTypes::Null => {
-                title_bar.title_bar.style_context().remove_class("any");
+                window.window.style_context().remove_class("any");
             }
             DataLinkTypes::En10mb | DataLinkTypes::En3mb | DataLinkTypes::Sll2 => {
-                title_bar.title_bar.style_context().remove_class("ethernet");
+                window.window.style_context().remove_class("ethernet");
             }
             DataLinkTypes::Loop => {
-                title_bar.title_bar.style_context().remove_class("lan");
+                window.window.style_context().remove_class("lan");
             }
             DataLinkTypes::Raw | DataLinkTypes::Ipv4 | DataLinkTypes::Ipv6 => {
-                title_bar.title_bar.style_context().remove_class("vpn");
+                window.window.style_context().remove_class("vpn");
             }
             DataLinkTypes::Ieee802_11 => {
-                title_bar.title_bar.style_context().remove_class("wifi");
+                window.window.style_context().remove_class("wifi");
             }
             /*
             DataLinkTypes::BluetoothHciH4 => {
@@ -505,10 +518,11 @@ fn show_title_bar(window: &MainWindow, name: &str, data_link_type: DataLinkTypes
             _ => {}
         }
 
-        title_bar.network_type_icon.hide();
-        title_bar.network_type_label.hide();
+        window.title_bar.network_type_icon.hide();
+        window.title_bar.network_type_label.hide();
 
-        title_bar.app_options.hide();
+        window.title_bar.app_options.hide();
+        window.bottom_bar.status.hide();
     }
 }
 
